@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file          : drivers/usr_sc/sc-cavallo-360/brondehach
+    created       : 2013-06-29 23:21:54
+    last modified : 2013-06-29 23:21:54
+    copyright     : (C) 2010-2013 Xavier Bertaux
+
+    SVN version   : $Id:$
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "params.dtd">
+
+<params name="sc-cavallo-360">
+  <section name="Brake System">
+    <attnum name="front-rear brake repartition" min="0.5" max="0.65" val="0.5839"/>
+    <attnum name="max pressure" unit="kPa" min="5000" max="50000" val="49800"/>
+  </section>
+  
+  <section name="private">
+  	<attnum name="fuelperlap" val="1.57"/>
+	<attnum name="avoid speed factor" val="0.96"/>
+	<attnum name="avoid brake factor" val="0.90"/>
+    <attnum name="base speed" val="10.25"/>
+	<attnum name="base brake" val="34.66"/>
+	<attnum name="exit boost factor" val="1.851"/>
+	<attnum name="slope factor" val="0.571"/>
+	<attnum name="turn decel" val="0.4"/>
+	<attnum name="accel curve" val="1.4"/>
+	<attnum name="int margin" val="1.7"/>
+	<attnum name="ext margin" val="1.3"/>
+    <attnum name="abs slip" val="4"/>
+    <attnum name="tcl slip" val="4"/>
+    <attnum name="bump caution" val="0.4"/>
+	
+    <attnum name="0 bgn" min="1430" max="1430" val="1430"/>
+    <attnum name="0 end" min="1490" max="1490" val="1490"/>
+    <attnum name="0 rl left margin" min="3" max="3" val="3"/>
+    <attnum name="0 base speed" min="8" max="8" val="8"/>
+  </section>
+  
+</params>

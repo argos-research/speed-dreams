@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : graphconfigmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: graphicsconfigmenu.xml 4735 2012-05-26 19:34:24Z torcs-ng $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Graphic config menu (FOV, LOD, Smoke, Skid marks, Sky dome distance, ...)
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="graphconfigmenu">
+
+<section name="dynamic controls">
+
+	<section name="fovedit">
+		<attstr name="type" val="edit box"/>                
+		<attnum name="max len" val="16"/>
+		<attstr name="tip" val="Factor of visibility"/>
+		<attnum name="x" val="295"/>
+		<attnum name="y" val="351"/>
+		<attnum name="width" val="165"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="smokeedit">
+		<attstr name="type" val="edit box"/>
+		<attnum name="max len" val="16"/>
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="295"/>
+		<attnum name="y" val="323"/>
+		<attnum name="width" val="165"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="skidedit">
+		<attstr name="type" val="edit box"/>
+		<attnum name="max len" val="16"/>
+		<attstr name="tip" val="Max number of skid marks"/>
+		<attnum name="x" val="295"/>
+		<attnum name="y" val="295"/>
+		<attnum name="width" val="165"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="lodedit">
+		<attstr name="type" val="edit box"/>
+		<attnum name="max len" val="16"/>
+		<attstr name="tip" val="Level of detail"/>
+		<attnum name="x" val="295"/>
+		<attnum name="y" val="267"/>
+		<attnum name="width" val="165"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="skydomedistleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  	  	  	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="238"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="skydomedistrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="238"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="skydomedistlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="8"/>
+		<attstr name="tip" val="Distance to the realistic sky dome (meters, 0 means static-textured background and higher frame rates)"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="242"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="dynamicskydomeleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  	  	  	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="208"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="dynamicskydomerightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="208"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="dynamicskydomelabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="10"/>
+		<attstr name="tip" val="Dynamic sky dome during the races (moving sun, moon, stars ...)"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="212"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="bgskyleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  	  	  	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="178"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="bgskyrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="178"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="bgskydomelabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="10"/>
+		<attstr name="tip" val="Activate / desactivate background landscape with sky dome"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="182"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="cloudlayernbleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  	  	  	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="148"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="cloudlayernbrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="148"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="cloudlayerlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="5"/>
+		<attstr name="tip" val="Setup the number of cloud layers with sky dome"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="152"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+	
+	<section name="precipdensityleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  	  	  	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="118"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="precipdensityrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="118"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="precipdensitylabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="5"/>
+		<attstr name="tip" val="Setup the maximum density of rain"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="122"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+	
+		<section name="visibilityleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  	  	  	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="88"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="visibilityrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="88"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="visibilitylabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="5"/>
+		<attstr name="tip" val="Setup the maximum density of rain"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="92"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+	
+	<section name="CancelButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>            
+		<attstr name="text" val="Cancel"/>
+		<attstr name="tip" val="Cancel changes"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="278"/>
+		<attnum name="y" val="62"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="ApplyButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Apply"/>
+		<attstr name="tip" val="Accept and save changes"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="62"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+</section>
+
+<section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-graphconf.jpg"/>
+	</section>  
+
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>	
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-graphicconfig.png"/>
+	</section>
+
+	<section name="4">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="354"/>
+		<attstr name="text" val="Visibility:"/>
+		<attstr name="tip" val="Use less than 100% for better frame rates, and more for deeper landscapes"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="5">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="326"/>
+		<attstr name="text" val="Smoke:"/>
+		<attstr name="tip" val="Maximum number of simultaneous clouds of smoke / dust (use 0 to disable)"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="6">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="298"/>
+		<attstr name="text" val="Skid marks:"/>
+		<attstr name="tip" val="Maximum number of visible skid marks for each wheel of each car (use 0 to disable)"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="7">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="270"/>
+		<attstr name="text" val="LOD factor:"/>
+		<attstr name="tip" val="Use less than 1 for better frame rates when rendering far cars with lower details 3D models"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="8">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="242"/>
+		<attstr name="text" val="Sky dome distance:"/>
+		<attstr name="tip" val="Distance to the realistic sky dome (meters, 0 means static-textured background)"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="9">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="212"/>
+		<attstr name="text" val="Dynamic sky dome:"/>
+		<attstr name="tip" val="Dynamic sky dome during the races (moving sun, moon, stars ...)"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="10">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="182"/>
+		<attstr name="text" val="Background landscape:"/>
+		<attstr name="tip" val="Activate / desactivate background landscape with sky dome"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="11">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="152"/>
+		<attstr name="text" val="Number of cloud layers:"/>
+		<attstr name="tip" val="Setup the number of cloud layers with sky dome"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	
+	<section name="12">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="122"/>
+		<attstr name="text" val="Precipitation density:"/>
+		<attstr name="tip" val="Setup the maximum density of rain (%)"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	
+	<section name="13">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="92"/>
+		<attstr name="text" val="Visibility:"/>
+		<attstr name="tip" val="Setup the maximum scene visibility in meters"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	
+</section>
+
+</params>

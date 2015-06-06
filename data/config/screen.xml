@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+                             Screen definitions
+
+    created              : Fri Aug 13 22:30:50 CEST 1999
+    copyright            : (C) 1999 by Eric Espie
+    email                : torcs@free.fr
+    version              : $Id: screen.xml 5180 2013-02-23 13:56:49Z torcs-ng $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="Screen" version="1.18">
+
+	<section name="Validated Screen Properties">
+		<attnum name="window width" val="1024"/>
+		<attnum name="window height" val="600"/>
+		<attnum name="bpp" val="32"/>
+		<attstr name="full-screen" in="yes,no" val="no"/>
+		<attstr name="stereo-vision" in="yes,no" val="no"/>
+		<attstr name="alpha channel" in="yes,no" val="yes"/>
+		<attnum name="gamma" val="1"/>
+		<attstr name="video mode detect" in="auto,manual" val="auto"/>
+		<attstr name="video mode init" in="compatible,best" val="compatible"/>
+	</section>
+
+	<section name="Menu Font">
+		<attstr name="name" val="jura-normal.glf"/>
+		<attnum name="size big" val="320"/>
+		<attnum name="size large" val="230"/>
+		<attnum name="size medium" val="200"/>
+		<attnum name="size small" val="150"/>
+	</section>
+
+	<section name="Text Font">
+		<attstr name="name" val="droid-sans-normal.glf"/>
+		<attnum name="size big" val="320"/>
+		<attnum name="size large" val="230"/>
+		<attnum name="size medium" val="175"/>
+		<attnum name="size small" val="150"/>
+	</section>
+
+	<section name="Console Font">
+		<attstr name="name" val="liberation-sans-bold.glf"/>
+		<attnum name="size big" val="320"/>
+		<attnum name="size large" val="230"/>
+		<attnum name="size medium" val="175"/>
+		<attnum name="size small" val="150"/>
+	</section>
+
+	<section name="Digital Font">
+		<attstr name="name" val="digital.glf"/>
+		<attnum name="size big" val="6"/>
+	</section>
+
+	<section name="Mouse Cursor">
+		<attstr name="image" val="data/img/mouse.png"/>
+		<attnum name="offsetX" val="0"/>
+		<attnum name="offsetY" val="0"/>
+		<attnum name="width" val="32"/>
+		<attnum name="height" val="32"/>
+	</section>
+
+  <section name="Menu Settings">
+    <section name="colors">
+      <section name="background">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="0.01"/>
+      </section>
+
+      <section name="background focused button">
+        <attnum name="red" val="0.25"/>
+        <attnum name="green" val="0.59"/>
+        <attnum name="blue" val="0.95"/>
+        <attnum name="alpha" val="0.25"/>
+      </section>
+
+      <section name="background pushed button">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="0"/>
+      </section>
+
+      <section name="background enabled button">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="0"/>
+      </section>
+
+      <section name="background disabled button">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="0"/>
+      </section>
+
+      <section name="focused button">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="0.8"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="pushed button">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="enabled button">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="1"/>
+        <attnum name="blue" val="1"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="disabled button">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="1"/>
+        <attnum name="blue" val="1"/>
+        <attnum name="alpha" val="0.33"/>
+      </section>
+
+       <section name="label">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="1"/>
+        <attnum name="blue" val="1"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="tip">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0.8"/>
+        <attnum name="blue" val="1"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+     <section name="background scroll list">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="0"/>
+      </section>
+
+      <section name="scroll list">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="1"/>
+        <attnum name="blue" val="1"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="background selected scroll list">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="0"/>
+      </section>
+
+      <section name="selected scroll list">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="0.8"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="background focused editbox">
+        <attnum name="red" val="0.25"/>
+        <attnum name="green" val="0.59"/>
+        <attnum name="blue" val="0.95"/>
+        <attnum name="alpha" val="0.25"/>
+      </section>
+
+      <section name="background enabled editbox">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="0"/>
+      </section>
+
+      <section name="background disabled editbox">
+        <attnum name="red" val="0"/>
+        <attnum name="green" val="0"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="0"/>
+      </section>
+
+      <section name="focused editbox">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="0.8"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="enabled editbox">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="1"/>
+        <attnum name="blue" val="1"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="disabled editbox">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="1"/>
+        <attnum name="blue" val="1"/>
+        <attnum name="alpha" val="0.33"/>
+      </section>
+
+      <section name="editbox cursor color">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="0.8"/>
+        <attnum name="blue" val="0"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="base color background image">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="1"/>
+        <attnum name="blue" val="1"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+      <section name="progress outline color">
+        <attnum name="red" val="1"/>
+        <attnum name="green" val="1"/>
+        <attnum name="blue" val="1"/>
+        <attnum name="alpha" val="1"/>
+      </section>
+
+    </section>
+
+    <section name="tip">
+      <attnum name="x" val="10"/>
+      <attnum name="y" val="25"/>
+      <attnum name="width" val="620"/>
+      <attstr name="align" val="center"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+
+    <section name="editbox">
+      <attnum name="v padding" val="2"/>
+      <attnum name="h padding" val="10"/>
+    </section>
+
+    <section name="text button">
+      <attnum name="v padding" val="5"/>
+      <attnum name="h padding" val="10"/>
+    </section>
+
+    <section name="image button">
+      <attnum name="v padding" val="0"/>
+      <attnum name="h padding" val="0"/>
+    </section>
+
+  </section>
+
+  <section name="OpenGL Selected Features">
+    <attstr name="texture compression" val="enabled"/>
+    <attnum name="max texture size" val="8192"/>
+    <attstr name="multi-texturing" val="enabled"/>
+    <attstr name="multi-sampling" val="enabled"/>
+    <attstr name="multi-sampling samples" val="8"/>
+    <attstr name="stereo-vision" val="disabled"/>
+    <attstr name="bump mapping" val="disabled"/>
+    <attnum name="anisotropic filtering" val="2"/>
+  </section>
+
+</params>
+<!-- Emacs settings : Keep this comment at the end of the file
+Local variables:
+mode: xml
+sgml-omittag:nil
+sgml-shorttag:nil
+sgml-namecase-general:nil
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:nil
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

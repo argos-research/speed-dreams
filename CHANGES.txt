@@ -1,0 +1,1372 @@
+Speed Dreams 2.1.0 Release notes
+================================
+
+Dxx ids refer to tasks "specified" and listed here :
+http://sourceforge.net/apps/trac/speed-dreams/wiki/BigFeatureList
+
+... among the planned ones for 2.0.0 :
+http://sourceforge.net/apps/trac/speed-dreams/wiki/ActualFeaturePlanFor20
+
+More technical details about the work in progress for many tasks here :
+http://sourceforge.net/apps/trac/speed-dreams/wiki/TheWayToRelease2
+
+I - Main changes since 2.0.0 (r4687)
+-----------------------------------------------------------------
+
+ Physics
+ *Simuv4 : a better Simuv2.1, to make it obvious this our latest and greatest simulation engine
+   * single wheel braking and air braking for robots
+   * added a feature system to introduce new features and still keeping old robot setups working
+   * fix wheels oscillating and cars sliding at low speed
+   * more realistic, fuel-cut type rev-limiter
+   * more realistic gear change model as a feature, by default it is off because it does not work well with grid shifting
+   * a qualitative tire temperature and tire wear model as a feature, by default it is off, 
+   * 2 new wing type models: profile wing, and thin wing
+   * experimental support for 3rd or heave spring and damper
+
+ Cars
+ * new physics for MPA1 carset, based on good ol' Champcar racing
+ * improved LS1 Cavallo physics
+ vn remove untracked improved Supercars physics: reworked Lynx, Cavallo and Murasama; some more improvements on the others
+ * improved GP36 physics
+ * animated drivers on MPA1 carset
+
+ Tracks
+ * improvements to Goldstone-Sand, Mile raceway
+
+ Robots
+ * Tuning for USR/Simplex Supercars and LS1
+
+ Input control
+ * Ability to reconfigure controls during race (ESC menu)
+ * Unified Human/Network-Human control scheme
+
+ Sounds
+ * Menu music
+
+ Graphics
+ * Anisotrpopic filtering mode
+ * 24 hour mode, day/night cycle in any race duration (ie mini-24hr LeMans)
+ * Realistic Sun/Moon movement and graphics
+ * Improved rear-view mirror graphics/perfomance
+ * 'Span Splits' mode for mutli-monitor setups, allow bezel compensation 
+   and distortion correction
+ * Improved HUD displays
+
+ Race engine
+ * Cmake 'OPTION_REPEATABLE_RANDOM' for constant randomness
+
+I - Main changes since 1.4.0 (overall sum-up)
+-----------------------------------------------------------------
+
+ Menus
+ * New "shinning" menu style with blurry backgrounds and button animations
+ * More user-friendly menu system, through improved labels, tips and control behavior
+ * Improved options menus (mostly graphics and display)
+ * New Garage menu to get preview and technical data about the chosen car
+ * Reworked / enhanced Driver Select menu with preview image for all cars / liveries
+ * Many fixes / improvements to the various race results menus
+
+ Graphics :
+ * Realistic dynamic sky dome (with background landscape) and rain rendering
+ * Improved world reflexions on car bodies
+ * New skinning system for all car components (body, driver, wheels, ...) and pit door
+ * Added glance left / right commands / views
+ * Added support for ultra-wide screen configurations (dual/triple panel)
+ * Reworked graphics and Open GL capability detection, with crash recovery
+ * Added support for JPEG textures (when relevant, for reducing package size)
+
+ Input control
+ * Improved throttle and clutch management when shifting
+ * WIP optimum auto-shift engine speeds
+ * Allow gear shifts to override auto-gearbox
+ * Fixed speed-correction so that is does not alter when car is spinning (easier recovery)
+ * Added e-brake command (might get useful for RS cars ;-)
+ * Fixed non-symetrical joystick calibration
+ * Added support for button/pad grid shifting
+ * Added support for gamepads with pressure sensitive buttons
+ * Added support for Mouse Wheel and extra buttons
+ * Fixed Mouse calibration lost in Ready-Set-Go stage
+
+ Robots
+ * USR, Simplix : Reworked setups for LS1 and 36GP cars
+ * Kilo2008 : New robot driving TRB1 Taipan and Cavallo
+ * USR : Improved avoidance, Situation-aware headlights
+ * Simplix : Better skilling and faster opponents for the Career mode
+ * Simplix : Optimized loading time
+ * Simplix : Added support for wet track (but no change supported during the race)
+
+ Physics
+ * Simu V2.1 : a better Simu V2
+   * added emergency brake
+   * added gyroscopic forces
+   * added bump and rebound limit velocities to dampers
+   * improved engine brake calculation
+   * fix the downforce calculation for the rear wing
+   * fix the handling of gear and differential efficiencies
+   * fix the cars roll on highly banked tracks
+
+ Sounds
+ * Reworked sounds by Audio Berlin profesionals
+   (but all LS1, 36GP and half of Supercars engine sounds left untouched :-)
+ * Pause sound when pausing a race, however
+ * Open AL back-end : Simulate low-pass filter for engine sound by
+   simply lowering the gain when releasing the throttle
+
+ Race engine
+ * New career racing mode (limided contents for the moment)
+ * New TRB1, LS1, 36GP and MP5 championship, and LS1, 36GP and MP5 single-event race modes,
+ * Added support for real life championship race session layouts
+ * Dual-threading support for improved frame rates when many opponents
+ * Added support for saving, loading and resuming a race / race mode to / from a file
+ * On-screen "wrong way" notification
+ * Not released : network racing mode (does not work correctly)
+
+ Cars
+ * From scratch rework of LS1 and 36GP car physics, for more realism
+ * Slightly Updated physics for TRB1 (Simu V2.1 compatibility)
+ * Supercars physics left untouched (Simu V2.1 compatible)
+ * New MP5 car set (kind of Formula Ford) with 3 models and realistic physics
+ * Many new / reworked HQ liveries for LS1, Supercars and MP5 cars
+ * Improved 3D models for LS1
+ * New WIP LS-GT2 car set (WIP physics and USR robot setups) 
+ * New WIP RS car set (Rally Series, WIP physics and Simplix robot setups)
+ * New WIP TRB1 Vieringe 5 RB (WIP physics, copy of Silber RBLK)
+
+ Tracks
+ * New tracks : 
+   * Road     : Salty,
+   * Circuit  : Brondehach, Goldstone Sand
+   * Speedway : Arizona Mile Speedway, Long Pond Superspeedway, Caddo Speedway, 
+                Sunshine State Superspeedway
+ * HQ texture rework for most tracks (a huge work !)
+ * Gave better and fictive names and locations to many tracks
+ * Reworked preview images for all HQ tracks
+ * Added support for no-building / low-wall pit "building"
+ * Fixed too high friction coefficients in many tracks (towards realism)
+
+ Build system / Packaging
+ * Moved to CMake-based build system
+ * Multi-package deployement scheme, contents based
+ * New Windows binary multi-package system :
+   * the small base package is enough for trying the game (kind of demo)
+   * it can download and installation the other packages, for much more contents
+ * Fixed non GPL 2+ compatible bundled code 
+   + other steps towards official packaging by 100%-OSS Linux distros.
+
+ Other
+ * New command line options for straight starting of a given race, with or without a GUI
+   (suitable for headless computers, for robots tuning, as an ex.).
+ * Improved overall code modularity (separating the race engine and the user interface,
+   making the user interface a loadable module)
+ * New C++ API for loadable module system (only robots left untouched)
+ * New tgfdata library for isolating the menu code from the XML files
+ * Replaced GLUT library by SDL
+ * Moved Windows build to modern DLL interface (no more .def files)
+
+More details below.
+
+II - Changes since 2.0.0 Release Candidate 1 release in final 2.0.0
+-------------------------------------------------------------------
+This release was build from SVN
+https://speed-dreams.svn.sourceforge.net/svnroot/speed-dreams/tags/2.0.0@4687
+(that is trunk@4663, after reverting r4660 changeset (LS1 car changes),
+ except new Toro and Zentek engine sounds).
+
+1 - Main changes
+
+ * Reworked / polished new "shinning" menu style with blurry backgrounds and button animations
+ * Reworked sounds by Audio Berlin profesionals
+   (but all LS1, 36GP and half of Supercars engine sounds left untouched :-)
+ * Many improvements to labels, tips and control behavior consistency (more user-friendly menus)
+ * Realistic sky dome enabled by default (might slow down frame rates on low end configurations)
+ * Fixed broken track shadow mapping on cars when background landscape present
+ * New layout for the Driver Selection menu + completed car preview images
+ * New TRB1, LS1, 36GP and MP5 championship, and LS1, 36GP and MP5 single-event race modes,
+ * Added support for real life championship race session layouts
+ * Removed LS1 Cavallo 570 S1 from the official contents (unfinished physics setup)
+ * Simplix robot : scaled skilling and faster opponents for career mode
+ * Many fixes / improvements to the various race results menus
+ * Fixed many bugs in the Save, Load and Resume race from file system
+ * Smooth unpause race process through progressive time acceleration
+ * Reworked landscape and buildings for Long Pond speedway
+ * Some graphics fixes to Karwada, Street-1, Manton, Brondehach
+ * Many bug fixes (code and tracks graphics).
+ * Fixed non GPL 2+ compatible bundled code + other steps towards official 100%-OSS packaging.
+ * New "Unmaintained" source and Windows binary package + moved Simu V2 and V3 inside.
+ 
+2 - Known bugs / WIP tasks
+ 
+ See http://sourceforge.net/apps/trac/speed-dreams/report/3
+
+3 - Detailled changes
+
+Cars:
+
+* All cars
+  * Final tweaks to car previews (some were lacking, some new liveries, ...)
+
+* MP5
+  * #350 Spreaded out mp5-fmc liveries evenly over the 3 mp5-fmc* cars
+
+* LS1
+  * #142 Final ls1-archer previews
+  * Reworked 3D model front end of Archer R9 and updated liveries
+  * Reworked Zentek and Toro engine sounds
+  * Many HQ improved / new liveries
+
+* RS
+  * Updated rs1-fmc-centre 3D model
+
+* Supercars
+  * Fixed windows frame on sc-boxer-96
+  * Updated sc-cavallo-360 3D model
+  * New 'sport' sking for sc-fmc-gt4
+
+Tracks
+
+* All tracks
+  * Updated time of day for most tracks, for more varied sky conditions
+  * New blurry-styled previews for all official tracks
+  * New default background landscape texture for when Sky Dome is enabled
+  * Some track-specific background landscape textures
+
+* Dirt
+  * Fixed TORCS-labeled gantries on Dirt-2, Dirt-4 and Dirt-6
+
+* Circuit
+  * #628 Fixed Karwada shadow map making landscape too dark
+  * Improved shadows for Brondehach
+
+* Road
+  * Texture improvements to Street 1
+
+* Speedways
+  * Reworked landscape and buildings for Long Pond
+  * Texture improvements to Manton Speedway
+  * Added consistent lanscape for reflexions on car bodies (env.png)
+
+Robots
+
+* Back to all RGB + small fixes on pit door logos for USR and Simplix SC and TRB1
+*  Kilo2008 
+  * #183 Headlight handling, overtaking improvements, code improvements, 
+  * #615 Quick and dirty fix for missed pitstops
+
+* Simplix : 
+  * Scaled skilling for career mode (per car type)
+  * Faster opponents for the career mode
+  * Other minor bug fixes.
+* USR :
+  * #615 Quick fix for missed pitstops
+
+Input control
+
+* #617 Autoclutch not active when no clutch command defined
+* #612 Grid shifter occasionally selects wrong gear
+* Made default preferences for new players consistent with the ones of the default player
+
+Graphics
+
+ * Fixed broken track shadow mapping on cars when background landscape present
+ * Time format in boards : milliseconds separated from seconds by single dot.
+ * #303 Partially fixed rain drops rendering in TV/Spectator cameras
+ * Background landscape management code moved to grbackground.cpp
+ * Moved to 1024x600 screen / window size by default (was 800x600)
+
+Menus
+
+* Overall menu system
+  * Final tweaks for the reworked menu style (colors, button icons, blurry backgrounds, 
+    button filets, buttons hovered/clicked highlighting ...)
+  * Better small font
+  * #542 
+    * Consistent placing of the buttons for related menus
+    * Improved tips everywhere
+    * Ajusted layout / spacing
+    * Equivalent buttons at the same place, as much as possible + Apply / Continue on the right
+  * #333 Flip arrow buttons of scroll-list scroll-bars according to their position
+         Fixed GfuiStaticImageSet overwriting the 'can deform' XML property
+         + added GfuiStaticImageSetDeformable
+         Added missing GfuiScrollListGetSelectedElementIndex
+
+* Player Configuration menus :
+  * #577 Fixed fatal error after deleting all human drivers under Windows
+         (Go on loading robot modules even when 1 fails to load)
+  * #587 Fixed possible creation of empty / blank name player
+  * Made atob calibration match button sequence of other calibrations
+  * #570 Stop '---' being assigned as '-' key in Control Config menu
+
+* Options menus :
+  * Make things work smoothly when Simu V2 and/or V3 modules are not there, whatever user settings
+  * Made Sky Dome enabled by default, with dynamic time and background landscape + warned the user about lower frame rates (graphics options menu)
+  * #584 Make it clear that sky dome-dependent options are disabled when sky dome is off
+         Improved tips and controls order for graphics options
+  * #598 Dynamic Sky selector getting stuck
+  * #575 Fixed float/Int rounding issues about Precipitation density 
+         + potential ones about Sky Dome Distance and Number of Cloud Layers
+
+* Track Select
+  * #396 Made the track description lines wrapping limit XML-customizable
+  * #564 Greyed combo-box arrows when only 1 category / 1 car
+
+* File Select menu
+  * #330 Show only .xml files when loading / saving race params / results (.xmls of no-use for that)
+
+* Race Params
+  * #491 Fixed race distance / session time logic
+
+* Track Select / Race manager
+  * Final blurry previews for all official HQ tracks (+ some others)
+
+* Driver Select / Garage 
+  * Changed "Change Car" button / "Car settings" menu title to "Garage"
+  * #241 & #330 Hide info / disable choice of car when Career mode
+  * #561 Fixed driver selector only lists 1 human when multiple ones under Windows
+  * Improved progress bar image in Garage menu
+  * Reworked layout and button icons
+  * #650 Enable/disable all Driver Select menu buttons in a more logical way,
+         according to the scroll lists actual situation
+
+* Race menus
+  * Stop / Resume menu : #576 Moved Resume button on top and made it the default selection
+
+* Pit menu :
+  * #635 Improved pit menu labels 
+  * #636 Pit menu labels when timed session + improved tips
+  * #655 Workaround snprintf misuse + MSVC 2005 C lib bug
+
+* Results menus
+  * #562 Fixed results-only counting extra lap
+  * #549 Added decimal points for TopSpeed and MinSpeed 
+         + fixed leading zeros on negative numbers in results-only screen
+		 + fixed dammages in pratice result table
+  * More accurate and user-friendly menu titles
+  * #559 Messed up quickrace results only display
+  * #591 No more crash when resuming multi-event race modes from results 
+         + show real session name in Race results menu
+  * Fixed alignment of results-only screen table columns
+  * #114 Fixed the Challenge qualification screen not supporting correctly more than 21 drivers
+  * #649 Use SessionName at TrackName format for all subtitles in session running and result menus
+  * #648 Fixed crash in standings menu when after last event of a championship
+
+Physics engine
+
+* #225 Fixed Incomplete sanity check of car state data at race start
+* #573 Made 'bottom out' sound being rendered only when dammages
+  (for better audio effect after the sound was reworked by Audio Berlin guys).
+
+Race engine
+
+* #460 F1 key really freezes the simulation
+* #568 Progressive time acceleration when unpausing a race, whatever the mean (F1 = Help menu, Esc = Stop menu, P = Pause)
+* Make things work smoothly when Simu V2 and/or V3 modules are not there, whatever user settings
+* #591 Fixes crash when abandoning non-Career multi-event races during 1st event
+* #491 Fixed race distance / timed session calculation
+       Fixed starting grid determination for non-race sessions
+       Added single race formats for MP5, LS-GT1 and 36GP
+       Added championship race formats for MP5, LS-GT1 and 36GP
+* #638 Fixed Drive-through in-race message spelling
+* #568 Progressive time acceleration when resuming paused race
+* #591 Resuming Career mode from a (main) results file now works as expected
+* 0 seconds also is no timed session (repairs startlight in practice)
+* Improved management of random time of day case
+* New TRB1 championship race mode
+* #647 Fixed liveries selector not working for 'normal' races
+* #655 Workaround snprintf misuse (of r4560) + MSVC 2005 C lib bug
+
+Sound engine
+
+* #583 Integrated new Audio-Berlin sounds (but gear_change1, backfire and skid_tyres,
+       for which we consider the old ones are equal or better in-game)
+
+Tools
+
+* Removed unused / unmaintained png2jpg and src/misc folder
+
+Build system / Packaging
+
+* Updated install instructions to the new multi-source-packaging scheme since 2.0.0 rc1
+* #625 USR RS driver added to the Windows WIP package
+* #602 Install manpages (after updating the original sources) for our executables
+* #604 Switch to GPL2-licensed 'legal' txml lib (old was Mozilla 1.0, not compatible) ;
+       still embedded, but on the way to move to an external (and newer) Expat dependency
+* Added Tennessee speedway in WIP Windows package (had been forgotten)
+* Fixed Windows packages about raceman files and their compatibility with included cars
+* Moved current packaging specs files from 'installer' to 'packaging' 
+* Removed unused / unmaintained old RPM package spec files
+* Split the source package following the Windows contents scheme (but CMake config untouched)
+  + created scripts for easy building of these packages
+* Fixed wrong FSF address in various files
+* Added a 5th "unmaintained" source and windows binary package (for Simu V2 and V3)
+* Updated release notes for final 2.0
+* Updated credits
+
+Other
+
+* #307 More code cleanups (C => C++, snprintf, fixed compilation warnings, ...)
+* Moved src/doc to doc/doxygen for consistency
+* #601 No more empty files (Fedora packaging guidelines)
+* Fixed wrong FSF address in SOLID 2.0 source headers
+* Optimized installation size :
+  * All remaining track .ac files renamed to -src.ac when a .acc is used at run-time
+* #645 & #646 GCC 4.7 compatibility
+
+                         =====================================================
+
+III - Changes since 2.0.0 Beta 1 released in 2.0.0 Release Candidate 1.
+-----------------------------------------------------------------
+This release was build from SVN https://speed-dreams.svn.sourceforge.net/svnroot/speed-dreams/tags/2.0.0-rc1@4420.
+
+1 - Main changes
+ * New "shinning" menu style, with great new track previews
+ * Preview images for all cars in nice show rooms (Driver and Car Select menu),
+ * Final setups for USR and Simplix AIs for all official HQ car sets,
+ * Final setups for Kilo2008 for TRB1 Taipan and Cavallo,
+ * New skins for many cars,
+ * Bunches of graphics candy for many tracks,
+ * Many other graphics improvements (but minor changes to the graphics engine),
+ * Many bug fixes everywhere,
+ * New command line options for straight starting of a given race, with or without a GUI
+   (suitable for headless computers, for robots tuning, as an ex.).
+
+2 - Known bugs / WIP tasks
+ See http://sourceforge.net/apps/trac/speed-dreams/report/9
+
+3 - Detailled changes
+
+Cars:
+* All cars : 
+  * added previews images for all cars, for Driver Select and Car Select menus
+    (thanks to a semi-automated script that re-writes 'practice.xml' and starts Speed-Dreams
+     with the appropriate drivers/skins - ie. those without previews)
+* Some cars :
+  * Fix erroneous parameter boundaries
+* Supercars :
+  * SC Spirit 300 :
+    * Fixed / improved car and driver 3D models
+    * Reworked Street skin
+    * Added Sport and GTR skins
+    * Improved Simplix and USR driver skins
+* LS1 :
+  * Cavallo 570 : 
+    * WIP setup and skins (probably no AI setup ready for final 2.0)
+    * Improved 3D model
+  * Toro :
+    * Improved 3D model and skins
+  * Archer
+    * Fixed 3D issues with lights
+    * Brighten up for night races
+  * Vulture
+    * Reworked 3D model
+    * New shadow
+  * Zentek
+    * Reworked 3D model
+    * New shadow
+    * Reworked simplix liveries
+  * Newcastle
+    * Brighten up for night races
+  * Taipan
+    * Brighten up for night races
+* 36 GP :
+  * All : Improved driver textures, custom counters and optimized textures
+  * Tridenti V8 Ri : 
+    * HUD texture fix
+* MP5 :
+  * New Drift and Speedy models (same 3D model) with alternative setups 
+  * Fixed texture mapping issues
+  * New skins (MoeMoe, Adenauer, Keisinger, Fearless, FreeRun, March, 
+               Mishimmie, Scarlet, Gumi, Oceania, Poplar)
+* RS :
+  * Kenji : Improved Crazy Eddie's setup
+  * FMC, FAI, Kenji : Improved logo, wheel and shadow textures
+* MPA1 : WIP (not released)
+
+Tracks:
+* Common to all :
+  * Optimized / fixed standard textures (halo, back-signs, sky dome background landscape, ...)
+  * Specific sky dome background landscape for most official HQ tracks
+  * Fixed many "flickering" issues on many tracks
+* Circuit
+  * Chemisay : Added road trails, improved shadow maps
+  * Karwada : 
+    * Fixed #462 AI drivers can drive on grass.
+    * Improved shadows and color variation
+  * Aalborg : Nice color variations, some kind of blue shadows and shadow maps for car and track
+  * Brondehach : 
+    * Shadow maps optimizations
+    * #458 Turn sign reverse textures
+  * Corkscrew : Texture and shadow improvements
+  * Espie : 
+    * Shadow maps optimizations
+    * Fixed #56 Moved 2 vehicles bit lower on Espie to stop them levitate
+  * Forza : 
+    * Shadow maps fix and color variation
+    * Removed shadow maps for cars for now, 'cause don't work
+  * Migrants : Improved shadows and color variation
+  * Ruudskogen : Improved shadows and color variation
+  * Goldstone Sand : Fixed #403 Better compatibility with our robots
+* Road
+  * Added Salty with HQ lanscape and textures
+  * Olethros Road : Improved shadow map and road trails
+  * Inuksuk (was alpine-2) : 
+    * Renamed alpine-2 to Inuksuk, thanks to Simon's daughter often
+      calling it such (due to the shape) ; http://en.wikipedia.org/wiki/Inuksuk
+    * Use .AC file rather than .ACC as a temporary fix for textureless road.
+  * Renamed e-track-1 to Autodromo Lombaro (Italy)
+  * Renamed g-track-1 to Pinabashi Park (Turkey)
+* Speedways
+  * Sunshine State :
+    * reworked (can now use steeper banking, so it should resemble the real one)
+    * #310 No-building pit type.
+  * Caddo Speedway reworked (idem)
+  * Tennessee Half Mile Arena reworked (idem)
+* Dirt
+  * Dirt-6 Fixed #453 Missing texture
+* Development (not released)
+  * New Garage show room track (for in-menu car previews)
+
+Robots :
+* Simplix
+  * Improved braking
+  * Fixed starting issues at Aalborg
+  * LS1 : 
+    * Final setups for all official tracks
+    * Yukie Tsuchikami -> Yukie Tsuchigami (more correct)
+  * Supercars : Final setups for all official tracks
+  * TRB1 : Final tweaks + Added missing ranges to default.xml files to avoid warnings
+  * MP5 : WIP setups
+* USR
+  * Improved overtaking behavior
+  * Other bug fixes and improvements
+  * LS1 : 
+    * Final setups for all official tracks
+    * Commented-out drivers of the LS1 Cavallo (setup not ready for 2.0)
+  * 36 GP : Final setups for all official tracks
+  * RS : WIP RS setups
+* Kilo2008 (#183)
+  * Final TRB1 setups for Cavallo and Taipan (2 drivers for each car)
+  * More exact skill handling
+  * Small code improvement
+  * LS1 : WIP LS1 setups (won't be ready for final 2.0)
+
+Input control :
+* #518 Limit throttle to 60% when shifting with auto-clutch
+* Get (auto)clutchTime from car model, and scale it according to driver skill
+* Improvements to auto-clutch to improve 'launch' at race start
+* Prevent clutch being assigned to 'MOUSE WHEEL UP'
+* #309 Optimum auto-shift engine speeds (WIP)
+* Fixed non-symetric joystick calibration
+* #492 Allow HBOX use with DPAD
+* Added support for Mouse Wheel and extra buttons
+* Allow axis control of Left/Right Glance (but avoid 'twitching' and #556 'sticking')
+* Allow gear shifts to override auto gearbox
+
+Menus :
+* Brand new shinning style for buttons everywhere
+* Reworked background images with nice blurry style
+* WIP Reworked track preview images with nice blurry style
+* Make Jura fond bolder for readability of small labels on low screen sizes
+* HiRes Liberation fonts
+* Race Params :
+  * #491: Improve the race distance deciding logic
+  * Fixed #490 Now, the 'All sessions' params are really used as default values
+               for the other sessions : only when the associated params are not defined
+  * #308 Makes it possible to reset QuickRace to the Normal display mode after text-only races
+* Options :
+  * Visibility no more customizable when sky dome enabled in Options / Graphics
+  * New Graphics options for cloud layers and Sky Dome lanscape
+* Exit menu :
+  * Fixed #358 Return key always exiting the game in the Exit menu, 
+    even if 'No, back to main' selected
+* Control Config : Allows the user to cycle through AXIS, ATOB and BTN
+  to match their preference/setup
+* Race results :
+  * Allow text labels to be split on tabs('\t') to allow table-style alignment
+  * #330 Show current career group in results menu, loading screen and useful console traces
+  * Fixed issues when no digits after the lap time seconds.
+  * Fixed #465 Keep result menu data consistent, even when escaping and resuming
+  * #466 Fixed typo dammage -> damage.
+  * Fixed #461 : Crash after 40 laps in Practice + Result-only race
+  * #467 Align robot blind practice/quick race live results
+* Pit menu :
+  * Show the correct time left during timed sessions.
+* #333 Add the 'scrollbar buttons height' XML property to the scroll lists
+       Made customizable the size of combo-boxes' arrow images + updated menus using it
+
+Race engine :
+* New Single-event MP5 race type
+* Fixed #501 Multi-threaded mode bug often skipping short sounds
+* Fixed the computed nb of laps when only a race duration is specified
+  but the timed-session feature is not supported by the race
+* Move the Career LS1 config file to the official contents
+* #330 Skip "Start event" and "standing" menu for career when there is no user in the group.
+       Removed the LS1 Cavallo from the cars authorized for the Career mode
+       (as AI setups won't be OK for 2.0)
+* Fixed calculation of laps and time (additonal laps are allowed after the time has ended).
+
+Graphics engine / Race screen :
+* Fixed #502 Use the less error-prone Alt-q keyboard shortcut to quit game instantly while racing
+* #517 Created a new F2 driver's eye camera, but fixed to the car (no driver's head moves)
+* #448 No more reflexions on car wheels (were turning with the wheels
+       + we don't have precise 3D models for rims)
+* #504 Leaderboard shape corrected
+* #506 Old leaderboard uses colours, too + Helper function for board drawing.
+* #383 and #142 Improved base lighting colors for sky dome
+* Reduced the speed of the projection of the track env. texture on the cars, by a factor 2
+* WIP #293 Backgroud lansdcape for when sky-dome is enabled
+* WIP Customizable cloud layers for Sky Dome
+* Fixed #384 Broken track map for multi-session races
+* Fixed split lap times in board3
+* Fixed #471 Onscreen map skips opponent modes when no opp is present.
+* #148 Restored </> zooming keys (keeping new Ctrl-+/- ones)
+* #448 Reworked multi-texturing code architecture for more flexibility
+* #307 Fixed start time of sky movements not being perfectly the start of the race
+* Made dynamic sky dome update code a bit clearer
+* #387 Reduced the white dotted line gliches on the pit walls of some
+       tracks like Bueno, Chemisay, ... around the left, right and bottom limits
+       of each pit slot (by improving the precision of the pit logo texture coordinates)
+* WIP #387 support for PNG pit door logos (some issues left)
+* #448 Fixed car rendering bug when no track environment
+* #315 Advanced texture handling with 'no pit building' pit style.
+       The low pit wall now displays the team and the driver logo.
+       If there is no team designated to the actual pit position,
+       it will display plain concrete instead.
+* Fixed near and fog start Open GL settings when sky dome enabled
+* #307 Better algorithm for searching HOT. Lots of comments after the code.
+       While this patch does not cause any performance gain, it is good for marking possible
+       improvements. Food for thought.
+* Fixed segfault in grGetHOT. Check for limits.
+* Prevent bluesky when raining (caused by trackmap changing texture mode)
+* Attempt to fix the rain direction in 1st person views
+* Prevent Sun/Lens Flare when it's raining
+* Improved console warnings at race start about missing drivers
+
+Simulation engine (Simu V2.1) :
+* Restored scaled skid factor according to actual human driver skill level
+* #299 Increase car aMax to 1.0 (57.3 degrees) 
+       Zero angular velocities when limiting angle with aMax
+ 
+Sound engine : No change
+
+Track loader :
+* WIP #457: last pit door empty on some tracks.
+* Make sure grade is 'treated' on a per segment basis + backing out grade change (reverted ?)
+* #318 Pit building in a turn - removed unfinished changes for 2.0
+
+Build system :
+* Fixed #335 Out-of-source builds now work out-of-the-box
+* Added support for MSVC 2010 builds
+* #475 Separate OPTION_DEBUG in 2, to make it possible not to
+  define DEBUG cpp symbol (asked by Fedora packagers ;
+  but we'll keep -DDEBUG until 2.0 is out cause we fear issues with MSVC
+* Renamed source AC files to -src.AC, for all tracks (reduces install size)
+* Moved track and cars RGB files to PNG (reduces install size)
+* WIP Moved track preview images to JPEG (reduces install size)
+* #307 Merged version.h and config.h into the only remaining config.h,
+  for simplicity + renamed the speed-dreams project to speed-dreams-2
+* Add DL library in tgf link-time dependencies (needed for Mageia 1 or 2 Alpha)
+* #209 Added OPTION_UNLOAD_SSGGRAPH CMake option (default: true) 
+       to enable not unloading ssggraph (usefull on some Linuxes where this makes XOrg crash)
+* Fixed generated clobber.bat script not cleaning all generated files
+* Update INSTALL.txt instructions
+* #526 Tried the ldconfig version-naming scheme for all shared library files under Linux
+       (modules included), through native support of CMake, but reverted as it seems to produce
+       bad run-time issues when building with GCC 4.5 or newer, 
+       when modules are unloaded or reloaded.
+* Fixed undefined VERSION when can't determine version name from HeadURL
+* #526 / #335 Add a new OPTION_AUTOVERSION boolean CMake cache variable (default: On),
+  to enable/disable the automatic SVN version detection feature
+* Slightly improved the version naming scheme from the SVN sandbox HeadURL
+
+Tools:
+* Removed sd2-texmapper (not used anymore inside the dev. team, does not work).
+* Fixed #520 sd2-trackgen crash when .ac not found
+
+Other:
+* Added credits to Uwe
+* #413 New  -s/startrace flag to directly run a given race from the command line (use -h for more)
+       Added checks for duplicate command line options
+       Fixed short command line flags not being 1-char short
+       Game restart after display options change now always works properly
+* #308 New 'textonly' user interface module, for no-graphics races, suitable for headless computers
+  (use new -x/--textonly flag, along with -s/startrace <racetype> ; human auto-excluded)
+* #186 Gamma is 1.0 now when writing the screenshots
+* Some more code cleanups (sprintf => snprintf, removed dead code, improved traces, ...)
+* Some more comments to explain the code
+* Compressed source .xcf files to .xcf.bz2 (natively supported by Gimp now)
+* Reduced MSVC 2010 / 2005 compilation warnings 
+* Made tgfclient independant from the current (startup) working directory
+* #377 Made it possible for an GUI application to override the screen.xml 
+       window/screen dimension specs
+       Move tgfdata initialization/shuttdown calls into the race engine
+       Enhanced GfApplication with a 'version' property (less files to recompile
+       when the current svn revision changes) and a minimal command line option system
+       (parsing and querying features)
+       Made the restart code simpler and moved it all into GfApplication
+	   Added traces about the command line options (registered or not)
+       Some few more moves of UI code from the race engine to the UI modules
+* #446 Fixed some memory leaks and possible memory corruptions, 
+       detected through Valgrind (Linux) and Purify (Windows)
+* #494 120x50 minimized Windows console with 9999-line history and QuickEdit enabled,
+       for easier / complete log copy/paste
+
+                         =====================================================
+
+IV - Changes since 2.0.0 Alpha 3 released in 2.0.0 Beta 1.
+-----------------------------------------------------
+This release was build from SVN https://speed-dreams.svn.sourceforge.net/svnroot/speed-dreams/tags/2.0.0-b1@3937.
+
+1 - Main changes
+  * The rework of the parameters of all our cars is nearly done, there is only some tweaking
+    needed about the Supercars to keep them drivable by the robots.
+  * The robots setup rework has been started, but only the Simplix 36 GP are done
+    (plus the Simplix LS1 Archer R9 and the Kilo2008 TRB1 Cavallo).
+  * The reflexions on cars were made more shiny.
+  * Many many new / HQ reworked cars liveries (skin, interior, tires, ...).
+  * Some few HQ improvements on tracks.
+  * Preview menu backgrounds and HQ fonts.
+
+2 - Known bugs / WIP tasks
+
+  See http://sourceforge.net/apps/trac/speed-dreams/report/9
+
+3 - Detailled changes (not exhaustive though)
+
+Cars:
+* #100 Final fine tuned 36 GP setups for Simu V2.1
+* Final fine tuned LS1 setups for Simu V2.1
+* New WIP LS2=LS-GT2 set with 8 cars (fairly good baseline setups and set balance)
+* Reworked RS1 Citrus CS4 baseline setup
+* Removed the LS1 Cavallo 570 S1 from the set (might come back later)
+* Many improved and new LS1, SC and TRB1 liveries (skin, wheels, pit door logo, speedo/tachmoeter ...)
+* Final fine tuned MP5 cars for Simu V2.1 (fmc, fmc-speedy and fmc-drift), but some liveries are still lacking
+* New SC liveries (Lynx, Boxer, Murasama)
+* Many previews for the Driver Select and Car Select menus, shot from the new dedicated Show-room track (all 36GP and LS2, some SC, some LS1) ... WIP
+* Revised material colors for all cars for nicer reflexion effects
+* New, cool blue neon frontlight texture
+* #332, #404 Fixed min/max parameter value management when loading/merging params files
+  Work-in-progress fixing of the car category limits (done for MP5)
+* #428 Added min/max range for rpm/torque curves
+* Fixed engine "formal" and audio specs for the SC Lynx (+turbo), SC Spirit (3L V6), SC Cavallo (no turbo)
+* #138 Fixed skins detection in <user settings> folder
+* #410, ... Fixed F2-1 "Driver's eye" camera position for all cars (but our interiors are so bad !)
+* New unreleased LP1 (4) and LP2 (2) cars
+* New unreleased Marisa Tech FMC GT4-R
+* New MP10 = Kart category and cars (unreleased)
+* More RGB to PNG conversions
+* Compressed .xcf source art-work files to .xcf.bz2 for saving space / time
+
+Tracks:
+* New Show-room track for shooting car previews
+* Compressed .xcf source art-work files to .xcf.bz2 for saving space / time
+* Dirt-3 renamed to the more correct Garguree name
+* Reworked shadow maps for Chemisay, Prenzlau, Newton
+* #310 New oval: Tennessee Half Mile Arena (Bristol)
+       Arizona: Added missing tree textures
+* #372 Calculate track segment angles at load time
+* New unreleased development tracks (straight-10, test, showroom)
+* More RGB to PNG conversions
+
+Robots:
+* Simplix 36 GP setups
+* Simplix V3.1 Reworked racingline structure and pitting code (+ WIP wet track support)
+* Improved Kilo2008, with WIP Cavallo TRB1 and LS1 Archer setups
+* Improved avoidance handling of USR
+* Improved logos for all robots
+* #183 D38 Fixed pitting of Kilo2008
+* Fixed human reverse gear possibly selected when spinning
+* #87 Fixed access to neutral and rear gear when using sequential shifting
+* #415 Joystick driving : Fixed speed-correction so that is does not alter when car is spinning, should make recovery easier
+* Lights for Kilo2008
+* #263 Situation-aware headlights for USR robots (Uses different headhlights whether driving normal, pitting, or avoiding an opponent)
+* #95 Use fuel consumption factor in human robot fuel calculations
+* #214 Ensure the human autoclutch fully engages the clutch, linear decay from maximum time
+* #399 New H-Box support for joy/thumbsticks (human)
+* #281 Add the ability to use a joystick axis for a button type command (for example ABS or TCS) (human)
+* #161 New human commands for the left/right glance views
+* #397 Added support for gamepads with pressure sensitive buttons
+* Simplix pitting : Work around for a compiler bug (optimization results in wrong result for a bool variable in release mode while in debug mode without the optimization all was OK)
+* human : Improved ASR/TCS (now, it really works !)
+* human : Improved ABS (still needs work)
+
+Menus:
+* New high-res. antialiased fonts, not the final ones, but close to.
+* Some cool new blurry-style menu backgrounds (as a teaser ;-)
+* many car preview files for the Driver Select and Car Select menus
+* #160 Pause sound when pausing a race (whetever the way : help menu or stop menu)
+* #148 Ctrl-+ (=Ctrl-=) / Ctrl-- for zooming in/out (was < and >), Home/End for max/min zooming
+* #329 Fixed player name changes not being always immediately taken into account in menus
+* #333 Fixed many details in the menu controls (progress-bar, comboboxes, ...)
+* #435 Removed the online race mode from the official contents
+* #338 Fixed infinite recursion in the help menu (press F1 in each one)
+* #409, #320 Reworked graphics/Open GL features detection with roll-back strategy when the chosen mode does not work ; auto-activates max supported Open GL features (anti-aliasing, multi-texturing, texture compression, max texture size)
+* #333 Cleaned-up the alignment system to horizontal-only customizability and bottom left corner being always the reference point for positionning (consistenty with other GUI APIs) + cleaned-up / made more consistent / simple the XML dialect for defining menus 
+* #396 Use new XML-defined "free properties" and "template controls" to get rid of much of the hard-coded stuff in menus layout / colors code
+       Added support for specifying the Alpha channel of colors in the menu XML descriptors
+* Updated game startup instructions (added a message box under Windows when the game fails to start)
+* Improved Race Select and Track Select menus when no track preview / outline : default background image / 'no outline' panel
+* #170 Select Race menu out of order using cursor
+ 
+
+Graphics engine / Race screen :
+* More shiny vertical reflexion on cars (the faked sky shadows = envshadow maps are now added ; they were multiplied)
+* Specific envshadow maps (sky reflexion) for each sky dome state (for each cloud cover, + rain and night)
+* #324 Fixed leader board scrolling (smooth one + graphics performance)
+* #391 Fixed too far "near limit" threshold cutting car interior parts in the F2-1 "Driver's eye" camera
+* #376 New "full-view" rear view F2 camera
+* #161 New left/right "glance" view
+* #439, #430 More fixes for ultra-wide screen configurations (dual/triple panel)
+* #400 Fixed split screens panes sometimes overlapping
+* #378 More Arrangements of the split screens for Dual/Triple/Quad Displays
+* Restored lens flare effect when static background (not available yet for the sky dome case)
+* Fixed sometimes black SkyDome with dynamic time enabled + make dynamic time work correctly when accelerated simulation time
+* #387 Fix for pit transparency bug - restore logo.rgb (bug due to the png format / PLib)
+* #343 Fixed Length of pit markers at the ground not matching the pit doors at buildings
+* #389 Moved the graphics code for skidmarks, car rear, front and brake lights, back fire and smoke textures to load the PNG textures, and removed the now useless RGB ones
+* #293 Prevent static background from being loaded/sent to the video card if sky dome enabled
+* Initialize moon position at start race when sky dome activated
+
+Sound engine :
+* Open Al back-end : Simulate low-pass filter for engine sound by simply lowering the gain (when leaving the throttle) + fixed gain values into [0, 1] (as many back-ends don't support more)
+
+Race engine :
+* #436 Fixed career car links (team/drivers)
+* On-screen "wrong way" notification
+* #234 Fixed Championship mode allowing only 1 human
+
+Simulation engine (Simu V2.1) :
+* Some code optimisations (precalculate track consts, ...)
+* #385: Take into account gear and differential efficiencies
+* #427: check the sanity of rev limits
+* Reallows camber setting for visual purposes
+
+Build system :
+* #331 The base Windows installer now donwloads the other packages when requested and needed ; if already downloaded, just runs them
+* #435 Removed the online race mode from the official contents
+* #313 (Windows installer split-scheme) Make human driver selectable even when default car is not, which may happen when install/uninstalling packages and not resetting user settings folder
+* Filter-out more files when generating a source package
+
+Tools:
+* accc now preserves material settings
+
+Other:
+* #446 (#451) Fixed many minor memory leaks (some big ones are still there) and made the app. behave more smartly (about memory, modules, ... etc ...) when exiting by any means
+* #377 Code re-architecture for separating the race engine and the user interface (reworked game event loop, new "legacy menu" user interface module with generic interface API, making the race engine ready for any new user interface module, ...)
+* #378 Reworked application framework for a possibly no-gui/server/text-only run mode (New GfApplication and GfuiApplication classes)
+* #374 Moved all our modules to the new / more modern and flexible C++ module system (based on "interfaces" = purely abstract classes) ; kepts the robots as is though, to keep TORCS compatibility
+* #307 Many code cleanups, warning fixes, enabled compile-time GCC warnings
+* Many many bug fixes
+ 
+                         =====================================================
+
+V - Changes since 2.0.0 Alpha 2 released in 2.0.0 Alpha 3
+-----------------------------------------------------
+This release was build from SVN https://speed-dreams.svn.sourceforge.net/svnroot/speed-dreams/tags/2.0.0-a3@3412.
+
+1 - Main changes
+
+  * We started the most important work for 2.0 : a full rework of the parameters
+    of all our cars, towards realism (as for parameter values as for the handling).
+  * This also implies reworking the robots setups for the cars, which is work-in-progress.
+  * The weather simulation was also made more stable and user-friendly in many ways.
+  * The race choice / configuration menu system was also improved.
+  * And cars and tracks got even more HQ sugar.
+
+2 - Known bugs (yes, there are ;-)
+
+  * Career mode : no human driver seems to be able to join, at least at the beginning
+  * Installer : the base installer fails to run any of the other installers the first time ;
+    simply re-run it and this time it will work.
+
+3 - Detailled changes
+
+Tracks:
+* #331 Fix too high friction coefficients in many tracks (towards realism)
+* #310 New speedway tracks : Arizona Mile Speedway, Long Pond Superspeedway, Caddo Speedway,
+       Sunshine State Superspeedway
+* HQ rework of Chemisay (formerly g-track-2)
+* HQ rework of Newton Cup speedway
+* #277 Dirt-1 : UV mapping error in the sky above the castle + improved castle texture on 
+* #274 Aalborg : texture fixes
+* Bueno Fixed dynamic sky bug on (non-official)
+* Make track descriptions more similar / consistent
+* Moved many .xcf to .xcf.bz2, some .rgb to .png
+* #342 Enable JPEG file format for track background (and other possible) textures
+* #314 Removed specific wet mu coefficients for surfaces, moved weather / local conditions
+       properties to a new "Local Info" section (updated all track XML files).
+* #318 Enable pit building in a turn (WIP)
+* #315 New pit style with only a small wall (WIP)
+* Renamed 'Corkscrew' files/folders to 'corkscrew' (contents consistency)
+
+Cars:
+* MP5 :
+ - #332 Reworked parameters boundaries and baseline setup for mp5-fmc (towards realism)
+ - #350 Fixed steering wheel texturing
+* LS1 :
+  - #345 (T01) Reworked parameters boundaries and baseline setup for ls1-archer-r9
+  - Reworked ls1-archer-r9 3D model
+* RS :
+  - #247 Renamed rally car set to RS and cars to rs1-* / rs2-* 
+         (thinking about the day we'll split the car set in 2 ones ... WRC / Super2000)
+  - #259 Made RS cars usable / drivable (improved setups may come for 2.0)
+  - #180 Head and rear lights for RS cars,
+* New logo and typo for Silber cars
+* 36 GP Silber W25B :
+  - Highres rework with baked shadows, improved textures,
+  - needle color and shadow fix 
+* #296 36GP Ettore T59 Decrease "revs maxi" to 7500
+* Spirit RB1 LT :
+  - New HQ Carbonite and Anthracite livery / skins
+  - black tacho/speedo needles
+  - preview for all skins
+* Vieringe 5RB :
+  -  fixed tacho/speedo needles color
+* New mp1-vicente by Vicente Marti (non-official contents)
+* SC Cavallo previews
+* Renamed LMP1 category to LS-P1 / LP1 for consistency
+* #139 Added new (display-only) engine specs in every <car>.xml 
+  (capacity, cylinders nb and layout, position)
+* Moved many .xcf to .xcf.bz2, some .rgb to .png
+
+Robots:
+* WIP reworked dry track setups for TRB1 (wet track ones will follow),
+* Highres Simplix, USR and Kilo2008 robots logo
+* HQ liveries and PNG logos for Simplix and USR drivers of Spirit RB1 LT
+* HQ liveries and PNG logos for USR drivers of SC Cavallo 360
+* HQ standard pit door and pit door template
+* HQ skins, wheels, pit doors and previews for Simplix TRB1 Vieringe drivers 
+* #183 Kilo2008 now drives some of the TRB1 and LS1 cars (Archer R9, Vulture V6R, Cavallo 570),
+* #194 Human driver sets throttle to 0 at second 1.00
+* Prepared Simplix for skilling
+* #95, #262, #341 Fuel calculation fixes and improvements, WIP (human drivers).
+* #290 Networkhuman mouse calibration lost when moving mouse before race start
+* #51, #298 Moved USR robot code to the Simplix-style single source base
+* #222 (More skinning targets) Added support for driver skins, like in TRB1 Silber RB1LT
+* #305 Preferred logo format = PNG ; RGB still supported for backward compatibility
+
+Menus:
+* Race manager menu :
+  - #241 Reworked menu for showing a preview of the current race config
+         + more consistent buttons when loading race configs / race results
+  - #197 (D31) Fixes to Saving / Restore race configurations / resuming races from results
+* Driver / Car Select menus :
+  - #99,#300 Various small improvements of the driver selection menu
+  - #336 Disabled 'add competitor' button when max competitor reached
+  - Better highlighting of 1st human driver at startup
+  - Use the new race-type-customizable filtering system for the car categories and driver types
+  - #139 (D30) Final datasheet and overall rating sliders, from real physics-meaningfull figures
+* Race Options menu
+  - #258 TimeOfDay, CloudCover and RainFall are now configurable options for all the races
+  - #348 Added 'Random' in the possible 'cloud cover' settings
+  - #334 (Race params menu for multi-session events) Now, each race session can have
+         its params menu, and there can also be a menu for the params that are common
+         to all the sessions, through the new fictive 'All sessions' 
+         (see src/raceman/championship*.xml as examples) 
+  - #240 Added configurable race length to the 2 'single event' race modes
+* Race Selection menu :
+  - #240 Reworked menu (should be clearer about race modes, with increased complexity
+         from top to bottom)
+* Whole Race Selection / Configuration menu system :
+  - Fall-back stategy in when hitting non existing cars / tracks 
+   (needed for the base = demo windows installer)
+  - Moved to the new tgfdata library (but the networking menus)
+* #317 Track select menu wrong sequence
+* #257, #233, #227 Fixes to results menus
+* #195 Display options menu :
+  - Workaround for Xavier's SDL not reliably detecting actually supported video modes
+  - Enforced glfeatures.h as the central header file for dealing with OpenGL
+* Task D32 (More user options to improve frame rates) Reworked glfeatures layer and used it 
+  where relevant (menus, gr. engine) WIP
+* #312 Games freeze on pit stop
+* #245 Network humans should never be selectable in non-network races
+* #321 Career will always crash at startup (better, but still WIP)
+* Improved user-friendly displayed names for all car categories
+* Improved Main and Options menus load time (no more load all the other menus with the Main one)
+* Fixed wrong instructions and improved wording for game device calibration
+* Fixed crash when closing splash before MainMenu is initialized
+* Fixed GfuiAddKey not overriding previous definition of the same key 
+  + Enter/Return shortcut in Exit menu
+* Various enhancements to GUI controls (scroll-list, check-box, combo-box, progress-bar...)
+
+Graphics engine / Race screen :
+* Task D32 (More user options to improve frame rates) Multi-texturing no more activated by default
+* #282 Bad position of indicators
+* #266 Splitscreen completely white with Skydome enabled
+* #249 Wet track under clear blue sky when Sky dome disabled
+* #152, #254 Reduced (?) crash occurrences when reloading ssggraph on 64-bit debian systems
+* #249 Increased background darkness when rainy weather and sky dome disabled
+* Fix moon disappearing when dynamic time
+* #184 WIP on 'ssgaSky makes the track and cars too dark even at clear noon'
+* Fixed 'sometimes, no stars at night on long races when dynamic time enabled'
+* #342 Enable JPEG file format for track background (and other possible) textures
+* #166 Fixed use of uninitialized values (notified by Valgrind)
+* #103 Non intuitive default camera view when changing player name
+
+Race engine :
+* #318 Enable pit building in a turn (WIP)
+* #330 (D16) Complete the new Career racing mode for 2.0 (WIP) 
+* #258 New TimeOfDay, CloudCover and RainFall configurable options for all the races
+* #301 New "Wet track" race/robot feature (for filtering actual race features from competitors),
+       but no robot supports it for the moment (WIP)
+* #314 Made the track surfaces wet mu model simpler, for robots race line computation 
+       compatibility.
+* Added a race-type-customizable filtering system for the car categories and driver types
+* Initialize the random generator only once, in tgf::gfInit
+* #330 (D16 Career mode) Fixed crash at new career start / race on 'no name' track
+* #348 Added 'Random' in the possible 'cloud cover' settings
+* Updated 'MPA1 Championship' race mode for speedway racing
+
+Simulation engine (Simu V2.1) :
+* Set Simu V2.1 as the default physics engine
+* #150 (D48 Towards more realism in car parameter values and car handling) :
+  - added bump limit velocity and rebound limit velocity to Suspension parameters
+  - changed car body inertia calculation to the simuv3 method
+  - changed engine brake calculation
+  - revoked false scaling of engine brake linear coefficient.
+  - decreased default value for engine brake coefficient
+  - gradually increase rolling resistance between 0 and 10 m/s.
+* #157 Changed the handling of negative angle of attack in SimWingUpdate
+* #265 Set camber to 0.0 until it is modelled properly
+* #318 Enable pit building in a turn (WIP)
+* #325 Cars accelerating without throttling in Simu V2.1 (handle correctly 0 torque)
+* Increase max. slip, decreased minimal value for "load factor max", 
+  increased maximal value for "load factor min"
+
+Build system :
+* #313 New 4-installers system for Windows (a small "base" = demo one, with the game, 
+  Espie track, SC car set, and AI drivers), 2 "HQ cars and tracks" ones with our HQ tracks, cars,
+  and AI drivers, and a last "WIP" one for the remainder of our official contents ;
+  the 3 last ones can be installed in whatever order, but need the 1st one.
+* #313 Multi-plateform speed-dreams-2 install / user settings folder prefix, executable name, 
+  and sd2-prefixed tools executables names to enable cohabitation with 1.4.x
+* #313 Make SD installable anywhere under Windows
+* install only really needed files (useless .ac files when .acc here, ...),
+* fixed source package generator excluding some useful files (*config.h) 
+  and including useless ones (*.so, *.dll ...)
+* #349 Added build-time support for enet library >= 1.3
+  (but 1.2.x-enet SD instance won't be able to cooperate with 1.3.x-enet ones). 
+
+Other :
+* Trackgen :
+  - #304 Use correct gamma of 2.2 in object and elevation maps.
+  - #217 Use PNG files
+* Track loader :
+  - #318 Enable pit building in a turn (WIP)
+  - #315 New pit style with only a small wall (WIP)
+* #267 Force / try chmod u+w for user settings and other XML files
+  before overwriting / when writing fails
+* cleaned up portability.h
+* New tgfdata library as an intermediate layer between the race params (from XML files)
+  and the race configuration / choice menu system
+* #302 Startup crash whe SD run through simple 'speed-dreams' command line
+* Windows: Try and center the game window on the desktop at startup 
+  (but keep the title bar visible)
+* Updated credits for Simon, Enrico and Vicente (new dev team members)
+* Many code cleanup details (warnings, traces, comments, snprintf, move functions, 
+  improved functions naming, ...)
+* #326 Store shadow file in PNG in ac3dload
+* Improved Speed Dreams AC3D exporter (*.ac source files) for Blender 2.49
+
+                         =====================================================
+
+VI Changes since 2.0.0 Alpha 1 released in 2.0.0 Alpha 2
+--------------------------------------------------------
+This release was build from SVN https://speed-dreams.svn.sourceforge.net/svnroot/speed-dreams/tags/2.0.0-a2@3111.
+
+Tracks:
+* HQ texture rework + renaming + localization for Wheel-2 (=> Karwada), GTrack2 (=> Chemisay)
+* new Brondehach track :  HQ texture rework + localization + no more real-life brands 
+    + better drivable track sides
+* Improved Goldstone Sand (reworked textures + made pit wall compatible with robots)
+* Texture improvements : Forza, Corkscrew, Aalborg
+
+Cars:
+* T01 : Final fine tuned LS1 setups with updated engine sounds
+* Reworked Spirit RB1 LT (3D model, speedo/tachometer)
+* Many new livery skins for LS1 cars
+* New TRB1 Vieringe 5 RB and liveries (human + USR setups ??)
+* #191 Added e-brake power parameters for SuperCars (and WRs)
+* #222 Skinnable pit door logo and 3D wheels (when choosing a car livery skin)
+* Renamed GP1600 category to MP5
+
+Robots:
+* D38 : New Kilo2008 robot with skilling, setup for the TRB1 Cavallo 360 RB and LS1 Archer R9
+* D19 : Rain support added to Simplix
+* Added detailed race lines to Simplix
+* Up-to-date LS1 Simplix setups for most circuit + road + speedway tracks
+* Up-to-date TRB1 Simplix setups for most circuit + road + speedway tracks
+* #179 Speed limiter command now toggles on/off for human drivers
+       (no more need to keep the key pressed)
+* #178 Forbid reverse gear if not Neutral state or speed < 10ms = 36km/h
+* #191 Added support for Emergency/Parking Brake (usefull for future rally car set)
+* Simplix setup for new TRB1 Vieringe 5 RB
+* Simplix setup for MP5 FMC, the 1st MP5 (was GP 1600)
+* #137 Simplix now caches race lines and other data in the user settings folder
+  (when setups were not installed in the user settings folder, it did it in the install folder,
+   which worked under WinXP, but no more under Vista / Seven, and neither under Linux)
+
+Menus:
+* Improved splash screen
+* D31 : Save QuickRace configuration (opponent grid, track and config)
+        and more generally race types with no qualification / multiple races
+* D29 : Fixed crash when opening the CarSelect menu the 2nd time after finishing race configuration
+* #117 Default control keys for lights, speed limiter, ABS and ASR (renamed to TCS)
+* #195 Display options : Improved detection of supported screen / window sizes
+       (added real control under Windows, used SDL / removed X-Window specific code 
+        to do this in a portable manner)
+* #191 New command for Emergency/Parking Brake (usefull for future rally car set)
+* #192 Display practice result screen after one car practice
+
+Race engine:
+* #75 Fixed Mouse calibration lost in Ready-Set-Go stage
+* D16 : New "Career" race mode
+* #169 Fixed crashing right after restart
+* D13 : Multi-threaded race engine :
+  - Fixed/Resurrected human pitting in mono and dual threaded modes
+  - Resurrected Result-Only = Blind mode (was crashing whatever mono / dual threaded mode)
+  - Fixed crash when entering pit lane + penalty management
+* D30 : 
+  - Fixed crash when loading a results file for an endurance race (and some possible others)
+    in the race menu (Load button)
+  - Fixed crash when race starts after qualification
+* D19 : Improved / fixed weather configuration
+
+Race screen:
+* #166 Better automatic / customizable board positionning and aspect ratio respect :
+  - enable 3-screen configuration with boards on central one
+  - enable fine vertical positionning for the speedo/tachometers
+* Improved support for wide screen/window configurations (less deformed boards)
+* #39 Vertical 2-way split when window aspect ratio >= 2.
+* #205 Customizable color for speedo/tachometers needles and dynamic figures
+* #78 Mark pitting driver on leaderboard
+* #151 Display correct track name on loading (no more the track _folder_ name)
+* #77 Dont show decimals when displaying track length on loading
+* #229 Board 1 lap counter displays correct numbers
+
+Simulation engines:
+* D48 : Work in progress Simu v2.1 (same a Simu V2 for the moment)
+* #191 Added support for Emergency/Parking Brake with car-level customizable applied brake power
+
+Other:
+* #189,#163 Fixed user settings files installation in Windows binary installer
+* #136 Removed most "TORCS" strings from the build system
+* Enabled "Id" SVN keyword substitution on all text files
+* #182 Link time lib conflict warnings about msvcrt an/or libcmt with MSVC
+* #145 Trace/log system : Added a heading time indication for each trace line, 
+       as the elapsed time since SD is started, with 1 ms resolution.
+* Added a CMake user option "OPTION_OFFICIAL_ONLY" to restrict the build
+  to the contents of the next official release
+* many other small bug fixes
+
+                         =====================================================
+
+VII - Changes since 1.4.0 released in 2.0.0 Alpha 1 (svn2720)
+-------------------------------------------------------------
+
+Tracks:
+* A32, A16, A17, A19, A22, A24 : HQ texture rework + renaming + localization
+  for Alpine-1 (=> Allondaz), GTrack3 (=> Charmey), Manton (=> Michigan Speedway),
+  ETrack6 (=> Espie), ERoad (=> Prenzlau)
+* Texture improvements + localization : Aalborg, Forza, Forza, Migrants, Ruudskogen, 
+  Corkscrew, Olethros Road, Wheel1
+* Texture improvements : GTrack1, Brondehach
+* new Goldstone Sand (Silverstone Arena) track
+* many new work-in-progress tracks (won't be all in 2.0.0, only release grade ones)
+
+Cars:
+* T01 : Work in progress LS1 setups rework
+* A10 : Work in progress LS1 liveries HQ rework
+* A05, A06, A08 : Improved visual realism / HQ for SC Cavallo 360
+* A14 : Work in progress Rally car set (draft-level physical setups)
+* A42 : Work in progress MP5 (was GP 1600) car set
+* improved car model file/folder names consistency
+
+Robots:
+* D16 : Adapted Simplix and USR to the new Career mode
+* Simplix improvements
+
+Menus:
+* D30 : Player Config and sons :
+  - removed player car choice (becomes a race-time choice)
+  - added customizable steering speed sensitivity
+* D29, D30 : Driver Select and sons (D29 & D30) :
+  - added skin selection and preview (may only remain for human players in the future)
+    Note: Only one car has previews for the moment : SC Lynx 220.
+  - added "Car Selection and Settings" menu behind the "Change car" button,
+    with skin selection and preview + quick car data sheet
+    (work in progress : hard coded constant Overall ratings)
+* Options : added options to customize Simulation and Graphic features
+
+Race engine / screen:
+* Display average frame rate in the race screen
+* Split screen mode (multiplayer) : 
+  - 'TAB' key switches to active screen,
+  - sound follows the active screen selection consistently,
+  - wider 3rd screen in 3-way split screen,
+  - split screen configuration is now saved / restored between races.
+* D13 : Dual-threaded race engine with CPU affinity 
+  (can be toggled on/off in the Options / Simulation menu)
+  First tests show FPS gains mainly when many opponents on medium to high end configurations,
+  but CPU affinity seems to be very usefull under Windows XP (nearly no use with Linux 2.6).
+* D19 : Rain simulation (visual effects + work in progress grip management)
+* Customizable weather / time of day for the sky dome
+
+Simulation engines:
+* D48 : Work in progress Simu v2.1 (same a Simu V2 for the moment)
+* Simu V3 won't be adopted as the official physics engine : we'll improve Simu V2
+  into Simu V2.1 in the short 2.x term, while targetting at a brand new Simu V4
+  in the medium term.
+
+Other:
+* D04 : CMake build system
+* D03 : Replaced GLUT by SDL
+* D16 : New "Career" race mode
+* D17, D26 : Work in progress network/online race mode
+* Improved keyboard steering behaviour (+ customizable sensitivity)
+* D05 : Added JPEG image support for car and tracks previews in menus.
+* D06 : Removed compile time dependency on ALUT
+* Moved Windows build to modern DLL interface (no more .def files)
+* D11 : Support for multiple cars with same 3D model .acc/.ac file
+* D08 : Work-in-progress code profiling 
+  (see http://sourceforge.net/apps/trac/speed-dreams/wiki/CodeProfiling)
+
+Known issues : see http://sourceforge.net/apps/trac/speed-dreams/report/3
+(milestones '2.1.0' and 'To be defined').
+
+                         =====================================================
+
+VII - Archives
+
+Below is archived uncomplete / obsolete content, but sometimes with more details than above.
+
+Detailled changes on sdl-port branch since creation (branched from trunk SVN 70) :
+
+Foreword : sdl-port branch is aimed at being regularly merged from trunk up to 1.4.0 is out,
+           so you should first have a look at trunk CHANGES file :
+	   you will find here only sdl-port-specific changes.
+
+	   History of merges from trunk :
+	   - 2008/12/04 : up to revision 378 (Mart)
+	   - 2009/02/15 : up to revision 729 (Jean-Philippe)
+	   - 2009/06/22 : up to revision 996 (Mart)
+	   - 2009/07/14 : up to revision 1107 (Jean-Philippe)
+	   - 2009/07/30 : up to revision 1220 (Mart)
+	   - 2009/10/13 : up to revision 1576 (Mart)
+	   - ...
+
+Tracks:
+- added Salty road track by Gabor (Xavier)
+- added cameras & turnmarks to Longday (Gabor)
+- added Petit gprix track by Gabor
+
+Cars:
+- added GP4 converted cars (3D models), but still needing real setups (Xavier)
+- added Nascar cars (3D models), but still needing real setups (Xavier)
+- 
+- set fictious brand and model names for all cars, based on ideas from the whole team,
+  to avoid legal issues ; the real brand name replacements follows (Andrew, Jean-Philippe) :
+  * Alfa Romeo 		=> Milano		
+  * Aston Martin 	=> Archer
+  * Auto Union 		=> Motor Union
+  * Audi 		=> Vieringe
+  * Bugatti 		=> Ettore
+  * Any GM brand 	=> Deckard, except for Corvettes, which will be Vultures.
+  * GM/Corvette		=> Vulture
+  * Dodge 		=> Taipan
+  * ERA 		=> Century
+  * Esperante		=> Sprite
+  * Ferrari 		=> Cavallo
+  * Ford 		=> FMC (F stands for ... um ... something)
+  * Honda/Acura 	=> Murasama
+  * Jaguar 		=> Lynx
+  * Lambo 		=> Ciclone
+  * Lotus 		=> Spirit
+  * McLaren 		=> Conner
+  * Maserati 		=> Tridenti
+  * Mercedes 		=> Silber
+  * Mitsubishi 		=> Minato
+  * Nissan 		=> Kanagawa
+  * Peugeot 		=> Lion
+  * Porsche 		=> Boxer
+  * Subaru		=> Kenji 
+  * Toyota 		=> Aichi 
+  * TVR			=> RCM (Russian Car Manufacturer)
+  * Lister 		=> ?  (a Storm model for LS1 is simply called the "Fury")
+  * Mosler 		=> ?
+  * Saleen 		=> ?
+  * Venturi 		=> ?
+  * Fiat		=> ?
+  * ?			=> Sector
+  * ?			=> Zaxxon.
+
+Robots:
+-
+- enabled Simplix and USR robots to be members of mixed teams,
+  through new team management interface in RobotTools (Wolf-Dieter)
+- added Kilo robots (needs more love) (Gabor)
+
+Menus:
+- added controls for time of the day and weather settings in quickrace
+  and practice race configuration menu - work in progress (Xavier)
+- added a "Credits" multi-page menu to list all contributors, contributions
+  and 3rd party libs / code / software we use.
+- resurected the "Configure player" button in the Raceman menu, to avoid returning
+  to the Main menu for that (Jean-Philippe).
+- select the first available player by default when entering the player config menu
+  (Brian).
+
+Program:
+- applied the good old SDL patch from Brian Gavin (Xavier)
+- fine tuning of the event loop to process ALL pending events
+  before re-displaying (fixes lags and delays in mouse movements) (Jean-Philippe).
+- fixed localized keyboard support through SDL unicode (Jean-Philippe, Brian, Mart)
+- fixed splash screen crash on 7s time-out (Jean-Philippe)
+- added F1 / F12 / ESC / Return shortcuts in some menus where lacking (Jean-Philippe)
+- fixed detection and use of multi-sampling (for anti-aliasing)
+  when available (Jean-Philippe)
+- restored key auto-repeat in menus (Jean-Philippe)
+- restored texture compression detection (Jean-Philippe)
+- applied Cmake patch by Mart Kelder and ported it to Windows (Mart, Brian)
+  * smart cmake multi-platform build system (even Windows + MSVC built-in support),
+  * speed-dreams and other programs are now executables (no more scripts)
+    which is nicer for debugging/profiling/... 
+  * very fast unified make install (no more so slow make install and make datainstall)
+- added multi-platform xmlversion user settings files installer at run-time,
+  to replace old system where these files where overwriten after each build/install
+  even if no associated change had occurred (Mart, Jean-Philippe).
+- fix build install system not stopping on xmlversion errors
+  (ex: when a versioned xml file is not loadable, it's installation/update fails,
+       cmake printed some error lines, but the install process was not stopped,
+       and if you didn't see these lines in the hundreds of other traces,
+       you were likely to get a crashing Speed Dreams without any simple explaination).
+- fixed CPU slow-down system also activated in race mode (Jean-Philippe)
+- added new sky dome and time of day simulation via PLIB::ssgaSky,
+  featuring really nice skies, even at night with stars and moon,
+  and also allowing night races as an example - work in progress (Xavier)
+- first attempt of rain simulation (water projections behind tires, rainbow visualization,
+  reduced grip) - work in progress (Xavier)
+- fixed ultra-slow game in qualification blind mode (something around SDL IdleFunc,
+  seems CPU does nothing whereas it should run 100%)  (Jean-Philippe)
+- fixed results not being saved at the end of the race because results dir
+  not created in user settings dir; and also screenshot system not working
+  for the same reason (screenshot dir not created) (Gabor).
+- optimized race results' update & sorting through the use of STL vector (Gabor).
+- race results now include pointer how much position the driver gained or lost,
+	from his starting position (Gabor).
+- merged career-port to this branch (Mart)
+- don't load graphics in results-only mode (Mart)
+- added split times (Mart)
+- added 10 second stop and go penalty (Mart)
+- added feature lists for robots: features are only enabled when all the robots in the
+  race implemented it (Mart)
+- added timed sessions (Mart)
+
+- new modes for the race screen leader board (Gabor)
+  * vertically scrolling : list of competitors, text in associated color,
+  * horizontally scrolling : just as on TV.
+  Note: Already merged in trunk.
+- new mode for the debug board (Gabor)
+  * display segment name, distance form start, current camera
+- exhaust fires shown when RPM drops (Gabor)
+

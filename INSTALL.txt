@@ -1,0 +1,730 @@
+Table of contents
+-----------------
+
+WARNING: Only intended for developers who'll build Speed Dreams from sources.
+
+I - Pre-requisites
+
+II - Linux Installation from sources
+
+  1 - Introduction
+  2 - Installation from the official tarballs
+  3 - Installation from SVN (developers only)
+  4 - Run Speed-Dreams
+  5 - Getting Help
+
+III - Windows Installation from sources
+
+  1 - CMake and MinGW under Windows
+  2 - CMake and MS VC++ 2005 (8) / 2008 (9) / 2010 (10) under Windows
+  3 - MS VC++ 6 : no more supported
+
+IV - FreeBSD Installation from sources (Work in progress)
+
+V - MacOS X installation from sources (TODO)
+
+
+
+I - Pre-requisites
+------------------
+
+- Working OpenGL Driver and header files / associated libraries
+- SDL 1.2.12/13/15 (http://www.libsdl.org/)
+- PLIB 1.8.3 / 4 / 5 (http://plib.sourceforge.net/). 
+  Linux: Be carefull to compile plib with -fPIC on AMD64 if you run a 64 bit version.
+- OpenAL soft 1.5 / 1.6 / 1.11 / 1.14 (http://connect.creativelabs.com/openal)
+   (Torcs modified 0.0.8 from www.torcs.org also used to work in the past).
+- libOGG 1.3 or newer and libVorbis 1.3 or newer (optional for the moment, will soon get mandatory)
+- ENet 1.3.2/4 (http://enet.bespin.org)
+  Linux: Be careful to compile ENet with -fPIC on AMD64 if you run a 64 bit build.
+- Expat 2 (can be skipped for the moment, but won't anymore soon)
+- Free Solid 2 (optional for the moment, will soon get mandatory)
+- libpng
+- zlib
+- jpeg
+
+And also Open Scene Graph 3.x if you plan to build the work-in-progress next generation "osggraph" 3D graphics engine module.
+
+WARNING: Under Windows, be carefull to compile anything for multi-threaded DLL integration (/MD[d])
+
+
+II - Linux installation from sources
+------------------------------------
+
+1 - Introduction
+
+There are 2 ways of building and installing Speed Dreams from sources :
+- from the official source tarballs,
+- from the subversion repository.
+
+Pick only one of the above options. If you have trouble during the installation,
+have a look in the FAQ on the above sites. In case you get stuck,
+please learn how to report the problem in the FAQ before filing a bug or contact us.
+
+Have fun,
+
+The Speed Dreams Team.
+
+
+2 - Installation from the official tarballs
+
+  a - get these tarballs : please go to our SF.net download page at
+
+        http://sourceforge.net/projects/speed-dreams/files/2.0.0,
+
+      and you should find :
+
+        speed-dreams-src-base-2.0.0-r4687.tar.xz
+        speed-dreams-src-hq-cars-and-tracks-2.0.0-r4687.tar.xz
+        speed-dreams-src-more-hq-cars-and-tracks-2.0.0-r4687.tar.xz
+        speed-dreams-src-wip-cars-and-tracks-2.0.0-r4687.tar.xz
+        speed-dreams-src-unmaintained-2.0.0-r4687.tar.xz
+        
+        and 
+        
+        speed-dreams-src-partial-build-patch-2.0.0-r4687.tar.xz
+
+      At this point, you have 2 options :
+      1. you want full game contents : you need to download the 4 first source packages
+         ("base", "hq-cars-and-tracks", "more-hq-cars-and-tracks", "wip-cars-and-tracks"),
+         and even the 5th "unmaintained" one (if you really need it, you know it :-)
+      2. you don't need full game contents : you need at least the "base" package,
+         along with the "partial-build-patch" one ; you can optionnaly add 1 or more of any
+         of the other source packages to you basket, as you like.
+      
+      Let's say that you downloaded your packages in $HOME/sd
+      and that we'll extract them in the "2.0.0-r4687" folder
+      (you can do as you like, but we'll use this folder in the explanations below).
+
+  b - extract the tarballs :
+
+      Whatever the chosen option (1 or 2) :
+      
+      $ cd $HOME/sd
+      $ mkdir 2.0.0-r4687
+      $ cd 2.0.0-r4687
+      $ for file in ../*.xz; do tar xvfa $file; done
+      
+      If you chose option 2 (selected content), then you also have to :
+      $ tar xvfa speed-dreams-src-partial-build-patch-2.0.0-r4687.tar.xz
+
+      You should now see "cmake", "data" and "src" folders (among others).
+
+      Advanced: If you chose option 2, and want to add another source package
+                after following the above extraction instructions, always
+                extract again at the end the "partial-build-patch" package
+                before configuring and building ; you can even add contents
+                like this after configuring and building ... of course you'll
+                then need to configure and build again.
+
+  c - configure :
+
+    1. create the build dir for CMake
+
+      $ mkdir build
+      $ cd build
+
+    2. run CMake :
+
+      - for a Release (optimised) build using default 3rd party libs
+
+        Option 1 (full contents) :
+        $ cmake -D OPTION_OFFICIAL_ONLY:BOOL=ON ..
+
+        Option 2 (selected contents) :
+        $ cmake .. # Don't care about "missing files / folder" messages, this is expected :-)
+
+      - you may also want to override some default settings :
+
+        for that, you can use the -D option of cmake :
+
+          Example :
+
+            $ cmake -D SD_LOCALDIR:STRING=~/dev/.sd-settings \
+                    -D CMAKE_PREFIX_PATH:STRING=/usr/local \
+                    -D CMAKE_BUILD_TYPE:STRING=Debug ..
+
+        or else you can use ccmake to change the variables interactively :
+
+            $ ccmake ..
+
+             * press (t) for advanced options if needed
+             * in order to change a variable :
+               * select the associated line using the up/down arrow keys
+               * press (enter)
+               * edit the value
+               * press (enter)
+             * press (c) for configure
+             * press (g) for generate
+             * press (e) to exit
+
+
+        Usefull CMake variables for Speed Dreams (note that some might be "advanced" ones) :
+
+        - CMAKE_BUILD_TYPE:STRING :
+            Debug, Release, RelWithDebInfo, MinSizeRel (def: Release)
+
+        - OPTION_OFFICIAL_ONLY:BOOL :
+            Build/install only official contents (def: OFF)
+
+        - SD_LOCALDIR:STRING :
+            User settings dir for run-time (def: ~/.speed-dreams-2)
+
+        - CMAKE_PREFIX_PATH:STRING :
+            Path prefixes for additional 3rdParty libraries (def:empty)
+            (use /usr/local if you compiled some 3rdParty libs yourself).
+
+        - CMAKE_INSTALL_PREFIX:PATH :
+            Install path for Speed Dreams (def: /usr/local)
+
+        - OPTION_3RDPARTY_EXPAT:BOOL :
+            Enable building against 3rd party Expat 2 library, rather than bundled txml (def: ON)
+            Disable if "Expat 2 dev" is not available for your distro (which is very unlikely).
+
+        - OPTION_3RDPARTY_SOLID:BOOL :
+            Enable building against 3rd party Free Solid 2 library, rather than bundled one (def: OFF)
+            Note: This is not set by default, because Free Solid 2 dev is not yet available
+                  on most Linux distros (only Fedora is working on this right now, AFAIK, 2012, July)
+                  Ask the dev team for any hint about building it ...
+
+        - OPTION_OSGGRAPH:BOOL :
+            Enable building of the WIP new OpenSceneGraph-based graphics module 'osggraph' (def: OFF)
+            Note: This requires new 3rd party libs : OpenSceneGraph
+            Hint: Once built, to load it at race-time, substitute 'ssggraph' by 'osggraph'
+                  in <user settings>/config/raceengine.xml
+
+        - OPTION_TRACE:BOOL :
+            Full run-time traces if ON (def: ON)
+
+        - OPTION_TRACE_LEVEL:STRING :
+            Run-time traces level integer threshold, only if OPTION_TRACE
+            (traces with higher level are not logged ;
+             0=Fatal, 1=Error, 2=Warning, 3=Info, 4=Trace, 5=Debug, ...) (def: 5)
+
+        - OPTION_UNLOAD_SSGGRAPH:BOOL :
+            The 'ssggraph' graphics engine module will never be unloaded if OFF (def: ON)
+            Usefull under some Linux configurations where this unloading badly crashes XOrg
+            (see http://sourceforge.net/apps/trac/speed-dreams/ticket/209),
+            or simply makes SD crash because PLib is shipped as a set of shared libraries
+            (see http://sourceforge.net/apps/trac/speed-dreams/ticket/459).
+ 
+        - OPTION_FORCE_DEBUG:BOOL :
+            Enable debug symbols even in Release builds (def: OFF)
+
+        Tips reported about some issues :
+        - sometimes, ENET_INCLUDE_DIR is not detected correctly, resulting in something like
+          /usr/include/enet or so, and, consequently, in bad compilation errors because
+          /usr/include/enet contains a special time.h header file that conflicts with the standard
+          one in /usr/include. Removing the "enet" postfix from ENET_INCLUDE_DIR should fix this
+          (in cmake command line or interactively through ccmake).
+
+  d - build:
+
+      $ make
+  
+  e - install:
+
+      $ sudo make install
+  
+      Notes:
+      * sudo is only useful if your install PREFIX is a read-only folder (like default /usr/local)
+      * sudo configuration : you may ask your system administrator to enable you to run
+        'sudo make install' ; if he doesn't know how, you can tell him/her
+        to add a line like this in /etc/sudoers (or something less permissive ;-) :
+           <your login name>    ALL=(ALL) NOPASSWD: ALL
+
+3 - Installation from SVN
+
+  Before you start, be aware that the SVN trunk / branches might crash or even not compile
+  sometimes. If you want to get it anyway, follow the instructions at
+    http://sourceforge.net/svn/?group_id=239111
+
+  For the moment, 
+  - the developments for the next release are located in the trunk ; 
+    you can checkout the current _development_ state through :
+     $ svn co https://svn.code.sf.net/p/speed-dreams/code/trunk sd-trunk
+  - we make branches under the "branches" root dir ; as an exemple,
+    you can get the "1.4.x" release maintenance branch current state through :
+     $ svn co https://svn.code.sf.net/p/speed-dreams/code/branches/1.4.x sd-1.4.x
+  - we make release tags under the "tags" root dir ; 
+    as an exemple, you can get the "2.0.0 RC 1" pre-release through :
+     $ svn co https://svn.code.sf.net/p/speed-dreams/code/tags/2.0.0-rc1 sd-2.0.0-rc1
+
+  See configure, build and install method above (2)
+  (note however that branches/1.4.x and tags/1.4.0 are not built through cmake :
+   please refer to the dedicated INSTALL file for these).
+
+4 - Run Speed-Dreams
+
+  If the default CMake settings were kept, Speed Dreams is normally installed in /usr/local.
+
+  So, if /usr/local/games is already in your PATH variable, simply try :
+
+    $ speed-dreams-2
+      
+  If /usr/local/games is not already in your PATH variable, you probably want to add it ;
+  to do so, simply add the line "export PATH=$PATH:/usr/local/games" to your  ~/.bashrc file ;
+  you can use :
+
+    $ echo "export PATH=$PATH:/usr/local/games" >> ~/.bashrc" for that
+
+  Then, the above startup command should work now :
+
+    $ speed-dreams-2
+
+  If not or if the game crashes, see right below "5 - Known run-time issues".
+      
+  Runtime options : type this command to get them explained :
+
+    $ speed-dreams-2 --help
+
+  Note: Running the next-generation graphics module "osggraph" :
+        There's currently no GUI for selecting the graphics engine ;
+        you have to manually change the "graphic" attribute of the "Modules" section
+        in <user settings>/config/raceengine.xml, and give it the "osggraph" value.
+
+5 - Known run-time issues :
+
+  * Under some Linux configurations, the game crashes after restarting a race,
+    of when exiting ; we have a build-time workaround for this :
+    see above, in II-2-c-2, the OPTION_UNLOAD_SSGGRAPH CMake option.
+
+  * If you get all white rectangles or ugly fonts in the menus,
+    it's likely that some game data was not properly installed ;
+    check again carefully the build and install instructions.
+
+6 - Getting Help
+
+  From inside the game, press F1 at any time, you'll get a help page explaining
+  the available keyboard shorcuts.
+
+  If you are stuck please report problems through speed-dreams-users mailing list
+  or our bug tracker at http://sourceforge.net/apps/trac/speed-dreams/report.
+
+
+III - Windows installation from sources
+---------------------------------------
+
+Note that these instructions work under Windows XP 32 SP2/SP3 ; 
+some tweaks might be needed for newer / wider versions.
+
+0) Initial steps, common to all build methods
+
+  a.  Install CMake v2.6+ http://www.cmake.org/cmake/resources/software.html
+
+  b.  Download the official Speed Dreams tarballs from SF.net
+        http://sourceforge.net/projects/speed-dreams/files/2.0.0
+      (speed-dreams-src-<package>-<version>.tar.xz)
+      
+        Note: See II.2.a above about which packages you really need.
+
+      or 
+
+      Get the latest trunk from SVN (needed for building with MinGW : was not supported by 2.0.0).
+
+      TODO: Add instructions explaining how to do so, including the minimal list
+            of files and sub-dirs needed (not all trunk is needed, from far).
+
+  c.  Extract their contents to your local disk all in the same target folder
+      (7Zip is an excellent tool for that http://www.7-zip.org/).
+      
+        Note: See II.2.b above about the order in which you need to extract the packages.
+
+1) CMake and MinGW :
+
+  Notes: 
+   * Tested with success with CMake 2.8.2 and 2.8.8 + MinGW 2012 April (gcc 4.7.0),
+   * Also worked well with the version of MinGW shipped with Nokia Qt Creator 2.4.1 (gcc 4.4.0)
+     (but needs a dedicated 3rd party binary package which has not been published).
+   * Be aware that there are 2 different ways of building with CMake and MinGW :
+     - through "MSYS Makefiles" CMake generator : you'll then run all the build commands
+       (cmake and make) from the MSYS shell, (sort of a minimal "Linux + bash" environment)
+     - through "MinGW Makefiles" CMake generator : it is not compatible with the MSYS way,
+       but it works from inside the QtCreator IDE.
+
+  a.b.c. See above 0) Initial steps, common to all build methods
+
+  d.  Install MinGW (and optionaly MSYS)
+
+     Here's a simpler version of the instructions of http://www.mingw.org/wiki/Getting_Started
+     (example here for the official release of 2012, April, featuring gcc 4.7.0) :
+
+     * Download and run the latest mingw-get-inst version from 
+        https://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/
+        => mingw-get-inst-20120426.exe
+     * Select the directory where to install MinGW, remembering the advice
+       that the path to this directory should not contain any spaces.
+       => C:\MinGW
+     * Select the "Download latest repository catalogues" option
+       in order to get the latest Gcc (4.7.0 as of now)
+       (if you choose "Use pre-packaged catalogues", you'll get an old Gcc 4.6.2,
+        which is _not_ compatible with the below mentioned 3rd party binary package.
+     * Select the minimal set of components to install :
+       * C compiler (always)
+       * C++ compiler (always)
+       * MSYS (if you don't plan to use QtCreator).
+
+     If you installed MSYS, then you might be interested in the following,
+     otherwise, skip it and go to e.
+
+     * Run MSYS, the MinGW Shell (bash) :
+       Start Menu / Programs / MinGW / MinGW Shell
+
+       Note: PATH is already configured for using all useful tools
+             (try the command "echo $PATH")
+
+     * Optional but usefull additional components :
+       * rxvt (a Linux-like terminal) : mingw-get install msys-rxvt
+         - customize rxvt terminal : in C:\MinGW\MSYS\1.0\msys.bat, line 98 : "start %WD%rxvt ...",
+           . -geometry 120x40
+           . -sl 9999
+         - change MSYS Shell shortcut command : msys.bat --rxvt
+       * vim (text elditor for Linux geeks) : mingw-get install msys-vim
+       * patch : mingw-get install msys-patch
+       * xargs and co : mingw-get install msys-findutils
+       * bzip2 : mingw-get install msys-bzip2
+       * xz : mingw-get install msys-xz
+       * diff and co : mingw-get install msys-diffutils
+
+     * Optional tweaks to /etc/profile (C:\MinGW\msys\1.0\etc\profile)
+       * add your usual aliases : alias xx='command'
+       * a simpler prompt : export PS1='\w $ '
+
+     * Direct X 7 SDK for MinGW : Optional for building SD, but mandatory if you want
+       to build yourself the 3rd party libraries SDL, PLib, and OpenAL :
+       * download it from http://alleg.sourceforge.net/files/dx70_min.zip
+       * extract it somewhere on your hard disk (let's say C:\dx7_mingw)
+       * add the following line to /etc/fstab (C:\MinGW\msys\1.0\etc\fstab)
+         C:\dx7_mingw /dxsdk # DX7 SDK for compiling SDL, PLib, OpenAL
+
+       Note: The other newer versions from http://alleg.sourceforge.net/files didn't work for me.
+
+  e.  If you didn't install MSYS, you need to install QtCreator
+  
+      * Download and install the latest version :
+        - the simplest way is to get the standalone version from
+           http://qt.nokia.com/downloads/downloads#qt-creator
+        - you can also get the much heavier full Qt SDK, from
+           http://qt.nokia.com/downloads (on-line or off-line installed, as you will)
+          which bundles QtCreator itself ... along with the Qt libraries and other dev. tools ... 
+          which are not needed for building SD.
+          Note: It also ships a working MinGW, but probably not the version that we used
+                for building the "3rdParty" binary package for SD (MinGW 4.7.0) ;
+                so if you plan to use this version, be ready to build yourself (from sources)
+                your own "3rdParty" binary package for SD
+                (see http://sourceforge.net/projects/speed-dreams/files/3rd%20party/Sources/post-2.0.0/).
+
+      * Configure it for using your MinGW installation (if not using the auto-detected one bundled with Qt SDK) :
+        - start it,
+        - Tools / Options opens the Options windows,
+        - Select "Compile & Run" in the list of the left,
+        - Select the "Compile chain" tab,
+        - Click on the "Add / MinGW" button on the top right corner,
+        - fill in the fields at the bottom :
+          . Path to compiler : Browse and select the MinGW c++ compiler executable 
+              (C:\MinGW\bin\mingw32-c++.exe if you installed MinGW 4.7 as explained above)
+          . Debugger : Browse and select the MinGW debugger executable 
+              (C:\MinGW\bin\gdb.exe if you installed MinGW 4.7 as explained above)
+          . ABI, mkspec : leave as is,
+        - Apply (at the bottom right corner),
+        - Select the "CMake" tab,
+        - Browse and select your CMake executable (ex: C:\Program Files\CMake 2.8\bin\cmake.exe),
+        - OK (at the bottom right corner).
+      
+  f.  Download the "MinGW 4.7.0" release of the Speed Dreams "3rdParty" binary package from SF.net
+        http://sourceforge.net/projects/speed-dreams/files/3rd%20party/MinGW%204.7.0/
+      (it contains necessary 3rd party libs compiled with/for MinGW 4.7.0)
+      Note: If you plan to also build and run the new OpenSceneGraph-base graphics module (osggraph),
+            you should also download the "OSG extension" of this 3rdparty package (same location).
+
+  g.  Install it in the right folder :
+
+      * If you are using MSYS, extract it to the /usr folder from the MSYS shell :
+
+         $ cd /usr
+         $ tar xvfz .../3rdParty-2.1-win32-mingw470-g-O2.tar.gz
+         # And if you plan to build osggraph (see above) :
+         $ tar xvfz .../3rdParty-2.1-osg-win32-mingw470-O2.tar.gz
+
+         Note: this will populate the MSYS /usr/local tree, just as under Linux :-)
+
+      Or
+
+      * If you are using QtCreator, extract it into the "3rdParty" folder,
+        in the same folder as the one which contains your SD source tree :
+        - let's say (as an example) that your SD trunk source tree is inside the "sd" folder :
+          (so in this folder, you have the "trunk" folder, containing "src", "data", "credits.xml" and so on),
+        - open 3rdParty-2.1-win32-mingw470-g-O2.tar.gz in your favorite archive manager
+          (7zip is an excellent tool for this : http://www.7-zip.org/),
+        - extract the whole "local" folder into the "sd" folder,
+        - (same for 3rdParty-2.1-osg-win32-mingw470-O2.tar.gz if needed)
+        - rename it to "3rdParty".
+
+
+  h.  Run CMake to configure the build (here we assume CMake 2.8, but newer versions should work) :
+
+      * If you are using MSYS, in the MSYS shell :
+
+        $ cd /path/to/sd/sources/trunk
+        $ mkdir build
+        $ cd build
+        $ /c/Program\ Files/CMake\ 2.8/bin/cmake -G "MSYS Makefiles" -DOPTION_OFFICIAL_ONLY:BOOL=On -DCMAKE_PREFIX_PATH:STRING=/usr/local -DCMAKE_BUILD_TYPE:STRING=Release ..
+
+        Note: The 'Release' build gives you -O3-optimised binaries.
+
+        Note: See II.2.c above for more about possible / useful CMake arguments.
+
+      Or
+
+      * If you are using QtCreator (solution 1) :
+
+        - Start QtCreator,
+        - File / Open a file or project ...
+        - Browse and select the master CMakeLists.txt of Speed Dreams
+          (at the top of the source tree, next to the src and data folders)
+
+        - Then the CMake wizard opens up : 
+          . Build location page :
+             + Browse and select a build folder (CMake will create and use it for building)
+                (ex: <path to CMakeLists.txt/../build)
+          . Next
+          . Run CMake page :  use :
+             + CMake generator : "MinGW generator" (mandatory choice here !)
+             + CMake arguments : 
+                 -DOPTION_OFFICIAL_ONLY:BOOL=On -DCMAKE_BUILD_TYPE:STRING=Release
+             + Click on the Run CMake button
+
+             Note: See II.2.c above for more about possible / useful CMake arguments.
+
+             Note: The 'Release' build gives you -O3-optimised binaries.
+
+             Apart from "won't build" or "won't install" message (don't care),
+             all should go smoothly, especially the detection of the 3rd party libraries.
+
+          . Done
+
+        - Then QtCreator opens your brand new project !
+
+        Note: 
+          . Later on, when starting again QtCreator, the project will be automatically
+            loaded in the default session.
+          . If you need to re-run CMake (sometimes, QtCreator can't detect it, like after adding
+            new / removing files in the source tree, or if you need to change the configuration
+            settings), simply use the menu : Compile / Run CMake.
+
+      Or
+
+      * If you are using QtCreator (solution 2) :
+
+        You can also use standard CMake GUI to do this before opening the master CMakeLists.txt in QtCreator,
+        but you have to first add C:\MinGW\bin to your PATH environment variable
+        otherwise CMake GUI won't propose you the "MinGW generator", which is the one you have to use
+        ("MSYS makefiles" does not work with QtCreator).
+
+        - See below 2)f.g.h for how to use CMake GUI, but BEWARE, you have to select
+          the "MinGW generator" as the "compiler" (mandatory choice).
+
+          Note: The 'Release' build gives you -O3-optimised binaries.
+
+          Note: Apart from "won't build" or "won't install" message (don't care),
+          all should go smoothly, especially the detection of the 3rd party libraries.
+      
+        - Start QtCreator,
+        - File / Open a file or project ...
+        - Browse and select the master CMakeLists.txt of Speed Dreams
+          (at the top of the source tree, next to the src and data folders)
+
+        - Then the CMake wizard opens up : 
+          . Build location page :
+             + Browse and select the build folder you chose when running CMake GUI
+          . Next
+          . Run CMake page : you normally don't need to change anything,
+            as QtCreator read it from the CMake generated CMakeCache.txt file :
+             + CMake generator : "MinGW generator" (mandatory choice here !)
+             + CMake arguments : <leave empty>
+             + Click on the Run CMake button
+               (Yes, CMake already ran, but needed again because ... hmmm ...
+                TODO : discover and then explain why :-)
+
+             Apart from "won't build" or "won't install" message (don't care),
+             all should go smoothly, especially the detection of the 3rd party libraries.
+
+          . Done
+
+        - Then QtCreator opens the project !
+
+        Note: 
+          . Later on, when starting again QtCreator, the project will be automatically
+            loaded in the default session (or any session you saved it in).
+          . If you need to re-run CMake (sometimes, QtCreator can't detect it, like after adding
+            new / removing files in the source tree, or if you need to change the configuration
+            settings), simply use the menu : Compile / Run CMake.
+
+  i.  Configure the build and deployment steps of your project
+
+      * click on the "Projects" button on the left vertical bar
+        in order to get the projects configuration panel
+
+      * select your project's tab on the top
+
+      * in the "Compile settings" sub-tab :
+        - stay with the default" "all" compile configuration (we need only this)
+        - don't change "CMake" section (note that you can re-run CMake from here,
+           you'd get into the wizard we used at the beginning)
+        - in the "Compilation steps" section, click on the "Details" button of the 1st step,
+          and add some arguments to the default "mingw32-make.exe" command :
+           . at least the "all" target, at the end of the argument line,
+           . and may be some "-j2" of "-j4" boosting option if you own a dual/quad-core CPU :-)
+        - leave the other sections as is, they are OK.
+
+      * in the "Run settings" sub-tab :
+        - in the "Deployment" section,
+          . (cosmetic) change the name of the "Method" : "No deployment" => "Install"
+          . click on the "Add the deployment step" button, and select "Make",
+          . add the "install" argument to the default "mingw32-make.exe" command.       
+
+  j.  Build
+
+      * If you are using MSYS, in the MSYS shell :
+
+        $ make # use -j2 or even -j4 if you own a dual/quad-core CPU
+
+      * If you are using QtCreator :
+
+        - "Build / Compile all" through the menu (or Shift-Ctrl-B)
+      
+  k.  Install
+
+      * If you are using MSYS, in the MSYS shell :
+
+        $ make install
+
+      * If you are using QtCreator :
+
+        you have to "Run" Speed Dreams (no separate Install function :-(,
+        it'll install le software before running it (see i. above)
+      
+  l.  Run (and debug) Speed Dreams
+
+      * Of course you can simply double click on the installed speed-dreams-2.exe executable
+        (should be in /speed-dreams-2-build/bin with default CMake settings) ...
+
+      * But you can run it from QtCreator : usefull for debugging it :-)
+
+      * For this, you need one last configuration step in QtCreator :
+
+        - click on the "Projects" button on the left vertical bar
+          in order to get the projects configuration panel
+
+        - select your project's tab on the top
+
+        - in the "Run settings" sub-tab :
+          . in the "Run" section, add a custom configuration
+            (we can't run the generated speed-dreams-2.exe in place, 
+             we must use the "installed" one) :
+            click on the "Add" button, and select "Custom executable",
+          . Executable : Browse and select it 
+              (should be in /speed-dreams-2-build/bin with default CMake settings)
+          . Check the "Run in a terminal" option, to get the run-time traces in a console.
+
+       * You can now "Compile / Run" or "Debug / Start debugging / Start debugging" from the menu !
+
+2) Cmake and MS VC++ 2005 (8) / 2008 (9) / 2010 (10) on Windows XP 32
+
+Note: If you use an "Express" version, don't forget to install also the Windows SDK.
+
+  a.b.c. See above 0) Initial steps, common to all build methods
+
+  d.  Download the "MSVC 2005 / 2.0.0-or-earlier" release of the "3rdParty" binary package from SF.net
+        http://sourceforge.net/projects/speed-dreams/files/3rd%20party
+      (it contains necessary 3rd party libs compiled with/for MSVC 2005)
+  e.  Extract from the zip file the "3rdParty" directory to where speed-dreams sources
+      are installed.  
+      Example: If sources are in c:\gamesources\speed-dreams\src-2.0.0
+               (inside which you should find at least the "src" and "data" folders), 
+               then extract 3rd party zip in c:\gamesources\speed-dreams\3rdParty
+               (inside which you should find at least the "include" and "lib" folders), 
+  f.  Startup CMake GUI and set :
+      * "Where is the source code" to c:\gamesources\speed-dreams\src-2.0.0
+      * "Where to build the binaries" to c:\gamesources\speed-dreams\src-2.0.0\build
+        (if you follow the folder specs above).
+  g.  Press "Configure" button, answer "Yes, create the ...\build folder",
+      select the right MSVC compiler version and don't change the "Use native compilers" option.
+      Press the "Configure" button again, until the "Generate" button is no more greyed.
+  h.  Press the "Generate" button.  CMake will generate the solution file "speed-dreams-2.sln"
+      and associated project files (*.vcproj) in the ...\build folder
+      (Note : .sln/.vcproj are OK for MSVC 2005, but you might get other files extensions
+              the later MSVC versions).
+  i.  Load speed-dreams-2.sln in MSVC IDE.
+  j.  Select the build configuration (Debug, Release, ...).
+  k.  Build the whole Solution (Build / Build Solution)
+  l.  Build the 'INSTALL' project (right click on it and select Build).
+  m.  Double-click on speed-dreams-2.exe in c:\speed-dreams-2-build\bin
+
+ Note: First-ever startups sometimes fail to correctly write the necessary stuff
+       into <My documents>\speed-dreams-2.settings and this prevents the game from starting.
+       If this happens, simply remove the <My documents>\speed-dreams-2.settings folder
+       with Windows explorer, and restart the game : it should now work.
+
+ Note: This should also work with MSVC 2008/2010.
+       For MSVC 2003, you'll probably need to rebuild
+       a dedicated 3rdParty package for this compiler
+
+ Note : If you need to recompile the 3rdParty package from sources,
+        (the "Sources/2.0.0-or-earlier" release of the "3rdParty" package on SF.net Download page)
+        be carefull then to rebuild :
+         - everything possible
+         - for the same configuration (don't mix Release and Debug) 
+         - everything for multithreaded DLL integration (/MD & /MDd),
+        ... or be ready for headaches, and no support at all ;-)
+
+ Note: Building from SVN repo at SF.net :
+       From trunk@r4790, there's CMake support for a new MSVC 2005 3rd party binary package,
+       with updated releases of the dependencies, + 2 new ones : Expat 2 and FreeSOLID 2,
+       coming there in order to replace the bundled versions (txml and simuv2.1/SOLID-2.0),
+       in order SD becomes compatible with FOSS Linux distros (like Fedora, Debian, ...).
+       See http://sourceforge.net/projects/speed-dreams/files/3rd%20party/MSVC%202005/post-2.0.0
+       (and http://sourceforge.net/projects/speed-dreams/files/3rd%20party/Sources/post-2.0.0),
+       along with "II - Linux installation from sources" for some more tips about CMake options.
+      
+ Note: If you plan to build "osggraph", extract the Open Scene Graph 3.x binaries
+       from Alpha Pixel in your 3rdParty folder ; get the ones for your own version of MSVC :
+         http://www.alphapixel.com/osg/downloads/free-openscenegraph-binary-downloads
+       And after building and installing SD, don't forget to manually copy libpng13.dll
+       from the Open Scene Graph package to SD "bin" install folder
+       (because Alpha Pixel's OSG libs are dynamically linked to libpng, which is neither the case
+        for the remainder of our 3rd party MSVC 2005 package, nor for SD itself).
+
+3) MS VC++ 6 : No more supported.
+
+IV - FreeBSD installation from sources
+--------------------------------------
+
+Mostly the same as for "Linux installation from sources" ...
+
+Some specific details though :
+
+2 - Installation from official tarballs
+
+  b - build and install:
+
+    1.  cd $HOME/sd/2.0.0/build
+    2.  ccmake ..
+    3.  press (t) for advanced options
+    4.  wanted rows CMake CPPFLAGS
+    5.  press (enter)
+    6.  add /usr/local/include
+    7.  press (enter)
+    8.  press (c) for configure
+    9.  press (g) for generate and press (e)
+   10.  make && sudo make install
+  
+     
+    TO BE COMPLETED
+
+
+V - MacOS X installation from sources
+--------------------------------------
+
+To do ...
+

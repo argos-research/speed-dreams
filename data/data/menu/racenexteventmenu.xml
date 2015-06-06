@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : racenexteventmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: racenexteventmenu.xml 4605 2012-03-24 20:26:34Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	New track menu
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="racenexteventmenu">
+  
+  <section name= "dynamic controls">
+
+    <section name="TitleLabel">
+      <attstr name="type" val="label"/>
+      <attstr name="max len" val="64"/>
+      <attstr name="text" val="(race mode name) - (if Career, long group name)"/>
+      <attnum name="x" val="270"/>
+      <attnum name="y" val="414"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="medium"/>
+    </section>
+    <section name="SubTitleLabel">
+      <attstr name="type" val="label"/>
+      <attstr name="max len" val="64"/>
+      <attstr name="text" val="Race day #i at (possibly very long track name)"/>
+      <attnum name="x" val="270"/>
+      <attnum name="y" val="394"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small"/>
+    </section>
+
+    <section name="StartButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Start Event"/>
+		<attstr name="tip" val="Start the first race session of the event"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="460"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="150"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+    </section>
+
+    <section name="AbandonButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Abandon"/>
+		<attstr name="tip" val="Quit the race mode ; can be resumed later from results if you saved (note that Career is auto-saved)"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="150"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+    </section>
+
+  </section>
+
+  <section name="static controls">
+
+    <section name="1">
+      <attstr name="type" val="static image"/>
+      <attnum name="x" val="-10"/>
+      <attnum name="y" val="335"/>
+      <attnum name="width" val="200"/>
+      <attnum name="height" val="120"/>
+      <attstr name="image" val="data/img/sd-logo.png"/>
+    </section>
+
+    <section name="2">
+      <attstr name="type" val="static image"/>
+      <attnum name="x" val="188"/>
+      <attnum name="y" val="410"/>
+      <attnum name="width" val="450"/>
+      <attnum name="height" val="20"/>
+      <attstr name="image" val="data/img/head-nextevent.png"/>
+    </section>
+
+  </section>
+
+</params>

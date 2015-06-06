@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : viper-gts-r.xml
+    created              : Sat Mar  3 18:46:37 CET 2001
+    copyright            : (C) 2001 by Eric Espié                         
+    email                : Eric.Espie@torcs.org   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="Viper GTS-R" type="template">
+
+	<section name="private">
+		<attnum name="min corner inverse" min="0" max="2" val="0.001"/>
+		<attnum name="increase corner inverse" min="0" max="2" val="0.040"/>
+		<attnum name="add avoid speed" min="-20" max="20" val="0.0"/>
+		<attnum name="avoid speed factor" min="-20" max="20" val="0.80"/>
+		<attnum name="avoid brake factor" min="-20" max="20" val="0.9"/>
+		<attnum name="exit boost factor" min="-20" max="20" val="1.15"/>
+		<attnum name="avoid exit boost factor" min="-20" max="20" val="1.2"/>
+		<attnum name="brake margin" min="-20" max="20" val="1.5"/>
+		<attnum name="base speed factor" min="0.0" max="50.0" val="1.00"/>
+		<attnum name="base brake factor" min="0.0" max="50.0" val="0.93"/>
+		<attnum name="base speed" min="0.0" max="50.0" val="12.00"/>
+		<attnum name="base brake" min="10.0" max="100.0" val="25.00"/>
+		<attnum name="brake mod" min="0.0" max="1.0" val="1.00"/>
+		<attnum name="steer mod" min="0.0" max="1.0" val="1.00"/>
+		<attnum name="slope factor" min="0.0" max="1.0" val="0.50"/>
+		<attnum name="accel exit" min="0.0" max="10.0" val="0.40"/>
+		<attnum name="turn decel" min="0" max="2" val="0.4"/>
+		<attnum name="curve factor" min="0" max="2" val="0.11"/>
+		<attnum name="accel curve" min="0" max="2" val="1.20"/>
+		<attnum name="accel curve limit" min="0" max="6" val="1.5"/>
+		<attnum name="brake curve limit" min="0" max="6" val="3"/>
+		<attnum name="revs change up" min="0" max="2" val="0.84"/>
+		<attnum name="revs change down" min="0" max="2" val="0.64"/>
+		<attnum name="revs change down max" min="0" max="2" val="0.74"/>
+		<attnum name="steer skid" min="0" max="3" val="0.0"/>
+		<attnum name="steer gain" min="0" max="3" val="1.5"/>
+		<attnum name="max steer time" min="0.5" max="10" val="2.3"/>
+		<attnum name="min steer time" min="0.5" max="10" val="1.75"/>
+		<attnum name="int margin" min="0" max="2" val="1.7"/>
+		<attnum name="ext margin" min="0" max="2" val="1.3"/>
+		<attnum name="no team waiting" min="0" max="2" val="1"/>
+		<attnum name="inc factor" min="0" max="5" val="0.75"/>
+		<attnum name="overtake caution" min="-20" max="20" val="0.2"/>
+		<attnum name="abs slip" min="0.5" max="4.5" val="2.0"/>
+		<attnum name="abs range" min="0.5" max="10.5" val="10.0"/>
+		<attnum name="tcl slip" min="0.5" max="8.5" val="4.0"/>
+		<attnum name="skid correction" min="0.0" max="8.5" val="0.5"/>
+		<attnum name="bump caution" min="0.0" max="4.0" val="0.4"/>
+		<attnum name="oversteer asr" min="-0.0" max="2.0" val="0.2"/>
+		<attnum name="side margin" min="0.0" max="4.0" val="1.0"/>
+		<attnum name="pit offset" min="-200.0" max="200.0" val="-50"/>
+
+		<attnum name="steer debug" min="-5" max="5" val="-1.0"/>
+		<attnum name="overtake debug" min="0" max="1" val="0"/>
+		<attnum name="raceline debug" min="0" max="1" val="0"/>
+	</section>
+
+</params>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

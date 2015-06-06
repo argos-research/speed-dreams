@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : raceglscreen.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: raceglscreen.xml 5107 2013-01-22 23:34:44Z torcs-ng $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Normal race screen (real-time animated virtual 3D world)
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="raceglscreen">
+
+  <section name="dynamic controls">
+
+	<section name="message">
+	  <attstr name="type" val="label"/>
+	  <attnum name="max len" val="64"/>
+	  <attnum name="x" val="20"/>
+	  <attnum name="y" val="420"/>
+	  <attnum name="width" val="600"/>
+	  <attstr name="h align" val="center"/>
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attstr name="font" val="large_c"/>
+	</section>
+	<section name="bigmessage">
+	  <attstr name="type" val="label"/>
+	  <attnum name="max len" val="32"/>
+	  <attnum name="x" val="20"/>
+	  <attnum name="y" val="360"/>
+	  <attnum name="width" val="600"/>
+	  <attstr name="h align" val="center"/>
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attstr name="font" val="large_c"/>
+	</section>
+
+	<section name="pause">
+	  <attstr name="type" val="label"/>
+	  <attstr name="text" val="pause"/>
+	  <attnum name="x" val="20"/>
+	  <attnum name="y" val="420"/>
+	  <attnum name="width" val="600"/>
+	  <attstr name="h align" val="center"/>
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attstr name="font" val="big_c"/>
+	</section>
+
+  </section>
+  
+  <section name="static controls">
+
+  </section>
+
+	<section name="music">
+		<attstr name="music file" val="None"/>
+	</section>
+
+</params>

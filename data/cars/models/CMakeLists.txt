@@ -1,0 +1,96 @@
+INCLUDE(../../../cmake/macros.cmake)
+
+# Official car sets.
+SD_ADD_SUBDIRECTORY(36gp-century-r11b)
+SD_ADD_SUBDIRECTORY(36gp-ettore-t59)
+SD_ADD_SUBDIRECTORY(36gp-milano-12c36)
+SD_ADD_SUBDIRECTORY(36gp-milano-tipop3)
+SD_ADD_SUBDIRECTORY(36gp-motorunion-typec)
+SD_ADD_SUBDIRECTORY(36gp-silber-w25b)
+SD_ADD_SUBDIRECTORY(36gp-tridenti-6c34)
+SD_ADD_SUBDIRECTORY(36gp-tridenti-v8ri)
+
+SD_ADD_SUBDIRECTORY(trb1-boxer-trbrs)
+SD_ADD_SUBDIRECTORY(trb1-cavallo-360rb)
+SD_ADD_SUBDIRECTORY(trb1-sector-rb1)
+SD_ADD_SUBDIRECTORY(trb1-silber-rblk)
+SD_ADD_SUBDIRECTORY(trb1-spirit-rb1lt)
+SD_ADD_SUBDIRECTORY(trb1-taipan-rb1)
+SD_ADD_SUBDIRECTORY(trb1-vieringe-5rb/)
+SD_ADD_SUBDIRECTORY(trb1-zaxxon-rb)
+
+SD_ADD_SUBDIRECTORY(sc-boxer-96)
+SD_ADD_SUBDIRECTORY(sc-cavallo-360)
+SD_ADD_SUBDIRECTORY(sc-fmc-gt4)
+SD_ADD_SUBDIRECTORY(sc-lynx-220)
+SD_ADD_SUBDIRECTORY(sc-kanagawa-z35gts)
+SD_ADD_SUBDIRECTORY(sc-kongei-kk8s)
+SD_ADD_SUBDIRECTORY(sc-murasama-nsx)
+SD_ADD_SUBDIRECTORY(sc-spirit-300)
+
+SD_ADD_SUBDIRECTORY(ls1-archer-r9)
+SD_ADD_SUBDIRECTORY(ls1-cavallo-570s1)
+SD_ADD_SUBDIRECTORY(ls1-newcastle-fury)
+SD_ADD_SUBDIRECTORY(ls1-taipan-ltsr)
+SD_ADD_SUBDIRECTORY(ls1-toro-rgt)
+SD_ADD_SUBDIRECTORY(ls1-vulture-v6r)
+SD_ADD_SUBDIRECTORY(ls1-zentek-z7r)
+
+SD_ADD_SUBDIRECTORY(ls2-bavaria-g3gtr)
+SD_ADD_SUBDIRECTORY(ls2-boxer-96rsr)
+SD_ADD_SUBDIRECTORY(ls2-cavallo-360r)
+SD_ADD_SUBDIRECTORY(ls2-condor-c400r)
+SD_ADD_SUBDIRECTORY(ls2-morley-r900)
+SD_ADD_SUBDIRECTORY(ls2-sprite-gts)
+SD_ADD_SUBDIRECTORY(ls2-vortex-gt)
+SD_ADD_SUBDIRECTORY(ls2-lynx-xkr)
+
+SD_ADD_SUBDIRECTORY(mpa1-murasama)
+SD_ADD_SUBDIRECTORY(mpa1-hartbill-2002)
+SD_ADD_SUBDIRECTORY(mpa1-ffr)
+SD_ADD_SUBDIRECTORY(mpa1-furia)
+SD_ADD_SUBDIRECTORY(mpa1-team-lynx)
+
+SD_ADD_SUBDIRECTORY(mp5-fmc)
+SD_ADD_SUBDIRECTORY(mp5-fmc-drift)
+SD_ADD_SUBDIRECTORY(mp5-fmc-speedy)
+
+SD_ADD_SUBDIRECTORY(rs1-citrus-cs4)
+SD_ADD_SUBDIRECTORY(rs1-fmc-centre)
+SD_ADD_SUBDIRECTORY(rs1-kenji-08)
+SD_ADD_SUBDIRECTORY(rs2-fai-dot)
+SD_ADD_SUBDIRECTORY(rs2-lion-2m)
+
+# Work-in-progress car sets.
+IF(NOT OPTION_OFFICIAL_ONLY)
+
+	SD_ADD_SUBDIRECTORY(ref-boxer-gt3-rs-2010)
+	SD_ADD_SUBDIRECTORY(ref-sector-p4)
+	SD_ADD_SUBDIRECTORY(ref-sphere-osg)
+
+	SD_ADD_SUBDIRECTORY(ls1-marisatech-gt4r)
+
+	SD_ADD_SUBDIRECTORY(gtc-aichi-aidoru)
+
+	SD_ADD_SUBDIRECTORY(mp1-diamond-d25)
+	SD_ADD_SUBDIRECTORY(mp1-cavallo-tr06)
+	SD_ADD_SUBDIRECTORY(mp1-vicente)
+
+	SD_ADD_SUBDIRECTORY(lp1-lolita-exr57)
+	SD_ADD_SUBDIRECTORY(lp1-luxura-lp02)
+	SD_ADD_SUBDIRECTORY(lp1-pescy-p60)
+	SD_ADD_SUBDIRECTORY(lp1-spire-s101)
+	SD_ADD_SUBDIRECTORY(lp1-sprite-p1rs)
+	SD_ADD_SUBDIRECTORY(lp1-vieringe-vr8)
+
+	SD_ADD_SUBDIRECTORY(lp2-bravery-brc6)
+	SD_ADD_SUBDIRECTORY(lp2-lolita-exr57)
+	SD_ADD_SUBDIRECTORY(lp2-spire-s101)
+
+	SD_ADD_SUBDIRECTORY(mp10-agl-kart)
+	SD_ADD_SUBDIRECTORY(mp10-sdr-kart125)
+	SD_ADD_SUBDIRECTORY(mp10-tuxkart)
+	
+	SD_ADD_SUBDIRECTORY(lancer09-wr)
+
+ENDIF()

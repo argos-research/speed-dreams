@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : guimenutest.xml
+    created              : 2011
+    copyright            : (C) 2011 by Jean-Philippe Meuret
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id$
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Test file for the XML customizable menu system
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="guimenu-test">
+
+  <section name="dynamic controls">
+
+    <!-- Labels -->
+    <section name="LabelLeft">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Left label"/>
+      <attstr name="tip" val="Left-aligned label"/>
+      <attnum name="x" val="10"/>
+      <attnum name="y" val="40"/>
+      <attnum name="width" val="160"/>
+      <attstr name="align" val="left"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="focused color" val="0xFFCC00"/>
+      <attstr name="font" val="small"/>
+    </section>
+
+    <section name="LabelCenter">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Center label"/>
+      <attstr name="tip" val="Centered label"/>
+      <attnum name="x" val="180"/>
+      <attnum name="y" val="40"/>
+      <attnum name="width" val="160"/>
+      <attstr name="h align" val="center"/>
+      <attstr name="color" val="0x80FFFF00"/>
+      <attstr name="focused color" val="0x8000CCFF"/>
+      <attstr name="font" val="small"/>
+    </section>
+
+    <section name="LabelRight">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Right label"/>
+      <attstr name="tip" val="Right-aligned label"/>
+      <attnum name="x" val="350"/>
+      <attnum name="y" val="40"/>
+      <attnum name="width" val="160"/>
+      <attstr name="h align" val="right"/>
+      <attstr name="color" val="0xE000FFFF"/>
+      <attstr name="focused color" val="0xE0FF0000"/>
+      <attstr name="font" val="small"/>
+    </section>
+
+    <!-- Text buttons -->
+    <section name="ButtonLeft">
+      <attstr name="type" val="text button"/>
+      <attstr name="text" val="Left button"/>
+      <attstr name="tip" val="Left aligned button"/>
+      <attnum name="x" val="10"/>
+      <attnum name="y" val="70"/>
+      <attnum name="width" val="160"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="focused color" val="0xFFCC00"/>
+      <attstr name="pushed color" val="0xE61933"/>
+      <attstr name="font" val="medium"/>
+      <attstr name="show box" val="yes"/>
+    </section>
+
+    <section name="ButtonCenter">
+      <attstr name="type" val="text button"/>
+      <attstr name="text" val="Center button"/>
+      <attstr name="tip" val="Centered button"/>
+      <attnum name="x" val="180"/>
+      <attnum name="y" val="70"/>
+      <attnum name="width" val="160"/>
+      <attstr name="h align" val="center"/>
+      <attstr name="color" val="0x8000FFFF"/>
+      <attstr name="focused color" val="0x80CCFF00"/>
+      <attstr name="pushed color" val="0x8019E633"/>
+      <attstr name="font" val="medium"/>
+      <attstr name="show box" val="yes"/>
+    </section>
+
+    <section name="ButtonRight">
+      <attstr name="type" val="text button"/>
+      <attstr name="text" val="Right button"/>
+      <attstr name="tip" val="Right-aligned button"/>
+      <attnum name="x" val="350"/>
+      <attnum name="y" val="70"/>
+      <attnum name="width" val="160"/>
+      <attstr name="h align" val="right"/>
+      <attstr name="color" val="0xE0FF00FF"/>
+      <attstr name="focused color" val="0xE000FFCC"/>
+      <attstr name="pushed color" val="0xE03319E6"/>
+      <attstr name="font" val="medium"/>
+      <attstr name="show box" val="yes"/>
+      <attnum name="image x" val="170"/>
+      <attnum name="image y" val="0"/>
+      <attnum name="image width" val="50"/>
+      <attnum name="image height" val="25"/>
+      <attstr name="disabled image" val="data/img/icon-cancel.png"/>
+      <attstr name="enabled image" val="data/img/icon-race.png"/>
+      <attstr name="focused image" val="data/img/icon-credits.png"/>
+      <attstr name="pushed image" val="data/img/icon-ok.png"/>
+    </section>
+
+    <!-- Image buttons -->
+    <section name="ImageButton">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Image button"/>
+      <attnum name="x" val="580"/>
+      <attnum name="y" val="70"/>
+      <attnum name="width" val="40"/>
+      <attnum name="height" val="40"/>
+      <attstr name="disabled image" val="data/img/arrow-right-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-right.png"/>
+      <attstr name="focused image" val="data/img/arrow-right-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-right-pushed.png"/>
+    </section>
+
+    <!-- Edit-boxes -->
+    <section name="EditBoxLeft">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="16"/>
+      <attstr name="text" val="Left edit"/>
+      <attstr name="tip" val="Left-aligned editbox"/>
+      <attnum name="x" val="10"/>
+      <attnum name="y" val="110"/>
+      <attnum name="width" val="180"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="large"/>
+    </section>
+
+    <section name="EditBoxCenter">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="16"/>
+      <attstr name="text" val="Center edit"/>
+      <attstr name="tip" val="Centered editbox"/>
+      <attnum name="x" val="200"/>
+      <attnum name="y" val="110"/>
+      <attnum name="width" val="180"/>
+      <attstr name="h align" val="center"/>
+      <attstr name="font" val="large"/>
+    </section>
+
+    <section name="EditBoxRight">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="16"/>
+      <attstr name="text" val="Right edit"/>
+      <attstr name="tip" val="Editbox"/>
+      <attnum name="x" val="390"/>
+      <attnum name="y" val="110"/>
+      <attnum name="width" val="180"/>
+      <attstr name="h align" val="right"/>
+      <attstr name="color" val="0x0000FF"/>
+      <attstr name="focused color" val="0xFF0000"/>
+      <attstr name="bg color" val="0x4000FF00"/>
+      <attstr name="focused bg color" val="0x40FF8000"/>
+      <attstr name="font" val="large"/>
+    </section>
+
+    <!-- Combo-boxes -->
+    <section name="ComboBoxSmall">
+      <attstr name="type" val="combo box"/>	  	  	  	  	  
+      <attstr name="text" val="Small combo"/>	  	  	  	  	  
+      <attnum name="max len" val="12"/>
+      <attstr name="tip" val="Small text combo-box"/>
+      <attnum name="x" val="10"/>
+      <attnum name="y" val="160"/>
+      <attnum name="width" val="140"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="focused color" val="0xFFCC00"/>
+      <attstr name="font" val="small"/>
+    </section>
+
+    <section name="ComboBoxBig">
+      <attstr name="type" val="combo box"/>	  	  	  	  	  
+      <attstr name="text" val="Big combo"/>	  	  	  	  	  
+      <attnum name="max len" val="12"/>
+      <attstr name="tip" val="Big text combo-box"/>
+      <attnum name="x" val="180"/>
+      <attnum name="y" val="160"/>
+      <attnum name="width" val="180"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="focused color" val="0xFFCC00"/>
+      <attstr name="font" val="big"/>
+    </section>
+
+    <!-- Check-boxes  -->
+    <section name="CheckBoxBig">
+      <attstr name="type" val="check box"/>
+      <attstr name="text" val="Big text check-box"/>
+      <attstr name="tip" val="Big text check-box"/>
+      <attnum name="x" val="10"/>
+      <attnum name="y" val="200"/>
+      <attnum name="image width" val="20"/>
+      <attnum name="image height" val="20"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="font" val="big"/>
+      <attstr name="checked" val="no"/>
+    </section>
+
+    <section name="CheckBoxSmall">
+      <attstr name="type" val="check box"/>
+      <attstr name="text" val="Small text check-box"/>
+      <attstr name="tip" val="Small text check-box"/>
+      <attnum name="x" val="360"/>
+      <attnum name="y" val="200"/>
+      <attnum name="image width" val="40"/>
+      <attnum name="image height" val="40"/>
+      <attstr name="color" val="0x8000FF11"/>
+      <attstr name="font" val="small"/>
+      <attstr name="checked" val="no"/>
+    </section>
+
+    <!-- Scroll-lists  -->
+    <section name="ScrollListRight">
+      <attstr name="type" val="scroll list"/>                  
+      <attnum name="x" val="10"/>
+      <attnum name="y" val="240"/>
+      <attnum name="width" val="120"/>
+      <attnum name="height" val="120"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="selected color" val="0x8000FFCC"/>
+      <attstr name="scrollbar pos" val="right"/>
+      <attnum name="scrollbar width" val="20"/>
+    </section>  
+
+    <section name="ScrollListLeft">
+      <attstr name="type" val="scroll list"/>                  
+      <attnum name="x" val="180"/>
+      <attnum name="y" val="240"/>
+      <attnum name="width" val="120"/>
+      <attnum name="height" val="120"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="selected color" val="0x8000FFCC"/>
+      <attstr name="scrollbar pos" val="left"/>
+      <attnum name="scrollbar width" val="20"/>
+    </section>  
+
+    <!-- Static images  -->
+    <section name="StaticImage">
+      <attstr name="type" val="staticimage"/>
+      <attnum name="x" val="-10"/>
+      <attnum name="y" val="370"/>
+      <attnum name="width" val="180"/>
+      <attnum name="height" val="100"/>
+      <attstr name="image" val="data/img/sd-logo.png"/>
+      <attstr name="image 1" val="data/img/sd-logo.png"/>
+      <attstr name="image 2" val="data/img/sd-logo.png"/>
+      <attstr name="can deform" val="true"/>
+    </section>
+
+    <!-- Progress-bars  -->
+    <section name="ProgressBar">
+      <attstr name="type" val="progress bar"/>
+      <attstr name="tip" val="Progress-bar"/>
+      <attstr name="image" val="data/img/progressbar.png"/>
+      <attstr name="bg image" val="data/img/progressbackground.png"/>
+      <attnum name="x" val="400"/>
+      <attnum name="y" val="160"/>
+      <attnum name="width" val="200"/>
+      <attnum name="height" val="20"/>
+      <attnum name="min" val="200"/>
+      <attnum name="max" val="400"/>
+      <attnum name="value" val="250"/>
+    </section>
+
+    <!-- Font samples -->
+    <section name="FontBig">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="text" val="Sample text"/>
+      <attstr name="tip" val="Big font"/>
+      <attnum name="x" val="320"/>
+      <attnum name="y" val="240"/>
+      <attnum name="width" val="180"/>
+      <attstr name="font" val="big"/>
+      <attstr name="color" val="0x00FF00"/>
+      <attstr name="bg color" val="0x2000FF00"/>
+    </section>
+
+    <section name="FontLarge">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="text" val="Sample text"/>
+      <attstr name="tip" val="Large font"/>
+      <attnum name="x" val="320"/>
+      <attnum name="y" val="290"/>
+      <attnum name="width" val="170"/>
+      <attstr name="font" val="large"/>
+      <attstr name="color" val="0x00FF00"/>
+      <attstr name="bg color" val="0x2000FF00"/>
+    </section>
+
+    <section name="FontMedium">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="text" val="Sample text"/>
+      <attstr name="tip" val="Medium font"/>
+      <attnum name="x" val="320"/>
+      <attnum name="y" val="335"/>
+      <attnum name="width" val="140"/>
+      <attstr name="font" val="medium"/>
+      <attstr name="color" val="0x00FF00"/>
+      <attstr name="bg color" val="0x2000FF00"/>
+    </section>
+
+    <section name="FontSmall">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="text" val="Sample text"/>
+      <attstr name="tip" val="Small font"/>
+      <attnum name="x" val="320"/>
+      <attnum name="y" val="375"/>
+      <attnum name="width" val="120"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0x00FF00"/>
+      <attstr name="bg color" val="0x2000FF00"/>
+    </section>
+
+    <section name="FontBigC">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="text" val="Sample text"/>
+      <attstr name="tip" val="Big Console font"/>
+      <attnum name="x" val="450"/>
+      <attnum name="y" val="370"/>
+      <attnum name="width" val="185"/>
+      <attstr name="font" val="big_c"/>
+      <attstr name="color" val="0x00FF00"/>
+      <attstr name="bg color" val="0x2000FF00"/>
+    </section>
+
+    <section name="FontLargeC">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="text" val="Sample text"/>
+      <attstr name="tip" val="Large Console font"/>
+      <attnum name="x" val="470"/>
+      <attnum name="y" val="335"/>
+      <attnum name="width" val="140"/>
+      <attstr name="font" val="large_c"/>
+      <attstr name="bg color" val="0x2000FF00"/>
+      <attstr name="color" val="0x00FF00"/>
+    </section>
+
+    <section name="FontMediumC">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="text" val="Sample text"/>
+      <attstr name="tip" val="Medium Console font"/>
+      <attnum name="x" val="500"/>
+      <attnum name="y" val="300"/>
+      <attnum name="width" val="90"/>
+      <attstr name="font" val="medium_c"/>
+      <attstr name="color" val="0x00FF00"/>
+      <attstr name="bg color" val="0x2000FF00"/>
+    </section>
+
+    <section name="FontSmallC">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="text" val="Sample text"/>
+      <attstr name="tip" val="Small Console font"/>
+      <attnum name="x" val="510"/>
+      <attnum name="y" val="250"/>
+      <attnum name="width" val="80"/>
+      <attstr name="font" val="small_c"/>
+      <attstr name="color" val="0x00FF00"/>
+      <attstr name="bg color" val="0x2000FF00"/>
+    </section>
+
+    <section name="FontDigital">
+      <attstr name="type" val="edit box"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="text" val="0123456789"/>
+      <attstr name="tip" val="Digital font"/>
+      <attnum name="x" val="320"/>
+      <attnum name="y" val="410"/>
+      <attnum name="width" val="130"/>
+      <attstr name="font" val="digital"/>
+      <attstr name="color" val="0x00FF00"/>
+      <attstr name="bg color" val="0x2000FF00"/>
+    </section>
+
+  </section>
+
+  <section name="static controls">
+
+    <section name="1">
+      <attstr name="type" val="background image"/>
+      <attstr name="image" val="data/img/guitest-grid.png"/>
+    </section>  
+
+  </section>
+
+</params>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- 
+    file          : default.xml 
+    created       : 05 Dec 2008
+    last changed  : 06 Dec 2009
+    copyright     : (C) 2008-2009 Wolf-Dieter Beelitz
+
+    Based on SIMPLIX_SC - SC-LYNX-220
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd">
+<params name="sc-lynx-220" type="template" mode="mw">
+	<section name="Front Wing">
+		<attnum name="angle" unit="deg" val="0"/>
+	</section>
+	<section name="Rear Wing">
+		<attnum name="angle" unit="deg" val="0"/>
+	</section>
+	<section name="Gearbox">
+		<section name="gears">
+			<section name="r">
+				<attnum name="ratio" val="-2.0"/>
+			</section>
+			<section name="1">
+				<attnum name="ratio" val="3.66"/>
+			</section>
+			<section name="2">
+				<attnum name="ratio" val="2.18"/>
+			</section>
+			<section name="3">
+				<attnum name="ratio" val="1.4"/>
+			</section>
+			<section name="4">
+				<attnum name="ratio" val="1.02"/>
+			</section>
+			<section name="5">
+				<attnum name="ratio" val="0.78"/>
+			</section>
+			<section name="6">
+				<attnum name="ratio" val="0.66"/>
+			</section>
+		</section>
+	</section>
+	<section name="Rear Differential">
+		<!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
+		<attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="LIMITED SLIP"/>
+		<attnum name="ratio" val="4.5"/>
+	</section>
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" val="0.56"/>
+		<attnum name="max pressure" unit="kPa" val="44000"/>
+	</section>
+	<section name="Front Anti-Roll Bar">
+		<attnum name="spring" unit="lbs/in" val="0"/>
+		<attnum name="suspension course" unit="m" val="0.54"/>
+		<attnum name="bellcrank" val="2.5"/>
+	</section>
+	<section name="Rear Anti-Roll Bar">
+		<attnum name="spring" unit="lbs/in" val="0"/>
+		<attnum name="suspension course" unit="m" val="0.54"/>
+		<attnum name="bellcrank" val="2.5"/>
+	</section>
+	<section name="Front Right Wheel">
+		<attnum name="ride height" unit="mm" val="110"/>
+		<attnum name="toe" unit="deg" val="0"/>
+		<attnum name="camber" unit="deg" val="0"/>
+	</section>
+	<section name="Front Left Wheel">
+		<attnum name="ride height" unit="mm" val="110"/>
+		<attnum name="toe" unit="deg" val="0"/>
+		<attnum name="camber" unit="deg" val="0"/>
+	</section>
+	<section name="Rear Right Wheel">
+		<attnum name="ride height" unit="mm" val="110"/>
+		<attnum name="toe" unit="deg" val="0"/>
+		<attnum name="camber" unit="deg" val="-3"/>
+	</section>
+	<section name="Rear Left Wheel">
+		<attnum name="ride height" unit="mm" val="110"/>
+		<attnum name="toe" unit="deg" val="0"/>
+		<attnum name="camber" unit="deg" val="-3"/>
+	</section>
+	<section name="Front Right Suspension">
+		<attnum name="spring" unit="lbs/in" val="1400"/>
+		<attnum name="suspension course" unit="m" val="0.155"/>
+		<attnum name="bellcrank" val="1.5"/>
+		<attnum name="packers" unit="mm" val="0"/>
+		<attnum name="slow bump" unit="lbs/in/s" val="380"/>
+		<attnum name="slow rebound" unit="lbs/in/s" val="400"/>
+		<attnum name="fast bump" unit="lbs/in/s" val="240"/>
+		<attnum name="fast rebound" unit="lbs/in/s" val="250"/>
+	</section>
+	<section name="Front Left Suspension">
+		<attnum name="spring" unit="lbs/in" val="1400"/>
+		<attnum name="suspension course" unit="m" val="0.155"/>
+		<attnum name="bellcrank" val="1.5"/>
+		<attnum name="packers" unit="mm" val="0"/>
+		<attnum name="slow bump" unit="lbs/in/s" val="380"/>
+		<attnum name="slow rebound" unit="lbs/in/s" val="400"/>
+		<attnum name="fast bump" unit="lbs/in/s" val="240"/>
+		<attnum name="fast rebound" unit="lbs/in/s" val="250"/>
+	</section>
+	<section name="Rear Right Suspension">
+		<attnum name="spring" unit="lbs/in" val="1500"/>
+		<attnum name="suspension course" unit="m" val="0.16"/>
+		<attnum name="bellcrank" val="1.4"/>
+		<attnum name="packers" unit="mm" val="0"/>
+		<attnum name="slow bump" unit="lbs/in/s" val="380"/>
+		<attnum name="slow rebound" unit="lbs/in/s" val="400"/>
+		<attnum name="fast bump" unit="lbs/in/s" val="240"/>
+		<attnum name="fast rebound" unit="lbs/in/s" val="250"/>
+	</section>
+	<section name="Rear Left Suspension">
+		<attnum name="spring" unit="lbs/in" val="1500"/>
+		<attnum name="suspension course" unit="m" val="0.16"/>
+		<attnum name="bellcrank" val="1.4"/>
+		<attnum name="packers" unit="mm" val="0"/>
+		<attnum name="slow bump" unit="lbs/in/s" val="380"/>
+		<attnum name="slow rebound" unit="lbs/in/s" val="400"/>
+		<attnum name="fast bump" unit="lbs/in/s" val="240"/>
+		<attnum name="fast rebound" unit="lbs/in/s" val="250"/>
+	</section>
+</params>

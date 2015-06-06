@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file          : drivers/usr_sc/sc-murasama-nsx/genetic-template
+    created       : 02/18/13
+    last modified : 02/18/13
+    copyright     : (C) 2013 Wolf-Dieter Beelitz
+
+    SVN version   : $Id:$
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- <!DOCTYPE params SYSTEM "params.dtd"> -->
+
+<!-- META DATA FOR GENETIC PARAMETER OPTIMIZATION -->
+<params name="Genetic Optimization">
+  <!-- TABLE OF CONTENT -->
+  <section name="Table of Content">
+    <attnum name="major version" val="1"/>
+    <attnum name="minor version" val="0"/>
+    <attstr name="robot" val="usr_sc"/>
+    <attstr name="car type" val="sc-murasama-nsx"/>
+    <attstr name="private" val="private"/>
+    <attnum name="weight of damages" val="10.0"/>
+    <attnum name="get initial value" val="1"/>
+    <attnum name="optimisation loops" val="1000"/>
+    <attstr name="author" val="Xavier Bertaux"/>
+  </section>
+  <!-- END OF TABLE OF CONTENT -->
+
+  <!-- META DATA OF GLOBAL PARAMETERS -->
+  <section name="Global">
+	  
+    <!-- FIRST GROUP OF META DATA OF GLOBAL PARAMETERS -->
+    <!-- THERE ARE NEARLY NO CAR PARAMETERS ALLOWED AT -->
+    <!-- THE CAR TYPE SETUPS OF THE CAR SET SUPERCARS! -->
+
+    <!-- META DATA OF FIRST GLOBAL PARAMETER -->
+    <section name="Brake Balance">
+		<attnum name="active" val="0"/>
+		<attstr name="label" val="BrakeRepart."/>
+		<attstr name="section" val="Brake System"/>
+		<attstr name="parameter" val="front-rear brake repartition"/>
+		<attnum name="range" min="0.5" max="0.65" val="0.6127"/>
+		<attnum name="weight" val="5"/>
+		<attnum name="scale" val="0.1"/>
+		<attnum name="round" val="10000"/>
+    </section>
+
+    <section name="Brake Pressure">
+		<attnum name="active" val="0"/>
+		<attstr name="label" val="MxBrakePress"/>
+		<attstr name="section" val="Brake System"/>
+		<attstr name="parameter" val="max pressure"/>
+		<attstr name="unit" val="kPa"/>
+		<attnum name="range" min="5000" max="50000" unit="kPa" val="31000"/>
+		<attnum name="weight" val="1"/>
+		<attnum name="scale" val="500"/>
+		<attnum name="round" val="0.01"/>
+    </section>
+
+	<section name="Base Speed">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="base speed"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="base speed"/>
+		<attnum name="range" min="0.5" max="50" val="30.00"/>
+		<attnum name="weight" val="5"/>
+		<attnum name="scale" val="0.1"/>
+		<attnum name="round" val="100"/>
+    </section>
+
+    <section name="Base Brake">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="base brake"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="base brake"/>
+		<attnum name="range" min="0.0" max="100" val="30.00"/>
+		<attnum name="weight" val="5"/>
+		<attnum name="scale" val="0.1"/>
+		<attnum name="round" val="100"/>
+    </section>
+
+    <section name="Boost Factor">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="exit boost factor"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="exit boost factor"/>
+		<attnum name="range" min="0.10" max="1.9" val="1.5"/>
+		<attnum name="weight" val="2"/>
+		<attnum name="scale" val="0.01"/>
+		<attnum name="round" val="1000"/>
+    </section>
+
+    <section name="Slope Factor">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="slope factor"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="slope factor"/>
+		<attnum name="range" min="0.0" max="1.0" val="0.509"/>
+		<attnum name="weight" val="2"/>
+		<attnum name="scale" val="0.05"/>
+		<attnum name="round" val="1000"/>
+    </section>
+
+    <section name="Turn Decel">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="turn decel"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="turn decel"/>
+		<attnum name="range" min="0.0" max="2.0" val="0.4"/>
+		<attnum name="weight" val="2"/>
+		<attnum name="scale" val="0.01"/>
+		<attnum name="round" val="200"/>
+    </section>
+
+    <section name="Accel Curve">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="accel curve"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="accel curve"/>
+		<attnum name="range" min="0.0" max="2.0" val="1.20"/>
+		<attnum name="weight" val="2"/>
+		<attnum name="scale" val="0.01"/>
+		<attnum name="round" val="1000"/>
+    </section>
+
+    <section name="Int Margin">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="int margin"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="int margin"/>
+		<attnum name="range" min="0.0" max="2.0" val="1.7"/>
+		<attnum name="weight" val="5"/>
+		<attnum name="scale" val="0.01"/>
+		<attnum name="round" val="1000"/>
+	</section>
+
+    <section name="Ext Margin">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="ext margin"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="ext margin"/>
+		<attnum name="range" min="0.0" max="2.0" val="1.3"/>
+		<attnum name="weight" val="3"/>
+		<attnum name="scale" val="0.01"/>
+		<attnum name="round" val="1000"/>
+    </section>
+
+    <section name="ABS Slip">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="abs slip"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="abs slip"/>
+		<attnum name="range" min="0.5" max="4.5" val="4.0"/>
+		<attnum name="weight" val="3"/>
+		<attnum name="scale" val="0.5"/>
+		<attnum name="round" val="100"/>
+    </section>
+
+    <section name="TCL Slip">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="tcl slip"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="tcl slip"/>
+		<attnum name="range" min="0.5" max="8.5" val="4.0"/>
+		<attnum name="weight" val="3"/>
+		<attnum name="scale" val="0.5"/>
+		<attnum name="round" val="100"/>
+    </section>
+
+    <section name="Bump Caution">
+		<attnum name="active" val="1"/>
+		<attstr name="label" val="bump caution"/>
+		<attstr name="section" val="private"/>
+		<attstr name="parameter" val="bump caution"/>
+		<attnum name="range" min="0.0" max="4.0" val="0.4"/>
+		<attnum name="weight" val="1"/>
+		<attnum name="scale" val="0.1"/>
+		<attnum name="round" val="100"/>
+    </section>
+
+  </section>
+
+</params>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : loadingscreen.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: loadingscreen.xml 4166 2011-11-20 20:14:00Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Race loading screen (to help the user stay patient)
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="loadingscreen">	
+
+  <section name="properties">
+
+    <!-- Number of lines -->
+    <attnum name="nLines" val="20"/>
+
+    <!-- Y coordinate of the top line, and number of pixels separating the lines-->
+    <attnum name="yTopLine" val="354"/>
+    <attnum name="yLineShift" val="16"/>
+
+    <!-- for each line i, from 0 (top) to nLines-1 (bottom),
+         alpha color field = alpha0 + alphaSlope * i -->
+    <attnum name="alpha0" val="0.2"/>
+    <attnum name="alphaSlope" val="0.034782"/>
+
+  </section>
+
+	<section name="template controls">
+
+	<!-- Each line -->
+	<section name="line">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="100"/>
+		<attnum name="x" val="100"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	</section>
+
+	<section name="dynamic controls">
+
+	<section name="titlelabel">
+		<attstr name="type" val="label"/>	  	  	  	  	  
+		<attnum name="max len" val="60"/>
+		<attnum name="x" val="340"/>
+		<attnum name="y" val="415"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	</section>
+
+	<section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>
+
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="410"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-loading.png"/>
+	</section>	
+
+	</section>
+
+</params>

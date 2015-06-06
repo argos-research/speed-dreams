@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : pitmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: pitmenu.xml 5107 2013-01-22 23:34:44Z torcs-ng $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Human driver pit menu
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="pitmenu">
+  
+  <section name="dynamic controls">
+
+	<section name="titlelabel">
+	  <attstr name="type" val="label"/>
+	  <attnum name="max len" val="45"/>
+	  <attnum name="x" val="270"/>
+	  <attnum name="y" val="404"/>
+	  <attstr name="h align" val="left"/>	
+	  <attstr name="font" val="medium"/>
+	</section>
+
+	<section name="remaininglapslabel">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="322"/>
+		<attstr name="text" val="Remaining laps:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="remainingtimelabel">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="322"/>
+		<attstr name="text" val="Remaining time:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="remaininglapstimelabel">
+		<attstr name="type" val="label"/>	  	  	  	  	  
+		<attnum name="max len" val="20"/>
+		<attstr name="tip" val="Remaining number of laps / time to race"/>
+		<attnum name="x" val="280"/>
+		<attnum name="y" val="322"/>
+		<attnum name="width" val="140"/>
+		<attstr name="h align" val="right"/>
+		<attstr name="color" val="0xFFFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+	<section name="remainingfuellabel">
+		<attstr name="type" val="label"/>	  	  	  	  	  
+		<attnum name="max len" val="10"/>
+		<attstr name="tip" val="Remaining fuel in the tank"/>
+		<attnum name="x" val="350"/>
+		<attnum name="y" val="290"/>
+		<attnum name="width" val="70"/>
+		<attstr name="h align" val="right"/>
+		<attstr name="color" val="0xFFFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+	<section name="fuelamountedit">
+		<attstr name="type" val="edit box"/>	  	  	  	  	  
+		<attnum name="max len" val="10"/>
+		<attstr name="tip" val="Number of fuel litres to add to the tank"/>
+		<attnum name="x" val="340"/>
+		<attnum name="y" val="254"/>
+		<attnum name="width" val="90"/>
+		<attstr name="h align" val="right"/>
+		<attstr name="font" val="medium"/>
+	</section>
+	<section name="repairamountedit">
+		<attstr name="type" val="edit box"/>	  	  	  	  	  
+		<attnum name="max len" val="10"/>
+		<attstr name="tip" val="Number of repair units to spend"/>
+		<attnum name="x" val="340"/>
+		<attnum name="y" val="222"/>
+		<attnum name="width" val="90"/>
+		<attstr name="h align" val="right"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="stopgobutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Stop and go"/>
+		<attstr name="tip" val="Set off again right now, it was a Stop-and-go penalty"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="130"/>
+		<attnum name="y" val="82"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="repairbutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Repair"/>
+		<attstr name="tip" val="Repair or refuel your car, and then set off again"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="82"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+  </section>
+
+  <section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-pit.jpg"/>
+	</section>	
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-raceman.png"/>
+	</section>
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>	
+
+	<section name="4">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="290"/>
+		<attstr name="text" val="Remaining fuel:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="5">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="258"/>
+		<attstr name="text" val="litres"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="6">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="258"/>
+		<attstr name="text" val="Fuel amount:"/>
+		<attstr name="tip" val="Number of fuel litres to add to the tank"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="7">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="226"/>
+		<attstr name="text" val="units"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="8">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="226"/>
+		<attstr name="text" val="Repair amount:"/>
+		<attstr name="tip" val="Number of repair units to spend"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+  </section>
+
+	<section name="music">
+		<attstr name="music file" val="data/music/qualifications.ogg"/>
+	</section>
+
+</params>

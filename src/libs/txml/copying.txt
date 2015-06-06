@@ -1,0 +1,42 @@
+This directory contains a mixture of files, sourced from different places.
+
+Previously the files used were sourced from Apache.org (I believe) and 
+licensed as MPL, which is incompatible with the GPL.
+
+So I have replaced these with files pulled shortly after expat changed 
+its license (as per copying-expat.txt). There files are very similar to the
+MPL files and the library appears to function in the same manner.
+
+The following files were pulled from:
+http://expat.cvs.sourceforge.net/viewvc/expat/expat/?hideattic=0&pathrev=V20000512
+--
+ascii.h         
+copying.txt (renamed to copying-expat.txt)
+iasciitab.h  
+utf8tab.h  
+xmlparse.c  
+xmltok.c       
+xmltok_ns.c
+asciitab.h      
+dllmain.c    
+latin1tab.h  
+xmlparse.h  
+xmltok.h
+filemap.h       
+xmldef.h   
+xmlrole.c   
+xmltok_impl.c
+codepage.h      
+gennmtab/gennmtab.c
+xmlrole.h   
+xmltok_impl.h
+--
+
+'xmlparse.h' was slightly modified in order its exported symbols have a DLL interface
+under Windows / MSVC (limited to the XMLPARSEAPI define).
+
+'nametab.h' was sourced from:
+http://expat.cvs.sourceforge.net/viewvc/expat/expat/lib/nametab.h?view=log&hideattic=0&pathrev=MAIN
+
+The remainder of the files (xml.h, xml.cpp and build files) are SpeedDreams written 
+and are GPL'ed licensed.

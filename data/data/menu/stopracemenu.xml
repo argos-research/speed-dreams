@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : stopracemenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: stopracemenu.xml 5271 2013-03-07 07:28:29Z mungewell $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Stop race menu (behind the Escape key, in the race screen)
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="stopracemenu">
+
+	<section name="properties">
+
+		<!-- button placing constants -->
+		<attnum name="xButton" val="260"/>
+		<attnum name="yTopButton" val="290"/>
+		<attnum name="buttonShift" val="32"/>
+
+		<!-- button texts and tips -->
+		<attstr name="restart.text" val="Restart Race"/>
+		<attstr name="restart.tip" val="Restart the current race"/>
+		<attstr name="abort.text" val="Abandon Race"/>
+		<attstr name="abort.tip" val="Abort the current race"/>
+		<attstr name="resume.text" val="Resume Race"/>
+		<attstr name="resume.tip" val="Return to the race"/>
+		<attstr name="controls.text" val="Adjust Controls"/>
+		<attstr name="controls.tip" val="Adjust the Player's Controls"/>
+		<attstr name="skip.text" val="Skip Session"/>
+		<attstr name="skip.tip" val="Skip the current session"/>
+		<attstr name="quit.text" val="Quit Game"/>
+		<attstr name="quit.tip" val="Quit the game"/>
+
+	</section>
+
+	<section name="template controls">
+
+	<section name="button">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attnum name="width" val="320"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>    
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+
+	</section>
+
+	<section name ="dynamic controls">
+
+	</section>
+
+	<section name="static controls">
+
+	<section name ="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-stoprace.jpg"/>
+	</section>    
+
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="305"/>
+		<attnum name="width" val="195"/>
+		<attnum name="height" val="130"/>
+		<attstr name="image" val="data/img/sd-logo-big.png"/>
+	</section>	   
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="410"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-stoprace.png"/>
+	</section>
+
+  </section>
+
+</params>

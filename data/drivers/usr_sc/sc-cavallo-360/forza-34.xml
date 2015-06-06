@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file          : drivers/usr_sc/sc-cavallo-360/forza-17
+    created       : 07/02/13
+    last modified : 07/02/13
+    copyright     : (C) 2010-2013 Xavier Bertaux
+
+    SVN version   : $Id:$
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "params.dtd">
+
+
+<params name="sc-cavallo-360">
+  <section name="Brake System">
+    <attnum name="front-rear brake repartition" min="0.3" max="0.65" val="0.4710"/>
+    <attnum name="max pressure" unit="kPa" min="5000" max="50000" val="39100"/>
+  </section>
+
+  <section name="private">
+    <attnum name="fuelperlap" val="2.25"/>
+    <attnum name="avoid speed factor" val="0.7"/>
+    <attnum name="avoid brake factor" val="0.7"/>
+    <attnum name="exit boost factor" val="1.051"/>
+    <attnum name="base speed" val="11.51"/>
+    <attnum name="base brake" val="11.05"/>
+    <attnum name="slope factor" val="0.504"/>
+    <attnum name="accel exit" val="0.35"/>
+    <attnum name="turn decel" val="0.55"/>
+    <attnum name="revs change up" val="0.82"/>
+    <attnum name="revs change down" val="0.62"/>
+    <attnum name="revs change down max" val="0.74"/>
+    <attnum name="int margin" val="1.7"/>
+    <attnum name="ext margin" val="1.1"/>
+    <attnum name="abs slip" val="1.95"/>
+    <attnum name="tcl slip" val="4"/>
+    <attnum name="bump caution" val="0.4"/>
+    <attnum name="raceline debug" val="1"/>
+	<attnum name="offtrack allowed" val="0"/>
+  </section>
+</params>

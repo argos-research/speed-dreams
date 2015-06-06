@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : viper-gts-r.xml
+    created              : Sat Mar  3 18:46:37 CET 2001
+    copyright            : (C) 2001 by Eric Espié                         
+    email                : Eric.Espie@torcs.org   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="sc-murasama-nsx" type="template">
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" min="0.4" max="0.70" val="0.57"/>
+		<attnum name="max pressure" unit="kPa" min="100" max="35000"  val="34760"/>
+	</section>
+
+	<section name="private">
+	  	<attnum name="fuelperlap" val="1.37"/>
+		<attnum name="avoid speed factor" val="0.80"/>
+		<attnum name="avoid brake factor" val="0.80"/>
+		<attnum name="base speed" val="9.30"/>
+		<attnum name="base brake" val="20.10"/>
+
+		<attnum name="0 bgn" val="1430"/>
+		<attnum name="0 end" val="1490"/>
+		<attnum name="0 rl left margin" val="3"/>
+		<attnum name="0 base speed" val="8"/>
+	</section>
+
+</params>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

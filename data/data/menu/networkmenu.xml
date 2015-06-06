@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : networkmenu.xml
+    created              : 2011
+    copyright            : (C) 2011 by Jean-Philippe Meuret
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: networkmenu.xml 4472 2012-02-04 17:56:04Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+    Network race menu for selecting whether to host or to join an online race
+
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="networkmenu">	
+
+  <section name="dynamic controls">
+
+	<section name="TitleLabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="40"/>
+		<attnum name="x" val="361"/>
+		<attnum name="y" val="404"/>
+		<attstr name="h align" val="right"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="HostButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Host online race"/>
+		<attstr name="tip" val="Host and create an multiplayer online race (as a server)"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="290"/>
+		<attnum name="width" val="320"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>      
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+
+	<section name="JoinButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Join online race"/>
+		<attstr name="tip" val="Join an multiplayer online race hosted by a remote server (as a client)"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="258"/>
+		<attnum name="width" val="320"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>  
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+	<section name="BackButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Back"/>
+		<attstr name="tip" val="Return to previous menu"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="226"/>
+		<attnum name="width" val="320"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/> 
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="33"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused-last.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed-last.png"/>
+	</section>
+
+  </section>
+
+  <section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-networkrace.jpg"/>
+	</section>
+
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-raceman.png"/>
+	</section>
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>	
+
+  </section>
+
+</params>

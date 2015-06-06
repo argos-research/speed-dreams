@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file          : drivers/simplix_sc/sc-lynx-220/migrants-17
+    created       : 05/14/13
+    last modified : 05/14/13
+    copyright     : (C) 2010-2013 Wolf-Dieter Beelitz
+
+    SVN version   : $Id:$
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "params.dtd">
+
+
+<params name="sc-lynx-220">
+  <section name="Brake System">
+    <attnum name="front-rear brake repartition" min="0.5" max="0.65" val="0.5165"/>
+    <attnum name="max pressure" unit="kPa" min="5000" max="40000" val="39600"/>
+    <attnum name="brake corr lr" min="0" max="0.5" val="0.2797"/>
+    <attnum name="brake corr fr" min="0" max="0.5" val="0.09002"/>
+  </section>
+
+  <section name="simplix private">
+    <attnum name="genetic optimisation" min="0" max="1" val="0"/>
+    <attnum name="initial fuel" min="-1" max="90" val="-1"/>
+    <attnum name="scale brake" min="0.5" max="1.5" val="1.49"/>
+    <attnum name="scale mu" min="0.5" max="1.5" val="0.87"/>
+    <attnum name="scale bump" min="0.001" max="0.6" val="0.168"/>
+    <attnum name="base mode" min="0.97" max="1.03" val="1.00631"/>
+    <attnum name="base scale" min="1" max="1.05" val="1.00685"/>
+    <attnum name="BC_P" min="0" max="10" val="0.6037"/>
+    <attnum name="BC_I" min="0.0001" max="1" val="0.0058"/>
+    <attnum name="BC_D" min="0" max="10" val="1.0509"/>
+    <attnum name="BC_MAX" min="0" max="100" val="0.71"/>
+    <attnum name="BC_MIN" min="-100" max="0" val="-0.9"/>
+    <attnum name="lookaheadfactor" min="0.01" max="0.09" val="0.079"/>
+    <attnum name="side mu" min="0.8" max="1" val="0.95"/>
+    <attnum name="side brake" min="0.8" max="1" val="0.95"/>
+    <attnum name="pit test stop" min="0" max="1" val="0"/>
+    <attnum name="qualification" min="0" max="1" val="0"/>
+    <attnum name="reserve" min="0" max="20000" val="2000"/>
+    <attnum name="start fuel" min="-1" max="100" val="-1"/>
+    <attnum name="fuelper100km" min="1" max="100" val="70"/>
+    <attnum name="avoid width" min="0" max="3" val="0.25"/>
+    <attnum name="scale avoid" min="1" max="20" val="10"/>
+    <attnum name="scale bump outer" min="0" max="2" val="0.6"/>
+    <attnum name="scale min mu" min="0.1" max="1" val="0.95"/>
+    <attnum name="scale steer" min="0.1" max="2" val="1"/>
+    <attnum name="stay together" min="10" max="2000" val="10"/>
+    <attnum name="length margin" min="1" max="10" val="2"/>
+  </section>
+
+</params>

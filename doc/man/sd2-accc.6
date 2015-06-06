@@ -1,0 +1,103 @@
+.TH "Speed Dreams 2 multi-layer generator for tracks" "6" "March 2012" "Speed Dreams 2.x" "Games"
+.SH NAME
+.LP
+sd2-accc \- Speed Dreams 2 multi-layer generator for tracks
+.SH SYNOPSIS
+\fBsd2-accc\fP [option] <input .ac file> < output .acc file> [dist] [-order order-string]
+.SH DESCRIPTION
+sd2-accc is intended to add multi-texturing to the track models
+built in the native Ac3d file format.
+.SH OPTIONS
+.TP
+.B \-strip
+stripify any ac3d output models
+.TP
+.B +o
+ac3d to ac3d: the result file is optimized in using groups by zone of 
+track track must be named TKMNxxx dist is used to determine the distance
+of the objects
+.TP
+.B +om
+ac3d to ac3d: the result is a vertex merged unique obj for smooth car 
+only
+.TP
+.B -o
+ac3d to obj
+.B +s
+ac3d to ac3d with strips (used for cars)
+.TP
+.B +es -angle-of-smooth
+ac3d to ac3d with strips (used for cars) and extended ac3d file output
+(computed normals) angle is in degrees:
+example: \fI+es 80.0 clkdtm_o.ac clkdtm.ac\fP
+the output file will also contains the secondary textcoord for the env sliding
+.TP
+.B +et
+ac3d to ac3d with triangles (used for cars) and extended ac3d file output (normals normals)
+.TP
+.B +etn
+ac3d to ac3d with triangles no split and extended ac3d file output (normals normals)
+.TP
+.B +shad
+ac3d to ac3d with triangles, create a new ac3d file used for track shading vertical mapping of a single texture
+.TP
+.B -order order-string
+only used with \fB+es\fP , \fB+s\fP and \fB+et\fP \fIorderstring\fP is the order of the objects during the save for example: \fIHB;OB;OBM\fP is the names of the objet separate by a semicolon for imported NFS cars the object name \fIHB\fP must be used instead of: \fIHB\fP
+.TP
+.B -g output filename
+for grouping multilayer ac3d track
+.TP
+.B -l0 input filename
+the base geometry
+.TP
+.B -l1 input filename
+the base geometry map-tiled
+.TP
+.B -l2 input filename
+the base geometry skids/and grass details
+.TP
+.B -l3 input filename
+the base geometry shadows
+.TP
+.B -d3 val
+the max distance of groups in tkmn
+.TP
+.B -d2 val
+the distance of group 2 in tkmn
+.TP
+.B -d1 val
+the distance of group 1 in tkmn
+.TP
+.B -S val
+the distance of splitting for TERRAIN* objects
+.TP
+.B -es
+for extended ac3d file format for strips
+.TP
+.B -nts
+no texture split (for debug)
+.SH LICENSE
+sd2-accc is licensed under the GNU General Public License, version 2 or later.
+.SH COPYRIGHT
+The Speed Dreams Team.
+.SH AUTHOR
+This manual page was written by Jean-Philippe Meuret <pouillot@users.sourceforge.net>,
+based on TORCS 1.2.2 version by Rudy Godoy <rudy@kernel-panik.org>,
+for the Debian project ; of course, it may be used by any other.
+.SH BUG REPORTS
+.br
+In case you discover a bug (sure you won't ;-), please report it here:
+.br
+http://sourceforge.net/apps/trac/speed-dreams/report/3
+.br
+of course after checking that it is not already filed.
+.SH SEE ALSO
+Web site: http://www.speed-dreams.org/
+.br
+Community: http://community.speed-dreams.org/
+.br
+Sourceforge pages: http://sourceforge.net/projects/speed-dreams/
+.br
+Wiki: http://sourceforge.net/apps/trac/speed-dreams/wiki
+.br
+speed-dreams-2(6), sd2-trackgen(6), sd2-menuview(6), sd2-nfs2ac(6), sd2-nfsperf(6)

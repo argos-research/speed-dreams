@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : racemanmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger, 2010 Jean-Philippe Meuret
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: racemanmenu.xml 4605 2012-03-24 20:26:34Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Race manager menu (where you load, save, configure, start ... a race, whichever its type,
+    and have a preview of the race : type, track, opponents)
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="racemanmenu">
+  
+<section name= "dynamic controls">
+
+	<section name="RaceModeTitleLabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="40"/>
+		<attnum name="x" val="361"/>
+		<attnum name="y" val="404"/>
+		<attstr name="h align" val="right"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="TrackTitleLabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="40"/>
+		<attnum name="x" val="366"/>
+		<attnum name="y" val="404"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+    <section name="BackButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Back"/>
+		<attstr name="tip" val="Return to Racing Mode menu"/>
+		<attnum name="x" val="50"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="60"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="ConfigurePlayersButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Players"/>
+		<attstr name="tip" val="Configure players and their controls"/>
+		<attnum name="x" val="140"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="100"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="ConfigureRaceButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Configure"/>
+		<attstr name="tip" val="Configure the race: opponents, labs, weather and cars"/>
+		<attnum name="x" val="250"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="100"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="SaveRaceConfigButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Save"/>
+		<attstr name="tip" val="Save the configured race, event or career"/>
+		<attnum name="x" val="370"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="60"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="LoadRaceConfigButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Load"/>
+		<attstr name="tip" val="Load a previously saved race, event or career"/>
+		<attnum name="x" val="460"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="60"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="LoadRaceResultsButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Load"/>
+		<attstr name="tip" val="Load a previously interrupted race, event or career from the results file"/>
+		<attnum name="x" val="460"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="60"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="ResumeRaceButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Resume"/>
+		<attstr name="tip" val="Resume the loaded race for the current race, event or career"/>
+		<attnum name="x" val="550"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="60"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="StartNewRaceButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Start"/>
+		<attstr name="tip" val="Start a brand new race"/>
+		<attnum name="x" val="550"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="60"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+    
+	<section name="TrackOutlineImage">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="40"/>
+		<attnum name="y" val="114"/>
+		<attnum name="width" val="192"/>
+		<attnum name="height" val="192"/>
+		<attstr name="image" val="data/img/notrackoutline.png"/>
+	</section>
+
+	<section name="CompetitorsScrollList">
+		<attstr name="type" val="scroll list"/>                  
+		<attnum name="x" val="262"/>
+		<attnum name="y" val="98"/>
+		<attnum name="width" val="316"/>
+		<attnum name="height" val="270"/>
+		<attstr name="font" val="small_t"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="selected color" val="0xFFCC00"/>
+		<attstr name="scrollbar pos" val="right"/>
+	</section>  
+
+</section>
+
+<section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>	
+
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-raceman.png"/>
+	</section>
+
+</section>
+
+</params>

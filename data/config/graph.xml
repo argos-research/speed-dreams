@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : graph.xml
+    created              : Sun Dec  2 11:58:59 CET 2001
+    copyright            : (C) 2001 by Eric Espi�                         
+    email                : Eric.Espie@torcs.org   
+    version              : $Id: graph.xml 5775 2014-06-18 01:57:03Z mungewell $                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
+
+<params name="graph" type="param" mode="mw" version="1.14">
+  <section name="Graphic">
+    <attnum name="smoke value" val="300"/>
+    <attnum name="smoke interval" val="0.01"/>
+    <attnum name="smoke duration" val="2.0"/>
+
+    <attnum name="skid value" val="20"/>
+    <attnum name="skid length" val="300"/>
+    <attnum name="skid interval" val="0.05"/>
+
+    <attnum name="fov factor" unit="%" val="100"/>
+    <attnum name="LOD Factor" val="1"/>
+    <attnum name="sky dome distance" val="80000"/>
+    <attstr name="dynamic sky dome" val="enabled"/>
+    <attnum name="precipitation density" unit="%" val="100"/>
+    <attnum name="cloudlayer" val="1"/>
+    <attstr name="background skydome" val="enabled"/>
+	<attstr name="background type" val="background"/>
+	<attnum name="visibility" val="12000"/>
+	<attstr name="spectator LOD" val="none"/>
+	<attstr name="forest LOD" val="none"/>
+	<attstr name="tree LOD" val="none"/>
+	<attstr name="parking LOD" val="none"/>
+    <attstr name="span splits" val="no"/>
+    <attnum name="bezel compensation" unit="%" val="110"/>
+    <attnum name="screen distance" val="1.0"/>
+    <attnum name="arc ratio" val="1.0"/>
+    <attstr name="monitor type" val="none"/>
+	<attstr name="shadow type" val="none"/>
+	<attnum name="texture shadow size" val="4096"/>		
+	<attstr name="texture environment" val="full"/>		
+	<attnum name="environment size" val="256"/>
+  </section>
+
+  <section name="Playable Cameras Distance of Views">
+    <attnum name="Front Level Group Global" val="600"/>
+    <attnum name="Front Level Group 1" val="400"/>
+    <attnum name="Front Level Group 2" val="300"/>
+    <attnum name="Front Level Group 3" val="200"/>
+
+    <attnum name="Rear Level Group Global" val="700"/>
+    <attnum name="Rear Level Group 1" val="500"/>
+    <attnum name="Rear Level Group 2" val="300"/>
+    <attnum name="Rear Level Group 3" val="150"/>
+
+    <attnum name="Front Level Map 1" val="300"/>
+    <attnum name="Front Level Map 2" val="200"/>
+    <attnum name="Front Level Map 3" val="100"/>
+
+    <attnum name="Rear Level Map 1" val="300"/>
+    <attnum name="Rear Level Map 2" val="200"/>
+    <attnum name="Rear Level Map 3" val="100"/>
+
+    <attnum name="Level Factor" val="1.0"/>
+    <attnum name="Map Factor" val="1.0"/>
+  </section>
+
+  <section name="UnPlayable Cameras Distance of Views">
+    <attnum name="Front Level Group Global" val="400"/>
+    <attnum name="Front Level Group 1" val="350"/>
+    <attnum name="Front Level Group 2" val="300"/>
+    <attnum name="Front Level Group 3" val="200"/>
+
+    <attnum name="Rear Level Group Global" val="400"/>
+    <attnum name="Rear Level Group 1" val="350"/>
+    <attnum name="Rear Level Group 2" val="300"/>
+    <attnum name="Rear Level Group 3" val="200"/>
+
+    <attnum name="Front Level Map 1" val="300"/>
+    <attnum name="Front Level Map 2" val="250"/>
+    <attnum name="Front Level Map 3" val="200"/>
+
+    <attnum name="Rear Level Map 1" val="300"/>
+    <attnum name="Rear Level Map 2" val="250"/>
+    <attnum name="Rear Level Map 3" val="200"/>
+
+    <attnum name="Level Factor" val="1.0"/>
+    <attnum name="Map Factor" val="1.0"/>
+  </section>
+
+
+  <section name="TV Director View">
+    <attnum name="change camera interval" val="30"/>
+    <attnum name="event interval" val="5"/>
+    <attnum name="proximity threshold" val="25.0"/>
+  </section>
+
+
+  <section name="Display Mode">
+    <section name="Player">
+      <attnum name="camera" val="0"/>
+      <attnum name="camera head list" val="0"/>
+    </section>
+    <section name="0">
+      <attnum name="camera" val="0"/>
+      <attnum name="camera head list" val="0"/>
+      <attnum name="board width" val="100"/>
+      <attnum name="speedometer vertical position" val="0"/>
+    </section>
+  </section>
+
+
+  <section name="Dash settings">
+    <section name="colors">
+      <!-- Usual dash text -->
+      <section name="normal color">
+        <attnum name="red" val="1.0"/>
+        <attnum name="green" val="1.0"/>
+        <attnum name="blue" val="1.0"/>
+        <attnum name="alpha" val="1.0"/>
+      </section>
+
+      <!-- Low fuel, high damage -->
+      <section name="danger color">
+        <attnum name="red" val="1.0"/>
+        <attnum name="green" val="0.0"/>
+        <attnum name="blue" val="0.0"/>
+        <attnum name="alpha" val="1.0"/>
+      </section>
+
+      <!-- Damage OK -->
+      <section name="OK color">
+        <attnum name="red" val="0.0"/>
+        <attnum name="green" val="1.0"/>
+        <attnum name="blue" val="0.0"/>
+        <attnum name="alpha" val="1.0"/>
+      </section>
+
+      <!-- Some kind of lap time math problem -->
+      <section name="error color">
+        <attnum name="red" val="1.0"/>
+        <attnum name="green" val="0.0"/>
+        <attnum name="blue" val="1.0"/>
+        <attnum name="alpha" val="1.0"/>
+      </section>
+
+      <!-- ABS/SPD/TCS OFF -->
+      <section name="inactive text color">
+        <attnum name="red" val="0.3"/>
+        <attnum name="green" val="0.3"/>
+        <attnum name="blue" val="0.3"/>
+        <attnum name="alpha" val="1.0"/>
+      </section>
+
+      <!-- Lap count, pilot name, current car on map, ABS/SPD/TCS ON -->
+      <section name="emphasized color">
+        <attnum name="red" val="1.0"/>
+        <attnum name="green" val="0.878"/>
+        <attnum name="blue" val="0.0"/>
+        <attnum name="alpha" val="1.0"/>
+      </section>
+
+      <!-- Cars on map and board ahead of current car -->
+      <section name="car ahead color">
+        <attnum name="red" val="0.31"/>
+        <attnum name="green" val="0.968"/>
+        <attnum name="blue" val="0.933"/>
+        <attnum name="alpha" val="1.0"/>
+      </section>
+
+      <!-- Cars on map and board behind the current car -->
+      <section name="car behind color">
+        <attnum name="red" val="0.054"/>
+        <attnum name="green" val="0.227"/>
+        <attnum name="blue" val="0.439"/>
+        <attnum name="alpha" val="1.0"/>
+      </section>
+
+      <!-- Almost all text in arcade mode -->
+      <section name="arcade color">
+        <attnum name="red" val="0.9"/>
+        <attnum name="green" val="0.9"/>
+        <attnum name="blue" val="0.15"/>
+        <attnum name="alpha" val="1.0"/>
+      </section>
+
+      <!-- Panel backgrounds (leaderboard, driver info) -->
+      <section name="dash panel background color">
+        <attnum name="red" val="0.039"/>
+        <attnum name="green" val="0.086"/>
+        <attnum name="blue" val="0.184"/>
+        <attnum name="alpha" val="0.8"/>
+      </section>
+    </section>
+  </section>
+</params>

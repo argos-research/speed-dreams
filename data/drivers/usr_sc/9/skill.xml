@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="Skill" type="template">
+
+ <!-- Raymond Sommer - very skillful, french national hero               -->
+
+ <section name="skill">
+
+  <!-- This skill level is added to the global skill level set in        -->
+  <!-- raceman/config/extra/skill.xml to provide a unique value for      -->
+  <!-- each driver.  The values should be between 0 and 1, with 0 being  -->
+  <!-- the highest skill level.                                          -->
+  <attnum name="level" min="0.0" max="1.0" val="0.3"/>
+
+  <!-- The aggression value is used to control how cautious or otherwise -->
+  <!-- a driver is in overtaking opponents.  Positive values make a      -->
+  <!-- driver take more risks, while negative values make them more      -->
+  <!-- careful about when they choose to overtake.  Don't go too high    -->
+  <!-- with the positive values!                                         -->
+  <attnum name="aggression" min="-3.0" max="1.5" val="-0.3"/>
+
+ </section>
+
+</params>

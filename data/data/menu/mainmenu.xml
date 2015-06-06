@@ -1,0 +1,188 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<!--
+    file                 : helpmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: mainmenu.xml 5192 2013-02-23 23:10:16Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Main / welcome menu
+
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="mainmenu">	
+
+	<section name="dynamic controls">
+
+	<section name="race">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>	  
+		<attstr name="text" val="Race"/>
+		<attstr name="tip" val="Setup and start a race, championship or career"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="290"/>
+		<attnum name="width" val="320"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/> 
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+	
+	<section name="weekend">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>	  
+		<attstr name="text" val="Race Weekend"/>
+		<attstr name="tip" val="Race Weekend mode Career"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="258"/>
+		<attnum name="width" val="320"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/> 
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+
+	<section name="configure">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Players &amp; Controls"/>
+		<attstr name="tip" val="Create players and configure their controls"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="258"/>
+		<attnum name="width" val="320"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/> 
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+
+	<section name="options">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>	  	  
+		<attstr name="text" val="Options"/>
+		<attstr name="tip" val="Options for graphics, sound and opponents"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="226"/>
+		<attnum name="width" val="320"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/> 
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+
+	<section name="credits">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>	      
+		<attstr name="text" val="Credits"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="tip" val="All people behind Speed Dreams"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="194"/>
+		<attnum name="width" val="320"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/> 
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+
+	<section name="quit">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>	  	  
+		<attstr name="text" val="Quit"/>
+		<attstr name="tip" val="Quit Speed Dreams"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="162"/>
+		<attnum name="width" val="320"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/> 
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="33"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused-last.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed-last.png"/>
+	</section>
+
+	</section>
+  
+	<section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="305"/>
+		<attnum name="width" val="195"/>
+		<attnum name="height" val="130"/>
+		<attstr name="image" val="data/img/sd-logo-big.png"/>
+	</section>	
+
+	<section name="2">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-main.jpg"/>
+	</section>	
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-welcome.png"/>
+	</section>
+
+	</section>
+
+</params>

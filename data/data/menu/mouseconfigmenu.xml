@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : mouseconfigmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: mouseconfigmenu.xml 4605 2012-03-24 20:26:34Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Mouse calibration menu
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="mouseconfigmenu">	
+
+	<section name="dynamic controls">
+
+	<section name="instructionlabel">
+		<attstr name="type" val="label"/>	  	  	  	  	  
+		<attnum name="max len" val="60"/>
+		<attnum name="x" val="170"/>
+		<attnum name="y" val="100"/>
+		<attnum name="width" val="300"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0x00CCFF"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="cancelbutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Cancel"/>
+		<attstr name="tip" val="Cancel changes"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="130"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="resetbutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Reset"/>
+		<attstr name="tip" val="Restart calibration procedure"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="288"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="nextbutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Next"/>
+		<attstr name="tip" val="Proceed to the next calibration page"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="460"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="donebutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Done"/>
+		<attstr name="tip" val="Done, return to control config"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="460"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+  </section>
+
+	<section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-mousecal.jpg"/>
+	</section>	
+
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-mouseconfig.png"/>
+	</section>
+
+	</section>
+
+</params>

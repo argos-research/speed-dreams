@@ -1,0 +1,12 @@
+;
+; telemetry.def
+;
+
+LIBRARY	telemetryv1
+
+SECTIONS .data READ WRITE
+
+EXPORTS
+	moduleWelcome
+	moduleInitialize
+	moduleTerminate

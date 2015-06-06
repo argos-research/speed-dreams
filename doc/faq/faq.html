@@ -1,0 +1,801 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!--
+        file        : faq.html
+        created     : Wed Feb  25 18:27:13 CET 2004
+        copyright   : (C) 2004-2006 by Bernhard Wymann, 2009 The Speed Dreams Team
+        web         : speed-dreams.sourceforge.net
+        version     : $Id: faq.html 2921 2010-10-17 19:09:11Z pouillot $
+
+        Permission is granted to copy, distribute and/or modify this document
+        under the terms of the GNU Free Documentation License, Version 1.2
+        or any later version published by the Free Software Foundation;
+        with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+        Texts.  A copy of the license is available at http://www.gnu.org/copyleft.
+-->
+
+<head>
+  <title>Speed Dreams Frequently Asked Questions</title>
+  <link rel="stylesheet" type="text/css" href="../../css/format.css"/>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+  <meta name="description" content="Speed Dreams frequently asked questions"/>
+  <meta name="author" content="Bernhard Wymann, Jean-Philippe Meuret"/>
+  <meta name="keywords" content="speed-dreams, installation, robot, driver, tutorial, racing, problem, screen"/>
+  <script src="../../js/utilities.js" type="text/javascript"></script>
+</head>
+
+<body bgcolor="#ffffff">
+  <table class="maincontent">
+    <tr>
+      <td class="maincontent">
+
+        <a name="topofthepage">
+                   <h1>The Official Speed Dreams 1.4.x FAQ</h1>
+                </a>
+
+                <h2>0. About this Document.</h2>
+                <ul style="list-style-type:disk; color:black;">
+                  <li><h3><a href="#c0_1">0.1 License and copyright.</a></h3></li>
+                  <li><h3><a href="#c0_2">0.2 Document version.</a></h3></li>
+                </ul>
+
+                <h2>1. About Speed Dreams in general.</h2>
+                <ul style="list-style-type:disk; color:black;">
+                  <li><h3><a href="#c1_1">1.1 What is Speed Dreams ?</a></h3></li>
+                  <li><h3><a href="#c1_2">1.2 Who develops Speed Dreams ?</a></h3></li>
+                  <li><h3><a href="#c1_3">1.3 Is documentation available ?</a></h3></li>
+                  <li><h3><a href="#c1_4">1.4 Which features has Speed Dreams ?</a></h3></li>
+                  <li><h3><a href="#c1_5">1.5 What are the future plans ?</a></h3></li>
+                  <li><h3><a href="#c1_6">1.6 Why don't you ... ?</a></h3></li>
+                  <li><h3><a href="#c1_7">1.7 What do you mean with robot ?</a></h3></li>
+                  <li><h3><a href="#c1_8">1.8 Why don't you replace GLUT with SDL ?</a></h3></li>
+                  <li><h3><a href="#c1_9">1.9 Why don't you replace PLib with OGRE 3D / OSG ?</a></h3></li>
+                  <li><h3><a href="#c1_10">1.10 Are there official championships ?</a></h3></li>
+                  <li><h3><a href="#c1_11">1.11 Should I start my own racing sim project ?</a></h3></li>
+                </ul>
+
+                <h2>2. Platforms and Requirements.</h2>
+                <ul style="list-style-type:disk; color:black;">
+                  <li><h3><a href="#c2_1">2.1 On which operating systems does Speed Dreams run ?</a></h3></li>
+                  <li><h3><a href="#c2_2">2.2 What are the hardware requirements ?</a></h3></li>
+                  <li><h3><a href="#c2_3">2.3 What are the software requirements ?</a></h3></li>
+                </ul>
+
+                <h2>3. Installation.</h2>
+                <ul style="list-style-type:disk; color:black;">
+                  <li><h3><a href="#c3_1">3.1 How do I install Speed Dreams ?</a></h3></li>
+                </ul>
+
+                <h2>4. Problems and Solutions.</h2>
+                <ul style="list-style-type:disk; color:black;">
+                  <li><h3><a href="#c4_1">4.1 General problem solving approach.</a></h3></li>
+
+                  <li><h3><a href="#c4_2">4.2 Build Problems.</a></h3></li>
+                  <ul style="list-style-type:disk; color:black;">
+                        <li><h4><a href="#c4_2_1">4.2.1 ./configure reports "configure: error: Can't find GL/glut.h".</a></h4></li>
+                        <li><h4><a href="#c4_2_2">4.2.2 ./configure reports "configure: error: Can't find plib/ssg.h" or "plib/ul.h".</a></h4></li>
+                        <li><h4><a href="#c4_2_3">4.2.3 Speed Dreams does not compile on Windows.</a></h4></li>
+                        <li><h4><a href="#c4_2_4">4.2.4 FreeGLUT compilation fails with NVidia OpenGL driver.</a></h4></li>
+                        <li><h4><a href="#c4_2_5">4.2.5 Speed Dreams does not compile with make: 'Make-config' is up to date.</a></h4></li>
+                        <li><h4><a href="#c4_2_6">4.2.6 Compiling stops with "error: `GL_TEXTURE0_ARB' undeclared".</a></h4></li>
+                        <li><h4><a href="#c4_2_7">4.2.7 Compiling fails with "The syntax of
+                        the command is incorrect.  Error executing c:\winnt\system32\cmd.exe".</a></h4></li>
+                        <li><h4><a href="#c4_2_8">4.2.8 ./configure fails in "checking for sin in -lm" on Gentoo.</a></h4></li>
+                  </ul>
+
+                  <li><h3><a href="#c4_3">4.3 Startup and Runtime Problems.</a></h3></li>
+                  <ul style="list-style-type:disk; color:black;">
+                        <li><h4><a href="#c4_3_1">4.3.1 Broken OpenGL/DRI drivers or '~' file.</a></h4></li>
+                        <li><h4><a href="#c4_3_2">4.3.2 Multiple GLU libraries.</a></h4></li>
+                        <li><h4><a href="#c4_3_3">4.3.3 Old un-removed Speed Dreams version present.</a></h4></li>
+                        <li><h4><a href="#c4_3_4">4.3.4 Speed Dreams reports missing files and crashes.</a></h4></li>
+                        <li><h4><a href="#c4_3_5">4.3.5 My screen resolution is not supported.</a></h4></li>
+                        <li><h4><a href="#c4_3_6">4.3.6 I have a problem with the fullscreen mode.</a></h4></li>
+                        <li><h4><a href="#c4_3_7">4.3.7 Speed Dreams graphics is slow and it crashes on "READY!"</a></h4></li>
+                        <li><h4><a href="#c4_3_8">4.3.8 Speed Dreams on Windows hangs after &quot;READY!&quot;</a></h4>
+                        <li><h4><a href="#c4_3_9">4.3.9 Speed Dreams does not start and reports slDSP:.</a></h4></li>
+                        <li><h4><a href="#c4_3_10">4.3.10 The cars are flickering.</a></h4></li>
+                        <li><h4><a href="#c4_3_11">4.3.11 I use ALSA and Speed Dreams does not start up.</a></h4></li>
+                        <li><h4><a href="#c4_3_12">4.3.12 Speed Dreams does not start up and complains about display requirements.</a></h4></li>
+                        <li><h4><a href="#c4_3_13">4.3.13 The racetrack mini map is just a blue square.</a></h4></li>
+                        <li><h4><a href="#c4_3_14">4.3.14 Speed Dreams runs but without textures.</a></h4></li>
+                        <li><h4><a href="#c4_3_15">4.3.15 Speed Dreams on Windows crashes after "New Race".</a></h4></li>
+                        <li><h4><a href="#c4_3_16">4.3.16 Multiple OpenAL libraries.</a></h4></li>
+                  </ul>
+
+                  <li><h3><a href="#c4_4">4.4 Other Problems.</a></h3></li>
+                  <ul style="list-style-type:disk; color:black;">
+                        <li><h4><a href="#c4_4_1">4.4.1 How do I capture a movie ?</a></h4></li>
+                        <li><h4><a href="#c4_4_2">4.4.2 Can I develop a robot using Windows ?</a></h4></li>
+                        <li><h4><a href="#c4_4_3">4.4.3 Is my joystick / steering wheel / gamepad supported ?</a></h4></li>
+                        <li><h4><a href="#c4_4_4">4.4.4 How do I set up a multiplayer game ?</a></h4></li>
+                        <li><h4><a href="#c4_4_5">4.4.5 I can't adjust the joystick / wheel / gamepad axis centering.</a></h4></li>
+                  </ul>
+                </ul>
+
+                <h2>5. Problem reporting.</h2>
+                <ul style="list-style-type:disk; color:black;">
+                  <li><h3><a href="#c5_1">5.1 When do I report a problem ?</a></h3></li>
+                  <li><h3><a href="#c5_2">5.2 How and where do I report a problem ?</a></h3></li>
+                </ul>
+
+                <h2>6. Links.</h2>
+                <ul style="list-style-type:disk; color:black;">
+                  <li><h3><a href="#c6_1">6.1 Speed Dreams.</a></h3></li>
+                  <li><h3><a href="#c6_2">6.2 TORCS.</a></h3></li>
+                  <li><h3><a href="#c6_3">6.3 Libraries and Drivers.</a></h3></li>
+                  <li><h3><a href="#c6_4">6.4 Other.</a></h3></li>
+                </ul>
+
+
+                <br/><h2>0. About this Document.</h2>
+
+                <h3><a name="c0_1">0.1 License and copyright.</a></h3>
+                <p>
+                  Copyright (c) 2004-2006 Bernhard Wymann, 2009 <a href="mailto:pouillot@users.sourceforge.net">JeanPhilippe Meuret</a>.
+                </p>
+                <p>
+                Permission is granted to copy, distribute and/or modify this document
+                under the terms of the GNU Free Documentation License, Version 1.2
+                or any later version published by the Free Software Foundation;
+                with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+                Texts.  A copy of the license is available <a href="http://www.gnu.org/copyleft">here</a>.
+                </p>
+
+                <h3><a name="c0_2">0.2 Document version.</a></h3>
+                <p>
+                        2009-25-12.
+                </p>
+
+
+                <br/><h2>1. About Speed Dreams in general.</h2>
+
+                <h3><a name="c1_1">1.1 What is Speed Dreams ?</a></h3>
+                <p>
+          <a href="http://speed-dreams.sourceforge.net" target="_parent">Speed Dreams</a>, <b>an Open Motorsport Sim</b>,
+          is a motorsport simulation, which allows you to drive in races against AI opponents (simulated by
+                  the computer). You can also develop your own computer-controlled driver (also called a robot) in
+                  C or C++ (or even in Delphi, as <a href="http://?????">Wolf-Dieter Beelitz</a>). 
+                </p>
+                <p>
+                  Speed Dreams is "Open Source" (GNU General Public License Version 2 or later).
+                </p>
+
+                <h3><a name="c1_2">1.2 Who develops Speed Dreams ?</a></h3>
+                <p>
+          The Speed Dreams project was forked from <a href="http://www.torcs.org" target="_parent">TORCS</a>
+                  in late 2008 by Xavier Bertaux and Jean-Philippe Meuret in order to deliver
+                  a better end-user experience through new and visually improved tracks,
+                  new cars sets with more realistic handling and improved liveries,
+                  more challenging AI opponents, and many other exciting new features to come soon (network, force feedback, career mode ...).
+                </p>
+                <p>
+                  Some long time TORCS-addicted developers and artists immediately joined them in the core developers team : 
+                  Andrew Sumner, Brian Gavin, Eckhard Jager, Mart Kelder and Wolf-Dieter Beelitz,
+                  quickly followed by Gabor Kmetyko and Haruna Say.
+                  Christos Dimitrakakis, Sebastian Heni and Kristof Kaly-Kullai also contribute a lot.
+                  Visit the official <a href="http://speed-dreams.sourceforge.net" target="_parent">Speed Dreams site</a>, the under-construction <a href="http://sourceforge.net/apps/trac/speed-dreams">SF.net Wiki</a> and the in-game credits pages for more information, .
+                </p>
+                <p>
+                  In the development team, <b>democracy</b> is the rule : we try and take time
+                  to discuss about everything and decide together what and how we work for the project.
+                  But we also believe in freeness and responsability : once things are clear,
+                  one or multiple members often get the mission to achieve what's been decided,
+                  based on their will, skills, interest on the mission, and trust from the team.
+                </p>
+
+
+                <h3><a name="c1_3">1.3 Is documentation available ?</a></h3>
+                <p>
+                  Yes, there is some documentation available. Look at the official
+                  <a href="http://speed-dreams.sourceforge.net" target="_parent">Speed Dreams site</a> and on
+                  the under-construction <a href="http://sourceforge.net/apps/trac/speed-dreams">SF.net Wiki</a>. 
+                  You can find installation instructions <a href="http://speed-dreams.svn.sourceforge.net/viewvc/speed-dreams/trunk/INSTALL?view=markup">here</a>,
+                  the TORCS robot tutorial <a href="http://www.torcs.org">here</a>,
+                  instructions about how to use Speed Dreams <a href="http://???/how_to_driver.html">here</a>. 
+                  A very brief track howto is available
+                  <a href="http://www.idiap.ch/~dimitrak/torcs/track-howto.html" target="_parent">here</a>,
+                  there is as well a <a href="http://katergo.rege.org/projects/trackeditor" target="_parent">track editor</a> available,
+                  and Andrew Sumner is currently creating a <a href="http://???">car building tutorial</a>.
+                </p>
+
+                <h3><a name="c1_4">1.4 Which features has Speed Dreams ?</a></h3>
+                <p>
+                  There are 4 different car sets featuring a total of 28 cars, AI opponents for nearly all of these (except for the LS-GT1 car set : WIP) and 38 tracks to race on.
+                  You can steer with a joystick, a gamepad or a steering wheel with pedals, if it's supported by your platform.
+                  It is also possible to drive with the mouse or the keyboard, but it's not easy. Graphic features
+                  lighting, smoke, exhaust flames, skidmarks and glowing brake disks. The simulation features a simple damage
+                  model, collisions, tire and wheel properties
+          (springs, dampers, stiffness, ...), aerodynamics (ground effect, spoilers, ...) and much more.
+                  The gameplay allows different types of races from the simple practice session up to the championship (and soon a full racer life-time career mode).
+                  Enjoy racing against your friends in the split screen mode with up to four human players.
+                </p>
+
+                <h3><a name="c1_5">1.5 What are the future plans ?</a></h3>
+                <p>
+                  Besides maintenance and bugfixing, the develoment team is currently working
+                  on network gaming, racer life-time career mode, full weather simulation, improved engine sound, new tracks ; 
+                  force feedback, new car sets with AI opponents will also be there for the next release (2.0) ;
+                  improved physics, better inside view, replay, improved graphic rendering, improved performances are also domains in which we'll be working in the mid-term.
+                </p>
+
+                <h3><a name="c1_6">1.6 Why don't you ... ?</a></h3>
+                <p>
+                  Don't ever forget that we develop Speed Dreams in our spare time and you get it for free. Your wishes,
+                  ideas and feature requests are welcome in the
+                  <a href="http://lists.sourceforge.net/lists/listinfo/speed-dreams-users" target="_parent">
+                  speed-dreams-users</a> mailing list or <a href="http://sourceforge.net/apps/trac/speed-dreams">tracker</a>. If nobody picks up your idea feel free to contact the development team :
+                  we'll be happy to help you implement it yourself ;-)
+                </p>
+
+                <h3><a name="c1_7">1.7 What do you mean with robot ?</a></h3>
+                <p>
+                  In Speed Dreams a "robot" is a piece of program code that automatically drives a car,
+                  so all the opponents you choose are robots. Aka "AI" opponents (Artificial Intelligence).
+                </p>
+
+                <h3><a name="c1_8">1.8 Why don't you replace GLUT with SDL ?</a></h3>
+                
+                <p>
+                  We actually are doing so : next release will no more use GLUT.
+                </p>
+
+                <h3><a name="c1_9">1.9 Why don't you replace PLib with OGRE 3D / OSG ?</a></h3>
+                
+                <p>
+                  We are currently thinking about starting to move that way ;
+                  but we have to rewrite the whole 3D graphics module from scratch ...
+                  so it will probably take some time. Fortunately, the modular architecture of the code
+                  we inherited from TORCS enables us to achieve it smoothly : expect some preview soon.
+                </p>
+
+                <h3><a name="c1_10">1.10 Are there official championships ?</a></h3>
+                <p>
+                        Yes, you can find offline robot championships in the 
+                        <a href="http://www.berniw.org/trb" target="_parent">TORCS Racing Board</a>.
+                </p>
+                <p>
+                        This championship is actually dedicated to TORCS-compatible robots
+                        but Speed Dreams offers backward compatibility with TORCS as for this :
+                        your TORCS robot will work as is in Speed Dreams, and your Speed Dreams robot
+                        will work in TORCS if you follow some very simple rules (contact the dev. team for more details).
+                </p>
+
+
+                <h3><a name="c1_11">1.11 Should I start my own racing sim project ?</a></h3>
+                <p>
+                        Definitively not, no! Why ? Do a search on sf.net and Google,
+                        you will find between 15 and 40 open source car/driving/racing sim
+                        projects, and most of them have been &quot;promising&quot; and
+                        died. Instead of starting another dead project contribute to the
+                        few existing successful ones.
+                </p>
+                <p>
+                        Believe it or not, but your project will very likely be a dead
+                        one as well. The reason is quite simple, people underestimate the
+                        required effort and the change of their lives during the project lifespan, think
+                        about it. Just that you get an idea, TORCS turns now 12 ...
+                </p>
+                <p>
+                        Of course, you will say  : "this is a strange advice, from you guys, who recently forked
+                        from TORCS ...". Yes, true ... and false. Because if TORCS had been that open
+                        to our ideas and working will, certainly we had joined its dev. team ...
+                        but most of us have been proposing so much valuable work for such a long time
+                        without seeing it actually integrated ... that we finally come to that extreme conclusion.
+                </p>
+                <p>
+                        And believe it or not, we promise here we won't do this TORCS error twice :
+                        from the beginning, we stated that everything in the project would be
+                        decided on a <b>democratic</b> basis inside the development team.
+                        And that we'd be happy to welcome good candidates in the team provided
+                        they accept this democracy statement and the main purpose of the project :
+                        deliver a game for the sim driving and racing addicts.
+                </p>
+
+
+                <br/><h2>2. Platforms and Requirements.</h2>
+
+                <h3><a name="c2_1">2.1 On which operating systems does Speed Dreams run?</a></h3>
+                <ul>
+                  <li>Linux (x86 and x86_64) on several distros (Mandriva 2008, 9, 10 ; Ubuntu 9.x), with GCC 4.x compiler</li>
+                  <li>Windows XP, Vista, 7, with MS Visual C++ 2005/2008 compiler</li>
+                </ul>
+                  The Mac OS X port is 95% finished, with the CMake build system : Volonteers are welcome for the last 5%, and make it available for the next release ;-).
+                </p>
+                <p>
+                  And TORCS was known to work also on PPC Linux, FreeBSD and Windows 98/2000, so it should not be complicated to port Speed Dreams to these platforms if needed. Please report of any try !
+                </p>
+
+                <h3><a name="c2_2">2.2 What are the hardware requirements ?</a></h3>
+
+                <p>
+                  Minimum: 1 GHz CPU, 256 Mb RAM, OpenGL 1.3 compatible graphics card with 32 Mb GRAM.<br/>
+                  Recommended: 2 GHz CPU, 512 Mb RAM, OpenGL 1.3 compatible graphics card with 64 Mb GRAM.
+                </p>
+
+                <h3><a name="c2_3">2.3 What are the software requirements ?</a></h3>
+                <p>
+                  You need recent, working and properly configured OpenGL/DRI drivers. 
+                </p>
+                <p>
+                  You need also several 3rd party libraries :
+                  <ul>
+                    <li>GLUT 3.7 or better FreeGlut</li>
+                    <li>PLib 1.8.3, 4 or 5</li>
+                    <li>Open AL 1.6.x</li>
+                    <li>Free ALUT 1.1</li>
+                    <li>ZLib</li>
+                    <li>LibJPEG</li>
+                    <li>LibPNG</li>
+                  </ul>
+                  <b>Important:</b> You'll find ready to use MS VC 2005 SP1 Windows binaries for these libs
+                  <a href="http://sourceforge.net/project/showfiles.php?group_id=239111" target="_parent">here</a>
+                  (along with other libs we use for future developments) as well as the associated sources.
+                </p>
+                <p>
+                  Note: Under x86_64 Linux, you need to set the <b>&quot;-fPIC&quot;</b> compiler switch when
+                  compiling PLib (export CFLAGS=&quot;-fPIC&quot;, export CPPFLAGS=&quot;-fPIC&quot;, 
+                  export CXXFLAGS=&quot;-fPIC&quot;). 
+                  Under Windows, make sure you compile all the 3rd party libraries using
+                  the <b>&quot;Multi-threaded DLL&quot;</b> run-time C library.
+                </p>
+
+
+                <br/><h2>3. Installation.</h2>
+
+                <h3><a name="c3_1">3.1 How do I install Speed Dreams ?</a></h3>
+                <p>
+                  You can find installation instructions <a href="http://speed-dreams.svn.sourceforge.net/viewvc/speed-dreams/trunk/INSTALL?view=markup">here</a>.
+                </p>
+
+
+                <br/><h2>4. Problems and Solutions.</h2>
+
+                <h3><a name="c4_1">4.1 General problem solving approach.</a></h3>
+                <p>
+                  You may encounter this kind of problems: System configuration
+                  problems, build problems and runtime problems. If you face a
+                  problem follow these steps:
+                  <ul>
+                        <li>Have a look into this FAQ, perhaps your problem is already known.</li>
+                        <li>Clean up your old Speed Dreams installation (Windows : C:\Program files\speed-dreams ; Linux : /usr/local/share/games/speed-dreams, /usr/local/libs/speed-dreams, /usr/local/bin/speed-dreams).</li>
+                        <li>Clean up your old environment settings (Windows : <My documents>/speed-dreams.settings ; Linux : ~/.speed-dreams).</li>
+                        <li>Read the installation instructions carefully, double check your steps (don't forget the &quot;make datainstall&quot; step under Linux ;-).</li>
+                        <li>Make sure that you have not installed multiple GLU libraries.</li>
+                        <li>Make sure that you have installed the latest OpenGL/DRI and sound drivers.</li>
+                        <li>Try to start up Speed Dreams with the "-s" switch to disable multitexturing.</li>
+                        <li>Make sure that the version number of your ALSA drivers, libraries and utilities match.</li>
+                        <li>Test your OpenGL setup with tuxracer and bzflag (under Linux).</li>
+                        <li>Search into the mailing list archives <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=speed-dreams-users">here</a> or <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=speed-dreams-devel">here</a>, perhaps there is already a solution.</li>
+                        <li>If you get stuck learn how to <a href="#c5_1">report a problem</a>.</li>
+                  </ul>
+
+                </p>
+
+                <h3><a name="c4_2">4.2 Build Problems.</a></h3>
+
+                <h4><a name="c4_2_1">4.2.1 ./configure reports "configure: error: Can't find GL/glut.h".</a></h4>
+                <p>
+                  Download and install <a href="http://FreeGLUT.sourceforge.net" target="_parent">FreeGLUT</a>
+                  or install GLUT which is probably included in your distribution (you need also the header files,
+                  which may be in a separate package like glut-devel). We suggest using FreeGLUT.
+                </p>
+
+                <h4><a name="c4_2_2">4.2.2 ./configure reports "configure: error: Can't find plib/ssg.h" or "plib/ul.h".</a></h4>
+                <p>
+                  Speed Dreams requires <a href="http://plib.sourceforge.net" target="_parent">plib</a>
+                  1.8.3, 4 or 5 and its header files. Download and install plib.
+                </p>
+
+                <h4><a name="c4_2_3">4.2.3 Speed Dreams does not compile on Windows.</a></h4>
+                <p>
+                  To compile Speed Dreams in Windows you need MS Visual C++ 2005.
+                  Follow exactly the <a href="#c3_1">installation instructions</a> in the Windows chapter.
+                </p>
+
+                <h4><a name="c4_2_4">4.2.4 FreeGLUT compilation fails with NVidia OpenGL driver.</a></h4>
+                <p>
+                  If you have an NVIDIA driver and FreeGLUT breaks the compilation with complaints about libGL.la,
+                  then update your drivers to 5336 (previous libGL.la was broken).
+                </p>
+
+                <h4><a name="c4_2_5">4.2.5 Speed Dreams does not compile with make: 'Make-config' is up to date.</a></h4>
+                <p>
+                  You have some environment variables set like $SPEED_DREAMS_BASE and $MAKE_DEFAULT (to follow the
+                  robot tutorial), they are pointing now to the wrong directory. Unset or update the variables
+                  suitable for the new directories.
+                </p>
+
+                <h4><a name="c4_2_6">4.2.6 Compiling stops with "error: `GL_TEXTURE0_ARB' undeclared".</a></h4>
+                <p>
+                  If the compiler stops with the above message you have probably OpenGL header files installed which do
+                  not define the GL_TEXTURE0_ARB and other symbols. If you have updated your NVidia drivers to 6xxx
+                  you will experience this error (NVidia removed those definitions...). 
+                  To fix it, you need to install a gl.h which defines the missing symbols. 
+                  You can get it from your old (5xxx) NVidia drivers or from Mesa (the problem is not the driver itself).
+                </p>
+
+                <h4><a name="c4_2_7">4.2.7 Compiling fails with "The syntax of
+                the command is incorrect.  Error executing c:\winnt\system32\cmd.exe".</a></h4>
+                <p>
+                        You have probably installed your sources in a path which contains blanks or other
+                        special characters, e.g. on the desktop. Move your source folder to a location with a
+                        "clean" path, a drive is the best bet (e.g. D:\speed-dreams-1.4.x).
+                </p>
+
+                <h4><a name="c4_2_8">4.2.8 ./configure fails in "checking for sin in -lm" on Gentoo.</a></h4>
+                <p>
+                        This is a Gentoo problem, have a look at <a href="http://bugs.gentoo.org/show_bug.cgi ?id=80983">this report</a>.
+                </p>
+
+
+
+                <h3><a name="c4_3">4.3 Startup and Runtime Problems.</a></h3>
+                <p>
+                  In several situations Speed Dreams will crash at startup. The causes are often not bugs of Speed Dreams, but
+                  a broken installation, Speed Dreams user settings or buggy OpenGL/DRI drivers.
+                </p>
+
+                <h4><a name="c4_3_1">4.3.1 Broken OpenGL/DRI drivers or '~' file.</a></h4>
+
+                <pre>/usr/local/bin/speed-dreams: line xx: 31895 Segmentation fault
+$LIBDIR/speed-dreams-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*</pre>
+
+                <p>
+                  There are two known possibilities which cause such a crash:
+                </p>
+                <ul style="list-style-type:disk; color:black;">
+                  <li>You have buggy OpenGL/DRI driver, you should update to a recent version. Start Speed Dreams with
+                  the "-s" option to disable multitexturing.</li>
+                  <li>You have edited a Speed Dreams XML file (e. g. endrace.xml) and your editor left a copy with an appended
+                  "~" (e. g. endrace.xml~). Remove those "~" files.</li>
+                </ul>
+
+                <h4><a name="c4_3_2">4.3.2 Multiple GLU libraries.</a></h4>
+
+                <pre>linuxModLoad: ...  modules/graphic/ssggraph.so:
+undefined symbol: gluBuild2DMipmaps
+/usr/local/bin/speed-dreams: line xx: 21215 Segmentation fault
+./speed-dreams -l $LOCAL_CONF $*</pre>
+
+                <p>
+                  You have probably two GLU libraries installed on your system and Speed Dreams has been linked to the
+                  wrong one, which does not export the "gluBuild2DMipmaps" symbol. First find all your GLU
+                  libraries on the system (cd /usr; find . -name "*GLU*"). Then check which one exports the
+                  "gluBuild2DMipmaps" symbol (e. g. nm ./lib/libGLU.so | grep gluBuild2DMipmaps). Finally move
+                  or remove the GLU libraries which do not define the symbol, such that the linker can't see it.
+                  Now recomplie and reinstall Speed Dreams.
+                </p>
+
+                <h4><a name="c4_3_3">4.3.3 Old un-removed Speed Dreams version present.</a></h4>
+
+                <pre>/usr/lib/speed-dreams/speed-dreams-bin: relocation
+error: /usr/lib/speed-dreams/lib/libtgfclient.so: undefined symbol:
+_Z15GfParmWriteFilePKcPvPc</pre>
+
+                <p>
+                  If you see such a message you have probably not cleaned up your old Speed Dreams installation.
+                  Make sure that you have removed all old Speed Dreams files, then recompile and reinstall Speed Dreams.
+                </p>
+
+                <h4><a name="c4_3_4">4.3.4 Speed Dreams reports missing files and crashes.</a></h4>
+
+                <pre>data/fonts/b5.glf: No such file or directory
+data/fonts/b5.glf: No such file or directory
+data/fonts/b5.glf: No such file or directory
+data/fonts/b5.glf: No such file or directory
+data/fonts/b7.glf: No such file or directory
+data/fonts/b7.glf: No such file or directory
+data/fonts/b7.glf: No such file or directory
+data/fonts/b7.glf: No such file or directory
+data/fonts/digital.glf: No such file or directory
+Can't open file data/img/splash-main.png
+Can't open file data/img/splash-single-player.png
+Can't open file data/img/splash-qrdrv.png
+/usr/local/bin/speed-dreams: line 54:6839 Floating point
+exception$LIBDIR/speed-dreams-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*</pre>
+
+                <p>
+                  If you see this you have not installed the mandatory data packages (you missed "make datainstall" ?)
+                  or installed it in the wrong location.
+                  Please read the installation instructions carefully and reinstall Speed Dreams.
+                </p>
+
+                <h4><a name="c4_3_5">4.3.5 My screen resolution is not supported.</a></h4>
+                <p>
+                  You have a screen resolution which is not available in the Options / Display menu of Speed Dreams :
+                   exit Speed Dreams and edit the file ~/.speed-dreams/config/screen.xml 
+                  (or <My documents>/config/screen.xml under Windows), change the x, y,
+                  window width and height to your values, and then restart sped-dreams.
+                </p>
+                <p>
+                  And please, report us your particular resolution and hardware configuration !
+                </p>
+
+                <h4><a name="c4_3_6">4.3.6 I have a problem with the fullscreen mode.</a></h4>
+                <p>
+                  You switched Speed Dreams to fullscreen and got a scrolling screen,
+                  or the screen size is not fully utilized : if you use the original GLUT library,
+                  you should choose the real resolution of your screen in the display settings.
+                  To fix the problem, you can also download and install FreeGLUT, 
+                  then recompile and reinstall plib and Speed Dreams.
+                </p>
+
+                <h4><a name="c4_3_7">4.3.7 Speed Dreams graphics is slow and it crashes on "READY!"</a></h4>
+                <p>
+                  Select in the Speed Dreams display menu a color depth of 24 or 32 bpp, even if your display runs
+                  at 16 bpp.
+                </p>
+
+                <h4><a name="c4_3_8">4.3.8 Speed Dreams on Windows hangs after &quot;READY!&quot;</a></h4>
+                <p>
+                        Shutdown Speed Dreams and restart it, go to the sound menu and disable the
+                        sound or try the other backend (PLib or OpenAL).
+                        One of us already experienced this issue with built-in OpenAL under Mandriva 2008.0 
+                        Linux x86_64, and the solution was to install from sources and self-compile OpenAL.
+                </p>
+
+
+                <h4><a name="c4_3_9">4.3.9 Speed Dreams does not start and reports slDSP:.</a></h4>
+                <p>
+                  Make sure that the sound device is available for Speed Dreams and you use the latest drivers. Perhaps you
+                  have a sound daemon
+                  running in the background and you need to start Speed Dreams with a wrapper (e. g. artsdsp of KDE)
+                  or to disable the daemon.
+                </p>
+
+                <h4><a name="c4_3_10">4.3.10 The cars are flickering.</a></h4>
+                <p>
+                  Probably your depth buffer has just 16 bit, you should have seen a hint at Speed Dreams startup.
+                  Try to run your X-server at 24 or 32 bpp, or update/replace your OpenGL/DRI drivers. In
+                  Windows set the quality in the OpenGL properties tab to maximum, such that Speed Dreams has a chance
+                  to get a 24 bit depth buffer.
+                </p>
+
+                <h4><a name="c4_3_11">4.3.11 I use ALSA and Speed Dreams does not start up.</a></h4>
+                <p>
+                  You get an error message similar to this:
+                </p>
+
+                <pre>slDSP: getBufferInfo: Broken pipe.</pre>
+
+                <p>
+                  Altough the sound works with the other applications, you have messed up your ALSA installation.
+                  Make sure that the versions of your ALSA driver, libraries, tools and utilities are matching.
+                  This can especially happen if you run a self-compiled kernel.
+                </p>
+
+
+                <h4><a name="c4_3_12">4.3.12 Speed Dreams does not start up and complains about display requirements.</a></h4>
+
+                <pre>Visual Properties Report
+------------------------
+The minimum display requirements are not fulfilled.
+We need a double buffered RGBA visual with a 16 bit depth buffer at least.
+Trying generic initialization, fallback.</pre>
+
+                <p>
+                  If you use the open Mesa/DRI drivers, update your OpenGL/DRI drivers and try FreeGLUT.
+                  It seems to be a bug in the visual matching code of GLUT or OpenGL/DRI.
+                  The output of 'glxinfo | grep "OpenGL version"' should report at least "1.2 Mesa 5.0.1".
+                </p>
+
+
+                <h4><a name="c4_3_13">4.3.13 The racetrack mini map is just a blue square.</a></h4>
+                <p>
+                  You have probably more than one GLU library installed on your system and Speed Dreams is linked with
+                  a version that does not match the version defined in the header files. Remove all old GLU libraries,
+                  make sure that the header files are matching with the library. Make also sure that you have recent
+                  OpenGL headers installed which define the GL_UNSIGNED_INT_8_8_8_8 symbol, then recompile Speed Dreams.
+                </p>
+
+
+                <h4><a name="c4_3_14">4.3.14 Speed Dreams runs but without textures.</a></h4>
+                <p>
+                  This is probably an OpenGL setup problem, check your installation with bzflag and tuxcart. You have to
+                  reinstall the XFree86 libraries, FreeGLUT and your OpenGL drivers.
+                </p>
+
+
+                <h4><a name="c4_3_15">4.3.15 Speed Dreams on Windows crashes after "New Race".</a></h4>
+
+                <p>
+                  The instruction at 0xXXXXX referenced memory at 0xYYYY. The memory could not be written.
+                </p>
+
+                <p>
+                  Speed Dreams on Windows crashes with the above message after you have choosen "new race".
+                  Probably you have not downloaded all required files or installed them in the wrong place.
+                  Please check your Speed Dreams installation carefully.
+                </p>
+
+                <h4><a name="c4_3_16">4.3.16 Multiple OpenAL libraries.</a></h4>
+
+                <p>
+                  You have probably two OpenAL libraries installed on your system and Speed Dreams has been linked
+                  to one, and uses another one at run-time (when starting a race). 
+                  Fix this issue in your build environment (CXX/CPP/LD_FLAGS) and / or run-time one (LD_LIBRARY_PATH).
+                  Now recomplie and reinstall Speed Dreams.
+                </p>
+
+
+                <h3><a name="c4_4">4.4 Other Problems.</a></h3>
+
+                <h4><a name="c4_4_1">4.4.1 How do I capture a movie ?</a></h4>
+                <p>
+                  First, you have to configure the video capturing in config/raceengine.xml. The captured frames
+                  are stored in the output directory, so you need to have write permission and plenty of
+                  space (~ 1GB for one minute, depends on framerate and resolution).
+                </p>
+                <p>
+                  During the simulation, you can hit "c" to start and stop the capture. The frames are
+                  stored in the output directory and named this way: torcs-ssss-ffffffff.png, ssss is
+                  the sequence number and ffffffff the frame number in the sequence.
+                </p>
+                <p>
+                  Now you need a tool to compose the frames to a movie. If you use mencoder (of the mplayer 0.92)
+                  you have first to convert the images to jpg's with the png2jpg tool from src/misc/png2jpg.
+                  Now encode the video with mencoder -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=1800 &#92;*.jpg -mf on:fps=25.
+                </p>
+
+                <h4><a name="c4_4_2">4.4.2 Can I develop a robot using Windows ?</a></h4>
+                <p>
+                  Yes, you can. Here is a rough guide:
+                </p>
+                <ul>
+                  <li>Download the Speed Dreams source and manage to compile and run it.</li>
+                  <li>Download e. g. the bt robot package, it is a little enhanced version of
+              the robot developed in the tutorial, so there is good documentation available
+              to understand it.</li>
+                  <li>Copy the sources into a new directory, e. g. when you choose the name "myrobot"
+              create a directory /src/drivers/myrobot.</li>
+                  <li>Copy all the bt files into the myrobot directory.</li>
+                  <li>Now rename all "bt*" files into "myrobot*".</li>
+                  <li>Edit myrobot.def and also change all bt strings into myrobot.</li>
+                  <li>The same for myrobot.dsp, .xml, perhaps more, you get the idea.</li>
+                  <li>Change the "bt" module entry point in myrobot.cpp to "myrobot", also make
+                          the strings for the robots names and description match with those in myrobot.xml.</li>
+                  <li>Add the myrobot project to Speed Dreams, open the project with vc++ and try to compile it.</li>
+                  <li>If you want to deploy the files you have to do that manually, create a
+                          directory in "runtime" where the other robots are and copy the required files
+              there (myrobot.dll, .xml, setup subdirectories etc.).</li>
+                  <li>Now Speed Dreams should pick up your robot.</li>
+                </ul>
+
+                <h4><a name="c4_4_3">4.4.3 Is my joystick / steering wheel / gamepad supported ?</a></h4>
+                <p>
+                  If your operating system supports your device, it will also work within Speed Dreams. To learn how
+                  to setup your input device visit the Speed Dreams site and read the "How to drive" section
+                  or read out the how_to_drive.html document shipped with the game.
+                </p>
+
+
+                <h4><a name="c4_4_4">4.4.4 How do I set up a multiplayer game ?</a></h4>
+                <p>
+                  Speed Dreams supports split screen multiplayer games with up to four players. Setup:
+                  <ul>
+                        <li>Set up the players in the "Configure Players" screen.</li>
+                        <li>If more than one player uses the keyboard, read <a href="http://www.sjbaker.org/steve/omniv/keyboards_are_evil.html" target="_parent">this</a>.</li>
+                        <li>Now choose a race, select the players in the configuration screen.</li>
+                        <li>Start the race, stop it with "p" to pause.</li>
+                        <li>Now create the split screens with "]", or remove them with "[".</li>
+                        <li>If you want to change the view of a "mini screen" point with the mouse on it and set it up as usual (F1-F11, "&gt;", "&lt;", ...).</li>
+                        <li>When you have set up all views press "p" to end the pause and start the race.</li>
+                        <li>Have fun;-)</li>
+                  </ul>
+                </p>
+
+
+                <h4><a name="c4_4_5">4.4.5 I can't adjust the joystick / wheel / gamepad axis centering.</a></h4>
+                <p>
+                        Before you start Speed Dreams, make sure that the joystick / wheel / gamepad
+                        is correctly setup/calibrated for your system. You can use the "jscal" and "jstest"
+                        utilities for that ; you should find them in your Linux distribution
+                        or from the Linux Console project on the internet.
+                        If this works fine, center your axis (e.g. if you have noncentering axis like sliders),
+                        then startup Speed Dreams and setup your players and controls configuration.
+                        It is important to center the axis before you go to the calibration (Question: is it still relevant ?).
+                </p>
+
+
+
+                <br/><h2>5. Problem reporting.</h2>
+
+
+                <h3><a name="c5_1">5.1 When do I report a problem ?</a></h3>
+                <p>
+                  You should report a problem only after you have carefully read the available documentation
+                  and did not find a solution for the problem.
+                </p>
+
+                <h3><a name="c5_2">5.2 How and where do I report a problem ?</a></h3>
+                <p>
+                  You can report a problem in 2 ways :
+                  <ul>
+                        <li>send a message to the <a href="http://lists.sourceforge.net/lists/listinfo/speed-dreams-users" target="_parent">speed-dreams-users</a> mailing list :
+                        first subscribe to it, otherwise your messages need to be approved,
+                        so it can take long till they become distributed</li>
+                        <li>create a ticket in the <a href="http://sourceforge.net/apps/trac/speed-dreams">bug / feature tracker</a> : you need to be logged in to SF.net do do that</li>
+                  </ul>
+                </p>
+
+                <p>
+                  In any case, send us as much information about the problem as you know.
+                  At least provide the following :
+                  <ul>
+                        <li>A good description of the problem.</li>
+                        <li>The Speed Dreams version</li>
+                        <li>Whether you installed Speed Dreams from a binary package (which one),
+                            or you compiled it from sources</li>
+                        <li>The console output of Speed Dreams.</li>
+                        <li>Your operating system (uname -a).</li>
+                        <li>The output of "glxinfo -l" (Linux, FreeBSD).</li>
+                        <li>The /var/log/XFree86.0.log file (Linux, FreeBSD).</li>
+                  </ul>
+                </p>
+
+
+                <br/><h2>6. Links.</h2>
+
+                <h3><a name="c6_1">6.1 Speed Dreams.</a></h3>
+                <ul>
+                        <li>The <a href="http://speed-dreams.sourceforge.net" target="_parent">Speed Dreams web page</a> on sourceforge.net.</li>
+                        <li>The <a href="http://lists.sourceforge.net/lists/listinfo/speed-dreams-users" target="_parent">
+                        speed-dreams-users</a> mailing list.</li>
+                        <li>Speed Dreams under-construction <a href="http://sourceforge.net/apps/trac/speed-dreams">SF.net Wiki</a>.</li>
+                </ul>
+
+                <h3><a name="c6_2">6.2 TORCS.</a></h3>
+                <ul>
+                        <li>The main TORCS site <a href="http://www.torcs.org" target="_parent">www.torcs.org</a>.</li>
+                        <li>TORCS official championships <a href="http://www.berniw.org/trb" target="_parent">www.berniw.org/trb</a>.</li>
+                        <li>Bernhard's site <a href="http://www.berniw.org" target="_parent">www.berniw.org</a>.</li>
+                        <li>Christos Dimitrakakis TORCS mods <a href="http://www.idiap.ch/~dimitrak/torcs.html" target="_parent">www.idiap.ch/~dimitrak/torcs.html</a>.</li>
+                        <li>Charalampos Alexopoulos track editor <a href="http://katergo.rege.org/projects/trackeditor" target="_parent">katergo.rege.org/projects/trackeditor</a>.</li>
+                </ul>
+
+                <h3><a name="c6_3">6.3 Libraries and Drivers.</a></h3>
+                <ul>
+                  <li>FreeGLUT <a href="http://freeglut.sourceforge.net" target="_parent">freeglut.sourceforge.net</a>.</li>
+                  <li>Plib <a href="http://plib.sourceforge.net" target="_parent">plib.sourceforge.net</a>.</li>
+                  <li>Mesa <a href="http://www.mesa3d.org/" target="_parent">www.mesa3d.org</a>.</li>
+                  <li>DRI Project <a href="http://dri.sourceforge.net" target="_parent">dri.sourceforge.net</a>.</li>
+                  <li>XFree86 project <a href="http://www.xfree86.org" target="_parent">www.xfree86.org</a>.</li>
+                  <li>Precompiled drivers for XFree86 <a href="http://www.xfree86.org/~alanh" target="_parent">www.xfree86.org/~alanh</a>.</li>
+                  <li>DRI driver limitations and problems <a href="http://www.xfree86.org/4.3.0/DRI10.html" target="_parent">www.xfree86.org/4.3.0/DRI10.html</a>.</li>
+                  <li>ALSA <a href="http://www.alsa-project.org/" target="_parent">www.alsa-project.org</a>.</li>
+                  <li>OpenAL <a href="http://www.openal.org">www.openal.org</a>.</li>
+                  <li>Several updated joystick drivers <a href="http://user.it.uu.se/~johannd/projects/ff/index.shtml" target="_parent">user.it.uu.se/~johannd/projects/ff/index.shtml</a>.</li>
+                </ul>
+
+                <h3><a name="c6_4">6.4 Other.</a></h3>
+                <ul>
+                  <li>TORCS in research <a href="http://students.cs.byu.edu/~kroundy/research" target="_parent">students.cs.byu.edu/~kroundy/research</a>.</li>
+                  <li>Linux Journal TORCS review <a href="http://www.linuxjournal.com/article.php?sid=7080" target="_parent">www.linuxjournal.com/article.php?sid=7080</a>.</li>
+                  <li>TORCS review at linuxgames.com <a href="http://www.linuxgames.com/?dataloc=/reviews/torcs/" target="_parent">www.linuxgames.com/?dataloc=/reviews/torcs/</a>.</li>
+                  <li>TORCS review of Mousehole <a href="http://www.freegamesweb.co.uk/game.php?ID=75">www.freegamesweb.co.uk/game.php?ID=75</a>.</li>
+                  <li>TORCS review at Unixreview <a href="http://www.unixreview.com/documents/s=9846/ur0508d/ur0508d.html">www.unixreview.com/documents/s=9846/ur0508d/ur0508d.html</a>.</li>
+                  <li>TORCS at the university <a href="http://www1.coe.neu.edu/~mourant/cse270/" target="_parent">www1.coe.neu.edu/~mourant/cse270</a>.</li>
+                </ul>
+                <br/><br/>
+      </td>
+    </tr>
+  </table>
+
+  <table class="navigation_foot">
+    <tr>
+      <td class="navigation_foot">
+        <a href="javascript:changetwoframes('../navigation/navigation.html','navigation','../torcs.html','content')">
+          <p style="text-align:left;">Up</p>
+        </a>
+      </td>
+    </tr>
+  </table>
+
+
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,13 @@
+INCLUDE(../cmake/macros.cmake)
+
+ADD_SUBDIRECTORY(interfaces)
+ADD_SUBDIRECTORY(libs)
+
+ADD_SUBDIRECTORY(drivers)
+
+ADD_SUBDIRECTORY(modules)
+
+ADD_SUBDIRECTORY(main)
+
+ADD_SUBDIRECTORY(tools)
+

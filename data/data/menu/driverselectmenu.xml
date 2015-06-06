@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : driverselectmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: driverselectmenu.xml 4630 2012-03-31 10:30:13Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Human driver(s) and AI opponnent(s) selection menu
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="driverselectmenu">	
+
+  <section name="dynamic controls">
+
+    <!-- Scroll lists -->
+    <section name="competitorsscrolllist">
+      <attstr name="type" val="scroll list"/>                  
+      <attnum name="x" val="438"/>
+      <attnum name="y" val="201"/>
+      <attnum name="width" val="160"/>
+      <attnum name="height" val="135"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="selected color" val="0xFFCC00"/>
+      <attstr name="scrollbar pos" val="right"/>
+    </section>  
+    <section name="candidatesscrolllist">
+      <attstr name="type" val="scroll list"/>                  
+      <attnum name="x" val="40"/>
+      <attnum name="y" val="201"/>
+      <attnum name="width" val="160"/>
+      <attnum name="height" val="135"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="selected color" val="0xFFCC00"/>
+      <attstr name="scrollbar pos" val="left"/>
+    </section>  
+
+    <!-- Car preview image -->
+    <section name="carpreviewimage">
+      <attstr name="type" val="static image"/>
+      <attnum name="x" val="210"/>
+      <attnum name="y" val="200"/>
+      <attnum name="width" val="218"/>
+      <attnum name="height" val="136"/>
+      <attstr name="can deform" val="yes"/>
+      <attstr name="image" val="data/img/nocarpreview.png"/>
+    </section>
+    
+    <!-- Skin combo-box -->
+    <section name="skinleftarrow">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Previous available skin"/>
+      <attnum name="x" val="208"/>
+      <attnum name="y" val="176"/>
+      <attnum name="width" val="20"/>
+      <attnum name="height" val="20"/>                  
+      <attstr name="disabled image" val="data/img/arrow-left-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-left.png"/>
+      <attstr name="focused image" val="data/img/arrow-left-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-left-pushed.png"/>
+    </section>
+    <section name="skinrightarrow">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Next available skin"/>
+      <attnum name="x" val="410"/>
+      <attnum name="y" val="176"/>
+      <attnum name="width" val="20"/>
+      <attnum name="height" val="20"/>      
+      <attstr name="disabled image" val="data/img/arrow-right-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-right.png"/>
+      <attstr name="focused image" val="data/img/arrow-right-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-right-pushed.png"/>
+    </section>
+    <section name="skintext">
+      <attstr name="type" val="label"/>                        
+      <attnum name="max len" val="16"/>
+      <attstr name="tip" val=""/>
+      <attnum name="x" val="224"/>
+      <attnum name="y" val="180"/>
+      <attnum name="width" val="196"/>
+      <attstr name="h align" val="center"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="font" val="small"/>
+    </section>
+
+    <!-- Filtering combo-boxes -->
+    <section name="carcategoryleftarrow">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Previous car category"/>
+      <attnum name="x" val="36"/>
+      <attnum name="y" val="176"/>
+      <attnum name="width" val="20"/>
+      <attnum name="height" val="20"/>                  
+      <attstr name="disabled image" val="data/img/arrow-left-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-left.png"/>
+      <attstr name="focused image" val="data/img/arrow-left-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-left-pushed.png"/>
+    </section>
+    <section name="carcategoryrightarrow">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Next car category"/>
+      <attnum name="x" val="184"/>
+      <attnum name="y" val="176"/>
+      <attnum name="width" val="20"/>
+      <attnum name="height" val="20"/>      
+      <attstr name="disabled image" val="data/img/arrow-right-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-right.png"/>
+      <attstr name="focused image" val="data/img/arrow-right-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-right-pushed.png"/>
+    </section>
+    <section name="carcategorytext">
+      <attstr name="type" val="label"/>                        
+      <attnum name="max len" val="30"/>
+      <attstr name="tip" val="Car category"/>
+      <attnum name="x" val="54"/>
+      <attnum name="y" val="180"/>
+      <attnum name="width" val="130"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="h align" val="center"/>
+      <attstr name="font" val="small"/>
+    </section>
+
+    <section name="drivertypeleftarrow">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Previous driver type"/>
+      <attnum name="x" val="36"/>
+      <attnum name="y" val="156"/>
+      <attnum name="width" val="20"/>
+      <attnum name="height" val="20"/>                  
+      <attstr name="disabled image" val="data/img/arrow-left-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-left.png"/>
+      <attstr name="focused image" val="data/img/arrow-left-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-left-pushed.png"/>
+    </section>
+    <section name="drivertyperightarrow">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Next driver type"/>
+      <attnum name="x" val="184"/>
+      <attnum name="y" val="156"/>
+      <attnum name="width" val="20"/>
+      <attnum name="height" val="20"/>                  
+      <attstr name="disabled image" val="data/img/arrow-right-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-right.png"/>
+      <attstr name="focused image" val="data/img/arrow-right-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-right-pushed.png"/>
+    </section>
+    <section name="drivertypetext">
+      <attstr name="type" val="label"/>                        
+      <attnum name="max len" val="30"/>
+      <attstr name="tip" val="Driver type"/>
+      <attnum name="x" val="54"/>
+      <attnum name="y" val="160"/>
+      <attnum name="width" val="130"/>
+      <attstr name="h align" val="center"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="font" val="small"/>
+    </section>
+
+    <!-- Comp buttons -->
+    <!-- Remove all competitors button -->
+    <section name="deselectbutton">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Remove the highlighted driver from the competitors"/>
+      <attnum name="x" val="432"/>
+      <attnum name="y" val="116"/>
+      <attnum name="width" val="28"/>
+      <attnum name="height" val="28"/>        
+      <attstr name="disabled image" val="data/img/icon-delete-disabled.png"/>
+      <attstr name="enabled image" val="data/img/icon-delete.png"/>
+      <attstr name="focused image" val="data/img/icon-delete-focused.png"/>
+      <attstr name="pushed image" val="data/img/icon-delete-pushed.png"/>
+    </section>
+    <section name="removeallbutton">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Remove all the competitors from the race"/>
+      <attnum name="x" val="460"/>
+      <attnum name="y" val="116"/>
+      <attnum name="width" val="28"/>
+      <attnum name="height" val="28"/>                   
+      <attstr name="disabled image" val="data/img/icon-remove-disabled.png"/>
+      <attstr name="enabled image" val="data/img/icon-remove.png"/>
+      <attstr name="focused image" val="data/img/icon-remove-focused.png"/>
+      <attstr name="pushed image" val="data/img/icon-remove-pushed.png"/>
+    </section>
+
+    <!-- Shuffle competitors button -->
+    <section name="shufflebutton">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Shuffle the current competitors"/>
+      <attnum name="x" val="494"/>
+      <attnum name="y" val="116"/>
+      <attnum name="width" val="28"/>
+      <attnum name="height" val="28"/>                   
+      <attstr name="disabled image" val="data/img/icon-position-disabled.png"/>
+      <attstr name="enabled image" val="data/img/icon-position.png"/>
+      <attstr name="focused image" val="data/img/icon-position-focused.png"/>
+      <attstr name="pushed image" val="data/img/icon-position-pushed.png"/>
+    </section>
+    <!-- Move competitors button -->
+    <section name="moveupbutton">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Move the highlighted driver up"/>
+      <attnum name="x" val="528"/>
+      <attnum name="y" val="116"/>
+      <attnum name="width" val="24"/>
+      <attnum name="height" val="28"/>                   
+      <attstr name="disabled image" val="data/img/arrow-up-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-up.png"/>
+      <attstr name="focused image" val="data/img/arrow-up-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-up-pushed.png"/>
+    </section>
+    <section name="movedownbutton">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Move the highlighted driver down"/>
+      <attnum name="x" val="548"/>
+      <attnum name="y" val="116"/>
+      <attnum name="width" val="24"/>
+      <attnum name="height" val="28"/>      
+      <attstr name="disabled image" val="data/img/arrow-down-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-down.png"/>
+      <attstr name="focused image" val="data/img/arrow-down-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-down-pushed.png"/>
+    </section>
+
+    <!-- Select/deselect buttons candidates -->
+    <section name="selectbutton">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Make the highlighted driver a competitor for the race"/>
+      <attnum name="x" val="150"/>
+      <attnum name="y" val="116"/>
+      <attnum name="width" val="28"/>
+      <attnum name="height" val="28"/>                  
+      <attstr name="disabled image" val="data/img/icon-new-disabled.png"/>
+      <attstr name="enabled image" val="data/img/icon-new.png"/>
+      <attstr name="focused image" val="data/img/icon-new-focused.png"/>
+      <attstr name="pushed image" val="data/img/icon-new-pushed.png"/>
+    </section>
+
+    <!-- Select random candidates button -->
+    <section name="selectrandombutton">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Select 5 random candidates for the race"/>
+      <attnum name="x" val="178"/>
+      <attnum name="y" val="116"/>
+      <attnum name="width" val="28"/>
+      <attnum name="height" val="28"/>                  
+      <attstr name="disabled image" val="data/img/icon-shuffle-disabled.png"/>
+      <attstr name="enabled image" val="data/img/icon-shuffle.png"/>
+      <attstr name="focused image" val="data/img/icon-shuffle-focused.png"/>
+      <attstr name="pushed image" val="data/img/icon-shuffle-pushed.png"/>
+    </section>
+
+    <!-- Current driver info -->
+    <section name="currentdrivertypelabel">
+      <attstr name="type" val="label"/>                        
+      <attnum name="max len" val="20"/>
+      <attnum name="x" val="320"/>
+      <attnum name="y" val="144"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+    <section name="currentdrivercarcategorylabel">
+      <attstr name="type" val="label"/>                        
+      <attnum name="max len" val="20"/>
+      <attnum name="x" val="320"/>
+      <attnum name="y" val="124"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+    <section name="currentdrivercarlabel">
+      <attstr name="type" val="label"/>      
+      <attnum name="max len" val="20"/>
+      <attnum name="x" val="320"/>
+      <attnum name="y" val="104"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+
+    <!-- Car edit/view button -->
+    <section name="carselectbutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Garage"/>
+		<attstr name="tip" val="Open car selection and settings menus"/>
+		<attnum name="x" val="278"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>             
+    </section>
+    
+    <!-- Next button -->
+    <section name="nextmenubutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Next"/>
+		<attstr name="tip" val="Apply changes and go on with race configuration menu"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+    
+    <!-- Back button -->
+	<section name="backbutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Back"/>
+		<attstr name="tip" val="Cancel changes and get back to track selection menu"/>
+		<attnum name="x" val="130"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+    
+  </section>
+
+  <section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-driver.png"/>
+	</section>
+
+	<section name="2">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-driverselect.jpg"/>   
+	</section>
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>
+
+	<section name="4">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Competitors"/>
+		<attstr name="font" val="medium"/>
+		<attnum name="x" val="436"/>
+		<attnum name="y" val="346"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="h align" val="left"/>   
+	</section>   
+		<section name="5">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Candidates"/>
+		<attstr name="font" val="medium"/>
+		<attnum name="x" val="38"/>
+		<attnum name="y" val="346"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="h align" val="left"/>   
+	</section>    
+
+    <!-- Current driver info -->
+    <section name="6">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Driver type:"/>
+      <attnum name="x" val="256"/>
+      <attnum name="y" val="144"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>    
+    <section name="7">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Category:"/>
+      <attnum name="x" val="256"/>
+      <attnum name="y" val="124"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>    
+    <section name="8">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Car Model:"/>
+      <attnum name="x" val="256"/>
+      <attnum name="y" val="104"/>
+      <attstr name="color" val="0xFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>    
+
+    <!-- Skin selection combobox  
+    <section name="9">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Skin:"/>
+      <attstr name="font" val="small"/>
+      <attnum name="x" val="20"/>
+      <attnum name="y" val="190"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section -->
+
+  </section>
+
+</params>

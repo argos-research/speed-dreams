@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- 
+    file          : alpine-1.xml 
+    created       : 28 Mar 2008 
+    last modified : 07 Mar 2010
+    copyright     : (C) 2008-2010 Wolf-Dieter Beelitz
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd">
+<params name="" type="template" mode="mw">
+	<section name="simplix private">
+		<attnum name="pit use first" min="0" max="1" val="1"/>
+		<attnum name="pit use smooth" min="0" max="1" val="1"/>
+		<attnum name="pitlane entry offset" min="-10" max="10" val="3.0"/>
+		<attnum name="pitlane exit offset" min="-10" max="10" val="3.0"/>
+		<attnum name="pit entry long" min="-2000" max="2000" val="0.0"/>
+		<attnum name="pit exit long" min="-2000" max="2000" val="0.0"/>
+		<attnum name="pit exit length" min="-2000" max="2000" val="0.0"/>
+		<attnum name="pit lat offset" min="-5" max="5" val="0.0"/>
+		<attnum name="pit long offset" min="-5" max="5" val="0.0"/>
+		<attnum name="pit scale brake" val="1.0"/>
+		<attnum name="pit stop dist" val="1.5"/>
+		<attnum name="offset skill" val="0.0"/>
+		<attnum name="scale skill" val="0.7"/>
+		<attnum name="scale_brake" val="0.80"/>
+		<attnum name="scale_mu" val="1.10"/>
+		<attnum name="scale bump" min="0" max="1" val="0.01"/>
+		<attnum name="scale bump outer" min="0" max="2" val="0.01"/>
+		<attnum name="lookaheadfactor" min="0.0" max="0.5" val="0.15"/>
+	</section>
+</params>

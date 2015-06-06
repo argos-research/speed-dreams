@@ -1,0 +1,16 @@
+INCLUDE(../../cmake/macros.cmake)
+
+ADD_SUBDIRECTORY(graphic)
+ADD_SUBDIRECTORY(sound)
+
+ADD_SUBDIRECTORY(simu)
+
+ADD_SUBDIRECTORY(track)
+
+ADD_SUBDIRECTORY(userinterface)
+ADD_SUBDIRECTORY(racing)
+
+ADD_SUBDIRECTORY(telemetry)
+
+ADD_SUBDIRECTORY(networking)
+

@@ -1,0 +1,73 @@
+Introduction
+------------
+
+This robot is a melding of code from Bernhard's tutorial robot (BT), 
+Remi's K1999, and my own Hymie. 
+
+I've put this together to help new robot developers interested in 
+joining Bernhard's excellent Endurance competition, located at
+http://berniw.org/trb.  If you like, you can substitute the K1999
+raceline code with your own, or find a different & better means
+of steering & speed management while avoiding opponents.  Or you
+can work with what's there, ironing out the bugs (not that there's
+many) and optimising its strengths.
+
+
+Features
+--------
+
+* uses a precalculated raceline
+* is coded in a simple & easy to understand manner, with the raceline
+  logic in its own seperate class.
+* avoids collisions and overtakes reasonably well.
+* uses the clutch effectively (unlike the standard BT or berniw robots)
+* can navigate the pits, and share pits with a team driver
+* co-operates with a team driver, not overtaking unless its necessary.
+* has various parameters that can be configured in the XML file for
+  each track, controlling its speed and aggression.
+* a sample setup for the clkdtm on e-track-6.
+
+However, locus does not contain the following:-
+
+* learning of any kind
+* slowing down to avoid getting airborne on bumps.  Think of ole-road-1.
+* manual tuning of the raceline or raceline speeds
+* gear changing is as-per BT - it doesn't switch at optimal rpm values.
+* getting back on track after leaving it due to a collision or cornering
+  error - this is rudimentary and could be improved.
+* setups for any car#-trb1 cars.
+* various "hacks" and "tricks" to make it _really_ fast.
+* an advanced pit strategy
+* advanced brake/overtake avoidance methods. What's there isn't bad though.
+* when following a team driver, could get closer to make better use of the slipstream.
+
+You'll have to work on those things yourself, which is of course part
+of the fun of robot development :)
+
+
+Installation
+------------
+
+To make your own robot you'll first need to make a copy of the locus
+directory.  Then you must rename every locus.* file to your new
+robot's name - eg if your new robot is called "mybot" then locus.cpp
+becomes mybot.cpp and so on.  Lastly you'll need to go through the
+various source files and change instances of "locus" to "mybot", then
+do the same with the Makefiles and .dsp/.sln/.vcproj files.
+
+Good luck, and hopefully we'll see you on the race track in 2008 :)
+
+cheers
+Andrew
+
+
+History
+-------
+
+v04 - fixed error that caused steering problems on kilo's "longday" track
+      a few other minor steering improvements.
+v03 - fixed "forever loop" again.  Properly this time.
+v02 - fixed errors in locus.dsp
+      fixed "forever loop" in raceline.cpp
+      added config xmls for driver 2
+v01 - initial version

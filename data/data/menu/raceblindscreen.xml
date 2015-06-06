@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : raceblindscreen.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: raceblindscreen.xml 5169 2013-02-22 05:33:15Z mungewell $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Blind-mode (results only) race menu
+
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="raceblindscreen">
+
+  <section name="properties">
+
+    <!-- Number of rows in the results table -->
+    <attnum name="nMaxResultRows" val="15"/>
+
+    <!-- Y coordinate of the top row of the table,
+         and number of pixels separating the rows -->
+    <attnum name="yTopRow" val="320"/>
+    <attnum name="yRowShift" val="16"/>
+
+    <!-- Color list for the result rows (Only 2 supported by the code as for now) -->
+    <attstr name="rowColorNormal" val="0xFFFFFFFF"/> <!-- White = normal result -->
+    <attstr name="rowColorHighlighted" val="0xFFFFFF00"/> <!-- Yellow = highlighted result -->
+
+  </section>
+
+  <section name="template controls">
+
+    <!-- Each column of each row of the results list -->
+    <section name="Row">
+      <attstr name="type" val="label"/>
+      <attnum name="max len" val="80"/>
+      <attnum name="x" val="120"/>
+      <attstr name="color" val="0xFFFFFFFF"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+
+  </section>
+
+  <section name="dynamic controls">
+
+    <section name="Title">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Results"/>
+      <attnum name="max len" val="40"/>
+      <attnum name="x" val="270"/>
+      <attnum name="y" val="414"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="color" val="0xFFFFFFFF"/>
+      <attstr name="font" val="medium"/>
+    </section>
+
+    <section name="SubTitle">
+      <attstr name="type" val="label"/>
+      <attnum name="max len" val="64"/>
+      <attnum name="x" val="270"/>
+      <attnum name="y" val="394"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="color" val="0xFFFFFFFF"/>
+      <attstr name="font" val="small"/>
+    </section>
+
+    <section name="Header">
+      <attstr name="type" val="label"/>
+      <attnum name="max len" val="80"/>
+      <attnum name="x" val="120"/>
+      <attnum name="y" val="340"/>
+      <attstr name="color" val="0xFFFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+  </section>
+  
+  <section name="static controls">
+
+    <section name="1">
+      <attstr name="type" val="static image"/>
+      <attnum name="x" val="-10"/>
+      <attnum name="y" val="335"/>
+      <attnum name="width" val="200"/>
+      <attnum name="height" val="120"/>
+      <attstr name="image" val="data/img/sd-logo.png"/>
+    </section>
+
+    <section name="2">
+      <attstr name="type" val="static image"/>
+      <attnum name="x" val="192"/>
+      <attnum name="y" val="410"/>
+      <attnum name="width" val="450"/>
+      <attnum name="height" val="20"/>
+      <attstr name="image" val="data/img/head-blindrace.png"/>
+    </section>
+
+  </section>
+
+  <section name="music">
+     <attstr name="music file" val="data/music/qualifications.ogg"/>
+  </section>
+   
+</params>

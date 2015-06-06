@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : logging.xml
+    created              : Sun Feb 17 15:11:55 CET 2013
+    copyright            : (C) 2013 Jean-Philippe Meuret
+    web                  : www.speed-dreams.org
+    version              : $Id: logging.xml 5742 2013-11-20 03:40:56Z mungewell $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../src/libs/tgf/params.dtd">
+
+<params name="logging" type="param" mode="mw" version="1.6">
+	<section name="Loggers">
+		<!-- One section for each logger, name = logger id / name (case sensitive) -->
+		<!-- Each logger can have 3 string attributes (all are insensitive to the case) :
+			 * "output stream" : the target output stream, among "stderr", "stdout",
+				"<file name>" (file being re-created in <user settings> folder for each session) ;
+				default: "stderr"
+			 * "level threshold" : the least critical level of logged traces,
+                  among (decreasing criticity) : "fatal"|"0", "error"|"1", "warning"|"2",
+				  "info"|"3", "trace"|"4", "debug"|"5" ;
+                  lower criticity = higher levels can be specified as integers greater than 5 ;
+				  traces with a criticity lower = level higher than the threshold are never output
+				default: "debug"
+			 * "header columns" : to customize the output format of the trace lines,
+                  specify the header columns you want (the message column will always be output),
+                  among "time", "level", "logger", separated by a colon (":") ;
+                  "all" = "time:level:logger" for all columns ; "none" = "" for no columns ;
+                you can't customize the column order ;
+				default: "time:level:logger" (that is : all existing columns)
+		 -->
+		<!-- Note: These settings are overwritten if command line options for this are used -->
+		<section name="Default"> <!-- The "default" logger, always created, even if not there -->
+			<attstr name="output stream" val="stderr"/>
+			<attstr name="level threshold" val="info"/>
+			<attstr name="header columns" val="time:level:logger"/>
+			<!-- <attstr name="header columns" val="none"/> -->
+		</section>
+		<section name="Optim">
+			<attstr name="output stream" val="stderr"/>
+			<attstr name="level threshold" val="info"/>
+			<attstr name="header columns" val="time:level:logger"/>
+			<!-- <attstr name="header columns" val="none"/> -->
+		</section>
+		<section name="Simplix">
+			<attstr name="output stream" val="stderr"/>
+			<attstr name="level threshold" val="info"/>
+			<attstr name="header columns" val="time:level:logger"/>
+			<!-- <attstr name="header columns" val="none"/> -->
+		</section>
+		<section name="USR">
+			<attstr name="output stream" val="stderr"/>
+			<attstr name="level threshold" val="info"/>
+			<attstr name="header columns" val="time:level:logger"/>
+			<!-- <attstr name="header columns" val="none"/> -->
+		</section>
+	</section>
+</params>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : displayconfigmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger, 2010 Jean-Philippe Meuret
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id$
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Display (game screen / window) settings menu
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="monitorconfigmenu">	
+
+	<section name="dynamic controls">
+
+	<section name="MonitorTypeCombo">
+		<attstr name="type" val="combo box"/>	  	  	  	  	  
+		<attnum name="max len" val="11"/>
+		<attstr name="tip" val="Select Monitor Aspect Ratio"/>
+		<attnum name="x" val="270"/>
+		<attnum name="y" val="318"/>
+		<attnum name="width" val="220"/>
+		<attnum name="arrows width" val="24"/>
+		<attnum name="arrows height" val="24"/>	  
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFCC00"/>
+		<attstr name="font" val="medium"/>
+		<attnum name="image width" val="24"/>
+		<attnum name="image height" val="24"/>
+	</section>
+
+	<section name="SpanSplitCombo">
+		<attstr name="type" val="combo box"/>	  	  	  	  	  
+		<attnum name="max len" val="11"/>
+		<attstr name="tip" val="Enable wide views to span vertical split screens"/>
+		<attnum name="x" val="270"/>
+		<attnum name="y" val="288"/>
+		<attnum name="width" val="220"/>
+		<attnum name="arrows width" val="24"/>
+		<attnum name="arrows height" val="24"/>	  
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFCC00"/>
+		<attstr name="font" val="medium"/>
+		<attnum name="image width" val="24"/>
+		<attnum name="image height" val="24"/>
+	</section>
+
+	<section name="BezelCompEdit">
+		<attstr name="type" val="edit box"/>	  	  	  	  	  
+		<attnum name="max len" val="15"/>
+		<attstr name="tip" val="Width of monitor wrt visible screen (ie 120%)"/>
+		<attnum name="x" val="300"/>
+		<attnum name="y" val="258"/>
+		<attnum name="width" val="165"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="CancelButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>            
+		<attstr name="text" val="Cancel"/>
+		<attstr name="tip" val="Cancel changes"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="282"/>
+		<attnum name="y" val="82"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<section name="ApplyButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>            
+		<attstr name="text" val="Apply"/>
+		<attstr name="tip" val="Accept and save changes (and restart the game)"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="82"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	</section>
+  
+	<section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-displayconf.jpg"/>
+	</section>  
+
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section> 
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-displayconf.png"/>
+	</section>
+
+	<section name="4">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="322"/>
+		<attstr name="text" val="Monitor Type:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="5">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="292"/>
+		<attstr name="text" val="Span Split Screens:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="6">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="262"/>
+		<attstr name="text" val="Bezel Compensation:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	</section>
+
+</params>

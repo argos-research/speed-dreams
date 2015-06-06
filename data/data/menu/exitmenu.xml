@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : exitmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: exitmenu.xml 4596 2012-03-22 22:38:16Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+        Exit confirmation / cancellation menu
+        
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="exitmenu">  
+
+	<section name="dynamic controls">
+
+	<section name="yesquit">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Yes, let's quit"/>
+		<attstr name="tip" val="Exit from the game"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="290"/>
+		<attnum name="width" val="320"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+
+	<section name="nobacktogame">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="No, back to game"/>
+		<attstr name="tip" val="Return to previous menu"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="258"/>
+		<attnum name="width" val="320"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="33"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused-last.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed-last.png"/>
+	</section>
+
+	</section>
+
+	<section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="305"/>
+		<attnum name="width" val="195"/>
+		<attnum name="height" val="130"/>
+		<attstr name="image" val="data/img/sd-logo-big.png"/>
+	</section>	
+
+	<section name="2">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-quit.jpg"/>
+	</section>   
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="410"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-quit.png"/>
+	</section>
+
+	</section>
+
+</params>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+    file        : practice.xml
+    created     : Sat Jan 25 08:58:03 CET 2003
+    copyright   : (C) 2003 by Eric Espie                         
+    email       : Eric.Espie@torcs.org   
+    version     : $Id: practice.xml 5791 2014-06-26 01:17:07Z mungewell $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "params.dtd">
+
+<params name="Practice" version="1.6">
+
+  <section name="Header">
+    <attstr name="name" val="Practice"/>
+    <attstr name="type" val="Practice"/>
+    <attstr name="description" val="Practice"/>
+    <attnum name="priority" val="100"/>
+    <attstr name="menu image" val="data/img/splash-practice.jpg"/>
+    <attstr name="run image" val="data/img/splash-run-practice.jpg"/>
+  </section>
+
+  <section name="Tracks">
+    <attnum name="maximum number" val="1"/>
+    <section name="1">
+      <attstr name="name" val="espie"/>
+      <attstr name="category" val="circuit"/>
+    </section>
+
+  </section>
+
+  <section name="Races">
+    <section name="1">
+      <attstr name="name" val="Practice"/>
+    </section>
+
+  </section>
+
+  <section name="Practice">
+    <attnum name="laps" val="20"/>
+    <attstr name="type" val="practice"/>
+    <attstr name="starting order" val="drivers list"/>
+    <attstr name="restart" val="yes"/>
+    <attstr name="display mode" val="normal"/>
+    <attstr name="display results" val="yes"/>
+    <attnum name="distance" unit="km" val="0"/>
+    <attnum name="sessiontime" unit="s" val="0"/>
+    <attstr name="rain" val="none"/>
+    <attstr name="clouds" val="scarce clouds"/>
+    <attstr name="time of day" val="morning"/>
+    <section name="Starting Grid">
+      <attnum name="rows" val="1"/>
+      <attnum name="distance to start" val="100"/>
+      <attnum name="distance between columns" val="20"/>
+      <attnum name="offset within a column" val="10"/>
+      <attnum name="initial speed" unit="km/h" val="0"/>
+      <attnum name="initial height" unit="m" val="0.2"/>
+    </section>
+
+  </section>
+
+  <section name="Drivers">
+
+    <attnum name="maximum number" val="1"/>
+    <attstr name="focused module" val="human"/>
+    <attnum name="focused idx" val="1"/>
+    <attstr name="rejected types" val="networkhuman"/>
+    
+    <section name="1">
+      <attnum name="idx" val="1"/>
+      <attstr name="module" val="human"/>
+    </section>
+
+  </section>
+
+  <section name="Configuration">
+    <attnum name="current configuration" val="4"/>
+    <section name="1">
+      <attstr name="type" val="track select"/>
+    </section>
+
+    <section name="2">
+      <attstr name="type" val="drivers select"/>
+    </section>
+
+    <section name="3">
+      <attstr name="type" val="race config"/>
+      <attstr name="race" val="Practice"/>
+      <section name="Options">
+        <section name="1">
+          <attstr name="type" val="race length"/>
+        </section>
+        <section name="2">
+          <attstr name="type" val="display mode"/>
+        </section>
+        <section name="3">
+          <attstr name="type" val="time of day"/>
+        </section>
+        <section name="4">
+          <attstr name="type" val="cloud cover"/>
+        </section>
+        <section name="5">
+          <attstr name="type" val="rain fall"/>
+        </section>
+      </section>
+
+    </section>
+
+  </section>
+
+</params>

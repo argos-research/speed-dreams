@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="Skill" type="template">
+
+ <!-- sc-f360 2 -->
+
+ <section name="skill">
+
+  <!-- This skill level is added to the global skill level set in        -->
+  <!-- raceman/config/extra/skill.xml to provide a unique value for      -->
+  <!-- each driver.  The values should be between 0 and 1, with 0 being  -->
+  <!-- the highest skill level.                                          -->
+  <attnum name="level" min="0.0" max="1.0" val="1.0"/>
+
+ </section>
+
+</params>

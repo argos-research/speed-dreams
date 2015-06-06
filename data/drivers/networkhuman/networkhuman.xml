@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+
+<params name="human" type="param" mode="mw" version="1.0">
+
+	<section name="Robots">
+		<section name="index">
+
+			<section name="1">
+				<attstr name="name" val="Player"/>
+				<attstr name="short name" val="Player"/>
+				<attstr name="code name" val="PLA"></attstr>
+				<attstr name="car name" val="sc-lynx-220"/>
+				<attnum name="race number" val="20.000000"/>
+				<attnum name="red" val="1.000000"/>
+				<attnum name="green" val="1.000000"/>
+				<attnum name="blue" val="0.500000"/>
+				<attstr name="type" val="human"/>
+				<attstr name="skill level" val="rookie"/>
+			</section>
+			
+		</section>
+	</section>
+	
+</params>

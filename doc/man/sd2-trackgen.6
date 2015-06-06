@@ -1,0 +1,70 @@
+.TH "Speed Dreams 2 terrain generator for tracks" "6" "March 2012" "Speed Dreams 2.x" "Games"
+.SH NAME
+.LP
+sd2-trackgen \- Speed Dreams 2 terrain generator for tracks
+.SH SYNOPSIS
+.LP
+\fBsd2-trackgen\fP -c category -n name [-a] [-m] [-s] [-S] [-E <n> [-H <nb>]]
+.SH DESCRIPTION
+.TP
+This manual describes the track terrain generator that is shipped with Speed Dreams 2.
+.SH OPTIONS
+.TP
+.B -c \fIcategory\fP
+track category (road, speedway, dirt...)
+.TP
+.B -n \fIname\fP
+track name
+.TP
+.B -b
+draw bump track
+.TP
+.B -B
+Don't use terrain border (relief supplied int clockwise, ext CC)
+.TP
+.B -a 
+draw all (default is track only)
+.TP
+.B -s
+split the track and the terrain
+.TP
+.B -S
+split all
+.TP
+.B -E \fI<n>\fP
+save elevation file n
+.RS 4
+.IP "0: all elevatation files" 4
+.IP "1: elevation file of terrain + track" 4
+.IP "2: elevation file of terrain with track white"
+.IP "3: track only"
+.IP "4: track elevations with height steps" 4
+.RE
+.TP
+.B -H \fI<nb>\fP
+nb of height steps for 4th elevation file [30]
+.SH LICENSE
+sd2-trackgen is licensed under the GNU General Public License, version 2 or later.
+.SH COPYRIGHT
+The Speed Dreams Team.
+.SH AUTHOR
+This manual page was written by Jean-Philippe Meuret <pouillot@users.sourceforge.net>,
+based on TORCS 1.2.2 version by Rudy Godoy <rudy@kernel-panik.org>,
+for the Debian project ; of course, it may be used by any other.
+.SH BUG REPORTS
+.br
+In case you discover a bug (sure you won't ;-), please report it here:
+.br
+http://sourceforge.net/apps/trac/speed-dreams/report/3
+.br
+of course after checking that it is not already filed.
+.SH SEE ALSO
+Web site: http://www.speed-dreams.org/
+.br
+Community: http://community.speed-dreams.org/
+.br
+Sourceforge pages: http://sourceforge.net/projects/speed-dreams/
+.br
+Wiki: http://sourceforge.net/apps/trac/speed-dreams/wiki
+.br
+speed-dreams-2(6), sd2-accc(6), sd2-menuview(6), sd2-nfs2ac(6), sd2-nfsperf(6)

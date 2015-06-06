@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : viper-gts-r.xml
+    created              : Sat Mar  3 18:46:37 CET 2001
+    copyright            : (C) 2001 by Eric Espie                       
+    email                : Eric.Espie@torcs.org   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="sc-cavallo-360" type="template" mode="mw">
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" min="0.3" max="0.65" val="0.4956"/>
+		<attnum name="max pressure" unit="kPa" min="5000" max="50000" val="40900"/>
+	</section>
+	<section name="private">
+		<attnum name="fuelperlap" val="1.3"/>
+		<attnum name="base speed" val="14.60"/>
+		<attnum name="base brake" val="30.00"/>
+		<attnum name="exit boost factor" val="1.17"/>
+		<attnum name="revs change up" val="0.88"/>
+		<attnum name="revs change down" val="0.76"/>
+		<attnum name="slope factor" val="0.1"/>
+	</section>
+</params>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

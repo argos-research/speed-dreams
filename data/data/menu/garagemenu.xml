@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+   file				 : carselectmenu.xml
+   created			  : 2009
+   copyright			: (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+   web				  : speed-dreams.sourceforge.net
+   version			  : $Id: garagemenu.xml 4695 2012-04-14 07:58:40Z pouillot $
+  -->
+
+<!--	This program is free software; you can redistribute it and/or modify  -->
+<!--	it under the terms of the GNU General Public License as published by  -->
+<!--	the Free Software Foundation; either version 2 of the License, or	 -->
+<!--	(at your option) any later version.								   -->
+
+<!-- 
+
+   Garage menu : 
+   - where drivers choose their car, select the desired skin,
+	 have a visual and technical preview of it,
+	 and go backstage in order to check / change the car settings
+   - only human can actually choose their cars and change the settings
+   - car settings for robots can only be checked (read-only).
+   
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="carselectmenu">	
+
+  <section name="dynamic controls">
+
+	<section name="DriverNameLabel">
+	  <attstr name="type" val="label"/>
+	  <attnum name="max len" val="48"/>
+	  <attstr name="text" val="(possibly long driver name)"/>
+	  <attnum name="x" val="356"/>
+	  <attnum name="y" val="404"/>
+	  <attstr name="h align" val="left"/>  
+	  <attstr name="font" val="medium"/>
+	</section>
+
+	<!-- Car category, model and skin selection combo-boxes -->
+	<section name="CategoryCombo">
+	  <attstr name="type" val="combo box"/>	  	  	  	  	  
+	  <attnum name="max len" val="30"/>
+	  <attstr name="tip" val="Select your car category"/>
+	  <attnum name="x" val="120"/>
+	  <attnum name="y" val="326"/>
+	  <attnum name="width" val="220"/>
+	  <attnum name="arrows width" val="24"/>
+	  <attnum name="arrows height" val="24"/>	  
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attstr name="focused color" val="0xFFFFFF"/>
+	  <attstr name="pushed color" val="0xFFCC00"/>
+	  <attstr name="font" val="small"/>
+	</section>
+	<section name="ModelCombo">
+	  <attstr name="type" val="combo box"/>	  	  	  	  	  
+	  <attnum name="max len" val="30"/>
+	  <attstr name="tip" val="Select your car model"/>
+	  <attnum name="x" val="120"/>
+	  <attnum name="y" val="306"/>
+	  <attnum name="width" val="220"/>
+	  <attnum name="arrows width" val="24"/>
+	  <attnum name="arrows height" val="24"/>	  
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attstr name="focused color" val="0xFFFFFF"/>
+	  <attstr name="pushed color" val="0xFFCC00"/>
+	  <attstr name="font" val="small"/>
+	</section>
+	<section name="SkinCombo">
+	  <attstr name="type" val="combo box"/>	  	  	  	  	  
+	  <attnum name="max len" val="30"/>
+	  <attstr name="tip" val="Select your car skin"/>
+	  <attnum name="x" val="120"/>
+	  <attnum name="y" val="286"/>
+	  <attnum name="width" val="220"/>
+	  <attnum name="arrows width" val="24"/>
+	  <attnum name="arrows height" val="24"/>	  
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attstr name="focused color" val="0xFFFFFF"/>
+	  <attstr name="pushed color" val="0xFFCC00"/>
+	  <attstr name="font" val="small"/>
+	</section>
+
+	<!-- Preview image -->
+	<section name="PreviewImage">
+	  <attstr name="type" val="static image"/>
+	  <attnum name="x" val="50"/>
+	  <attnum name="y" val="98"/>
+	  <attnum name="width" val="288"/>
+	  <attnum name="height" val="180"/>
+      <attstr name="can deform" val="no"/>
+	  <attstr name="image" val="data/img/nocarpreview.png"/>
+	</section>
+
+	<!-- Overall ratings -->
+	<section name="TopSpeedProgress">
+	  <attstr name="type" val="progress bar"/>
+	  <attstr name="tip" val="Top speed (0 to 400 km/h)"/>
+	  <attnum name="x" val="470"/>
+	  <attnum name="y" val="330"/>
+	  <attnum name="width" val="120"/>
+	  <attnum name="height" val="12"/>
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attnum name="max" val="400"/>
+	  <attnum name="min" val="0"/>
+	  <attnum name="value" val="250"/>
+	</section>
+
+	<section name="PowerMassRatioProgress">
+	  <attstr name="type" val="progress bar"/>
+	  <attstr name="tip" val="Power to mass ratio (0 to 2 bhp/kg)"/>
+	  <attnum name="x" val="470"/>
+	  <attnum name="y" val="310"/>
+	  <attnum name="width" val="120"/>
+	  <attnum name="height" val="12"/>
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attnum name="max" val="2.0"/>
+	  <attnum name="min" val="0.0"/>
+	  <attnum name="value" val=".5"/>
+	</section>
+
+	<section name="LowSpeedGripProgress">
+	  <attstr name="type" val="progress bar"/>
+	  <attstr name="tip" val="How the tires stick to the ground (0 to 20 m/s2)"/>
+	  <attnum name="x" val="470"/>
+	  <attnum name="y" val="290"/>
+	  <attnum name="width" val="120"/>
+	  <attnum name="height" val="12"/>
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attnum name="max" val="20"/>
+	  <attnum name="min" val="0"/>
+	  <attnum name="value" val="15"/>
+	</section>
+
+	<section name="HighSpeedGripProgress">
+	  <attstr name="type" val="progress bar"/>
+	  <attstr name="tip" val="Aerodynamic downforce, at high speeds (0 to 50 m/s2)"/>
+	  <attnum name="x" val="470"/>
+	  <attnum name="y" val="270"/>
+	  <attnum name="width" val="120"/>
+	  <attnum name="height" val="12"/>
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attnum name="max" val="50"/>
+	  <attnum name="min" val="0"/>
+	  <attnum name="value" val="30"/>
+	</section>
+
+	<section name="CorneringProgress">
+	  <attstr name="type" val="progress bar"/>
+	  <attstr name="tip" val="Ability to turn quickly = inv. of Z axis inertia (0 to 0.01 1/m.kg)"/>
+	  <attnum name="x" val="470"/>
+	  <attnum name="y" val="250"/>
+	  <attnum name="width" val="120"/>
+	  <attnum name="height" val="12"/>
+	  <attstr name="color" val="0xFFFFFF"/>
+	  <attnum name="max" val="0.01"/>
+	  <attnum name="min" val="0.00"/>
+	  <attnum name="value" val="0.005"/>
+	</section>
+
+	<!-- Data sheet -->
+	<section name="MassLabel">
+	  <attstr name="type" val="label"/>
+	  <attnum name="max len" val="20"/>
+	  <attnum name="x" val="430"/>
+	  <attnum name="y" val="178"/>
+	  <attnum name="width" val="160"/>
+	  <attstr name="h align" val="right"/>  
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="DriveTrainLabel">
+	  <attstr name="type" val="label"/>
+	  <attnum name="max len" val="20"/>
+	  <attnum name="x" val="430"/>
+	  <attnum name="y" val="158"/>
+	  <attnum name="width" val="160"/>
+	  <attstr name="h align" val="right"/>  
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="EngineLabel">
+	  <attstr name="type" val="label"/>
+	  <attnum name="max len" val="25"/>
+	  <attnum name="x" val="430"/>
+	  <attnum name="y" val="138"/>
+	  <attnum name="width" val="160"/>
+	  <attstr name="h align" val="right"/>  
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="MaxPowerLabel">
+	  <attstr name="type" val="label"/>
+	  <attnum name="max len" val="20"/>
+	  <attnum name="x" val="430"/>
+	  <attnum name="y" val="118"/>
+	  <attnum name="width" val="160"/>
+	  <attstr name="h align" val="right"/>  
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="MaxTorqueLabel">
+	  <attstr name="type" val="label"/>
+	  <attnum name="max len" val="20"/>
+	  <attnum name="x" val="430"/>
+	  <attnum name="y" val="98"/>
+	  <attnum name="width" val="160"/>
+	  <attstr name="h align" val="right"/>  
+	  <attstr name="font" val="small_t"/>
+	</section>
+
+	<!-- Cancel button -->
+	<section name="CancelButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Cancel"/>
+		<attstr name="tip" val="Cancel changes"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="166"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<!-- Car Settings button
+	<section name="CarSettingsButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>	  	  	  
+		<attstr name="text" val="Settings"/>
+		<attstr name="tip" val="Detailed car settings (not yet implemented)"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="360"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section -->
+
+	<!-- Accept button -->
+	<section name="AcceptButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Apply"/>
+		<attstr name="tip" val="Accept and save changes"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+	
+  </section>
+
+  <section name="static controls">
+
+	<section name="1">
+	  <attstr name="type" val="background image"/>
+	  <attstr name="image" val="data/img/splash-garage.jpg"/>
+	</section>  
+
+	<section name="2">
+	  <attstr name="type" val="static image"/>
+	  <attnum name="x" val="212"/>
+	  <attnum name="y" val="400"/>
+	  <attnum name="width" val="450"/>
+	  <attnum name="height" val="20"/>
+	  <attstr name="image" val="data/img/head-garage.png"/>
+	</section>
+
+	<section name="3">
+	  <attstr name="type" val="static image"/>
+	  <attnum name="x" val="-10"/>
+	  <attnum name="y" val="335"/>
+	  <attnum name="width" val="200"/>
+	  <attnum name="height" val="120"/>
+	  <attstr name="image" val="data/img/sd-logo.png"/>
+	</section>
+
+	<!-- Combo-boxes labels -->
+	<section name="4">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="50"/>
+	  <attnum name="y" val="330"/>
+	  <attstr name="text" val="Category:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="5">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="50"/>
+	  <attnum name="y" val="310"/>
+	  <attstr name="text" val="Model:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="6">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="50"/>
+	  <attnum name="y" val="290"/>
+	  <attstr name="text" val="Skin:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+
+	<!-- Overall rating labels -->
+	<section name="7">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="354"/>
+	  <attnum name="width" val="240"/>
+	  <attstr name="h align" val="left"/>
+	  <attstr name="text" val="Overall rating"/>
+	  <attstr name="font" val="medium"/>
+	</section>
+	<section name="8">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="330"/>
+	  <attstr name="text" val="Top speed:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="9">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="310"/>
+	  <attstr name="text" val="Acceleration:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="10">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="290"/>
+	  <attstr name="text" val="Tire grip:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="11">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="270"/>
+	  <attstr name="text" val="Aero. grip:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="12">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="250"/>
+	  <attstr name="text" val="Cornering:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+
+	<!-- Data sheet labels -->
+	<section name="13">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="202"/>
+	  <attnum name="width" val="240"/>
+	  <attstr name="h align" val="left"/>
+	  <attstr name="text" val="Data sheet"/>
+	  <attstr name="font" val="medium"/>
+	</section>
+	<section name="14">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="178"/>
+	  <attstr name="text" val="Mass:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="15">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="158"/>
+	  <attstr name="text" val="Drive train:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="16">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="138"/>
+	  <attstr name="text" val="Engine:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="17">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="118"/>
+	  <attstr name="text" val="Power:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+	<section name="18">
+	  <attstr name="type" val="label"/>
+	  <attnum name="x" val="380"/>
+	  <attnum name="y" val="98"/>
+	  <attstr name="text" val="Torque:"/>
+	  <attstr name="font" val="small_t"/>
+	</section>
+
+  </section>
+
+</params>

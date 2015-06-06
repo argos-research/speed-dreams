@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : viper-gts-r.xml
+    created              : Sat Mar  3 18:46:37 CET 2001
+    copyright            : (C) 2001 by Eric Espié                         
+    email                : Eric.Espie@torcs.org   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="sc-cavallo-360" type="template">
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" min="0.3" max="0.65" val="0.4852"/>
+		<attnum name="max pressure" unit="kPa" min="5000" max="50000" val="30900"/>
+	</section>
+	
+	<section name="private">
+		<attnum name="fuelperlap" val="1.49"/>
+		<attnum name="avoid speed factor" val="0.85"/>
+		<attnum name="avoid brake factor" val="0.80"/>
+		<attnum name="base speed" val="12.10"/>
+		<attnum name="base brake" val="26.15"/>
+		<attnum name="exit boost factor" val="1.17"/>
+		<attnum name="revs change up" val="0.86"/>
+		<attnum name="revs change down" val="0.74"/>
+		<attnum name="slope factor" val="0.45"/>
+		<attnum name="bump caution" val="0.1"/>
+		<attnum name="avoid offset" val="0.9"/>
+		<attnum name="offtrack allowed" val="0"/>	
+		<attnum name="pit offset" val="0.00"/>
+		<attnum name="pit shift" val="1.00"/>
+	</section>
+
+</params>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

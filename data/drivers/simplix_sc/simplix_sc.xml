@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file          : simplix_sc.xml
+    created       : 05 Dec 2008
+    last modified : 01 May 2013
+    copyright     : (C) 2009-2013 Wolf-Dieter Beelitz
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+
+<params name="simplix_sc" type="robotdef">
+  <section name="Robots">
+    <section name="index">
+
+      <section name="0">
+        <attstr name="name" val="Yuuki Kyousou"></attstr>
+        <attstr name="short name" val="Y. Kyousou"></attstr>
+        <attstr name="code name" val="KYO"></attstr>
+        <attstr name="desc" val="SC: 96A"></attstr>
+        <attstr name="team" val="simplix_sc96A"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-boxer-96"></attstr>
+        <attnum name="race number" val="996"></attnum>
+        <attnum name="red" val="0.2"></attnum>
+        <attnum name="green" val="0.4"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="1">
+        <attstr name="name" val="Haruna Say"></attstr>
+        <attstr name="short name" val="H. Say"></attstr>
+        <attstr name="code name" val="SAY"></attstr>
+        <attstr name="desc" val="SC: 96B"></attstr>
+        <attstr name="team" val="simplix_sc96A"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-boxer-96"></attstr>
+        <attnum name="race number" val="997"></attnum>
+        <attnum name="red" val="0.2"></attnum>
+        <attnum name="green" val="0.4"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="2">
+        <attstr name="name" val="Marisol Carrillo"></attstr>
+        <attstr name="short name" val="M. Carrillo"></attstr>
+        <attstr name="code name" val="MCA"></attstr>
+        <attstr name="desc" val="SC: SpiritA"></attstr>
+        <attstr name="team" val="simplix_scspirit"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-spirit-300"></attstr>
+        <attnum name="race number" val="110"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.2"></attnum>
+        <attnum name="blue" val="0.2"></attnum>
+      </section>
+
+      <section name="3">
+        <attstr name="name" val="Luis Barreto"></attstr>
+        <attstr name="short name" val="L. Barreto"></attstr>
+        <attstr name="code name" val="BAR"></attstr>
+        <attstr name="desc" val="SC: spiritB"></attstr>
+        <attstr name="team" val="simplix_scspirit"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-spirit-300"></attstr>
+        <attnum name="race number" val="44"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.2"></attnum>
+        <attnum name="blue" val="0.2"></attnum>
+      </section>
+
+      <section name="4">
+        <attstr name="name" val="Vittorio Basso"></attstr>
+        <attstr name="short name" val="V. Basso"></attstr>
+        <attstr name="code name" val="BAS"></attstr>
+        <attstr name="desc" val="SC: c360A"></attstr>
+        <attstr name="team" val="simplix_scc360"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-cavallo-360"></attstr>
+        <attnum name="race number" val="62"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.4"></attnum>
+      </section>
+
+      <section name="5">
+        <attstr name="name" val="Sal Moretti"></attstr>
+        <attstr name="short name" val="S. Moretti"></attstr>
+        <attstr name="code name" val="MOR"></attstr>
+        <attstr name="desc" val="SC: c360B"></attstr>
+        <attstr name="team" val="simplix_scc360"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-cavallo-360"></attstr>
+        <attnum name="race number" val="63"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.4"></attnum>
+      </section>
+
+      <section name="6">
+        <attstr name="name" val="Brad Newman"></attstr>
+        <attstr name="short name" val="B. Newman"></attstr>
+        <attstr name="code name" val="NEW"></attstr>
+        <attstr name="desc" val="SC: gt4A"></attstr>
+        <attstr name="team" val="simplix_scgt4"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-fmc-gt4"></attstr>
+        <attnum name="race number" val="23"></attnum>
+        <attnum name="red" val="0.5"></attnum>
+        <attnum name="green" val="0.8"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+
+      <section name="7">
+        <attstr name="name" val="Michael Ashbury"></attstr>
+        <attstr name="short name" val="M. Ashbury"></attstr>
+        <attstr name="code name" val="ASH"></attstr>
+        <attstr name="desc" val="SC: gt4B"></attstr>
+        <attstr name="team" val="simplix_scgt4"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-fmc-gt4"></attstr>
+        <attnum name="race number" val="24"></attnum>
+        <attnum name="red" val="0.5"></attnum>
+        <attnum name="green" val="0.8"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+
+      <section name="8">
+        <attstr name="name" val="Augustus Booth"></attstr>
+        <attstr name="short name" val="A. Booth"></attstr>
+        <attstr name="code name" val="ABO"></attstr>
+        <attstr name="desc" val="SC: lynx-220A"></attstr>
+        <attstr name="team" val="simplix_sclynx-220"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-lynx-220"></attstr>
+        <attnum name="race number" val="74"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+        <attstr name="features" val="wet track"></attstr>
+      </section>
+
+      <section name="9">
+        <attstr name="name" val="Jeremy Carmichael"></attstr>
+        <attstr name="short name" val="J. Carmichael"></attstr>
+        <attstr name="code name" val="CAM"></attstr>
+        <attstr name="desc" val="SC: lynx-220B"></attstr>
+        <attstr name="team" val="simplix_sclynx-220"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-lynx-220"></attstr>
+        <attnum name="race number" val="75"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+        <attstr name="features" val="wet track"></attstr>
+      </section>
+
+      <section name="10">
+        <attstr name="name" val="Arnaud Beauchamp"></attstr>
+        <attstr name="short name" val="A. Beauchamp"></attstr>
+        <attstr name="code name" val="ARN"></attstr>
+        <attstr name="desc" val="SCB: NSXA"></attstr>
+        <attstr name="team" val="simplix_scNSX"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-murasama-nsx"></attstr>
+        <attnum name="race number" val="97"></attnum>
+        <attnum name="red" val="0.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="11">
+        <attstr name="name" val="Jacques Prewitt"></attstr>
+        <attstr name="short name" val="J. Prewitt"></attstr>
+        <attstr name="code name" val="PRE"></attstr>
+        <attstr name="desc" val="SCB: NSXB"></attstr>
+        <attstr name="team" val="simplix_scNSX"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-murasama-nsx"></attstr>
+        <attnum name="race number" val="98"></attnum>
+        <attnum name="red" val="0.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+<!--      <section name="12">
+        <attstr name="name" val="SCB: 96A"></attstr>
+        <attstr name="short name" val="SCB: 96A"></attstr>
+        <attstr name="code name" val="96A"></attstr>
+        <attstr name="desc" val="SCB: 96A"></attstr>
+        <attstr name="team" val="simplix_sc96B"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-boxer-96"></attstr>
+        <attnum name="race number" val="51"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+
+      <section name="13">
+        <attstr name="name" val="SCB: 96B"></attstr>
+        <attstr name="short name" val="SCB: 96B"></attstr>
+        <attstr name="code name" val="96B"></attstr>
+        <attstr name="desc" val="SCB: 96B"></attstr>
+        <attstr name="team" val="simplix_sc96B"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-boxer-96"></attstr>
+        <attnum name="race number" val="52"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+
+      <section name="14">
+        <attstr name="name" val="SCB: petrolA"></attstr>
+        <attstr name="short name" val="SCB: petrolA"></attstr>
+        <attstr name="code name" val="PEA"></attstr>
+        <attstr name="desc" val="SCB: petrolA"></attstr>
+        <attstr name="team" val="simplix_scpetrol"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-petrol"></attstr>
+        <attnum name="race number" val="55"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+
+      <section name="15">
+        <attstr name="name" val="SCB: petrolB"></attstr>
+        <attstr name="short name" val="SCB: petrolB"></attstr>
+        <attstr name="code name" val="PEB"></attstr>
+        <attstr name="desc" val="SCB: petrolB"></attstr>
+        <attstr name="team" val="simplix_scpetrol"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-petrol"></attstr>
+        <attnum name="race number" val="56"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+
+      <section name="16">
+        <attstr name="name" val="SCB: bewyA"></attstr>
+        <attstr name="short name" val="SCB: bewyA"></attstr>
+        <attstr name="code name" val="BEA"></attstr>
+        <attstr name="desc" val="SCB: bewyA"></attstr>
+        <attstr name="team" val="simplix_scbewy"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-bewy"></attstr>
+        <attnum name="race number" val="57"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+
+      <section name="17">
+        <attstr name="name" val="SCB: bewyB"></attstr>
+        <attstr name="short name" val="SCB: bewyB"></attstr>
+        <attstr name="code name" val="BEB"></attstr>
+        <attstr name="desc" val="SCB: bewyB"></attstr>
+        <attstr name="team" val="simplix_scbewy"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-bewy"></attstr>
+        <attnum name="race number" val="58"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+
+      <section name="18">
+        <attstr name="name" val="SCB: mf1A"></attstr>
+        <attstr name="short name" val="SCB: mf1A"></attstr>
+        <attstr name="code name" val="F1A"></attstr>
+        <attstr name="desc" val="SCB: mf1A"></attstr>
+        <attstr name="team" val="simplix_scmf1"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-mf1"></attstr>
+        <attnum name="race number" val="59"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+
+      <section name="19">
+        <attstr name="name" val="SCB: mf1B"></attstr>
+        <attstr name="short name" val="SCB: mf1B"></attstr>
+        <attstr name="code name" val="F1B"></attstr>
+        <attstr name="desc" val="SCB: mf1B"></attstr>
+        <attstr name="team" val="simplix_scmf1"></attstr>
+        <attstr name="author" val="Wolf-Dieter Beelitz"></attstr>
+        <attstr name="car name" val="sc-mf1"></attstr>
+        <attnum name="race number" val="60"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.3"></attnum>
+        <attnum name="blue" val="0.3"></attnum>
+      </section>
+-->
+    </section>
+  </section>
+</params>

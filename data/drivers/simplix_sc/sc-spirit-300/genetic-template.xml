@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file          : drivers/simplix_sc/sc-spirit-300/genetic-template
+    created       : 02/18/13
+    last modified : 02/18/13
+    copyright     : (C) 2013 Wolf-Dieter Beelitz
+
+    SVN version   : $Id:$
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- <!DOCTYPE params SYSTEM "params.dtd"> -->
+
+<!-- META DATA FOR GENETIC PARAMETER OPTIMIZATION -->
+<params name="Genetic Optimization">
+  <!-- TABLE OF CONTENT -->
+  <section name="Table of Content">
+    <attnum name="major version" val="1"/>
+    <attnum name="minor version" val="0"/>
+    <attstr name="robot" val="simplix_sc"/>
+    <attstr name="car type" val="sc-spirit-300"/>
+    <attstr name="private" val="simplix private"/>
+    <attnum name="weight of damages" val="10.0"/>
+    <attnum name="get initial value" val="1"/>
+    <attnum name="optimisation loops" val="1000"/>
+    <attstr name="author" val="Wolf-Dieter Beelitz"/>
+  </section>
+  <!-- END OF TABLE OF CONTENT -->
+
+  <!-- META DATA OF GLOBAL PARAMETERS -->
+  <section name="Global">
+	  
+    <!-- FIRST GROUP OF META DATA OF GLOBAL PARAMETERS -->
+    <!-- THERE ARE NEARLY NO CAR PARAMETERS ALLOWED AT -->
+    <!-- THE CAR TYPE SETUPS OF THE CAR SET SUPERCARS! -->
+
+    <!-- META DATA OF FIRST GLOBAL PARAMETER -->
+    <section name="Brake Balance">
+      <attnum name="active" val="1"/>
+      <attstr name="label" val="BrakeRepart."/>
+      <attstr name="section" val="Brake System"/>
+      <attstr name="parameter" val="front-rear brake repartition"/>
+      <attnum name="range" min="0.5" max="0.65" val="0.55"/>
+      <attnum name="weight" val="5"/>
+      <attnum name="scale" val="0.1"/>
+      <attnum name="round" val="10000"/>
+    </section>
+
+    <section name="Brake Pressure">
+      <attnum name="active" val="1"/>
+      <attstr name="label" val="MxBrakePress"/>
+      <attstr name="section" val="Brake System"/>
+      <attstr name="parameter" val="max pressure"/>
+      <attstr name="unit" val="kPa"/>
+      <attnum name="range" min="5000" max="20000" unit="kPa" val="13000"/>
+      <attnum name="weight" val="1"/>
+      <attnum name="scale" val="500"/>
+      <attnum name="round" val="0.01"/>
+    </section>
+
+    <section name="Scale Braking">
+      <attnum name="active" val="1"/>
+      <attstr name="label" val="Scale Brakes"/>
+      <attstr name="section" val="simplix private"/>
+      <attstr name="parameter" val="scale brake"/>
+      <attnum name="range" min="0.5" max="1.5" val="0.60"/>
+      <attnum name="weight" val="5"/>
+      <attnum name="scale" val="0.1"/>
+      <attnum name="round" val="100"/>
+    </section>
+
+    <section name="Brake controller P">
+	 <attnum name="active" val="1"/>
+	 <attstr name="label" val="Brake cont.P"/>
+	 <attstr name="section" val="simplix private"/>
+	 <attstr name="parameter" val="BC_P"/>
+	 <attnum name="range" min="0.0" max="10.0" val="0.40"/>
+	 <attnum name="weight" val="2"/>
+	 <attnum name="scale" val="0.05"/>
+	 <attnum name="round" val="10000"/>
+    </section>
+
+    <section name="Brake controller I">
+	 <attnum name="active" val="1"/>
+	 <attstr name="label" val="Brake cont.I"/>
+	 <attstr name="section" val="simplix private"/>
+	 <attstr name="parameter" val="BC_I"/>
+	 <attnum name="range" min="0.0001" max="1.0" val="0.001"/>
+	 <attnum name="weight" val="2"/>
+	 <attnum name="scale" val="0.001"/>
+	 <attnum name="round" val="10000"/>
+    </section>
+
+    <section name="Brake controller D">
+	 <attnum name="active" val="1"/>
+	 <attstr name="label" val="Brake cont.D"/>
+	 <attstr name="section" val="simplix private"/>
+	 <attstr name="parameter" val="BC_D"/>
+	 <attnum name="range" min="0.0" max="10.0" val="0.86"/>
+	 <attnum name="weight" val="2"/>
+	 <attnum name="scale" val="0.05"/>
+	 <attnum name="round" val="10000"/>
+    </section>
+
+    <section name="Brake controller X">
+	 <attnum name="active" val="1"/>
+	 <attstr name="label" val="Brake cont.X"/>
+	 <attstr name="section" val="simplix private"/>
+	 <attstr name="parameter" val="BC_MAX"/>
+	 <attnum name="range" min="0.0" max="100.0" val="2.0"/>
+	 <attnum name="weight" val="2"/>
+	 <attnum name="scale" val="0.1"/>
+	 <attnum name="round" val="100"/>
+    </section>
+
+    <section name="Brake controller N">
+	 <attnum name="active" val="1"/>
+	 <attstr name="label" val="Brake cont.N"/>
+	 <attstr name="section" val="simplix private"/>
+	 <attstr name="parameter" val="BC_MIN"/>
+	 <attnum name="range" min="-100.0" max="0.0" val="-1.0"/>
+	 <attnum name="weight" val="2"/>
+	 <attnum name="scale" val="0.1"/>
+	 <attnum name="round" val="100"/>
+    </section>
+
+    <section name="Scale Cornering">
+	<attnum name="active" val="1"/>
+      <attstr name="label" val="Scale Speed "/>
+      <attstr name="section" val="simplix private"/>
+      <attstr name="parameter" val="scale mu"/>
+      <attnum name="range" min="0.5" max="1.5" val="0.7"/>
+      <attnum name="weight" val="5"/>
+      <attnum name="scale" val="0.1"/>
+      <attnum name="round" val="100"/>
+    </section>
+
+    <section name="Scale Bumps">
+	<attnum name="active" val="1"/>
+	<attstr name="label" val="Scale Bumps "/>
+	<attstr name="section" val="simplix private"/>
+	<attstr name="parameter" val="scale bump"/>
+	<attnum name="range" min="0.001" max="0.6" val="0.3"/>
+	<attnum name="weight" val="3"/>
+	<attnum name="scale" val="0.05"/>
+	<attnum name="round" val="1000"/>
+    </section>
+
+    <section name="Center of Corner">
+	<attnum name="active" val="1"/>
+	<attstr name="label" val="Base Mode   "/>
+	<attstr name="section" val="simplix private"/>
+	<attstr name="parameter" val="base mode"/>
+	<attnum name="range" min="0.97" max="1.03" val="1.0"/>
+	<attnum name="weight" val="3"/>
+	<attnum name="scale" val="0.01"/>
+	<attnum name="round" val="100000"/>
+    </section>
+
+    <section name="Curvature of Corner">
+	<attnum name="active" val="1"/>
+	<attstr name="label" val="Base Scale  "/>
+	<attstr name="section" val="simplix private"/>
+	<attstr name="parameter" val="base scale"/>
+	<attnum name="range" min="1.0" max="1.050" val="1.016"/>
+	<attnum name="weight" val="3"/>
+	<attnum name="scale" val="0.01"/>
+	<attnum name="round" val="100000"/>
+    </section>
+
+  </section>
+  <!-- END OF META DATA OF GLOBAL PARAMETERS -->
+
+  <!-- FOR FUTURE USE BY SIMPLIX ROBOTS! -->
+  <!-- OTHER ROBOTS USING TRACK SEGMENTS -->
+  <!-- WITH SEPARATE LOCAL DEFINED PARA. -->
+
+  <!-- START OF META DATA OF LOCAL PARAMETERS -->
+  <section name="Local Groups">
+    <!-- META DATA OF FIRST PART OF LOCAL PARAMETERS -->
+    <section name="1">
+      <!-- META DATA OF COUNTER OF PARAMETERS PER SECTION IN THIS PART -->
+      <section name="Definition">
+        <attnum name="active" val="0"/>
+        <attstr name="name" val="Track param count"/>
+        <attstr name="section" val="simplix private"/>
+        <attstr name="subsection" val="param seg"/>
+        <attstr name="parameter" val="track param count"/>
+      </section>
+
+      <!-- META DATA OF PARAMETERS IN THIS PART -->
+      <section name="Parameter">
+        <!-- META DATA OF FIRST PARAMETER IN THIS PART -->
+        <section name="Local Center of corner">
+          <attnum name="active" val="1"/>
+          <attstr name="label" val="Base Mode   "/>
+          <attstr name="section" val="simplix private/param seg"/>
+          <attstr name="parameter" val="base mode"/>
+          <attnum name="range" min="0.97" max="1.03" val="0.98"/>
+          <attnum name="weight" val="1"/>
+          <attnum name="scale" val="0.01"/>
+          <attnum name="round" val="100000"/>
+        </section>
+
+        <!-- META DATA OF NEXT PARAMETER IN THIS PART -->
+        <section name="Local Curvature of Corner">
+          <attnum name="active" val="1"/>
+          <attstr name="label" val="Base Scale  "/>
+          <attstr name="section" val="simplix private/param seg"/>
+          <attstr name="parameter" val="base scale"/>
+          <attnum name="range" min="1" max="1.1" val="1.016"/>
+          <attnum name="weight" val="1"/>
+          <attnum name="scale" val="0.01"/>
+          <attnum name="round" val="100000"/>
+        </section>
+
+        <section name="Local Grip">
+          <attnum name="active" val="1"/>
+          <attstr name="label" val="Friction    "/>
+          <attstr name="section" val="simplix private/param seg"/>
+          <attstr name="parameter" val="scale friction"/>
+          <attnum name="range" min="0.8" max="1.2" val="1"/>
+          <attnum name="weight" val="1"/>
+          <attnum name="scale" val="0.1"/>
+          <attnum name="round" val="1000"/>
+        </section>
+
+        <section name="Local Braking">
+          <attnum name="active" val="1"/>
+          <attstr name="label" val="Braking     "/>
+          <attstr name="section" val="simplix private/param seg"/>
+          <attstr name="parameter" val="scale braking"/>
+          <attnum name="range" min="0.8" max="1.2" val="1"/>
+          <attnum name="weight" val="1"/>
+          <attnum name="scale" val="0.1"/>
+          <attnum name="round" val="1000"/>
+        </section>
+
+      </section>
+      <!-- END OF PARAMETERS IN THIS PART -->
+
+    </section>
+    <!-- END OF META DATA FOR THIS PART -->
+
+    <!-- META DATA OF NEXT PART OF LOCAL PARAMETERS -->
+    <!-- ... -->
+    <!-- END OF META DATA FOR THIS PART -->
+
+  </section>
+  <!-- END OF META DATA -->
+</params>

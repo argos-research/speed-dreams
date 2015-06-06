@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : viper-gts-r.xml
+    created              : Sat Mar  3 18:46:37 CET 2001
+    copyright            : (C) 2001 by Eric Espié                         
+    email                : Eric.Espie@torcs.org   
+    version              : $Id: default.xml 2917 2010-10-17 19:03:40Z pouillot $                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="Viper GTS-R" type="template">
+	<section name="private">
+		<attnum name="rough limit" min="0" max="2" val="0.02"/>
+		<attnum name="base speed factor" val="1.10"/>
+		<attnum name="int margin" min="0" max="2" val="0.3"/>
+		<attnum name="ext margin" min="0" max="2" val="0.2"/>
+		<attnum name="accel curve" min="0" max="2" val="1.20"/>
+		<attnum name="accel curve limit" min="0" max="6" val="1.2"/>
+		<attnum name="base brake" min="10.0" max="200.0" val="52.00"/>
+
+		<attnum name="0 bgn" val="890"/>
+		<attnum name="0 end" val="1170"/>
+		<attnum name="0 base speed" val="8"/>
+
+		<attnum name="1 bgn" val="2300"/>
+		<attnum name="1 end" val="2699"/>
+		<attnum name="1 base brake" val="10"/>
+
+		<attnum name="2 bgn" val="2700"/>
+		<attnum name="2 end" val="2770"/>
+		<attnum name="2 base speed" val="11.8"/>
+	</section>
+
+</params>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : helpmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: helpmenu.xml 5107 2013-01-22 23:34:44Z torcs-ng $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Help screen (behind the F1 key in every menu)
+
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="helpmenu">
+  
+  <section name="properties">
+	<attnum name="xLeftColumn" val="190"/>
+	<attnum name="xRightColumn" val="360"/>
+	<attnum name="nameFieldWidth" val="80"/>
+	<attnum name="yTopLine" val="380"/>
+	<attnum name="lineShift" val="13"/>
+  </section>
+
+  <section name="template controls">
+	<section name="keyName">
+	  <attstr name="type" val="label"/>
+	  <attstr name="tip" val="Key name"/>
+	  <attnum name="width" val="70"/>
+	  <attstr name="h align" val="right"/>
+	  <attstr name="font" val="small_c"/>
+	  <attstr name="color" val="0xFFCC00"/>
+	  <attstr name="focused color" val="0xFFCC00"/>
+	</section>
+	<section name="keyDesc">
+	  <attstr name="type" val="label"/>
+	  <attstr name="tip" val="Key description"/>
+	  <attstr name="h align" val="left"/>
+	  <attstr name="font" val="small_t"/>
+	  <attstr name="color" val="0xFFFFFF"/>
+	</section>
+  </section>
+
+  <section name="dynamic controls">
+
+	<!-- Back button -->
+	<section name="backbutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>                  
+		<attstr name="text" val="Back"/>
+		<attstr name="tip" val="Return to previous menu"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="280"/>
+		<attnum name="y" val="50"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+	<!-- Version label -->
+	<section name="versionlabel">
+		<attstr name="type" val="label"/>                              
+		<attstr name="tip" val="Actual version of the game"/>
+		<attnum name="x" val="532"/>
+		<attnum name="y" val="25"/>
+		<attnum name="width" val="100"/>
+		<attstr name="h align" val="right"/>
+		<attstr name="color" val="0x00CCFF"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+  </section>
+  
+  <section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="305"/>
+		<attnum name="width" val="195"/>
+		<attnum name="height" val="130"/>
+		<attstr name="image" val="data/img/sd-logo-big.png"/>
+	</section>	
+
+	<section name="2">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-help.jpg"/>
+	</section>    
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-help.png"/>
+	</section>
+  </section>
+
+	<section name="music">
+		<attstr name="music file" val="data/music/qualifications.ogg"/>
+	</section>
+	
+</params>

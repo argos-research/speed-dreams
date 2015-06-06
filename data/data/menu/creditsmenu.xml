@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : creditsmenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Jean-Philippe Meuret, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: creditsmenu.xml 5107 2013-01-22 23:34:44Z torcs-ng $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Credits screen
+
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="creditsmenu">
+
+  <section name="properties">
+    <attnum name="nMaxLinesPerPage" val="14"/>
+    <attnum name="yBottom1stLine" val="366"/>
+    <attnum name="xLeft1stCol" val="70"/>
+    <attnum name="xRecordLineShift" val="0"/>
+    <attnum name="yLineShift" val="14"/>
+    <attnum name="yRecordShift" val="24"/>
+  </section>
+
+  <section name="template controls">
+
+    <!-- Dev. team (chapter 0) pages -->
+    <section name="0.name">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Name of the team member"/>
+      <attnum name="max len" val="30"/>
+      <attstr name="h align" val="right"/>
+      <attnum name="width" val="160"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="0.contribs">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Main contributions"/>
+      <attnum name="max len" val="100"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="0.role">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Role in the team"/>
+      <attnum name="max len" val="30"/>
+      <attstr name="h align" val="right"/>
+      <attnum name="width" val="160"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="0.web">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Website"/>
+      <attnum name="max len" val="100"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+
+    <!-- Contributors (chapter 1) pages -->
+    <section name="1.name">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Name of the contributor"/>
+      <attnum name="max len" val="30"/>
+      <attstr name="h align" val="right"/>
+      <attnum name="width" val="160"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="1.contribs">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Main contributions"/>
+      <attnum name="max len" val="100"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="1.role">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Role"/>
+      <attnum name="max len" val="30"/>
+      <attstr name="h align" val="right"/>
+      <attnum name="width" val="160"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="1.web">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Website"/>
+      <attnum name="max len" val="100"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+
+    <!-- 3rd party libs and code (chapter 2) pages -->
+    <section name="2.name">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Name"/>
+      <attnum name="max len" val="20"/>
+      <attstr name="h align" val="right"/>
+      <attnum name="width" val="80"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="2.maintaineer">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Maintaineer"/>
+      <attnum name="max len" val="30"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="2.web">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Website"/>
+      <attnum name="max len" val="40"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+
+    <!-- 3rd party tools (chapter 3) pages -->
+    <section name="3.name">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Name"/>
+      <attnum name="max len" val="30"/>
+      <attstr name="h align" val="right"/>
+      <attnum name="width" val="180"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="3.use">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Use in the game code"/>
+      <attnum name="max len" val="100"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="3.maintaineer">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Maintaineer"/>
+      <attnum name="max len" val="30"/>
+      <attstr name="h align" val="right"/>
+      <attnum name="width" val="180"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="3.web">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Website"/>
+      <attnum name="max len" val="100"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+
+    <!-- Pre-fork contributors (chapter 4) pages -->
+    <section name="4.name">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Name of the contributor"/>
+      <attnum name="max len" val="30"/>
+      <attstr name="h align" val="right"/>
+      <attnum name="width" val="160"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="4.contribs">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Main contributions"/>
+      <attnum name="max len" val="100"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="4.role">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Role"/>
+      <attnum name="max len" val="30"/>
+      <attstr name="h align" val="right"/>
+      <attnum name="width" val="160"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+    <section name="4.web">
+      <attstr name="type" val="label"/>
+      <attstr name="tip" val="Website"/>
+      <attnum name="max len" val="100"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="font" val="small_t"/>
+      <attstr name="color" val="0xFFFFFF"/>
+    </section>
+
+  </section>
+
+  <section name="dynamic controls">
+
+	<section name="subtitle">
+		<attstr name="type" val="label"/>                              
+		<attnum name="x" val="340"/>
+		<attnum name="y" val="415"/>
+		<attnum name="max len" val="50"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="next page arrow">
+		<attstr name="type" val="image button"/>
+		<attstr name="tip" val="Next page"/>
+		<attnum name="x" val="600"/>
+		<attnum name="y" val="118"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>                        
+		<attstr name="disabled image" val="data/img/arrow-down-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-down.png"/>
+		<attstr name="focused image" val="data/img/arrow-down-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-down-pushed.png"/>
+	</section>
+	<section name="previous page arrow">
+		<attstr name="type" val="image button"/>
+		<attstr name="tip" val="Previous page"/>
+		<attnum name="x" val="600"/>
+		<attnum name="y" val="146"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>
+		<attstr name="disabled image" val="data/img/arrow-up-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-up.png"/>
+		<attstr name="focused image" val="data/img/arrow-up-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-up-pushed.png"/>
+	</section>
+    
+	<!-- Back button -->
+	<section name="back button">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Back"/>
+		<attstr name="tip" val="Return to previous menu"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="280"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>    
+	</section>
+
+  </section>
+  
+	<section name="static controls">
+
+	<section name="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-credits.jpg"/>
+	</section>
+
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="410"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-credits.png"/>
+	</section>
+
+  </section>
+
+	<section name="music">
+		<attstr name="music file" val="data/music/credits.ogg"/>
+	</section>
+
+</params>

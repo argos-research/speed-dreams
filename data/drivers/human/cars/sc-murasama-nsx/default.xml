@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- 
+    file          : default.xml 
+    created       : 05 Dec 2008
+    last changed  : 11 Marc 2013
+    copyright     : (C) 2008-2013 Wolf-Dieter Beelitz
+
+    SC-MURASAMA-NSX
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd">
+<params name="sc-murasama-nsx" type="template" mode="mw">
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.54"/>
+		<attnum name="max pressure" unit="kPa" min="100" max="20000" val="13000"/>
+	</section>
+	<section name="Front Right Suspension">
+		<attnum name="spring" unit="kN/m" min="20" max="100" val="35.67"/>
+	</section>
+	<section name="Front Left Suspension">
+		<attnum name="spring" unit="kN/m" min="20" max="100" val="35.67"/>
+	</section>
+	<section name="Rear Right Suspension">
+		<attnum name="spring" unit="kN/m" min="20" max="100" val="49.73"/>
+	</section>
+	<section name="Rear Left Suspension">
+		<attnum name="spring" unit="kN/m" min="20" max="100" val="49.73"/>
+	</section>
+</params>

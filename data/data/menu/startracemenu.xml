@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : startracemenu.xml
+    created              : 2009
+    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: startracemenu.xml 4605 2012-03-24 20:26:34Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Start next race menu (after qualifications, as an ex)
+
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="startracemenu">    
+
+  <section name="properties">
+
+    <!-- Number of lines in the result table (header excluded) -->
+    <attnum name="nMaxLines" val="15"/>
+
+    <!-- Y coordinate of the top line of the table (header excluded),
+         and number of pixels separating the lines -->
+    <attnum name="yTopLine" val="320"/>
+    <attnum name="yLineShift" val="16"/>
+
+  </section>
+
+  <section name="template controls">
+
+    <!-- Each column of each line of the results table -->
+    <section name="Rank">
+      <attstr name="type" val="label"/>
+      <attnum name="max len" val="3"/>
+      <attnum name="x" val="20"/>
+      <attnum name="width" val="30"/>
+      <attstr name="h align" val="right"/>
+      <attstr name="color" val="0xFFFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+    <section name="DriverName">
+      <attstr name="type" val="label"/>
+      <attnum name="max len" val="25"/>
+      <attnum name="x" val="70"/>
+      <attnum name="width" val="160"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="color" val="0xFFFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+    <section name="DriverType">
+      <attstr name="type" val="label"/>
+      <attnum name="max len" val="10"/>
+      <attnum name="x" val="250"/>
+      <attnum name="width" val="130"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="color" val="0xFFFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+    <section name="CarModel">
+      <attstr name="type" val="label"/>
+      <attnum name="max len" val="25"/>
+      <attnum name="x" val="400"/>
+      <attnum name="width" val="160"/>
+      <attstr name="h align" val="left"/>
+      <attstr name="color" val="0xFFFFFFFF"/>
+      <attstr name="font" val="small_t"/>
+    </section>
+
+  </section>
+
+  <section name="dynamic controls">
+
+    <section name="TitleLabel">
+      <attstr name="type" val="label"/>                              
+      <attnum name="max len" val="64"/>
+      <attstr name="text" val="(race mode name) - (if Career, long group name)"/>
+      <attnum name="x" val="320"/>
+      <attnum name="y" val="414"/>
+      <attstr name="h align" val="left"/>    
+      <attstr name="font" val="medium"/>
+    </section>
+    <section name="SubTitleLabel">
+      <attstr name="type" val="label"/>                              
+      <attnum name="max len" val="64"/>
+      <attstr name="text" val="(session name) at (possibly very long track name)"/>
+      <attnum name="x" val="322"/>
+      <attnum name="y" val="394"/>
+      <attstr name="h align" val="lef"/>
+      <attstr name="font" val="small"/>
+      <attstr name="color" val="0xFFFFFFFF"/>
+    </section>
+
+   <!-- Navigation buttons -->
+    <section name="NextPageArrow">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Next starting grid page"/>
+      <attnum name="x" val="600"/>
+      <attnum name="y" val="34"/>
+      <attnum name="width" val="24"/>
+      <attnum name="height" val="24"/>                        
+      <attstr name="disabled image" val="data/img/arrow-down-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-down.png"/>
+      <attstr name="focused image" val="data/img/arrow-down-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-down-pushed.png"/>
+    </section>
+    <section name="PreviousPageArrow">
+      <attstr name="type" val="image button"/>
+      <attstr name="tip" val="Previous starting grid page"/>
+      <attnum name="x" val="600"/>
+      <attnum name="y" val="62"/>
+      <attnum name="width" val="24"/>
+      <attnum name="height" val="24"/>
+      <attstr name="disabled image" val="data/img/arrow-up-disabled.png"/>
+      <attstr name="enabled image" val="data/img/arrow-up.png"/>
+      <attstr name="focused image" val="data/img/arrow-up-focused.png"/>
+      <attstr name="pushed image" val="data/img/arrow-up-pushed.png"/>
+    </section>
+
+    <section name="StartButton">
+	<attstr name="type" val="text button"/>
+	<attstr name="show box" val="no"/>
+	<attstr name="text" val="Continue"/>
+	<attstr name="tip" val="Start the race session"/>
+	<attstr name="h align" val="left"/>
+	<attnum name="x" val="460"/>
+	<attnum name="y" val="50"/>
+	<attnum name="width" val="150"/>
+	<attstr name="font" val="medium"/>
+	<attstr name="color" val="0xFFFFFF"/>
+	<attstr name="focused color" val="0xFFFFFF"/>
+	<attstr name="pushed color" val="0xFFFFFF"/>
+	<attnum name="image x" val="-10"/>
+	<attnum name="image y" val="4"/>
+	<attnum name="image width" val="60"/>
+	<attnum name="image height" val="16"/>
+	<attstr name="focused image" val="data/img/button-left-focused.png"/>
+	<attstr name="enabled image" val="data/img/button-left.png"/>
+	<attstr name="pushed image" val="data/img/button-left-pushed.png"/>
+    </section>
+
+    <section name="AbandonButton">
+	<attstr name="type" val="text button"/>
+	<attstr name="show box" val="no"/>
+	<attstr name="text" val="Abandon"/>
+	<attstr name="tip" val="Abandon the race event and quit the race mode ; you can resume it if you saved it (auto. for Career mode)"/>
+	<attstr name="h align" val="left"/>
+	<attnum name="x" val="260"/>
+	<attnum name="y" val="50"/>
+	<attnum name="width" val="150"/>
+	<attstr name="font" val="medium"/>
+	<attstr name="color" val="0xFFFFFF"/>
+	<attstr name="focused color" val="0xFFFFFF"/>
+	<attstr name="pushed color" val="0xFFFFFF"/>
+	<attnum name="image x" val="-10"/>
+	<attnum name="image y" val="4"/>
+	<attnum name="image width" val="60"/>
+	<attnum name="image height" val="16"/>
+	<attstr name="focused image" val="data/img/button-left-focused.png"/>
+	<attstr name="enabled image" val="data/img/button-left.png"/>
+	<attstr name="pushed image" val="data/img/button-left-pushed.png"/>
+    </section>
+
+  </section>
+
+  <section name="static controls">
+
+    <section name="1">
+      <attstr name="type" val="static image"/>
+      <attnum name="x" val="-10"/>
+      <attnum name="y" val="335"/>
+      <attnum name="width" val="200"/>
+      <attnum name="height" val="120"/>
+      <attstr name="image" val="data/img/sd-logo.png"/>
+    </section>
+
+    <section name="2">
+      <attstr name="type" val="static image"/>
+      <attnum name="x" val="192"/>
+      <attnum name="y" val="410"/>
+      <attnum name="width" val="450"/>
+      <attnum name="height" val="20"/>
+      <attstr name="image" val="data/img/head-startrace.png"/>
+    </section>
+
+    <!-- Header of the results table -->
+    <section name="3">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Rk"/>
+      <attstr name="tip" val="Rank of the competitor"/>
+      <attnum name="x" val="40"/>
+      <attnum name="y" val="340"/>
+      <attstr name="color" val="0xFFCC00"/>
+      <attstr name="font" val="medium_t"/>
+    </section>
+    <section name="4">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Driver"/>
+      <attstr name="tip" val="Name of the competitor"/>
+      <attnum name="x" val="70"/>
+      <attnum name="y" val="340"/>
+      <attstr name="color" val="0xFFCC00"/>
+      <attstr name="font" val="medium_t"/>
+    </section>
+    <section name="5">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Type"/>
+      <attstr name="tip" val="Type of driver"/>
+      <attnum name="x" val="250"/>
+      <attnum name="y" val="340"/>
+      <attstr name="color" val="0xFFCC00"/>
+      <attstr name="font" val="medium_t"/>
+    </section>
+    <section name="6">
+      <attstr name="type" val="label"/>
+      <attstr name="text" val="Car"/>
+      <attstr name="tip" val="Car model"/>
+      <attnum name="x" val="400"/>
+      <attnum name="y" val="340"/>
+      <attstr name="color" val="0xFFCC00"/>
+      <attstr name="font" val="medium_t"/>
+    </section>
+
+  </section>
+
+</params>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+   file                 : trackselectmenu.xml
+   created              : 2009
+   copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger, 2010 Jean-Philippe Meuret
+   web                  : speed-dreams.sourceforge.net
+   version              : $Id: trackselectmenu.xml 4605 2012-03-24 20:26:34Z area42 $
+  -->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+   Track select menu
+   
+  -->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="trackselectmenu">
+
+<section name="properties">
+
+	<!-- Max length of track description lines 
+	     (must be <= to the length of description1/2label controls below) -->
+	<attnum name="nDescLinesMaxLen" val="45"/>
+
+</section>
+
+<section name="dynamic controls">
+
+<!-- Track category -->
+	<section name="trackcatleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="318"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+	<section name="trackcatrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="x" val="525"/>
+		<attnum name="y" val="318"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+	<section name="trackcatlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="25"/>
+		<attstr name="tip" val="Select a track category"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="322"/>
+		<attnum name="width" val="220"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+<!-- Track -->
+	<section name="trackleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="288"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+	<section name="trackrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="x" val="525"/>
+		<attnum name="y" val="288"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+	<section name="tracklabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="25"/>
+		<attstr name="tip" val="Select a track"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="292"/>
+		<attnum name="width" val="220"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+<!-- Description -->
+	<section name="description1label">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="50"/>
+		<attnum name="x" val="270"/>
+		<attnum name="y" val="258"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+	<section name="description2label">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="50"/>
+		<attnum name="x" val="270"/>
+		<attnum name="y" val="238"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+<!-- Track parameters display -->
+	<section name="lengthlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="10"/>
+		<attnum name="x" val="340"/>
+		<attnum name="y" val="208"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="widthlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="10"/>
+		<attnum name="x" val="340"/>
+		<attnum name="y" val="188"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+		<section name="pitslabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="10"/>
+		<attnum name="x" val="340"/>
+		<attnum name="y" val="168"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+		<section name="authorslabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="40"/>
+		<attnum name="x" val="340"/>
+		<attnum name="y" val="148"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+<!-- Track outline image display -->
+	<section name="outlineimage">
+  		<attstr name="type" val="static image"/>
+		<attnum name="x" val="40"/>
+		<attnum name="y" val="114"/>
+		<attnum name="width" val="192"/>
+		<attnum name="height" val="192"/>
+		<attstr name="image" val="data/img/notrackoutline.png"/>
+	</section>
+
+    <!-- Next and Back buttons -->
+	<section name="backbutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Back"/>
+		<attstr name="tip" val="Cancel changes and get back to the race type choice menu"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="278"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>
+	</section>
+
+	<section name="nextbutton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Next"/>
+		<attstr name="tip" val="Apply changes and jump to the competitors selection menu"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>
+	</section>
+  </section>
+
+  <section name="static controls">
+	<section name="1">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-trackselect.png"/>
+	</section>
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>
+
+	<section name="3">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Length:"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="270"/>
+		<attnum name="y" val="208"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="4">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Width:"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="270"/>
+		<attnum name="y" val="188"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="5">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Pits:"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="270"/>
+		<attnum name="y" val="168"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="6">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Authors:"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="270"/>
+		<attnum name="y" val="148"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+
+  </section>
+
+</params>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : viper-gts-r.xml
+    created              : Sat Mar  3 18:46:37 CET 2001
+    copyright            : (C) 2001 by Eric Espié                         
+    email                : Eric.Espie@torcs.org   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="Viper GTS-R" type="template">
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" min="0.5" max="0.65" val="0.5710"/>
+		<attnum name="max pressure" unit="kPa" min="5000" max="40000" val="37700"/>
+	</section>
+
+	<section name="private">
+		<attnum name="fuelperlap" val="1.85"/>
+		<attnum name="avoid speed factor" min="-20" max="20" val="0.8"/>
+		<attnum name="avoid brake factor" min="-20" max="20" val="0.8"/>
+		<attnum name="exit boost factor" min="-20" max="20" val="1.805"/>
+		<attnum name="base speed" min="0" max="50" val="15.22"/>
+		<attnum name="base brake" min="10" max="100" val="32.78"/>
+		<attnum name="slope factor" min="0" max="1" val="0.532"/>
+		<attnum name="accel exit" min="0" max="10" val="0.4"/>
+		<attnum name="turn decel" min="0" max="2" val="0.4"/>
+		<attnum name="curve factor" min="0" max="2" val="0.11"/>
+		<attnum name="accel curve" min="0" max="2" val="1.40"/>
+		<attnum name="revs change up" min="0" max="2" val="0.83"/>
+		<attnum name="revs change down" min="0" max="2" val="0.64"/>
+		<attnum name="int margin" val="1.8"/>
+		<attnum name="ext margin" val="1.4"/>
+		<attnum name="offtrack allowed" val="0"/>
+		<attnum name="pit offset" val="0.00"/>
+		<attnum name="pit shift" val="1.00"/>
+	</section>
+
+</params>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
