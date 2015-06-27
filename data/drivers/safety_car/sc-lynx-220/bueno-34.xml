@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file          : drivers/usr_sc/sc-lynx-220/bueno
+    created       : 07/07/13
+    last modified : 07/07/13
+    copyright     : (C) 2010-2013 Xavier Bertaux
+
+    SVN version   : $Id:$
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "params.dtd">
+
+
+<params name="sc-lynx-220">
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" min="0.5" max="0.65" val="0.5703"/>
+		<attnum name="max pressure" unit="kPa" min="5000" max="40000" val="39700"/>
+	</section>
+	
+	<section name="private">
+		<attnum name="fuelperlap" val="2.365"/>
+		<attnum name="avoid speed factor" val="0.8"/>
+		<attnum name="avoid brake factor" val="0.75"/>
+		<attnum name="exit boost factor" val="1.01"/>
+		<attnum name="base speed" val="14.06"/>
+		<attnum name="base brake" val="27.68"/>
+		<attnum name="slope factor" val="0.481"/>
+		<attnum name="accel exit" val="0.4"/>
+		<attnum name="turn decel" val="0.4"/>
+		<attnum name="revs change up" val="0.84"/>
+		<attnum name="revs change down" val="0.64"/>
+		<attnum name="revs change down max" val="0.74"/>
+		<attnum name="int margin" val="1.7"/>
+		<attnum name="ext margin" val="1.3"/>
+		<attnum name="abs slip" val="4.0"/>
+		<attnum name="tcl slip" val="4.0"/>
+		<attnum name="bump caution" val="0.4"/>
+
+		<attnum name="raceline debug" val="0"/>
+	</section>
+</params>

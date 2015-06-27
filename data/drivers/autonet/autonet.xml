@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file                 : autonet.xml
+    created              : Sat Nov 13 23:19:31 EST 2010
+    copyright            : (C) 2002 Utsav
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+<params name="autonet" type="robotdef">
+    <section name="Robots">
+        <section name="index">
+            <section name="1">
+                <attstr name="name" val="autonet"></attstr>
+                <attstr name="desc" val=""></attstr>
+                <attstr name="team" val="autonet"></attstr>
+                <attstr name="author" val="AutoNet"></attstr>
+                <attstr name="car name" val="sc-lynx-220"></attstr>
+
+                <attnum name="race number" val="0"></attnum>
+                <attnum name="red" val="1.0"></attnum>
+                <attnum name="green" val="1.0"></attnum>
+                <attnum name="blue" val="1.0"></attnum>
+            </section>
+        </section>
+    </section>
+</params>

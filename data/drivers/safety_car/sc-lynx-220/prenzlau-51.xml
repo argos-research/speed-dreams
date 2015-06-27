@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file          : drivers/usr_sc/sc-lynx-220/espie
+    created       : 2013-06-29 12:09:22
+    last modified : 2013-06-29 12:09:22
+    copyright     : (C) 2010-2013 Xavier Bertaux
+
+    SVN version   : $Id:$
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "params.dtd">
+
+
+<params name="sc-lynx-220">
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" min="0.5" max="0.65" val="0.5535"/>
+		<attnum name="max pressure" unit="kPa" min="5000" max="40000" val="39600"/>
+	</section>
+	
+	<section name="private">
+		<attnum name="fuelperlap" val="1.39"/>
+		<attnum name="avoid speed factor" min="-20" max="20" val="0.8"/>
+		<attnum name="avoid brake factor" min="-20" max="20" val="0.8"/>
+		<attnum name="exit boost factor" min="-20" max="20" val="1.810"/>
+		<attnum name="base speed" min="0" max="50" val="14.75"/>
+		<attnum name="base brake" min="10" max="100" val="30.50"/>
+		<attnum name="slope factor" min="0" max="1" val="0.532"/>
+		<attnum name="accel exit" min="0" max="10" val="0.4"/>
+		<attnum name="turn decel" min="0" max="2" val="0.4"/>
+		<attnum name="curve factor" min="0" max="2" val="0.11"/>
+		<attnum name="accel curve" min="0" max="2" val="1.40"/>
+		<attnum name="revs change up" min="0" max="2" val="0.83"/>
+		<attnum name="revs change down" min="0" max="2" val="0.64"/>
+	</section>
+
+</params>

@@ -1,6 +1,8 @@
 INCLUDE(../../cmake/macros.cmake)
 
 # Official robots.
+SD_ADD_SUBDIRECTORY(autonet)
+SD_ADD_SUBDIRECTORY(safety_car)
 SD_ADD_SUBDIRECTORY(human)
 SD_ADD_SUBDIRECTORY(kilo2008)
 SD_ADD_SUBDIRECTORY(networkhuman)

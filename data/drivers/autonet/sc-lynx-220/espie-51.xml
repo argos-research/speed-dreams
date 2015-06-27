@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : viper-gts-r.xml
+    created              : Sat Mar  3 18:46:37 CET 2001
+    copyright            : (C) 2001 by Eric Espié                         
+    email                : Eric.Espie@torcs.org   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="sc-lynx-220" type="template">
+  	<section name="Brake System">
+    		<attnum name="front-rear brake repartition" min="0.5" max="0.65" val="0.529"/>
+    		<attnum name="max pressure" unit="kPa" min="5000" max="40000" val="33700"/>
+  	</section>
+
+	<section name="private">
+		<attnum name="fuelperlap" val="1.90"/>
+		<attnum name="avoid speed factor" val="0.97"/>
+		<attnum name="avoid brake factor" val="0.70"/>
+		<attnum name="base speed" val="13.20"/>
+		<attnum name="base brake" val="15.50"/>
+		<attnum name="brake scale" val="0.90"/>
+		<attnum name="turn decel" val="0.7"/>
+		<attnum name="tcl slip" val="6.0"/>
+		<attnum name="exit boost factor" val="1.95"/>
+	</section>
+</params>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
