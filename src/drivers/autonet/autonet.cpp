@@ -36,10 +36,13 @@ copyright            : (C) 2002 Utsav
 #include <raceman.h>
 #include <robottools.h>
 #include <robot.h>
+#include <linalg_t.h>       // v2t<T>
 
 
 #include "serial.h"
 #include "timer.h"
+
+typedef v2t<tdble> vec2;
 
 static tTrack *curTrack;
 static int serialfd;
@@ -51,6 +54,11 @@ static void endrace(int index, tCarElt *car, tSituation *s);
 static void shutdown(int index);
 static int  InitFuncPt(int index, void *pt);
 
+static void followModeDrive(tCarElt* car, tSituation *s);
+static bool checkFollowMode();
+static vec2 getLeadingCarPosition(tCarElt * myCar, tSituation *s, tdble distThreshold);
+static tdble getDistance(tCarElt* car1, tCarElt* car2, tdble distThreshold);
+
 
 static tCarElt *car;
 static float accel = 0;
@@ -58,6 +66,11 @@ static float brake[4] = {0};
 static float clutch = 0;
 static float angle = 0;
 static int gear = 0;
+static int followCmd = 0;
+
+static bool followMode = false;
+static int lastFollowModeCmd = 0;
+static int followCarIdx = -1;
 
 static timer_t timerid;
 volatile static bool signalStopSendData = false;
@@ -120,12 +133,12 @@ void serialData(int signum)
             if(serialPortRead(serialfd, a, 1) == 1) {
                 if(a[0] == 0xCC) {
                     calcChkSum = 0xAA ^ 0xCC;
-                    if(serialPortRead(serialfd, a, 512) >= 9) {
-                        for(i = 0; i < 8; i++) {
+                    if(serialPortRead(serialfd, a, 512) >= 10) {
+                        for(i = 0; i < 9; i++) {
                             calcChkSum = calcChkSum ^ a[i];
                         }
 
-                        if(calcChkSum == a[8]) {
+                        if(calcChkSum == a[9]) {
                             accel = a[0]/100.0;
                             brake[0] = a[1]/100.0;
                             brake[1] = a[2]/100.0;
@@ -134,6 +147,8 @@ void serialData(int signum)
                             angle = (int8_t)a[5]/50.0;
                             gear = (int8_t)a[6];
                             clutch = a[7]/100.0;
+                            lastFollowModeCmd = followCmd;
+                            followCmd = a[8];
                         }
                     }
                 }
@@ -179,6 +194,11 @@ static void drive(int index, tCarElt* car, tSituation *s)
 {
     memset((void *)&car->ctrl, 0, sizeof(tCarCtrl));
 
+    if(checkFollowMode())
+    {
+        followModeDrive(car, s);
+    }
+
     //printf("steer: %f, yaw_rate: %f\n", angle, car->_yaw_rate);
 #if 0
     const float SC = 1.0;
@@ -220,4 +240,101 @@ static void shutdown(int index)
     timerEnd(timerid);
     serialPortClose(serialfd);
     printf("Done with shutdown\n");
+}
+
+static void followModeDrive(tCarElt *car, tSituation *s)
+{
+    // Get position of nearest opponent in front
+    // via: - Sensor utility
+    //      - situation data
+    // If distance below certain threshold
+    // Drive in that direction (set angle)
+    // If position in previous frame is known:
+    //     Calculate speed from old and new world positon
+    //     Try to adjust accel and brake to match speed of opponent
+    //     (Try to shift gear accordingly)
+    // Save new world position in old position
+
+    vec2 targetPos = getLeadingCarPosition(car, s, 50.0);
+}
+
+//Get the position of the leading car
+static vec2 getLeadingCarPosition(tCarElt * myCar, tSituation* s, tdble distThreshold)
+{
+    vec2 leadPos = vec2(0.0, 0.0);
+    vec2 myPos = vec2(myCar->_pos_Y, myCar->_pos_X);
+
+    tdble minDist = FLT_MAX;
+
+    // If we are currently following somebody
+    if(followCarIdx != -1)
+    {
+        tCarElt* lead = s->cars[followCarIdx];
+
+        tdble distance = getDistance(lead, myCar, distThreshold);
+        // If distance is to far, stop following that car
+        if(distance < distThreshold)
+        {
+            followCarIdx = -1;
+        }
+        else
+        {
+            leadPos = vec2(lead->_pos_X, lead->_pos_Y);
+        }
+    }
+
+    // If not following somebody
+    if(followCarIdx == -1)
+    {
+        for(int i = 0; i < s->_ncars; i++)
+        {
+            tCarElt* lead = s->cars[i]; //possibly leading car
+
+            if(lead == myCar) continue; //if own car
+
+            tdble distance = getDistance(lead, myCar, distThreshold);
+
+            // If distance is negative, we are in front of car (not possible to follow)
+            if(distance < 0.0) continue;
+
+            // If distance is larger than our follow mode distance threshold
+            if(distance > distThreshold) continue;
+
+            vec2 lPos = vec2(lead->_pos_X, lead->_pos_Y);
+            tdble lDist = myPos.dist(lPos);
+            if(lDist < minDist)
+            {
+                // From now on we may follow this car
+                followCarIdx = i;
+                leadPos = lPos;
+                minDist = lDist;
+            }
+        }
+    }
+    return leadPos;
+}
+
+// Returns signed distance between car1 and car2
+// if car1 is in front of car2, returned distance will be positive
+// otherwise, distance will be negative
+static tdble getDistance(tCarElt* car1, tCarElt* car2, tdble distThreshold)
+{
+    tdble distance = car1->_distFromStartLine - car2->_distFromStartLine;
+    // If opponent crossed the start line, but we did not (assuming we are close behind the opponent)
+    if (car1->_distFromStartLine < distThreshold && car2->_distFromStartLine > curTrack->length - distThreshold)
+    {
+        distance = (car1->_distFromStartLine + curTrack->length) - car2->_distFromStartLine;
+    }
+    return distance;
+}
+
+// Checks values of the transferred followMode signals and switches the followMode if the signal switches from enabled to disabled
+// Compares to the behavior when releasing a keyboard button
+static bool checkFollowMode()
+{
+    if(lastFollowModeCmd == 1 && followCmd == 0) // follow mode signal is disabled
+    {
+        followMode = !followMode; // switch follow mode
+    }
+    return followMode;
 }
