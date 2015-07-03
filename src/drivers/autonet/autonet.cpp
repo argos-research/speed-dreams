@@ -70,7 +70,7 @@ static int followCmd = 0;
 
 static bool followMode = false;
 static int lastFollowModeCmd = 0;
-static int followCarIdx = -1;
+static tCarElt* leadCar = nullptr;
 
 static timer_t timerid;
 volatile static bool signalStopSendData = false;
@@ -182,11 +182,11 @@ void serialData(int signum)
 /* Start a new race. */
 static void newrace(int index, tCarElt* car_local, tSituation *s)
 {
-    serialfd = serialPortOpen("/dev/ttyUSB0", 115200);
+    // serialfd = serialPortOpen("/dev/ttyUSB0", 115200);
     car = car_local;
-    timerid = timerInit(serialData, 2000000);
-    serialDataStopped = false;
-    enableTimerSignal();
+    // timerid = timerInit(serialData, 2000000);
+    // serialDataStopped = false;
+    // enableTimerSignal();
 }
 
 /* Drive during race. */
@@ -194,22 +194,25 @@ static void drive(int index, tCarElt* car, tSituation *s)
 {
     memset((void *)&car->ctrl, 0, sizeof(tCarCtrl));
 
-    if(checkFollowMode())
-    {
-        followModeDrive(car, s);
-    }
 
     //printf("steer: %f, yaw_rate: %f\n", angle, car->_yaw_rate);
-#if 0
+#if 1
     const float SC = 1.0;
     /* Auto-steer */
     angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
     NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
     angle -= SC*car->_trkPos.toMiddle/car->_trkPos.seg->width;
     angle = angle/car->_steerLock;
-    accel = sqrt((18.0 - car->_speed_x) / 7.5);
+    accel = 0.3;
     gear = 1;
 #endif
+
+    //if(checkFollowMode())
+    if(true)
+    {
+        followModeDrive(car, s);
+    }
+
     // set the values
     car->_steerCmd = angle;
     car->_gearCmd = gear;
@@ -234,11 +237,11 @@ static void endrace(int index, tCarElt *car, tSituation *s)
 /* Called before the module is unloaded */
 static void shutdown(int index)
 {
-    signalStopSendData = true;
-    while(!serialDataStopped);
-    disableTimerSignal();
-    timerEnd(timerid);
-    serialPortClose(serialfd);
+    // signalStopSendData = true;
+    // while(!serialDataStopped);
+    // disableTimerSignal();
+    // timerEnd(timerid);
+    // serialPortClose(serialfd);
     printf("Done with shutdown\n");
 }
 
@@ -255,36 +258,68 @@ static void followModeDrive(tCarElt *car, tSituation *s)
     //     (Try to shift gear accordingly)
     // Save new world position in old position
 
-    vec2 targetPos = getLeadingCarPosition(car, s, 50.0);
+    tdble threshold = 30.0;
+
+    vec2 targetPos = getLeadingCarPosition(car, s, threshold);
+
+    if(leadCar == nullptr)
+    {
+        return;
+    }
+
+    vec2 myPos = vec2(car->_pos_X, car->_pos_Y);
+
+    // Get point of view axis of car in world coordinates
+    // by substracting the positon of front corners and position of rear corners
+    vec2 cfr = vec2(car->_corner_x(FRNT_RGT), car->_corner_y(FRNT_RGT));
+    vec2 cfl = vec2(car->_corner_x(FRNT_LFT), car->_corner_y(FRNT_LFT));
+    vec2 crr = vec2(car->_corner_x(REAR_RGT), car->_corner_y(REAR_RGT));
+    vec2 crl = vec2(car->_corner_x(REAR_LFT), car->_corner_y(REAR_LFT));
+    vec2 axis = (cfr - crr) + (cfl - crl);
+    axis.normalize();
+
+    //Get angle beween view axis and targetPos to adjust steer
+    vec2 targetVec = targetPos - myPos;
+
+    // printf("DISTANCE: %f\n", targetVec.len());
+    targetVec.normalize();
+
+
+    // printf("CROSS: %f\n", axis.fakeCrossProduct(&targetVec));
+    // printf("ANGLE: %f\n", RAD2DEG(asin(axis.fakeCrossProduct(&targetVec))));
+
+    angle = asin(axis.fakeCrossProduct(&targetVec));
+    angle = angle/car->_steerLock;
+
 }
 
 //Get the position of the leading car
 static vec2 getLeadingCarPosition(tCarElt * myCar, tSituation* s, tdble distThreshold)
 {
     vec2 leadPos = vec2(0.0, 0.0);
-    vec2 myPos = vec2(myCar->_pos_Y, myCar->_pos_X);
+    vec2 myPos = vec2(myCar->_pos_X, myCar->_pos_Y);
 
     tdble minDist = FLT_MAX;
 
     // If we are currently following somebody
-    if(followCarIdx != -1)
+    if(leadCar != nullptr)
     {
-        tCarElt* lead = s->cars[followCarIdx];
-
-        tdble distance = getDistance(lead, myCar, distThreshold);
-        // If distance is to far, stop following that car
-        if(distance < distThreshold)
+        tdble distance = getDistance(leadCar, myCar, distThreshold);
+        // If distance is to far, or we overtook car, stop following that car
+        if(distance > distThreshold || distance <= 0.0)
         {
-            followCarIdx = -1;
+            printf("LOST LEADER\n");
+            leadCar = nullptr;
         }
         else
         {
-            leadPos = vec2(lead->_pos_X, lead->_pos_Y);
+            leadPos = vec2(leadCar->_pos_X, leadCar->_pos_Y);
+            // printf("ASSIGN LEADER POSITION: x: %f, y: %f\n", leadPos.x, leadPos.y);
         }
     }
 
     // If not following somebody
-    if(followCarIdx == -1)
+    if(leadCar == nullptr)
     {
         for(int i = 0; i < s->_ncars; i++)
         {
@@ -295,7 +330,7 @@ static vec2 getLeadingCarPosition(tCarElt * myCar, tSituation* s, tdble distThre
             tdble distance = getDistance(lead, myCar, distThreshold);
 
             // If distance is negative, we are in front of car (not possible to follow)
-            if(distance < 0.0) continue;
+            if(distance <= 0.0) continue;
 
             // If distance is larger than our follow mode distance threshold
             if(distance > distThreshold) continue;
@@ -304,8 +339,9 @@ static vec2 getLeadingCarPosition(tCarElt * myCar, tSituation* s, tdble distThre
             tdble lDist = myPos.dist(lPos);
             if(lDist < minDist)
             {
+                printf("FOUND LEADER\n");
                 // From now on we may follow this car
-                followCarIdx = i;
+                leadCar = lead;
                 leadPos = lPos;
                 minDist = lDist;
             }
@@ -325,6 +361,7 @@ static tdble getDistance(tCarElt* car1, tCarElt* car2, tdble distThreshold)
     {
         distance = (car1->_distFromStartLine + curTrack->length) - car2->_distFromStartLine;
     }
+    // printf("DIST START AUTONET: %f \t DIST START HUMAN: %f \t DIST: %f\n", car2->_distFromStartLine, car1->_distFromStartLine, distance);
     return distance;
 }
 

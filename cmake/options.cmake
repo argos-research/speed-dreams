@@ -176,6 +176,7 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
       # Add useful warnings / checks.
       SET(_SD_WOPTS "-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
 
+      SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
       SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${_SD_WOPTS}")
       SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${_SD_WOPTS}")
 
