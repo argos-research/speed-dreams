@@ -233,7 +233,6 @@ drive_mt(int index, tCarElt* car, tSituation *s)
 static void
 drive_at(int index, tCarElt* car, tSituation *s)
 {
-    //printf("MY POSITION: x: %f, y:%f, X: %f, Y: %f, c0x: %f, c0y: %f\t|\tMY SPEED: %f, %f\n", car->_pos_X, car->_pos_Y, car->pub.DynGCg.pos.x, car->pub.DynGCg.pos.y, car->_corner_x(0), car->_corner_y(0), car->_speed_X, car->_speed_x);
     robot.drive_at(index, car, s);
 }//drive_at
 

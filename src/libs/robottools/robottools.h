@@ -217,4 +217,26 @@ ROBOTTOOLS_API void RtTelemShutdown(void);
 ROBOTTOOLS_API void RtGetCarindexString(int index, const char *bot_dname, char careerMode,
 										char *result, int resultLength);
 
+/**
+* Keep accelerating until about decUntilSpeed, amount of acceleration depends on current car speed
+* speed is given in m/s so speed * 3.6 corresponds to km/h
+* e.g 10 m/s correspond to 10 * 3.6 = 36 kmh
+*
+* @param car The car structure containing the current speed
+* @param maxAccel The constant maximum acceleration from incUntilSpeed to maxUntilSpeed
+* @param startAccel The starting acceleration at speed 0
+* @param incUntilSpeed The speed until accel is increased to from startAccel to maxAccel
+* @param maxUntilSpeed The speed until accel is equal to maxAccel
+* @param decUntilSPeed The final speed until accel is decreased from maxAccel to 0
+*/
+tdble getSpeedDepAccel(const tCarElt * car, tdble maxAccel, tdble startAccel, tdble incUntilSpeed, tdble maxUntilSpeed, tdble decUntilSpeed);
+
+/**
+* Change gear dependent on the current speed. The speeds, where gear is shifted up or down is currently hard coded within the function
+*
+* @param car The car structure containing the current speed
+* @param currentGear The current gear, used to shift up or down from.
+*/
+int getSpeedDepGear(const tCarElt* car, int currentGear);
+
 #endif /* _ROBOTTOOLS_H_ */

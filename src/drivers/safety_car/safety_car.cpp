@@ -102,10 +102,10 @@ static void drive(int index, tCarElt* car, tSituation *s)
     NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
     angle -= SC * car->_trkPos.toMiddle/car->_trkPos.seg->width;
     angle = angle/car->_steerLock;
-    // Keep accelerating until about 60 km/h, amount of acceleration depends on current car speed 
-    // if target speed is reached, accel is very small
-    // if target speed is much greater than current speed, accel gets greater
-    tdble accel = sqrt((18.0 - car->_speed_x) / 7.5); 
+
+    // car, maxAccel, startAccel, incUntilSpeed, maxUntilSpeed, decUntilSpeed
+    tdble accel = getSpeedDepAccel(car, 1.0, 0.3, 6, 18, 20);
+
     int gear = 1;
 
     // set the values

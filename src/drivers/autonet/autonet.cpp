@@ -19,11 +19,13 @@ copyright            : (C) 2002 Utsav
 #include <windows.h>
 #endif
 
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
+
+#include <algorithm>
 
 #include <signal.h>
 #include <time.h>
@@ -71,6 +73,7 @@ static int followCmd = 0;
 static bool followMode = false;
 static int lastFollowModeCmd = 0;
 static tCarElt* leadCar = nullptr;
+static vec2 lastTargetPos = vec2(-1, -1);
 
 static timer_t timerid;
 volatile static bool signalStopSendData = false;
@@ -203,8 +206,14 @@ static void drive(int index, tCarElt* car, tSituation *s)
     NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
     angle -= SC*car->_trkPos.toMiddle/car->_trkPos.seg->width;
     angle = angle/car->_steerLock;
-    accel = 0.3;
-    gear = 1;
+    accel = getSpeedDepAccel(car, 1.0, 0.1, 8, 18, 20);
+                    // 0   60  100 150 200 250 km/h
+    gear = getSpeedDepGear(car, gear);
+
+    brake[0] = 0.0;
+    brake[1] = 0.0;
+    brake[2] = 0.0;
+    brake[3] = 0.0;
 #endif
 
     //if(checkFollowMode())
@@ -258,12 +267,16 @@ static void followModeDrive(tCarElt *car, tSituation *s)
     //     (Try to shift gear accordingly)
     // Save new world position in old position
 
-    tdble threshold = 30.0;
+    tdble threshold = 50.0;
+    tdble fdist = 10; // Fixed follow distance
+    tdble maxAccel = 1.0; // maximum amount of acceleration;
+    tdble maxBrake = 1.0; // maximum amount of brake force;
 
     vec2 targetPos = getLeadingCarPosition(car, s, threshold);
 
     if(leadCar == nullptr)
     {
+        lastTargetPos = vec2(-1,-1);
         return;
     }
 
@@ -280,6 +293,7 @@ static void followModeDrive(tCarElt *car, tSituation *s)
 
     //Get angle beween view axis and targetPos to adjust steer
     vec2 targetVec = targetPos - myPos;
+    tdble dist = targetVec.len(); // absolute distance between cars
 
     // printf("DISTANCE: %f\n", targetVec.len());
     targetVec.normalize();
@@ -290,6 +304,36 @@ static void followModeDrive(tCarElt *car, tSituation *s)
 
     angle = asin(axis.fakeCrossProduct(&targetVec));
     angle = angle/car->_steerLock;
+
+    // Only possible to calculate accel and brake if speed of leading car known
+    if(lastTargetPos == vec2(-1, -1)) // If position of leading car known in last frame
+    {
+        lastTargetPos = targetPos;
+        return;
+    }
+
+    tdble fspeed = car->_speed_x; // speed of following car
+
+    tdble lspeed = (lastTargetPos - targetPos).len() / s->deltaTime; // speed of leading car
+    lastTargetPos = targetPos;
+
+    tdble adist = std::max<tdble>(0.1, fdist + (fspeed - lspeed)); // adjusted distance to account for different speed, but keep it positive so brake command will not be issued if leading speed is too high
+
+    // Accel gets bigger if we are further away from the leading car
+    // Accel goes to zero if we are at the target distance from the leading car
+    // Target distance is adjusted, dependent on the the speed difference of both cars
+    // Accel = maxAccel if dist = threshold
+    // Accel = 0 if dist = adist (adjusted target dist)
+    accel = std::sqrt(std::max<tdble>(0, std::min<tdble>(maxAccel, maxAccel * (dist - adist) / (threshold - adist))));
+
+    // Äquivalent to accel but the other way round
+    tdble b = std::sqrt(std::max<tdble>(0, std::min<tdble>(maxBrake, maxBrake * (adist - dist) / adist)));
+    brake[0] = b;
+    brake[1] = b;
+    brake[2] = b;
+    brake[3] = b;
+
+
 
 }
 
