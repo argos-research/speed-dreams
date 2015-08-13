@@ -63,25 +63,24 @@ tdble getSpeedDepAccel(const tCarElt * car, tdble maxAccel, tdble startAccel, td
 	tdble accel = 0.0;
     if(car->_speed_x < incUntilSpeed)
     {
-        accel = startAccel + (maxAccel - startAccel) / incUntilSpeed * car->_speed_x; // accel increases from startAccel to maxAccel from speed 0 to speed 3
+        accel = startAccel + (maxAccel - startAccel) / incUntilSpeed * car->_speed_x; // accel increases from startAccel to maxAccel from speed 0 to speed incUntilSpeed
     }
     else if (car->_speed_x < maxUntilSpeed) 
     {
-        accel = maxAccel;
+        accel = maxAccel; // accel is maxAccel until speed is lower than maxUntil speed
     }
     else if (car->_speed_x < decUntilSpeed)
     {
-        accel = (decUntilSpeed - car->_speed_x) / (decUntilSpeed - maxUntilSpeed) * maxAccel; // accel decreases from maxAccel to 0.0 from speed 16 to speed 18
+        accel = (decUntilSpeed - car->_speed_x) / (decUntilSpeed - maxUntilSpeed) * maxAccel; // accel decreases from maxAccel to 0.0 from speed maxUntilSpeed to speed decUntilSpeed
     }
 
-    printf("NEW ACCEL: %f\tFROM SPEED %f\n", accel, car->_speed_x);
     return accel;
 }
 
 int getSpeedDepGear(const tCarElt* car, int currentGear)
 {
                      // 0   60  100 150 200 250 km/h
-    tdble gearUP[6] = {-1, 17, 27, 41, 55, 70};
+    tdble gearUP[6] = {-1, 17, 27, 41, 55, 70}; //Game uses values in m/s: xyz m/s = (3.6 * xyz) km/h
     tdble gearDN[6] = {0,  0,  15, 23, 35, 48};
 
     int gear = currentGear;

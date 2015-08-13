@@ -16,11 +16,11 @@
         <section name="index">
             <section name="1">
                 <attstr name="name" val="autonet"></attstr>
-                <attstr name="desc" val=""></attstr>
+                <attstr name="short name" val="autonet"></attstr>
+                <attstr name="code name" val="ATNT"></attstr>
                 <attstr name="team" val="autonet"></attstr>
                 <attstr name="author" val="AutoNet"></attstr>
                 <attstr name="car name" val="sc-lynx-220"></attstr>
-
                 <attnum name="race number" val="0"></attnum>
                 <attnum name="red" val="1.0"></attnum>
                 <attnum name="green" val="1.0"></attnum>
