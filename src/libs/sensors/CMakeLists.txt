@@ -4,9 +4,9 @@ INCLUDE(../../../cmake/macros.cmake)
 ADD_INTERFACE_INCLUDEDIR()
 ADD_SDLIB_INCLUDEDIR(math tgf)
 
-SET(SENSORS_HEADERS positionTracker.h)
+SET(SENSORS_HEADERS positionTracker.h randomUtil.h gpsSensor.h)
 
-SET(SENSORS_SOURCES positionTracker.cpp)
+SET(SENSORS_SOURCES positionTracker.cpp randomUtil.cpp gpsSensor.cpp)
 
 SD_ADD_LIBRARY(sensors SHARED ${SENSORS_SOURCES} ${SENSORS_HEADERS})
 

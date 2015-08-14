@@ -1,4 +1,5 @@
 #include "positionTracker.h"
+#include "randomUtil.h"
 
 #include <car.h>
 #include <track.h>
@@ -22,9 +23,15 @@ tdble PositionTracker::getDistance(tCarElt* ownCar, tCarElt* leadCar, tTrack* tr
     return distance;
 }
 
+vec2 PositionTracker::addNoiseV2(vec2 v, double deviation)
+{
+    return vec2(RandomUtil::addNormalNoise(v.x, deviation), RandomUtil::addNormalNoise(v.y, deviation));
+}
+
 tdble PositionTracker::getSpeed(double frameTime)
 {
-    return (m_info.lastLeadPos - m_info.curLeadPos).len() / frameTime;
+    // Standard deviation 1 m/s
+    return RandomUtil::addNormalNoise((m_info.lastLeadPos - m_info.curLeadPos).len() / frameTime, 1.0);
 }
 
 void PositionTracker::updatePosition(tCarElt* car, tSituation* s, tTrack* track)
@@ -48,7 +55,6 @@ void PositionTracker::updatePosition(tCarElt* car, tSituation* s, tTrack* track)
             m_info.lastLeadPos = m_info.curLeadPos;
             m_info.curLeadPos = vec2(m_info.leadCar->_pos_X, m_info.leadCar->_pos_Y);
             m_info.speedTracked = true;
-            printf("ASSIGN LEADER POSITION: x: %f, y: %f\n", m_info.curLeadPos.x, m_info.curLeadPos.y);
         }
     }
 

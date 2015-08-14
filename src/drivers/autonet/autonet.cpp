@@ -39,6 +39,7 @@ copyright            : (C) 2002 Utsav
 #include <robottools.h>
 #include <robot.h>
 #include <followDriver.h>
+#include <gpsSensor.h>
 
 #include "serial.h"
 #include "timer.h"
@@ -68,6 +69,7 @@ static bool followMode = false;
 static int lastFollowModeCmd = 0;
 
 static FollowDriver follower(50.0, 10.0, 1.0, 1.0);
+static GPSSensor gps = GPSSensor();
 
 static timer_t timerid;
 volatile static bool signalStopSendData = false;
@@ -191,6 +193,9 @@ static void drive(int index, tCarElt* car, tSituation *s)
 {
     memset((void *)&car->ctrl, 0, sizeof(tCarCtrl));
 
+    gps.update(car);
+    vec2 myPos = gps.getPosition();
+    printf("Autonet's position according to GPS is (%f, %f)\n", myPos.x, myPos.y);
 
     //printf("steer: %f, yaw_rate: %f\n", angle, car->_yaw_rate);
 #if 1

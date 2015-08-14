@@ -40,8 +40,8 @@ public:
     // new leader if the old one is beyond our distance threshold
     void updatePosition(tCarElt* car, tSituation *s, tTrack* track);
 
-    vec2 getCurLeadPos() {return m_info.curLeadPos;};
-    vec2 getLastLeadPos() {return m_info.lastLeadPos;};
+    vec2 getCurLeadPos(){return addNoiseV2(m_info.curLeadPos, 0.5);};
+    vec2 getLastLeadPos(){return addNoiseV2(m_info.lastLeadPos, 0.5);};
     bool isSpeedTracked() {return m_info.speedTracked;};
     bool isPositionTracked() {return m_info.leadCar != nullptr;};
 
@@ -55,6 +55,9 @@ private:
     // if leading car is in front of own car, returned distance will be positive
     // otherwise, distance will be negative
     tdble getDistance(tCarElt* ownCar, tCarElt* leadCar, tTrack* track);
+
+    // Add normal noise to a 2d vector (i.e. positions)
+    vec2 addNoiseV2(vec2 v, double deviation);
 
     // Member variables
     TrackingInfo m_info;

@@ -40,6 +40,8 @@
 
 #include <humandriver.h>
 
+#include <gpsSensor.h>
+
 static HumanDriver robot("human");
 
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
@@ -48,6 +50,8 @@ static void drive_at(int index, tCarElt* car, tSituation *s);
 static void newrace(int index, tCarElt* car, tSituation *s);
 static void resumerace(int index, tCarElt* car, tSituation *s);
 static int  pitcmd(int index, tCarElt* car, tSituation *s);
+
+static GPSSensor gps = GPSSensor();
 
 #ifdef _WIN32
 /* Must be present under MS Windows */
@@ -233,6 +237,10 @@ drive_mt(int index, tCarElt* car, tSituation *s)
 static void
 drive_at(int index, tCarElt* car, tSituation *s)
 {
+    gps.update(car);
+    vec2 myPos = gps.getPosition();
+    printf("Players's position according to GPS is (%f, %f)\n", myPos.x, myPos.y);
+
     robot.drive_at(index, car, s);
 }//drive_at
 

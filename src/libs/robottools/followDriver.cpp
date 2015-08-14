@@ -71,7 +71,8 @@ void FollowDriver::drive(tCarElt *car, tSituation *s, tTrack* track)
 
     tdble lspeed = m_tracker.getSpeed(s->deltaTime); // speed of leading car
 
-    tdble adist = std::max<tdble>(0.1, m_settings.followDist + (fspeed - lspeed)); // adjusted distance to account for different speed, but keep it positive so brake command will not be issued if leading speed is too high
+    // adjusted distance to account for different speed, but keep it positive so brake command will not be issued if leading speed is too high
+    tdble adist = std::max<tdble>(0.1, m_settings.followDist + (fspeed - lspeed));
 
     // Accel gets bigger if we are further away from the leading car
     // Accel goes to zero if we are at the target distance from the leading car
