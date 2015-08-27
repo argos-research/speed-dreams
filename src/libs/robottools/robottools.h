@@ -229,7 +229,7 @@ ROBOTTOOLS_API void RtGetCarindexString(int index, const char *bot_dname, char c
 * @param maxUntilSpeed The speed until accel is equal to maxAccel
 * @param decUntilSPeed The final speed until accel is decreased from maxAccel to 0
 */
-tdble getSpeedDepAccel(const tCarElt * car, tdble maxAccel, tdble startAccel, tdble incUntilSpeed, tdble maxUntilSpeed, tdble decUntilSpeed);
+tdble getSpeedDepAccel(tdble speed, tdble maxAccel, tdble startAccel, tdble incUntilSpeed, tdble maxUntilSpeed, tdble decUntilSpeed);
 
 /**
 * Change gear dependent on the current speed. The speeds, where gear is shifted up or down is currently hard coded within the function
@@ -237,6 +237,6 @@ tdble getSpeedDepAccel(const tCarElt * car, tdble maxAccel, tdble startAccel, td
 * @param car The car structure containing the current speed
 * @param currentGear The current gear, used to shift up or down from.
 */
-int getSpeedDepGear(const tCarElt* car, int currentGear);
+int getSpeedDepGear(tdble speed, int currentGear);
 
 #endif /* _ROBOTTOOLS_H_ */

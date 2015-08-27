@@ -28,12 +28,12 @@ void FollowDriver::drive(tCarElt *car, tSituation *s, tTrack* track)
 
     m_tracker.updatePosition(car, s, track);
 
-    vec2 curLeadPos = m_tracker.getCurLeadPos();
-
     if(!m_tracker.isPositionTracked())
     {
         return;
     }
+
+    vec2 curLeadPos = m_tracker.getCurLeadPos();
 
     vec2 ownPos = vec2(car->_pos_X, car->_pos_Y);
 
@@ -57,7 +57,7 @@ void FollowDriver::drive(tCarElt *car, tSituation *s, tTrack* track)
     // printf("CROSS: %f\n", axis.fakeCrossProduct(&leadVec));
     // printf("ANGLE: %f\n", RAD2DEG(asin(axis.fakeCrossProduct(&leadVec))));
 
-    tdble angle = asin(axis.fakeCrossProduct(&leadVec));
+    tdble angle = std::asin(axis.fakeCrossProduct(&leadVec));
     angle = angle/car->_steerLock;
     car->_steerCmd = angle; // Set steering angle
 
@@ -92,6 +92,6 @@ void FollowDriver::drive(tCarElt *car, tSituation *s, tTrack* track)
     car->_brakeRRCmd = b;
     car->_brakeCmd = b; // Just for display in TORCS
 
-    car->_gearCmd = getSpeedDepGear(car, car->_gearCmd);
+    car->_gearCmd = getSpeedDepGear(car->_speed_x, car->_gearCmd);
     car->_clutchCmd = 0;
 }

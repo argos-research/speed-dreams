@@ -58,26 +58,26 @@ void RtGetCarindexString( int index, const char *bot_dname, char extended, char 
 	result[ resultLength - 1 ] = '\0';
 }
 
-tdble getSpeedDepAccel(const tCarElt * car, tdble maxAccel, tdble startAccel, tdble incUntilSpeed, tdble maxUntilSpeed, tdble decUntilSpeed)
+tdble getSpeedDepAccel(tdble speed, tdble maxAccel, tdble startAccel, tdble incUntilSpeed, tdble maxUntilSpeed, tdble decUntilSpeed)
 {
 	tdble accel = 0.0;
-    if(car->_speed_x < incUntilSpeed)
+    if(speed < incUntilSpeed)
     {
-        accel = startAccel + (maxAccel - startAccel) / incUntilSpeed * car->_speed_x; // accel increases from startAccel to maxAccel from speed 0 to speed incUntilSpeed
+        accel = startAccel + (maxAccel - startAccel) / incUntilSpeed * speed; // accel increases from startAccel to maxAccel from speed 0 to speed incUntilSpeed
     }
-    else if (car->_speed_x < maxUntilSpeed) 
+    else if (speed < maxUntilSpeed) 
     {
         accel = maxAccel; // accel is maxAccel until speed is lower than maxUntil speed
     }
-    else if (car->_speed_x < decUntilSpeed)
+    else if (speed < decUntilSpeed)
     {
-        accel = (decUntilSpeed - car->_speed_x) / (decUntilSpeed - maxUntilSpeed) * maxAccel; // accel decreases from maxAccel to 0.0 from speed maxUntilSpeed to speed decUntilSpeed
+        accel = (decUntilSpeed - speed) / (decUntilSpeed - maxUntilSpeed) * maxAccel; // accel decreases from maxAccel to 0.0 from speed maxUntilSpeed to speed decUntilSpeed
     }
 
     return accel;
 }
 
-int getSpeedDepGear(const tCarElt* car, int currentGear)
+int getSpeedDepGear(tdble speed, int currentGear)
 {
                      // 0   60  100 150 200 250 km/h
     tdble gearUP[6] = {-1, 17, 27, 41, 55, 70}; //Game uses values in m/s: xyz m/s = (3.6 * xyz) km/h
@@ -85,11 +85,11 @@ int getSpeedDepGear(const tCarElt* car, int currentGear)
 
     int gear = currentGear;
 
-    if (car->_speed_x > gearUP[gear])
+    if (speed > gearUP[gear])
     {
         gear = std::min(5, currentGear + 1);
     }
-    if (car->_speed_x < gearDN[gear])
+    if (speed < gearDN[gear])
     {
         gear = std::max(1, currentGear - 1);
     }
