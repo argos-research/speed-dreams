@@ -44,7 +44,7 @@ copyright            : (C) 2002 Utsav
 #include "serial.h"
 #include "timer.h"
 
-struct SensorData
+struct SensorDataOut
 {
     bool isPositionTracked;
     bool isSpeedTracked;
@@ -59,7 +59,7 @@ struct SensorData
     int curGear;
 };
 
-struct CommandData
+struct CommandDataIn
 {
     float steer;
     float accel;
@@ -69,6 +69,12 @@ struct CommandData
     float brakeRR; //Rear right
     int gear;
     //bool followModeCmd;
+};
+
+struct SensorDataIn
+{
+    float engineTemp;
+    float engineRPM;
 };
 
 static tTrack *curTrack;
@@ -85,14 +91,15 @@ static bool updateFollowMode();
 
 
 static tCarElt *car;
-static CommandData g_cd = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0};
+static CommandDataIn g_cdIn = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0};
+static SensorDataIn g_sdIn = {0.0, 0.0};
 static float clutch = 0;
 static int followCmd = 0;
 
 static bool followMode = false;
 static int lastFollowModeCmd = 0;
 
-static SensorData g_sd = {false, false, vec2(0,0), vec2(0,0), vec2(0,0), vec2(0,0), vec2(0,0), vec2(0,0), 0, 0, 0};
+static SensorDataOut g_sdOut = {false, false, vec2(0,0), vec2(0,0), vec2(0,0), vec2(0,0), vec2(0,0), vec2(0,0), 0, 0, 0};
 // distance threshold 50 m
 static PositionTracker g_tracker(50.0);
 static GPSSensor gps = GPSSensor();
@@ -149,8 +156,9 @@ void serialData(int signum)
     // sizeof(SensorData)
     uint8_t b[71]; // 2 + 68 + 1 (checksum vals + sizeof(SensorData) + checksum)
     int i;
-    int cdSize = sizeof(CommandData);
-    int sdSize = sizeof(SensorData);
+    int cdInSize = sizeof(CommandDataIn);
+    int sdInSize = sizeof(SensorDataIn);
+    int sdOutSize = sizeof(SensorDataOut);
 
     if(signalStopSendData)
     {
@@ -163,32 +171,34 @@ void serialData(int signum)
             if(serialPortRead(serialfd, a, 1) == 1) {
                 if(a[0] == 0xCC) {
                     calcChkSum = 0xAA ^ 0xCC;
-                    if(serialPortRead(serialfd, a, 512) >= cdSize + 1) {
+                    if(serialPortRead(serialfd, a, 512) >= cdInSize + sdInSize + 1) {
 
-                        for(i = 0; i < cdSize; i++) {
+                        for(i = 0; i < cdInSize + sdInSize; i++) {
                             calcChkSum = calcChkSum ^ a[i];
                         }
-                        if(calcChkSum == a[cdSize]) {
-                            std::memcpy(reinterpret_cast<uint8_t*>(&g_cd), a, cdSize);
+                        if(calcChkSum == a[cdInSize + sdInSize]) {
+                            std::memcpy(reinterpret_cast<uint8_t*>(&g_cdIn), a, cdInSize);
                             //lastFollowModeCmd = followCmd;
                             //followCmd = g_cd.followModeCmd;
+                            std::memcpy(reinterpret_cast<uint8_t*>(&g_sdIn), &a[cdInSize], sdInSize);
                         }
                     }
                 }
             }
         }
     }
+
     b[0] = 0xAA;
     b[1] = 0xCC;
-    std::memcpy(&b[2], reinterpret_cast<uint8_t*>(&g_sd), sdSize);
+    std::memcpy(&b[2], reinterpret_cast<uint8_t*>(&g_sdOut), sdOutSize);
 
     calcChkSum = 0;
-    for(i = 0; i < sdSize + 2; i++){
+    for(i = 0; i < sdOutSize + 2; i++){
         calcChkSum = calcChkSum ^ b[i];
     }
-    b[2 + sdSize] = calcChkSum;
+    b[2 + sdOutSize] = calcChkSum;
 
-    serialPortWrite(serialfd, b, 2 + sdSize + 1);
+    serialPortWrite(serialfd, b, 2 + sdOutSize + 1);
 
     updateFollowMode();
 }
@@ -208,11 +218,20 @@ static void drive(int index, tCarElt* car, tSituation *s)
 {
     memset((void *)&car->ctrl, 0, sizeof(tCarCtrl));
 
+    //Print gps sensor data
     gps.update(car);
     vec2 myPos = gps.getPosition();
     printf("Autonet's position according to GPS is (%f, %f)\n", myPos.x, myPos.y);
 
-    //printf("steer: %f, yaw_rate: %f\n", angle, car->_yaw_rate);
+    //Print sensor data
+    printf("Engine Temperature: %f\n", g_sdIn.engineTemp);
+    printf("Engine RPM: %f\n", g_sdIn.engineRPM);
+    printf("Current Gear: %d\n", g_cdIn.gear);
+    printf("Current Acceleration: %f\n", g_cdIn.accel);
+    printf("Current Brake Acceleration: %f\n", (g_cdIn.brakeFL + g_cdIn.brakeFR + g_cdIn.brakeRL + g_cdIn.brakeRR) / 4.0);
+    printf("Current Speed: %f\n", car->_speed_x);
+    printf("Current Steering Angle: %f\n", RAD2DEG(g_cdIn.steer));
+
 #if 1
     const float SC = 1.0;
     /* Auto-steer */
@@ -233,31 +252,31 @@ static void drive(int index, tCarElt* car, tSituation *s)
         g_tracker.updatePosition(car, s, curTrack);
 
         // Update sensor data
-        g_sd.isPositionTracked = g_tracker.isPositionTracked();
-        g_sd.isSpeedTracked = g_tracker.isSpeedTracked();
-        g_sd.leadPos = g_tracker.getCurLeadPos();
-        g_sd.ownPos = vec2(car->_pos_X, car->_pos_Y);
-        g_sd.cornerFrontRight = vec2(car->_corner_x(FRNT_RGT), car->_corner_y(FRNT_RGT));
-        g_sd.cornerFrontLeft = vec2(car->_corner_x(FRNT_LFT), car->_corner_y(FRNT_LFT));
-        g_sd.cornerRearRight = vec2(car->_corner_x(REAR_RGT), car->_corner_y(REAR_RGT));
-        g_sd.cornerRearLeft = vec2(car->_corner_x(REAR_LFT), car->_corner_y(REAR_LFT));
-        g_sd.leadSpeed = g_tracker.getSpeed(s->deltaTime);
-        g_sd.ownSpeed = car->_speed_x;
-        g_sd.curGear = car->_gearCmd;
+        g_sdOut.isPositionTracked = g_tracker.isPositionTracked();
+        g_sdOut.isSpeedTracked = g_tracker.isSpeedTracked();
+        g_sdOut.leadPos = g_tracker.getCurLeadPos();
+        g_sdOut.ownPos = vec2(car->_pos_X, car->_pos_Y);
+        g_sdOut.cornerFrontRight = vec2(car->_corner_x(FRNT_RGT), car->_corner_y(FRNT_RGT));
+        g_sdOut.cornerFrontLeft = vec2(car->_corner_x(FRNT_LFT), car->_corner_y(FRNT_LFT));
+        g_sdOut.cornerRearRight = vec2(car->_corner_x(REAR_RGT), car->_corner_y(REAR_RGT));
+        g_sdOut.cornerRearLeft = vec2(car->_corner_x(REAR_LFT), car->_corner_y(REAR_LFT));
+        g_sdOut.leadSpeed = g_tracker.getSpeed(s->deltaTime);
+        g_sdOut.ownSpeed = car->_speed_x;
+        g_sdOut.curGear = car->_gearCmd;
     }
 
     // if(followMode && g_tracker.isPositionTracked())
     if(true && g_tracker.isPositionTracked())
     {
-        car->_steerCmd = g_cd.steer;
-        car->_accelCmd = g_cd.accel;
+        car->_steerCmd = g_cdIn.steer;
+        car->_accelCmd = g_cdIn.accel;
         car->_singleWheelBrakeMode = 1;
-        car->_brakeFLCmd = g_cd.brakeFL;
-        car->_brakeFRCmd = g_cd.brakeFR;
-        car->_brakeRLCmd = g_cd.brakeRL;
-        car->_brakeRRCmd = g_cd.brakeRR;
-        car->_brakeCmd = (g_cd.brakeFL + g_cd.brakeFR + g_cd.brakeRL + g_cd.brakeRR) / 4.0; // For display in speed dreams
-        car->_gearCmd = g_cd.gear;
+        car->_brakeFLCmd = g_cdIn.brakeFL;
+        car->_brakeFRCmd = g_cdIn.brakeFR;
+        car->_brakeRLCmd = g_cdIn.brakeRL;
+        car->_brakeRRCmd = g_cdIn.brakeRR;
+        car->_brakeCmd = (g_cdIn.brakeFL + g_cdIn.brakeFR + g_cdIn.brakeRL + g_cdIn.brakeRR) / 4.0; // For display in speed dreams
+        car->_gearCmd = g_cdIn.gear;
     }
     else // If not following anybody -> use algorithm for following track
     {
