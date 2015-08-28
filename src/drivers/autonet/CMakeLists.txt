@@ -4,7 +4,7 @@ SET(ROBOT_NAME "autonet")
 
 SET(ROBOT_INTERFACE WELCOME)
 
-SET(ROBOT_SOURCES ${ROBOT_NAME}.cpp serial.c timer.cpp)
+SET(ROBOT_SOURCES ${ROBOT_NAME}.cpp socket.cpp timer.cpp)
 
 ADD_SDLIB_INCLUDEDIR(robottools tgf sensors)
 

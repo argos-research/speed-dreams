@@ -112,7 +112,7 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     MARK_AS_ADVANCED(OPTION_CUSTOM_3RDPARTY)
 
     # Compiler definitions (needs more comments. Is it needed under Windows ?).
-    ADD_DEFINITIONS(-D_SVID_SOURCE -D_BSD_SOURCE -DSHM)
+    ADD_DEFINITIONS(-D_DEFAULT_SOURCE -DSHM)
 
     IF(MSVC)
 	

@@ -15,10 +15,6 @@ copyright            : (C) 2002 Utsav
  *                                                                         *
  ***************************************************************************/
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
-
 #include <cstdio>
 #include <cstdint>
 #include <cstdlib>
@@ -41,7 +37,7 @@ copyright            : (C) 2002 Utsav
 #include <gpsSensor.h>
 #include <positionTracker.h>
 
-#include "serial.h"
+#include "socket.h"
 #include "timer.h"
 
 struct SensorDataOut
@@ -77,9 +73,6 @@ struct SensorDataIn
     float engineRPM;
 };
 
-static tTrack *curTrack;
-static int serialfd;
-
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
 static void newrace(int index, tCarElt* car, tSituation *s);
 static void drive(int index, tCarElt* car, tSituation *s);
@@ -89,7 +82,7 @@ static int  InitFuncPt(int index, void *pt);
 
 static bool updateFollowMode();
 
-
+static tTrack *curTrack;
 static tCarElt *car;
 static CommandDataIn g_cdIn = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0};
 static SensorDataIn g_sdIn = {0.0, 0.0};
@@ -104,11 +97,10 @@ static SensorDataOut g_sdOut = {false, false, vec2(0,0), vec2(0,0), vec2(0,0), v
 static PositionTracker g_tracker(50.0);
 static GPSSensor gps = GPSSensor();
 
-
-
 static timer_t timerid;
-volatile static bool signalStopSendData = false;
-volatile static bool serialDataStopped = true;
+static int sockfd;
+static int newsockfd;
+
 
 /*
  * Module entry point
@@ -149,9 +141,9 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
     *carParmHandle = NULL;
 }
 
-void serialData(int signum)
+void socketData(int signum)
 {
-    uint8_t a[512]; // Large buffer to read in all pending bytes from serial
+    uint8_t a[512]; // Large buffer to read in all pending bytes from socket
     uint8_t calcChkSum = 0;
     // sizeof(SensorData)
     uint8_t b[71]; // 2 + 68 + 1 (checksum vals + sizeof(SensorData) + checksum)
@@ -160,18 +152,12 @@ void serialData(int signum)
     int sdInSize = sizeof(SensorDataIn);
     int sdOutSize = sizeof(SensorDataOut);
 
-    if(signalStopSendData)
-    {
-        serialDataStopped = true;
-        return;
-    }
-
-    if(serialPortRead(serialfd, a, 1) == 1) {
+    if(socketRead(newsockfd, a, 1) == 1) {
         if(a[0] == 0xAA) {
-            if(serialPortRead(serialfd, a, 1) == 1) {
+            if(socketRead(newsockfd, a, 1) == 1) {
                 if(a[0] == 0xCC) {
                     calcChkSum = 0xAA ^ 0xCC;
-                    if(serialPortRead(serialfd, a, 512) >= cdInSize + sdInSize + 1) {
+                    if(socketRead(newsockfd, a, 512) >= cdInSize + sdInSize + 1) {
 
                         for(i = 0; i < cdInSize + sdInSize; i++) {
                             calcChkSum = calcChkSum ^ a[i];
@@ -198,18 +184,18 @@ void serialData(int signum)
     }
     b[2 + sdOutSize] = calcChkSum;
 
-    serialPortWrite(serialfd, b, 2 + sdOutSize + 1);
+    socketWrite(newsockfd, b, 2 + sdOutSize + 1);
 
-    updateFollowMode();
+    //updateFollowMode();
 }
 
 /* Start a new race. */
 static void newrace(int index, tCarElt* car_local, tSituation *s)
 {
-    serialfd = serialPortOpen("/dev/ttyUSB0", 115200);
+    sockfd = createSocket(66666);
+    newsockfd = waitForConnection(sockfd);
     car = car_local;
-    timerid = timerInit(serialData, 2000000);
-    serialDataStopped = false;
+    timerid = timerInit(socketData, 2000000);
     enableTimerSignal();
 }
 
@@ -300,11 +286,9 @@ static void endrace(int index, tCarElt *car, tSituation *s)
 /* Called before the module is unloaded */
 static void shutdown(int index)
 {
-    signalStopSendData = true;
-    while(!serialDataStopped);
     disableTimerSignal();
     timerEnd(timerid);
-    serialPortClose(serialfd);
+    closeSocket(sockfd, newsockfd);
     printf("Done with shutdown\n");
 }
 
