@@ -5,6 +5,7 @@
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <fcntl.h>
 
 #include "socket.h"
 
@@ -28,6 +29,14 @@ int createSocket(int port)
     return sockfd;
 }
 
+bool makeSocketNonBlocking(int sockfd)
+{
+    int flags = fcntl(sockfd, F_GETFL, 0);
+    if (flags < 0) return false;
+    flags = (flags&~O_NONBLOCK);
+    return (fcntl(sockfd, F_SETFL, flags) == 0) ? true : false;
+}
+
 int waitForConnection(int sockfd)
 {
 	socklen_t clilen;
@@ -37,6 +46,7 @@ int waitForConnection(int sockfd)
 	listen(sockfd,5);
     clilen = sizeof(cli_addr);
     int newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+    printf("DEBUG: Accepted new connection on socket with fd = %d\n", newsockfd);
     if (newsockfd < 0)
     {
         printf("ERROR on accepting connection\n");

@@ -53,6 +53,7 @@ struct SensorDataOut
     float leadSpeed;
     float ownSpeed;
     int curGear;
+    float steerLock;
 };
 
 struct CommandDataIn
@@ -84,7 +85,7 @@ static bool updateFollowMode();
 
 static tTrack *curTrack;
 static tCarElt *car;
-static CommandDataIn g_cdIn = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0};
+static CommandDataIn g_cdIn = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1};
 static SensorDataIn g_sdIn = {0.0, 0.0};
 static float clutch = 0;
 static int followCmd = 0;
@@ -146,7 +147,7 @@ void socketData(int signum)
     uint8_t a[512]; // Large buffer to read in all pending bytes from socket
     uint8_t calcChkSum = 0;
     // sizeof(SensorData)
-    uint8_t b[71]; // 2 + 68 + 1 (checksum vals + sizeof(SensorData) + checksum)
+    uint8_t b[75]; // 2 + 72 + 1 (checksum vals + sizeof(SensorData) + checksum)
     int i;
     int cdInSize = sizeof(CommandDataIn);
     int sdInSize = sizeof(SensorDataIn);
@@ -194,8 +195,12 @@ static void newrace(int index, tCarElt* car_local, tSituation *s)
 {
     sockfd = createSocket(66666);
     newsockfd = waitForConnection(sockfd);
+    if(!makeSocketNonBlocking(newsockfd))
+    {
+        printf("ERROR: Not possible to make socket non-blocking\n");
+    }
     car = car_local;
-    timerid = timerInit(socketData, 2000000);
+    timerid = timerInit(socketData, 1000000000);
     enableTimerSignal();
 }
 
@@ -218,26 +223,12 @@ static void drive(int index, tCarElt* car, tSituation *s)
     printf("Current Speed: %f\n", car->_speed_x);
     printf("Current Steering Angle: %f\n", RAD2DEG(g_cdIn.steer));
 
-#if 1
-    const float SC = 1.0;
-    /* Auto-steer */
-    tdble angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
-    NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
-    angle -= SC*car->_trkPos.toMiddle/car->_trkPos.seg->width;
-    angle = angle/car->_steerLock;
-    tdble accel = getSpeedDepAccel(car->_speed_x, 1.0, 0.1, 8, 18, 20);
-                    // 0   60  100 150 200 250 km/h
-    int gear = getSpeedDepGear(car->_speed_x, car->_gearCmd);
-
-    tdble brake = 0.0;
-#endif
-
     //if(followMode)
     if(true)
     {
         g_tracker.updatePosition(car, s, curTrack);
 
-        // Update sensor data
+        // Update sensor data for output
         g_sdOut.isPositionTracked = g_tracker.isPositionTracked();
         g_sdOut.isSpeedTracked = g_tracker.isSpeedTracked();
         g_sdOut.leadPos = g_tracker.getCurLeadPos();
@@ -249,6 +240,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
         g_sdOut.leadSpeed = g_tracker.getSpeed(s->deltaTime);
         g_sdOut.ownSpeed = car->_speed_x;
         g_sdOut.curGear = car->_gearCmd;
+        g_sdOut.steerLock = car->_steerLock;
     }
 
     // if(followMode && g_tracker.isPositionTracked())
@@ -266,6 +258,18 @@ static void drive(int index, tCarElt* car, tSituation *s)
     }
     else // If not following anybody -> use algorithm for following track
     {
+        const float SC = 1.0;
+        /* Auto-steer */
+        tdble angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
+        NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
+        angle -= SC*car->_trkPos.toMiddle/car->_trkPos.seg->width;
+        angle = angle/car->_steerLock;
+        tdble accel = getSpeedDepAccel(car->_speed_x, 1.0, 0.1, 8, 18, 20);
+                        // 0   60  100 150 200 250 km/h
+        int gear = getSpeedDepGear(car->_speed_x, car->_gearCmd);
+
+        tdble brake = 0.0;
+
         // set the values
         car->_steerCmd = angle;
         car->_accelCmd = accel;

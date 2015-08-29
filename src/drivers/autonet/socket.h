@@ -3,6 +3,8 @@
 
 int createSocket(int port);
 
+bool makeSocketNonBlocking(int sockfd);
+
 int waitForConnection(int sockfd);
 
 void closeSocket(int sockfd, int newsockfd);
