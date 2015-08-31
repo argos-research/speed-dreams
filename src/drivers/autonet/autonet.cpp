@@ -200,7 +200,7 @@ static void newrace(int index, tCarElt* car_local, tSituation *s)
         printf("ERROR: Not possible to make socket non-blocking\n");
     }
     car = car_local;
-    timerid = timerInit(socketData, 1000000000);
+    timerid = timerInit(socketData, 50000000);
     enableTimerSignal();
 }
 
@@ -215,6 +215,14 @@ static void drive(int index, tCarElt* car, tSituation *s)
     printf("Autonet's position according to GPS is (%f, %f)\n", myPos.x, myPos.y);
 
     //Print sensor data
+    if (g_tracker.isPositionTracked())
+    {
+        printf("Follow mode.\n");
+    }
+    else
+    {
+        printf("Safety car mode.\n");
+    }
     printf("Engine Temperature: %f\n", g_sdIn.engineTemp);
     printf("Engine RPM: %f\n", g_sdIn.engineRPM);
     printf("Current Gear: %d\n", g_cdIn.gear);
