@@ -95,7 +95,7 @@ static int lastFollowModeCmd = 0;
 
 static SensorDataOut g_sdOut = {false, false, vec2(0,0), vec2(0,0), vec2(0,0), vec2(0,0), vec2(0,0), vec2(0,0), 0, 0, 0};
 // distance threshold 50 m
-static PositionTracker g_tracker(50.0);
+static PositionTracker g_tracker(60.0);
 static GPSSensor gps = GPSSensor();
 
 static timer_t timerid;
@@ -230,6 +230,8 @@ static void drive(int index, tCarElt* car, tSituation *s)
     printf("Current Brake Acceleration: %f\n", (g_cdIn.brakeFL + g_cdIn.brakeFR + g_cdIn.brakeRL + g_cdIn.brakeRR) / 4.0);
     printf("Current Speed: %f\n", car->_speed_x);
     printf("Current Steering Angle: %f\n", RAD2DEG(g_cdIn.steer));
+    car->_engineTemp = g_sdIn.engineTemp;
+    car->_engineRPM = g_sdIn.engineRPM;
 
     //if(followMode)
     if(true)
@@ -263,6 +265,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
         car->_brakeRRCmd = g_cdIn.brakeRR;
         car->_brakeCmd = (g_cdIn.brakeFL + g_cdIn.brakeFR + g_cdIn.brakeRL + g_cdIn.brakeRR) / 4.0; // For display in speed dreams
         car->_gearCmd = g_cdIn.gear;
+
     }
     else // If not following anybody -> use algorithm for following track
     {

@@ -104,7 +104,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     angle = angle/car->_steerLock;
 
     // car, maxAccel, startAccel, incUntilSpeed, maxUntilSpeed, decUntilSpeed
-    tdble accel = getSpeedDepAccel(car->_speed_x, 1.0, 0.3, 6, 18, 20);
+    tdble accel = getSpeedDepAccel(car->_speed_x, 1.0, 0.3, 6, 18, 30);
 
     int gear = 1;
 
