@@ -1,5 +1,4 @@
-obj/*
-*sublime*
+build/*
 
 # Vagrant
 .vagrant
