@@ -1,0 +1,18 @@
+INCLUDE(../../../cmake/macros.cmake)
+
+SET(ROBOT_NAME "SUMO")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+SET(ROBOT_SOURCES ${ROBOT_NAME}.cpp)
+
+ROBOT_MODULE(NAME ${ROBOT_NAME} VERSION 1.0.0 SOVERSION 1.0.0
+	INTERFACE WELCOME
+	SOURCES ${ROBOT_SOURCES}
+)
+
+#SET(SUMO "/run/media/alex/brain/KIA4SM/SUMO/svn/src")
+#INCLUDE_DIRECTORIES("${SUMO}")
+
+#TARGET_LINK_LIBRARIES(${ROBOT_NAME} "${SUMO}/utils/common/libcommon.a")
+#TARGET_LINK_LIBRARIES(${ROBOT_NAME} "${SUMO}/utils/traci/libtraci.a")
+#TARGET_LINK_LIBRARIES(${ROBOT_NAME} "${SUMO}/foreign/tcpip/libtcpip.a")
