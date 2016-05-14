@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+
+<params name="SUMO" type="robotdef">
+  <section name="Robots">
+    <section name="index">
+
+      <section name="1">
+        <attstr name="name" val="SUMO"></attstr>
+        <attstr name="short name" val="SUMO"></attstr>
+        <attstr name="code name" val="SUMO"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="TUM"></attstr>
+        <attstr name="author" val="Alexander Weidinger"></attstr>
+        <attstr name="car name" val="trb1-cavallo-360rb"></attstr>
+        <attnum name="race number" val="5"></attnum>
+        <attstr name="features" val=""></attstr>
+      </section>
+
+    </section>
+  </section>
+</params>
