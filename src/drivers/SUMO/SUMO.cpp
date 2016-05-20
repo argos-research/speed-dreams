@@ -124,6 +124,12 @@ static void newrace(int index, tCarElt* car, tSituation *s) {
 static void drive(int index, tCarElt* car, tSituation *s) {
   //memset(&car->ctrl, 0, sizeof(tCarCtrl));
 
+  /* calculate yaw in degrees
+   * http://answers.ros.org/question/141366/convert-the-yaw-euler-angle-into-into-the-range-0-360/
+   */
+  double yaw = car->_yaw * 180.0 / M_PI;
+  if(yaw < 0) yaw += 360.0;
+
   //car->ctrl.gear = 1;
   json j;
   //j["time"] = s.
@@ -133,6 +139,7 @@ static void drive(int index, tCarElt* car, tSituation *s) {
     {"gear", car->priv.gear},
     {"pos", car->race.distRaced},
     {"trackLength", curTrack->length},
+    {"angle", yaw},
   };
   write(sockfd, j.dump().c_str(), strlen(j.dump().c_str()) + 1);
   //write(sockfd, "\n", 1);
