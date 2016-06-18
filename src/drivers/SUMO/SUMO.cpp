@@ -47,7 +47,7 @@ static tTrack	*curTrack;
 
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
 static void newrace(int index, tCarElt* car, tSituation *s);
-static void drive(int index, tCarElt* car, tSituation *s);
+static void dataexchange(int index, tCarElt* car, tSituation *s);
 static void drive_at(int index, tCarElt* car, tSituation *s);
 static void drive_mt(int index, tCarElt* car, tSituation *s);
 static void endrace(int index, tCarElt *car, tSituation *s);
@@ -120,8 +120,7 @@ static void newrace(int index, tCarElt* car, tSituation *s) {
   robot.new_race(index, car, s);
 }
 
-/* Drive during race. */
-static void drive(int index, tCarElt* car, tSituation *s) {
+static void dataexchange(int index, tCarElt* car, tSituation *s) {
   //memset(&car->ctrl, 0, sizeof(tCarCtrl));
 
   /* calculate yaw in degrees
@@ -130,29 +129,39 @@ static void drive(int index, tCarElt* car, tSituation *s) {
   double yaw = car->_yaw * 180.0 / M_PI;
   if(yaw < 0) yaw += 360.0;
 
-  //car->ctrl.gear = 1;
+  // json j;
+  // j["veh0"] = {
+  //   {"rpm", car->priv.enginerpm},
+  //   {"speed", car->_speed_x},
+  //   {"gear", car->priv.gear},
+  //   {"pos", car->race.distRaced},
+  //   {"trackLength", curTrack->length},
+  //   {"angle", yaw},
+  // };
+
   json j;
-  //j["time"] = s.
   j["veh0"] = {
-    {"rpm", car->priv.enginerpm},
-    {"speed", car->_speed_x},
-    {"gear", car->priv.gear},
     {"pos", car->race.distRaced},
-    {"trackLength", curTrack->length},
+    {"x", car->_pos_X},
+    {"y", car->_pos_Y},
+    {"z", car->_pos_Z},
+    {"speed", car->_speed_x},
+    {"gear", car->_gear},
     {"angle", yaw},
+    {"trackLength", curTrack->length},
+    {"rpm", car->priv.enginerpm}
   };
+
   write(sockfd, j.dump().c_str(), strlen(j.dump().c_str()) + 1);
-  //write(sockfd, "\n", 1);
-  //robot.drive_mt(index, car, s);
 }
 
 static void drive_mt(int index, tCarElt* car, tSituation *s) {
-  drive(index, car, s);
+  dataexchange(index, car, s);
   robot.drive_mt(index, car, s);
 }
 
 static void drive_at(int index, tCarElt* car, tSituation *s) {
-  drive(index, car, s);
+  dataexchange(index, car, s);
   robot.drive_at(index, car, s);
 }
 
