@@ -149,7 +149,9 @@ static void dataexchange(int index, tCarElt* car, tSituation *s) {
     {"gear", car->_gear},
     {"angle", yaw},
     {"trackLength", curTrack->length},
-    {"rpm", car->priv.enginerpm}
+    {"rpm", car->priv.enginerpm},
+    {"fsX", curTrack->seg[0].vertex[2].x},
+    {"fsY", curTrack->seg[0].vertex[2].y}
   };
 
   write(sockfd, j.dump().c_str(), strlen(j.dump().c_str()) + 1);
