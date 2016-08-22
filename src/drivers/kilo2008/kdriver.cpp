@@ -19,7 +19,7 @@
  *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  *      MA 02110-1301, USA.
  * 
- *      $Id: kdriver.cpp 4635 2012-03-31 16:32:22Z wdbee $
+ *      $Id: kdriver.cpp 6198 2015-11-04 15:18:41Z wdbee $
  * 
  */
 
@@ -169,25 +169,25 @@ void KDriver::drive(tSituation * s) {
   if (IsStuck()) {
     Unstuck();
   } else {
-    car_->_steerCmd = GetSteer(s);
+    car_->_steerCmd = (tdble) GetSteer(s);
     car_->_gearCmd = GetGear();
     CalcSpeed();
-    car_->_brakeCmd = FilterABS(
+    car_->_brakeCmd = (tdble) (FilterABS(
                         FilterBrakeSpeed(
                           FilterBColl(
                             FilterBPit(
-                              GetBrake()))));
+                              GetBrake())))));
 
     if (car_->_brakeCmd == 0.0) {
-      car_->_accelCmd = FilterAccel(
+      car_->_accelCmd = (tdble) (FilterAccel(
                           FilterTCL(
                             FilterTrk(
                               FilterOverlap(
-                                GetAccel()))));
+                                GetAccel())))));
     } else {
       car_->_accelCmd = 0.0;
     }
-    car_->_clutchCmd = GetClutch();
+    car_->_clutchCmd = (tdble) (GetClutch());
   }  // if IsStuck
 
 #if 0
@@ -849,7 +849,7 @@ double KDriver::FilterBColl(const double brake) {
  */
 int KDriver::pitCommand(tSituation * s) {
   car_->_pitRepair = strategy_->PitRepair();
-  car_->_pitFuel = strategy_->PitRefuel();
+  car_->_pitFuel = (tdble) (strategy_->PitRefuel());
   // This should be the only place where the pit stop is set to false!
   pit_->set_pitstop(false);
   return ROB_PIT_IM;        // return immediately.
@@ -1050,7 +1050,7 @@ void KDriver::InitCa() {
   double h = 0.0;
   for (int i = 0; i < 4; ++i)
     h += GfParmGetNum(car_->_carHandle, WheelSect[i],
-                        PRM_RIDEHEIGHT, NULL, 0.2);
+                        PRM_RIDEHEIGHT, NULL, 0.2f);
   h *= 1.5;
   h = pow(h, 4);
   h = 2.0 * exp(-3.0 * h);
@@ -1626,8 +1626,8 @@ vec2f KDriver::TargetPoint() {
     return s;
   }
 
-  s.x = (seg->vertex[TR_SL].x + seg->vertex[TR_SR].x) / 2.0;
-  s.y = (seg->vertex[TR_SL].y + seg->vertex[TR_SR].y) / 2.0;
+  s.x = (tdble) ((seg->vertex[TR_SL].x + seg->vertex[TR_SR].x) / 2.0);
+  s.y = (tdble) ((seg->vertex[TR_SL].y + seg->vertex[TR_SR].y) / 2.0);
 
   if (seg->type == TR_STR) {
     vec2f n((seg->vertex[TR_EL].x - seg->vertex[TR_ER].x) / seg->length,
@@ -1635,13 +1635,13 @@ vec2f KDriver::TargetPoint() {
     n.normalize();
     vec2f d((seg->vertex[TR_EL].x - seg->vertex[TR_SL].x) / seg->length,
       (seg->vertex[TR_EL].y - seg->vertex[TR_SL].y) / seg->length);
-    return s + d * length + static_cast<float>(offset) * n;
+    return (s + d * (float) length + static_cast<float>((float) offset) * n);
   } else {
     vec2f c(seg->center.x, seg->center.y);
     double arc = length / seg->radius;
     double arcsign = (seg->type == TR_RGT) ? -1.0 : 1.0;
     arc = arc * arcsign;
-    s = s.rotate(c, arc);
+    s = s.rotate(c, (float) arc);
 
     vec2f n, t, rt;
     n = c - s;
@@ -1900,7 +1900,7 @@ double KDriver::InitSkill(tSituation * s) {
 
 
 void KDriver::Unstuck() {
-  car_->_steerCmd = - my_cardata_->getCarAngle() / car_->_steerLock;
+  car_->_steerCmd = (tdble) (- my_cardata_->getCarAngle() / car_->_steerLock);
   car_->_gearCmd = -1;     // Reverse gear.
   car_->_accelCmd = 1.0;   // 100% accelerator pedal.
   car_->_brakeCmd = 0.0;   // No brakes.

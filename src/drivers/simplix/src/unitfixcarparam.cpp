@@ -1,20 +1,17 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitfixcarparam.cpp
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
-// A robot for Speed Dreams-Version 1.4.0/2.X
+// A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Constant parameters of the car and calculations with it
 // Unveränderliche Parameter des Fahrzeugs und Nebenrechnungen
 //
 // File         : unitfixcarparam.cpp
 // Created      : 2007.11.25
-// Last changed : 2013.03.03
-// Copyright    : © 2007-2013 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 4.00.000
-//--------------------------------------------------------------------------*
-// Ein erweiterter TORCS-Roboters
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // Diese Unit basiert auf dem Roboter mouse_2006
 //
@@ -61,7 +58,8 @@ TFixCarParam::TFixCarParam():
   oBorderScale(50.0),
   oCa(0),
   oCaFrontWing(0),
-  oCaGroundEffect(0),
+  oCaFrontGroundEffect(0),
+  oCaRearGroundEffect(0),
   oCaRearWing(0),
   oCdBody(0),
   oCdWing(0),
@@ -112,6 +110,13 @@ double TFixCarParam::CalcAcceleration(
   double TrackTiltAngle) const                   // Track tilt angle
 {
   double MU = Friction * oTyreMu;
+  if (oDriver->oCarHasTYC)
+  {
+    double TcF = oDriver->TyreConditionFront();
+    double TcR = oDriver->TyreConditionRear();
+    MU = MIN(TcF*MU,TcR*MU);
+  }
+
   double CD = oCdBody * 
 	(1.0 + oTmpCarParam->oDamage / 10000.0) + oCdWing;
 
@@ -186,12 +191,19 @@ double TFixCarParam::CalcBraking
   Friction *= oDriver->CalcFriction(Crv);
 
   double Mu = Friction * oTyreMu;
-  double Mu_F = Mu;
-  double Mu_R = Mu;
+  double MuF = Mu;
+  double MuR = Mu;
 
-  Mu_F = Friction * oTyreMuFront;
-  Mu_R = Friction * oTyreMuRear;
-  Mu = MIN(Mu_F,Mu_R);
+  MuF = Friction * oTyreMuFront;
+  MuR = Friction * oTyreMuRear;
+  if (oDriver->oCarHasTYC)
+  {
+    double TcF = oDriver->TyreConditionFront();
+    double TcR = oDriver->TyreConditionRear();
+    Mu = MIN(TcF*MuF,TcR*MuR);
+  }
+  else
+    Mu = MIN(MuF,MuR);
 
   // From SD:
   double Cd = oCdBody * 
@@ -217,11 +229,11 @@ double TFixCarParam::CalcBraking
 
 	double Froad;
 	double Fdown = oTmpCarParam->oMass * Gdown 
-		+ (oTmpCarParam->oMass * Crvz + oCaGroundEffect) * AvgV2;
+		+ (oTmpCarParam->oMass * Crvz + (oCaFrontGroundEffect + oCaRearGroundEffect)) * AvgV2;
 	double Ffrnt = oCaFrontWing * AvgV2;
 	double Frear = oCaRearWing * AvgV2;
 
-	Froad = 0.95 * Fdown * Mu + Ffrnt * Mu_F + Frear * Mu_R;
+	Froad = 0.95 * Fdown * Mu + Ffrnt * MuF + Frear * MuR;
 
 	double Flat  = oTmpCarParam->oMass * Glat;
 	double Ftan  = oTmpCarParam->oMass * Gtan - Cd * AvgV2;
@@ -291,12 +303,19 @@ double	TFixCarParam::CalcBrakingPit
   Friction *= oDriver->CalcFriction(Crv);
 
   double Mu = Friction * oTyreMu;
-  double Mu_F = Mu;
-  double Mu_R = Mu;
+  double MuF = Mu;
+  double MuR = Mu;
 
-  Mu_F = Friction * oTyreMuFront;
-  Mu_R = Friction * oTyreMuRear;
-  Mu = MIN(Mu_F,Mu_R);
+  MuF = Friction * oTyreMuFront;
+  MuR = Friction * oTyreMuRear;
+  if (oDriver->oCarHasTYC)
+  {
+    double TcF = oDriver->TyreConditionFront();
+    double TcR = oDriver->TyreConditionRear();
+    Mu = MIN(TcF*MuF,TcR*MuR);
+  }
+  else
+    Mu = MIN(MuF,MuR);
 
   // From TORCS:
   double Cd = oCdBody * 
@@ -321,11 +340,11 @@ double	TFixCarParam::CalcBrakingPit
 
 	double Froad;
 	double Fdown = oTmpCarParam->oMass * Gdown 
-		+ (oTmpCarParam->oMass * Crvz + oCaGroundEffect) * AvgV2;
+		+ (oTmpCarParam->oMass * Crvz + (oCaFrontGroundEffect + oCaRearGroundEffect)) * AvgV2;
 	double Ffrnt = oCaFrontWing * AvgV2;
 	double Frear = oCaRearWing * AvgV2;
 
-	Froad = Fdown * Mu + Ffrnt * Mu_F + Frear * Mu_R;
+	Froad = Fdown * Mu + Ffrnt * MuF + Frear * MuR;
 
 	double Flat  = oTmpCarParam->oMass * Glat;
 	double Ftan  = oTmpCarParam->oMass * Gtan - Cd * AvgV2;
@@ -371,7 +390,7 @@ double	TFixCarParam::CalcBrakingPit
 double TFixCarParam::CalcMaxSpeed
   (TCarParam& CarParam,                          // Lane specific parameters
   double Crv0,                                   // Curvature in xy at P
-  double Crv1,                                   // Curvature in xy at P
+  double Crv1,                                   // Curvature in xy at Q
   double CrvZ,                                   // Curvature in z at P
   double Friction,                               // Friction
   double TrackRollAngle,                         // Track roll angle
@@ -388,8 +407,16 @@ double TFixCarParam::CalcMaxSpeed
 
   double Mu;
 
-  double Cos = cos(TrackRollAngle);
-  double Sin = sin(TrackRollAngle);
+  double Cos = cos(TrackRollAngle)*cos(TrackTiltAngle);
+  double SinLat = sin(TrackRollAngle);
+  double SinLong = sin(TrackTiltAngle);
+  double Sin = SinLat;
+
+  if (oDriver->oCarNeedsSinLong)
+  {
+	if (SinLat < SinLong)
+		  Sin = SinLong;
+  }
 
   double AbsCrv0 = MAX(0.001, fabs(Crv0));
   double AbsCrv1 = MAX(0.001, fabs(Crv1));
@@ -397,7 +424,7 @@ double TFixCarParam::CalcMaxSpeed
   double factor = 1.0;
 
   if (AbsCrv < 1/200.0)
-	CrvZ *= 0.001;
+	CrvZ *= oDriver->oCrvZScale;
 
   if (AbsCrv > AbsCrv1)
   {
@@ -423,17 +450,37 @@ double TFixCarParam::CalcMaxSpeed
 
   double MuF = Friction * oTyreMuFront * CarParam.oScaleMu;
   double MuR = Friction * oTyreMuRear * CarParam.oScaleMu;
-  Mu = MIN(MuF,MuR) / oTmpCarParam->oSkill;
+  if (oDriver->oCarHasTYC)
+  {
+    double TcF = oDriver->TyreConditionFront();
+    double TcR = oDriver->TyreConditionRear();
+    Mu = MIN(TcF*MuF,TcR*MuR) / oTmpCarParam->oSkill;
+  }
+  else
+    Mu = MIN(MuF,MuR) / oTmpCarParam->oSkill;
 
   Den = (AbsCrv - ScaleBump * CrvZ)
     - (oCaFrontWing * MuF + oCaRearWing * MuR 
-	+ oCaGroundEffect * Mu) / oTmpCarParam->oMass;
+	+ oCaFrontGroundEffect * MuF + oCaRearGroundEffect * MuR) / oTmpCarParam->oMass;
 
   if (Den < 0.00001)
    Den = 0.00001;
 
-  double Speed = factor * sqrt((Cos * G * Mu + Sin * G * SGN(Crv0)) / Den);
+  if (AbsCrv > 0.002)
+  {
+	  if (Sin * SGN(Crv0) < 0)
+	  {
+		  Sin *= 8.0;
+		  Sin = SGN(Sin) * MIN(0.05,fabs(Sin));
+	  }
+  }
+
+  double Speed = factor * sqrt((Cos * G * Mu + Sin * G * SGN(Crv0) + CrvZ) / Den);
+  if (oDriver->CarCharacteristic.IsValidX(Speed))
+    Speed *= oDriver->CarCharacteristic.CalcOffset(Speed);
+
   Speed = oDriver->CalcHairpin(Speed,AbsCrv);
+
   return Speed;
 }
 //==========================================================================*

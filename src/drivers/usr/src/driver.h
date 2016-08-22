@@ -310,7 +310,13 @@ class Driver {
 		int cmd_gear;
 		float cmd_clutch;
 		float cmd_light;
-
+		float cmd_engineTemp;
+		float cmd_engineRPM;
+		float cmd_brakeFL;
+		float cmd_brakeFR;
+		float cmd_brakeRL;
+		float cmd_brakeRR;
+		
         int mRain;
 
 		float (Driver::*GET_DRIVEN_WHEEL_SPEED)();

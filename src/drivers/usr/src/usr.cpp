@@ -33,12 +33,22 @@
 #include <robottools.h>
 #include <robot.h>
 
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+#include "json.hpp"
+using json = nlohmann::json;
+
+static tTrack	*curTrack;
+static int sockfd;
+
 #include "driver.h"
 
 // Traditional TORCS Interface
 static void initTrack(int index, tTrack* track, void *carHandle,
                       void **carParmHandle, tSituation *s);
 static void newRace(int index, tCarElt* car, tSituation *s);
+static void dataexchange(int index, tCarElt* car, tSituation *s);
 static void drive(int index, tCarElt* car, tSituation *s);
 static int  pitcmd(int index, tCarElt* car, tSituation *s);
 static void shutdown(int index);
@@ -485,13 +495,63 @@ static int InitFuncPt(int index, void *pt)
 static void initTrack(int index, tTrack* track, void *carHandle,
                       void **carParmHandle, tSituation *s)
 {
+  curTrack = track;
   driver[index-indexOffset]->initTrack(track, carHandle, carParmHandle, s);
 }
+
+static void dataexchange(int index, tCarElt* car, tSituation *s) {
+  //memset(&car->ctrl, 0, sizeof(tCarCtrl));
+
+  /* calculate yaw in degrees
+   * http://answers.ros.org/question/141366/convert-the-yaw-euler-angle-into-into-the-range-0-360/
+   */
+  double yaw = car->_yaw * 180.0 / M_PI;
+  if(yaw < 0) yaw += 360.0;
+
+  // json j;
+  // j["veh0"] = {
+  //   {"rpm", car->priv.enginerpm},
+  //   {"speed", car->_speed_x},
+  //   {"gear", car->priv.gear},
+  //   {"pos", car->race.distRaced},
+  //   {"trackLength", curTrack->length},
+  //   {"angle", yaw},
+  // };
+
+  json j;
+  j["veh0"] = {
+    {"pos", car->race.distRaced},
+    {"x", car->_pos_X},
+    {"y", car->_pos_Y},
+    {"z", car->_pos_Z},
+    {"speed", car->_speed_x},
+    {"gear", car->_gear},
+    {"angle", yaw},
+    {"trackLength", curTrack->length},
+    {"rpm", car->priv.enginerpm},
+    {"fsX", curTrack->seg[0].vertex[2].x},
+    {"fsY", curTrack->seg[0].vertex[2].y}
+  };
+
+  write(sockfd, j.dump().c_str(), strlen(j.dump().c_str()) + 1);
+}
+
 
 
 // Start a new race.
 static void newRace(int index, tCarElt* car, tSituation *s)
 {
+  sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  struct sockaddr_in server_addr;
+  memset(&server_addr, 0, sizeof(struct sockaddr_in));
+
+  server_addr.sin_family = AF_INET;
+  //server_addr.sin_addr.s_addr = inet_addr("131.159.208.114");
+  server_addr.sin_addr.s_addr = inet_addr("10.0.2.208");
+  server_addr.sin_port = htons(2000);
+
+  connect(sockfd, (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
+
   driver[index-indexOffset]->newRace(car, s);
 }
 
@@ -499,6 +559,7 @@ static void newRace(int index, tCarElt* car, tSituation *s)
 // Drive during race.
 static void drive(int index, tCarElt* car, tSituation *s)
 {
+  dataexchange(index, car, s);
   driver[index-indexOffset]->drive(s);
 }
 

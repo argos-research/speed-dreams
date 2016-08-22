@@ -1,7 +1,6 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitdriver.h
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
 // A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Class for driving and driver/robot
@@ -9,10 +8,10 @@
 //
 // File         : unitdriver.h
 // Created      : 2007.11.25
-// Last changed : 2013.06.25
-// Copyright    : © 2007-2013 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 4.00.002
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // Teile dieser Unit basieren auf diversen Header-Dateien von TORCS
 //
@@ -27,12 +26,12 @@
 // dem Roboter delphin
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // dem Roboter wdbee_2007
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // und dem Roboter mouse_2006
 //
@@ -59,6 +58,7 @@
 #include <track.h>
 #include <car.h>
 #include <robot.h>
+//#include <aero.h>
 #include "../../../modules/simu/simuv4/aero.h"
 
 #include "unitglobal.h"
@@ -237,7 +237,8 @@ private:
 	int	oDriveTrainType;                         // Drive train type
 
 	TPidController oPIDCBrake;     	             // Controller for brake error
-	TPidController oPIDCLine;      	             // Controller for line error.
+	TPidController oPIDCLine;      	             // Controller for line error
+	TPidController oPIDCStart;     	             // Controller for start error
 	int	oFlying;				                 // Flag prepare landing 
 	int oNbrCars;                                // Nbr of cars in race
 	int	oOwnOppIdx;                              // Index of own car in list of opponents
@@ -264,6 +265,7 @@ private:
 	int oLastLap;                                // Last lap
 	double oClutch;                              // Clutching
 	int oGear;                                   // Gear
+	int oUsedGear;                               // Gear
 	double oSteer;                               // Steering
 	double oLastSteer;                           // Steering
 
@@ -303,11 +305,17 @@ private:
 	double oClutchDelta;
 	double oClutchRange;
 	double oClutchRelease;
-	double oEarlyShiftFactor;
 	double oCurrSpeed;                           // Currend speed
+	double oAccelSpeed;
 	double oGearEff[MAX_GEARS];                  // Efficiency of gears
+    double oShift[MAX_GEARS];                    // Shift levels
+    double oShiftMargin[MAX_GEARS];              // Shift back margin
+	double oShiftUp[MAX_GEARS];                  // Shift by setup
+	double oEarlyShiftFactor;                    // Early shifting
+    int oShiftCounter;                           // Shift timer
 	int oExtended;                               // Information if this robot is extended (oExtended = 1) or not (oExtended = 0).
 	int oLastGear;                               // Last gear
+	int oLastUsedGear;                           // Last used gear
     bool oLetPass;                               // Let opoonent pass
 	double oLookAhead;                           // Look ahead base value
 	double oLookAheadFactor;                     // Look ahead factor
@@ -318,9 +326,6 @@ private:
 	double oOmegaAheadFactor;                    // Omega ahead factor
 	double oOmegaAhead;                          // Omega ahead base value
     double oDistFromStart;                       // Position along Track
-    double oShift[MAX_GEARS];                    // Shift levels
-    double oShiftMargin;                         // Shift back margin
-    int oShiftCounter;                           // Shift timer
     PSituation oSituation;                       // TORCS data fpr situation
 	double oStartDistance;                       // max Dist. raced while starting
 	double oStartRPM;
@@ -333,6 +338,9 @@ private:
     PSysFoo oSysFooStuckY;                       // und Y
 	float oTrackAngle;                           // Direction of track
     double oTargetSpeed;                         // Target speed for speed controller
+	bool oCarHasABS;							 // Flag: Car has ABS in simu enabled
+	bool oCarHasESP;							 // Flag: Car has ESP in simu enabled
+	bool oCarHasTCL;							 // Flag: Car has TCL in simu enabled
 	double oTclRange;                            // TCL range
 	double oTclSlip;                             // Max TCL slip
 	double oTclFactor;                           // TCL scale 
@@ -406,7 +414,11 @@ private:
 	static double LengthMargin;                  // Length margin
 	static bool Qualification;                   // Flag qualifying
 	bool oStanding;                              // Fahrzeug steht#
+	TCubicSpline CarCharacteristic;				 // Car characteristic 
 	TParam Param;                                // Parameters
+    bool enableCarNeedsSinLong;
+	bool oCarNeedsSinLong;
+	double oCrvZScale;
 	double oFuelPer100km;                        //
 	double oMaxFuel;                             // tank capacity
 	double oMaxPressure;                         // brake pressure
@@ -430,6 +442,7 @@ private:
 	float oSideScaleMu;
 	float oSideScaleBrake;
 	float oSideBorderOuter;
+	float oSideBorderInner;
 	double oXXX;
 	bool oRain;
 	double oRainIntensity;
@@ -441,6 +454,12 @@ private:
     double oJumpOffset;                          // Offset for calculation of jumps
 	bool oFirstJump;
 	double oStartSteerFactor;
+	bool oCarHasTYC;							 // Flag: Car has tyre condition in simu enabled
+
+	static const int ControlPoints = 13;
+	double X[ControlPoints];
+	double Y[ControlPoints];
+	double S[ControlPoints];
 
 	static int NBBOTS;                           // Nbr of cars
     double CurrSimTime;                          // Current simulation time
@@ -449,6 +468,7 @@ private:
 	static const char* SECT_PRIV;                      // Private section
 	static const char* DEFAULTCARTYPE;                 // Default car type
 
+	static int RobotType;
 	static bool AdvancedParameters;
     static bool UseOldSkilling;
     static bool UseSCSkilling;
@@ -468,8 +488,11 @@ private:
 
 	void ScaleSide(float FactorMu, float FactorBrake);
 	void SideBorderOuter(float Factor);
+	void SideBorderInner(float Factor);
 
 	void AdjustBrakes(PCarHandle Handle);
+	void AdjustCarCharacteristic(PCarHandle Handle);
+	bool SaveCharacteristicToFile(const char* Filename);
 	void AdjustDriving(PCarHandle Handle, double ScaleBrake, double ScaleMu);
 	void AdjustPitting(PCarHandle Handle);
     void AdjustSkilling(PCarHandle Handle);
@@ -478,6 +501,10 @@ private:
     void Meteorology();
 	int GetWeather();
 
+	double TyreConditionFront();
+	double TyreConditionRear();
+	double TyreTreadDepthFront();
+	double TyreTreadDepthRear();
 	void CalcSkilling();
 	double CalcFriction(const double Crv);
 	double CalcCrv(double Crv);
@@ -496,17 +523,13 @@ private:
 	void CalcSkilling_simplix_LP1();
 
 	double CalcFriction_simplix_Identity(double Crv);
-	double CalcFriction_simplix_TRB1(double Crv);
-	double CalcFriction_simplix_LS1(double Crv);
 	double CalcFriction_simplix_LS2(double Crv);
 	double CalcFriction_simplix_LP1(double Crv);
 	double CalcFriction_simplix_REF(double Crv);
 
-	double CalcCrv_simplix(double Crv);
+//	double CalcCrv_simplix(double Crv);
 	double CalcCrv_simplix_Identity(double Crv);
-	double CalcCrv_simplix_SC(double Crv);
 	double CalcCrv_simplix_36GP(double Crv);
-	double CalcCrv_simplix_LS1(double Crv);
 	double CalcCrv_simplix_LP1(double Crv);
 
 	double CalcHairpin_simplix_Identity(double Speed, double AbsCrv); 
