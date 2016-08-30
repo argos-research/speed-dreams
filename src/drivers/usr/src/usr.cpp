@@ -37,9 +37,19 @@
 #include "globaldefs.h"
 #include "driver.h"
 
+#include "json.hpp"
+
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+using json = nlohmann::json;
+
+static tTrack	*curTrack;
+
 // Traditional TORCS Interface
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
 static void newRace(int index, tCarElt* car, tSituation *s);
+static void dataexchange(int index, tCarElt* car, tSituation *s);
 static void drive(int index, tCarElt* car, tSituation *s);
 static int pitCmd(int index, tCarElt* car, tSituation *s);
 static void shutdown(int index);
@@ -677,10 +687,54 @@ static int initFuncPt(int Index, void *Pt)
 ////////////////////////////////////////////////////////////
 static void initTrack(int Index, tTrack* Track, void *CarHandle, void **CarParmHandle, tSituation *S)
 {
+  curTrack = Track;
     // Init common used data
     //m_Instances[Index-IndexOffset].m_Robot->SetCommonData( &gCommonData, cRobotType );
     m_Instances[Index-IndexOffset].m_Robot->initTrack( Track, CarHandle, CarParmHandle, S);
 }
+
+static int sockfd;
+
+static void dataexchange(int index, tCarElt* car, tSituation *s) {
+  PLogUSR->debug("I got called!\n");
+  //memset(&car->ctrl, 0, sizeof(tCarCtrl));
+
+  /* calculate yaw in degrees
+   * http://answers.ros.org/question/141366/convert-the-yaw-euler-angle-into-into-the-range-0-360/
+   */
+  double yaw = car->_yaw * 180.0 / M_PI;
+  if(yaw < 0) yaw += 360.0;
+
+  // json j;
+  // j["veh0"] = {
+  //   {"rpm", car->priv.enginerpm},
+  //   {"speed", car->_speed_x},
+  //   {"gear", car->priv.gear},
+  //   {"pos", car->race.distRaced},
+  //   {"trackLength", curTrack->length},
+  //   {"angle", yaw},
+  // };
+
+  json j;
+  j["veh0"] = {
+    {"pos", car->race.distRaced},
+    {"x", car->_pos_X},
+    {"y", car->_pos_Y},
+    {"z", car->_pos_Z},
+    {"speed", car->_speed_x},
+    {"gear", car->_gear},
+    {"angle", yaw},
+    {"trackLength", curTrack->length},
+    {"rpm", car->priv.enginerpm},
+    {"SLX", curTrack->seg[0].vertex[0].x},
+    {"SLY", curTrack->seg[0].vertex[0].y},
+    {"SRX", curTrack->seg[0].vertex[1].x},
+    {"SRY", curTrack->seg[0].vertex[1].y}
+  };
+
+  write(sockfd, j.dump().c_str(), strlen(j.dump().c_str()) + 1);
+}
+
 
 
 ////////////////////////////////////////////////////////////
@@ -688,6 +742,18 @@ static void initTrack(int Index, tTrack* Track, void *CarHandle, void **CarParmH
 ////////////////////////////////////////////////////////////
 static void newRace(int Index, tCarElt* Car, tSituation *S)
 {
+  
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  struct sockaddr_in server_addr;
+  memset(&server_addr, 0, sizeof(struct sockaddr_in));
+
+  server_addr.sin_family = AF_INET;
+  //server_addr.sin_addr.s_addr = inet_addr("131.159.208.114");
+  server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+  server_addr.sin_port = htons(2000);
+
+  connect(sockfd, (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
+  
     RtInitTimer(); // Check existance of Performance Counter Hardware
 
     m_Instances[Index-IndexOffset].m_Ticks = 0.0;               // Initialize counters
@@ -711,6 +777,7 @@ static void newRace(int Index, tCarElt* Car, tSituation *S)
 ////////////////////////////////////////////////////////////
 static void drive(int Index, tCarElt* Car, tSituation *S)
 {
+    dataexchange(Index, Car, S);
     //LogUSR.debug("#>>> TDriver::Drive\n");
     if (m_Instances[Index-IndexOffset].m_Robot->CurrSimTime < S->currentTime)
         //  if (cInstances[Index-IndexOffset].cRobot->CurrSimTime + 0.03 < S->currentTime)
