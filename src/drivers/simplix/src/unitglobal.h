@@ -1,7 +1,6 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitglobal.h
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
 // A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Global data types and definitions
@@ -9,10 +8,10 @@
 //
 // File         : unitglobal.h
 // Created      : 2007.11.17
-// Last changed : 2013.07.15
-// Copyright    : © 2007-2013 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 4.01.000
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // This program was developed and tested on windows XP
 // There are no known Bugs, but:
@@ -93,7 +92,7 @@ extern GfLogger* PLogSimplix;
 // Racing line version marker 
 // (Increment if racinglines needs to be recalculated)
 //--------------------------------------------------------------------------*
-#define RL_VERSION 134 // Force new calculation
+#define RL_VERSION 137 // Force new calculation
 //==========================================================================*
 
 //==========================================================================*
@@ -109,6 +108,9 @@ extern GfLogger* PLogSimplix;
 #define RTYPE_SIMPLIX_MP5  7					 // Robot type simplix_mp5
 #define RTYPE_SIMPLIX_LP1  8					 // Robot type simplix_lp1
 #define RTYPE_SIMPLIX_REF  9					 // Robot type simplix_ref
+#define RTYPE_SIMPLIX_SRW  10                    // Robot type simplix_srw
+#define RTYPE_SIMPLIX_MPA11 11                   // Robot type simplix_mpa11
+#define RTYPE_SIMPLIX_MPA12 12                   // Robot type simplix_mpa12
 //==========================================================================*
 
 //==========================================================================*
@@ -343,7 +345,6 @@ enum
 #define WheelSegFriction(x) (oCar->_wheelSeg(x)->surface->kFriction)
 #define WheelSegRoughness(x) (oCar->_wheelSeg(x)->surface->kRoughness)
 #define WheelSegRollRes(x) (oCar->_wheelSeg(x)->surface->kRollRes)
-#define UsedGear (oCar->_gear)
 // ... Shortcuts for TORCS
 
 // Shortcuts for this robot ...
@@ -412,7 +413,7 @@ enum
 // Parameters of this robot ...
 #define PRV_OPTI	         "genetic optimisation"
 
-//#define PRV_ACCEL_FILTER     "accel filter"
+#define PRV_ACCEL_FILTER     "accel filter"
 #define PRV_ACCEL_OUT        "accel out"
 #define PRV_ACCEL_DELTA      "accel delta"
 #define PRV_ACCEL_DELTA_RAIN "accel delta rain"
@@ -428,6 +429,9 @@ enum
 #define PRV_BRAKE_LIMIT      "brake limit" 
 #define PRV_BRAKE_LIMIT_SCALE "brake limit scale" 
 #define PRV_BRAKE_LIMIT_BASE "brake limit base" 
+
+#define PRV_CAR_CHARACTER    "character" 
+#define PRV_PERFORMANCE		 "performance" 
 
 #define PRV_SPEED_LIMIT_SCALE "speed limit scale" 
 #define PRV_SPEED_LIMIT_BASE "speed limit base" 
@@ -507,6 +511,7 @@ enum
 #define PRV_OMEGAAHEAD       "omegaahead"
 #define PRV_OMEGAAHEADFACTOR "omegaaheadfactor"
 #define PRV_INIT_BRAKE       "initial brake"     // Scale brake coeff
+#define PRV_NEEDS_SIN        "sin long"          // default false
 
 #define PRV_TCL_RANGE        "tcl range"         // default 10.0    
 #define PRV_TCL_SLIP         "tcl slip"          // default 1.6    
@@ -523,6 +528,8 @@ enum
 #define PRV_CLUTCH_RANGE     "clutch range"      // default 0.82
 #define PRV_CLUTCH_RELEASE   "clutch release"    // default 0.4
 #define PRV_EARLY_SHIFT      "early shift"       // default 1.0
+#define PRV_SHIFT_UP         "shift up"          // default 1.0
+#define PRV_SHIFT_MARGIN     "shift margin"      // default 0.9
 
 #define PRV_TEAM_ENABLE      "team enable"       // default 1
 

@@ -87,7 +87,8 @@ class Object:
 			pos_rel = self.pos_abs - self.parent.matrix_world.to_translation()
 
 			location = self.export_config.global_matrix * pos_rel
-			strm.write('loc {0:.7f} {1:.7f} {2:.7f}\n'.format(location[0], location[1], location[2]))
+			if any(c != 0 for c in location):
+				strm.write('loc {0:.7f} {1:.7f} {2:.7f}\n'.format(location[0], location[1], location[2]))
 
 		self._write(strm)
 		strm.write('kids {0}\n'.format(len(self.children)))
@@ -143,14 +144,14 @@ class Poly (Object):
 
 		for mod in self.bl_obj.modifiers:
 			if mod.type=='EDGE_SPLIT':
-				self.crease = degrees(mod.split_angle)
+				self.crease = round(degrees(mod.split_angle), 3)
 				break
 
 		if not self.crease:
 			if mesh.use_auto_smooth:
-				self.crease = degrees(mesh.auto_smooth_angle)
+				self.crease = round(degrees(mesh.auto_smooth_angle), 3)
 			else:
-				self.crease = self.export_config.crease_angle
+				self.crease = round(degrees(self.export_config.crease_angle), 3)
 
 		#bpy.data.meshes.remove(mesh)
 		
@@ -199,6 +200,10 @@ class Poly (Object):
 							# TRACE('File already exists "{0}"- not overwriting!'.format(tex_name))
 						
 						self.tex_name = tex_name
+						try:
+							self.tex_rep = [tex_slot.texture.repeat_x, tex_slot.texture.repeat_y]
+						except:
+							print("Failed to export texrep")
 						break
 
 			# Blender to AC3d index cross-reference
@@ -219,27 +224,50 @@ class Poly (Object):
 		'''
 		Extract the faces from a blender mesh
 		'''
+		uv_layer = None
 		if len(mesh.uv_textures):
-			uv_tex = mesh.tessface_uv_textures.active
-		else:
-			uv_tex = None
+			uv_index = mesh.uv_textures.active_index
+			if mesh.uv_textures[uv_index] != None:
+				uv_layer = mesh.uv_layers.active.data[:]
 
 		is_flipped = self.bl_obj.scale[0]\
 							 * self.bl_obj.scale[1]\
 							 * self.bl_obj.scale[2] < 0
 
-		for face_idx in range(len(mesh.tessfaces)):
-			bl_face = mesh.tessfaces[face_idx]
+		for face_idx in range(len(mesh.polygons)):
+			poly = mesh.polygons[face_idx]
 			
-			if uv_tex:
-				uv_coords = uv_tex.data[face_idx].uv[:]
+			uv_coords = []
+			no_uv = False
+			if(uv_layer):
+				for loop_index in range(poly.loop_start, poly.loop_start + poly.loop_total):
+					#print("    Vertex: %d" % mesh.loops[loop_index].vertex_index)
+					#print("    UV: %r" % uv_layer[loop_index].uv)
+					uv_coords.append(uv_layer[loop_index].uv)
+					if(not uv_layer[loop_index].uv):
+						no_uv = True
+
 			else:
+				no_uv = True				
+
+			if(no_uv):
 				uv_coords = None
 
-			surf = self.Surface(self.export_config, bl_face, self.ac_mats, mesh.show_double_sided, is_flipped, uv_coords)
+			surf = self.Surface(self.export_config, poly, self.ac_mats, mesh.show_double_sided, is_flipped, uv_coords, 0)
 			self.surfaces.append(surf)
+
+		# Commented out due to it will not only output standalone edges, but all edges around polygons also
+		#
+		#for edge_idx in range(len(mesh.edges)):
+		#	bl_edge = mesh.edges[edge_idx]
+		#	
+		#	edge = self.Surface(self.export_config, bl_edge, self.ac_mats, mesh.show_double_sided, is_flipped, None, 2)
+		#	self.surfaces.append(edge)
+
 		
 	def _write( self, strm ):
+
+		strm.write('crease {0}\n'.format(self.crease))		
 
 		if len(self.tex_name) > 0:
 			strm.write('texture "{0}"\n'.format(self.tex_name))
@@ -265,21 +293,22 @@ class Poly (Object):
 									ac_mats,
 									is_two_sided,
 									is_flipped,
-									uv_coords ):
+									uv_coords,
+									surf_type ):
 			self.export_config = export_config
 			self.mat = 0		# material index for this surface
 			self.bl_face = bl_face
 			self.uv_coords = uv_coords
 			self.is_two_sided = is_two_sided
 			self.is_flipped = is_flipped
-			self.ac_surf_flags = self.SurfaceFlags(0, False, True)
+			self.ac_surf_flags = self.SurfaceFlags(surf_type, False, True)
 
 			self.parse_blender_face(bl_face, ac_mats)
 
 		def write(self, ac_file):
 			surf_flags = self.ac_surf_flags.getFlags()
 			ac_file.write('SURF {0:#X}\n'.format(surf_flags))
-			ac_file.write('mat {0}\n'.format(self.mat))
+			ac_file.write('mat 0\n')
 			ac_file.write('refs {0}\n'.format(len(self.bl_face.vertices)))
 
 			r = range(len(self.bl_face.vertices))
@@ -298,11 +327,19 @@ class Poly (Object):
 
 		def parse_blender_face(self, bl_face, ac_mats):
 
-			if bl_face.material_index in ac_mats:
-				self.mat = ac_mats[bl_face.material_index]
-	
-			self.ac_surf_flags.smooth_shaded = bl_face.use_smooth
-			self.ac_surf_flags.twosided = self.is_two_sided
+			try:
+				if bl_face.material_index in ac_mats:
+					self.mat = ac_mats[bl_face.material_index]
+			except:
+				#is edge
+				self.mat = 0
+			try:
+				self.ac_surf_flags.smooth_shaded = bl_face.use_smooth
+				self.ac_surf_flags.twosided = self.is_two_sided
+			except:
+				#is edge
+				self.ac_surf_flags.smooth_shaded = True
+				self.ac_surf_flags.twosided = True
 		
 		class SurfaceFlags:
 			def __init__( self,
@@ -316,9 +353,9 @@ class Poly (Object):
 			def getFlags(self):
 				n = self.surf_type & 0x0f
 				if self.smooth_shaded:
-					n = n | 0x10
+					n = 0x10
 				if self.twosided:
-					n = n | 0x20
+					n = 0x20
 				return n
 
 # ------------------------------------------------------------------------------
@@ -357,13 +394,24 @@ class Material:
 		if bl_mat:
 			self.name = bl_mat.name
 			self.rgb = bl_mat.diffuse_color
-			self.amb = [bl_mat.ambient, bl_mat.ambient, bl_mat.ambient]
+			if export_config.mircol_as_amb:
+				self.amb = bl_mat.mirror_color
+			else:
+				self.amb = [bl_mat.ambient, bl_mat.ambient, bl_mat.ambient]
 			if export_config.mircol_as_emis:
-				self.emis = bl_mat.mirror_color * bl_mat.emit
+				self.emis = bl_mat.mirror_color# * bl_mat.emit   confusing if enabled, should be either mirror color or greyscale emissive
 			else:
 				self.emis = [bl_mat.emit, bl_mat.emit, bl_mat.emit]
-			self.spec = bl_mat.specular_intensity * bl_mat.specular_color
-			self.shi = bl_mat.specular_hardness
+			self.spec = bl_mat.specular_intensity * bl_mat.specular_color   
+
+			acMin = 0.0
+			acMax = 128.0
+			blMin = 1.0
+			blMax = 511.0
+			acRange = (acMax - acMin)  
+			blRange = (blMax - blMin)  
+			self.shi = int(round((((float(bl_mat.specular_hardness) - blMin) * acRange) / blRange) + acMin, 0))
+
 			if bl_mat.use_transparency:
 				self.trans = 1.0 - bl_mat.alpha
 			else:

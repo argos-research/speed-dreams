@@ -4,7 +4,13 @@ INCLUDE(../../../cmake/macros.cmake)
 
 ADD_INTERFACE_INCLUDEDIR()
 ADD_SDLIB_INCLUDEDIR(portability tgf math tgfclient sensors)
-ADD_SDL_INCLUDEDIR()
+
+IF(OPTION_SDL2)
+	ADD_SDL2_INCLUDEDIR()
+ELSE(OPTION_SDL2)
+	ADD_SDL_INCLUDEDIR()
+ENDIF(OPTION_SDL2)
+
 ADD_PLIB_INCLUDEDIR()
 
 SET(ROBOTTOOLS_SOURCES rtteammanager.cpp rttelem.cpp rttimeanalysis.cpp  rttrack.cpp rtutil.cpp rthumandriver.cpp followDriver.cpp)

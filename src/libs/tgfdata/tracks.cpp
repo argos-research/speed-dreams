@@ -4,7 +4,7 @@
     created              : Sun Nov 21 19:00:00 CET 2010
     copyright            : (C) 2010 by Jean-Philippe MEURET
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: tracks.cpp 4902 2012-08-27 10:04:20Z kmetykog $
+    version              : $Id: tracks.cpp 5899 2014-12-17 21:00:23Z wdbee $
                      
  ***************************************************************************/
 
@@ -130,7 +130,7 @@ GfTracks::GfTracks()
 			const std::string strTrackFileName(ossFileName.str());
 			if (!GfFileExists(strTrackFileName.c_str()))
 			{
-				GfLogWarning("Ignoring track %s : %s not found\n",
+				GfLogInfo("Ignoring track %s : %s not found\n",
 							 pszTrackId, strTrackFileName.c_str());
 				continue;
 			}

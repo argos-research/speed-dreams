@@ -4,7 +4,7 @@
     created     : Thu Jan  2 12:43:10 CET 2003
     copyright   : (C) 2002 by Eric Espie
     email       : eric.espie@torcs.org
-    version     : $Id: raceresults.cpp 5724 2013-11-06 21:46:09Z torcs-ng $                                  
+    version     : $Id: raceresults.cpp 6270 2015-11-23 19:44:40Z madbad $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		Results managment for all race types
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: raceresults.cpp 5724 2013-11-06 21:46:09Z torcs-ng $
+    @version	$Id: raceresults.cpp 6270 2015-11-23 19:44:40Z madbad $
 */
 
 #include <ctime>
@@ -30,6 +30,9 @@
 
 #include <portability.h>
 #include <robot.h>
+#ifdef WEBSERVER
+#include <webserver.h>
+#endif //WEBSERVER
 
 #include "standardgame.h"
 

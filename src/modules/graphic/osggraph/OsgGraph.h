@@ -1,7 +1,7 @@
 /***************************************************************************
 
     file        : OsgGraph.h
-    copyright   : (C) 2012 by Xavier Bertaux                        
+    copyright   : (C) 2012 by Xavier Bertaux
     email       : bertauxx@yahoo.fr
     version     : $Id: OsgGraph.h 3741 2011-07-21 22:29:34Z torcs-ng $
 
@@ -15,9 +15,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- 
+
 /** @file    
-    		The "osggraph" graphics engine module
+            The "osggraph" graphics engine module
     @version    $Id: ssggraph.h 3741 2011-07-21 22:29:34Z pouillot $
 */
 
@@ -28,7 +28,7 @@
 
 #include <tgf.hpp>
 
-class osgLoaderOptions;
+//class osgLoaderOptions;
 
 
 // DLL exported symbols declarator for Windows.
@@ -51,41 +51,37 @@ extern "C" int OSGGRAPH_API closeGfModule();
 // (Singleton, inherits GfModule, and implements IGraphicsEngine).
 class OSGGRAPH_API OsgGraph : public GfModule, public IGraphicsEngine
 {
- public:
+public:
 
-	// Implementation of IGraphicsEngine.
-	virtual bool loadTrack(struct Track* pTrack);
-	virtual bool loadCars(struct Situation *pSituation);
-	virtual bool setupView(int x, int y, int width, int height, void* pMenuScreen);
-	virtual void redrawView(struct Situation *pSituation);
-	//virtual void bendCar(int index, sgVec3 poc, sgVec3 force, int count = 0);
-	virtual void shutdownView();
-	virtual void unloadCars();
-	virtual void unloadTrack();
-	virtual Camera *getCurCam();
+    // Implementation of IGraphicsEngine.
+    virtual bool loadTrack(struct Track* pTrack);
+    virtual bool loadCars(struct Situation *pSituation);
+    virtual bool setupView(int x, int y, int width, int height, void* pMenuScreen);
+    virtual void redrawView(struct Situation *pSituation);
+    virtual void shutdownView();
+    virtual void unloadCars();
+    virtual void unloadTrack();
+    virtual Camera *getCurCam();
 
-	// Accessor to the singleton.
-	static OsgGraph& self();
+    // Accessor to the singleton.
+    static OsgGraph& self();
 
-	// Destructor.
-	virtual ~OsgGraph();
+    // Destructor.
+    virtual ~OsgGraph();
 
- protected:
+protected:
 
-	// Protected constructor to avoid instanciation outside (but friends).
-	OsgGraph(const std::string& strShLibName, void* hShLibHandle);
-	
-	// Make the C interface functions nearly member functions.
-	friend int openGfModule(const char* pszShLibName, void* hShLibHandle);
-	friend int closeGfModule();
+    // Protected constructor to avoid instanciation outside (but friends).
+    OsgGraph(const std::string& strShLibName, void* hShLibHandle);
 
- protected:
+    // Make the C interface functions nearly member functions.
+    friend int openGfModule(const char* pszShLibName, void* hShLibHandle);
+    friend int closeGfModule();
 
-	// The singleton.
-	static OsgGraph* _pSelf;
+protected:
 
-	// The default SSGLoaderOptions instance.
-	//osgLoaderOptions* _pDefaultOSGLoaderOptions;
+    // The singleton.
+    static OsgGraph* _pSelf;
 };
 
-#endif /* _OSGGRAPH_H_ */ 
+#endif /* _OSGGRAPH_H_ */

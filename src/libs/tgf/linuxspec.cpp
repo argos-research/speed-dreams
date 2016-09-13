@@ -4,7 +4,7 @@
 	created              : Sat Mar 18 23:54:05 CET 2000
 	copyright            : (C) 2000 by Eric Espie
 	email                : torcs@free.fr
-	version              : $Id: linuxspec.cpp 5067 2012-12-15 17:35:33Z pouillot $
+	version              : $Id: linuxspec.cpp 6099 2015-08-31 00:03:46Z beaglejoe $
 	
  ***************************************************************************/
 
@@ -39,7 +39,7 @@
 #if defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
 #include <sys/param.h>
 #include <sys/sysctl.h>
-#if defined(__APPLE__) 
+#if defined(__APPLE__) && !defined(USE_MACPORTS)
 //#include <Carbon/Carbon.h> /* Carbon APIs for Multiprocessing (TODO) */
 #endif
 #else
@@ -54,6 +54,7 @@
 
 #include "os.h"
 
+static const size_t SOFileExtLen = strlen("."DLLEXT);
 
 /*
  * Function
@@ -243,8 +244,8 @@ linuxModLoadDir(unsigned int gfid, const char *dir, tModList **modlist)
 		/* some files in it */
 		while ((ep = readdir (dp)) != 0) 
 		{
-			if ((strlen(ep->d_name) > 4) &&
-				(strcmp(".so", ep->d_name+strlen(ep->d_name)-3) == 0)) /* xxxx.so */
+			if ((strlen(ep->d_name) > SOFileExtLen + 1) &&
+				(strcmp("."DLLEXT, ep->d_name+strlen(ep->d_name)-SOFileExtLen) == 0)) /* xxxx.so */
 			{
 				sprintf(sopath, "%s/%s", dir, ep->d_name);
 				/* Try and avoid loading the same module twice (WARNING: Only checks sopath equality !) */
@@ -335,12 +336,12 @@ linuxModInfoDir(unsigned int /* gfid */, const char *dir, int level, tModList **
 		/* some files in it */
 		while ((ep = readdir (dp)) != 0) 
 		{
-			if (((strlen(ep->d_name) > 4) && 
-				 (strcmp(".so", ep->d_name+strlen(ep->d_name)-3) == 0)) /* xxxx.so */
+			if (((strlen(ep->d_name) >  SOFileExtLen + 1) && 
+				 (strcmp("."DLLEXT, ep->d_name+strlen(ep->d_name)-SOFileExtLen) == 0)) /* xxxx.so */
 				|| ((level == 1) && (ep->d_name[0] != '.')))
 			{
 				if (level == 1)
-					sprintf(sopath, "%s/%s/%s.so", dir, ep->d_name, ep->d_name);
+					sprintf(sopath, "%s/%s/%s.%s", dir, ep->d_name, ep->d_name,DLLEXT);
 				else
 					sprintf(sopath, "%s/%s", dir, ep->d_name);
 				
@@ -631,7 +632,7 @@ unsigned linuxGetNumberOfCPUs()
 	{
 		
 		// MacOS X, FreeBSD, OpenBSD, NetBSD, etc ...
-#if defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
+#if (defined(__APPLE__) && !defined(USE_MACPORTS)) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
 		
 		nt mib[4];
 		size_t len; 
@@ -652,7 +653,7 @@ unsigned linuxGetNumberOfCPUs()
 		}
 		
 		// Linux, Solaris, AIX
-#elif defined(linux) || defined(__linux__)
+#elif defined(linux) || defined(__linux__) || defined(USE_MACPORTS)
 		
 		nCPUs = (unsigned)sysconf(_SC_NPROCESSORS_ONLN);
 		
@@ -691,6 +692,7 @@ unsigned linuxGetNumberOfCPUs()
 * Remarks
 *    
 */
+#if !defined(USE_MACPORTS)
 std::string cpuSet2String(const cpu_set_t* pCPUSet)
 {
 	std::ostringstream ossCPUSet;
@@ -704,7 +706,7 @@ std::string cpuSet2String(const cpu_set_t* pCPUSet)
 	
 	return ossCPUSet.str();
 }
-
+#endif
 bool
 linuxSetThreadAffinity(int nCPUId)
 {

@@ -4,7 +4,7 @@
     created              : Wed Mar 21 21:46:11 CET 2001
     copyright            : (C) 2001 by Eric Espie
     email                : eric.espie@torcs.org
-    version              : $Id: joystickconfig.cpp 4009 2011-10-28 03:41:50Z mungewell $
+    version              : $Id: joystickconfig.cpp 6011 2015-05-19 18:28:37Z beaglejoe $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		Human player joystick configuration menu
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: joystickconfig.cpp 4009 2011-10-28 03:41:50Z mungewell $
+    @version	$Id: joystickconfig.cpp 6011 2015-05-19 18:28:37Z beaglejoe $
 */
 
 
@@ -64,10 +64,15 @@ static tCmdInfo *Cmd;
 static int MaxCmd;
 
 // Joystick info.
+#if SDL_JOYSTICK
+static tCtrlJoyInfo joyInfo;// = NULL;
+static tCtrlJoyInfo joyCenter;
+#else
 static jsJoystick* Joystick[GFCTRL_JOY_NUMBER];
 static float       JoyAxis[GFCTRL_JOY_MAX_AXES * GFCTRL_JOY_NUMBER];
 static float       JoyAxisCenter[GFCTRL_JOY_MAX_AXES * GFCTRL_JOY_NUMBER];
 static int         JoyButtons[GFCTRL_JOY_NUMBER];
+#endif
 
 // Menu screen handle.
 static void *ScrHandle = NULL;
@@ -90,6 +95,9 @@ static int DoneBut = 0;;
 static void
 onNext(void * /* dummy */)
 {
+#if SDL_JOYSTICK
+//   GfctrlJoyRelease(joyInfo);
+#else
     int index;
 
     /* Release up and running joysticks */
@@ -98,6 +106,7 @@ onNext(void * /* dummy */)
 	    delete Joystick[index];
 	    Joystick[index] = 0;
 	}
+#endif
 
     /* Back to previous screen */
     if (CalState == NbCalSteps && NextMenuHandle != NULL)
@@ -123,13 +132,22 @@ JoyCalAutomaton(void)
 
     switch (CalState) {
     case 0:
+#if SDL_JOYSTICK
+   memcpy(&joyCenter, &joyInfo, sizeof(joyCenter));
+#else
 	memcpy(JoyAxisCenter, JoyAxis, sizeof(JoyAxisCenter));
+#endif
 	advanceStep();
 	break;
     case 1:
 	axis = Cmd[CalState + CmdOffset].ref.index;
-	Cmd[CalState + CmdOffset].min = JoyAxisCenter[axis];
-	Cmd[CalState + CmdOffset].max = JoyAxis[axis];
+#if SDL_JOYSTICK
+   Cmd[CalState + CmdOffset].min = joyCenter.ax[axis];
+   Cmd[CalState + CmdOffset].max = joyInfo.ax[axis];
+#else
+   Cmd[CalState + CmdOffset].min = JoyAxisCenter[axis];
+   Cmd[CalState + CmdOffset].max = JoyAxis[axis];
+#endif
 
 	// record the polarity of the turn action
 	if (Cmd[CalState + CmdOffset].max >= Cmd[CalState + CmdOffset].min)
@@ -137,22 +155,34 @@ JoyCalAutomaton(void)
 	else
 		Cmd[CalState + CmdOffset].pow = -1.0;
 
+#if SDL_JOYSTICK
+   sprintf(buf, "%.2f", joyInfo.ax[axis]);
+#else
 	sprintf(buf, "%.2f", JoyAxis[axis]);
+#endif
 	GfuiLabelSetText(ScrHandle, LabMinId[0], buf);
 	advanceStep();
 	break;
     case 2:
 	axis = Cmd[CalState + CmdOffset].ref.index;
+#if SDL_JOYSTICK
+   Cmd[CalState + CmdOffset].min = joyCenter.ax[axis];
+   Cmd[CalState + CmdOffset].max = joyInfo.ax[axis];
+#else
 	Cmd[CalState + CmdOffset].min = JoyAxisCenter[axis];
 	Cmd[CalState + CmdOffset].max = JoyAxis[axis];
+#endif
 
 	// record the polarity of the turn action
 	if (Cmd[CalState + CmdOffset].max >= Cmd[CalState + CmdOffset].min)
 		Cmd[CalState + CmdOffset].pow = 1.0;
 	else
 		Cmd[CalState + CmdOffset].pow = -1.0;
-
+#if SDL_JOYSTICK
+   sprintf(buf, "%.2f", joyInfo.ax[axis]);
+#else
 	sprintf(buf, "%.2f", JoyAxis[axis]);
+#endif
 	GfuiLabelSetText(ScrHandle, LabMaxId[0], buf);
 	advanceStep();
 	break;
@@ -160,12 +190,25 @@ JoyCalAutomaton(void)
     case 4:
     case 5:
 	axis = Cmd[CalState + CmdOffset].ref.index;
+#if SDL_JOYSTICK
+   Cmd[CalState + CmdOffset].min = joyCenter.ax[axis];
+   Cmd[CalState + CmdOffset].max = joyInfo.ax[axis];
+#else
 	Cmd[CalState + CmdOffset].min = JoyAxisCenter[axis];
 	Cmd[CalState + CmdOffset].max = JoyAxis[axis];
+#endif
 	Cmd[CalState + CmdOffset].pow = 1.0;
+#if SDL_JOYSTICK
+   sprintf(buf, "%.2f", joyCenter.ax[axis]);
+#else
 	sprintf(buf, "%.2f", JoyAxisCenter[axis]);
+#endif
 	GfuiLabelSetText(ScrHandle, LabMinId[CalState - 2], buf);
+#if SDL_JOYSTICK
+   sprintf(buf, "%.2f", joyInfo.ax[axis]);
+#else
 	sprintf(buf, "%.2f", JoyAxis[axis]);
+#endif
 	GfuiLabelSetText(ScrHandle, LabMaxId[CalState - 2], buf);
 	advanceStep();
 
@@ -187,9 +230,28 @@ JoyCalAutomaton(void)
 static void
 Idle2(void)
 {
+   int		index;
+#if SDL_JOYSTICK
+   /* Check for activity on Joystick buttons */
+   GfctrlJoyGetCurrentStates(&joyInfo);
+   for (index = 0; index < GFCTRL_JOY_NUMBER * GFCTRL_JOY_MAX_BUTTONS; index++) {
+      if (joyInfo.edgedn[index]) {
+         /* Check whether to ignore */
+         if(Cmd[CalState + CmdOffset].butIgnore == index)
+            break;
+
+         /* Button fired */
+         JoyCalAutomaton();
+         if (CalState >= NbCalSteps) {
+            GfuiApp().eventLoop().setRecomputeCB(0);
+         }
+         GfuiApp().eventLoop().postRedisplay();
+         return;
+      }
+#else
     int		mask;
     int		b, i;
-    int		index;
+    
 
     for (index = 0; index < GFCTRL_JOY_NUMBER; index++) {
 	if (Joystick[index]) {
@@ -214,6 +276,7 @@ Idle2(void)
 	    }
 	    JoyButtons[index] = b;
 	}
+#endif
     }
 
     /* Let CPU take breath (and fans stay at low and quite speed) */
@@ -225,9 +288,13 @@ static void
 onActivate(void * /* dummy */)
 {
     int i;
-    int index;
     int step;
-    
+#if SDL_JOYSTICK
+    //joyInfo = GfctrlJoyCreate();
+    GfctrlJoyGetCurrentStates(&joyInfo);
+#else
+    int index;
+
     // Create and test joysticks ; only keep the up and running ones.
     for (index = 0; index < GFCTRL_JOY_NUMBER; index++) {
 	Joystick[index] = new jsJoystick(index);
@@ -237,16 +304,19 @@ onActivate(void * /* dummy */)
 	    Joystick[index] = 0;
 	}
     }
+#endif
 
     CalState = 0;
     GfuiLabelSetText(ScrHandle, InstId, Instructions[CalState]);
     GfuiApp().eventLoop().setRecomputeCB(Idle2);
     GfuiApp().eventLoop().postRedisplay();
+#ifndef SDL_JOYSTICK
     for (index = 0; index < GFCTRL_JOY_NUMBER; index++) {
 	if (Joystick[index]) {
 	    Joystick[index]->read(&JoyButtons[index], &JoyAxis[index * GFCTRL_JOY_MAX_AXES]); /* initial value */
 	}
     }
+#endif
 
     for (i = 0; i < NbMaxCalAxis; i++) {
 	if (i > 0) {

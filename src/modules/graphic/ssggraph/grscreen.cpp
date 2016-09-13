@@ -4,7 +4,7 @@
     created     : Thu May 15 22:11:03 CEST 2003
     copyright   : (C) 2003 by Eric Espie
     email       : eric.espie@torcs.org
-    version     : $Id: grscreen.cpp 5315 2013-03-13 03:58:32Z mungewell $
+    version     : $Id: grscreen.cpp 6164 2015-10-04 23:14:42Z torcs-ng $
 
  ***************************************************************************/
 
@@ -304,7 +304,8 @@ void cGrScreen::camDraw(tSituation *s)
 
 	// Draw the static background.
 	// Exclude this when sky dome enabled, because it is then actually invisible.
-	if (dispCam->getDrawBackground() &&  (grSkyDomeDistance == 0 || grTrack->skyversion == 0)) {
+	if (dispCam->getDrawBackground() &&  (grSkyDomeDistance == 0)) 
+	{
 		glDisable(GL_LIGHTING);
 		glDisable(GL_DEPTH_TEST);
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -343,7 +344,8 @@ void cGrScreen::camDraw(tSituation *s)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Draw the sky dome if enabled (first part)
-	if (dispCam->getDrawBackground() &&  grSkyDomeDistance > 0 && grTrack->skyversion > 0) {
+	if (dispCam->getDrawBackground() &&  grSkyDomeDistance > 0 ) 
+	{
   		grPreDrawSky(s, dispCam->getFogStart(), dispCam->getFogEnd());
   	}
 
@@ -351,7 +353,8 @@ void cGrScreen::camDraw(tSituation *s)
 	grDrawScene();
 
 	// Draw the sky dome if enabled (last part)
-	if (dispCam->getDrawBackground() &&  grSkyDomeDistance > 0 && grTrack->skyversion > 0) {
+	if (dispCam->getDrawBackground() &&  grSkyDomeDistance > 0 )
+	{
 		grPostDrawSky();
 	}
 	

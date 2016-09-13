@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:31:43 CEST 1999
     copyright            : (C) 1999 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: tgf.cpp 5349 2013-03-23 17:59:22Z pouillot $
+    version              : $Id: tgf.cpp 6126 2015-09-15 19:43:00Z beaglejoe $
  ***************************************************************************/
 
 /***************************************************************************
@@ -40,8 +40,15 @@
 
 #include "tgf.hpp"
 
+// Use new Memory Manager ...
+#ifdef __DEBUG_MEMORYMANAGER__
+#include "memmanager.h"
+#endif
+// ... Use new Memory Manager
+
 
 extern void gfTraceInit(bool bWithLogging = true);
+extern void gfTraceShutdown(void);
 extern void gfDirInit(void);
 extern void gfModInit(void);
 extern void gfOsInit(void);
@@ -244,6 +251,13 @@ void* GfPoolMalloc(size_t size, tMemoryPool* pool)
 	if( !pool )
 		return 0;
 
+	// Use new Memory Manager ...
+	#ifdef __DEBUG_MEMORYMANAGER__
+	unsigned short Color = 99;
+	Color = GfMemoryManagerSetGroup(Color);
+	#endif
+	// ... Use new Memory Manager
+
 	/* Init tMemoryPool structure */
 	data = (tMemoryPoolItem*)malloc( sizeof(tMemoryPoolItem) + size );
 	data->prev = NULL;
@@ -257,6 +271,12 @@ void* GfPoolMalloc(size_t size, tMemoryPool* pool)
 		data->next->prev = data; /* ... and now has a previous item */
 	}
 	*pool = data;
+
+	// Use new Memory Manager ...
+	#ifdef __DEBUG_MEMORYMANAGER__
+	GfMemoryManagerSetGroup(Color);
+	#endif
+	// ... Use new Memory Manager
 
 	return (void*)( data + 1 );
 }
@@ -273,6 +293,13 @@ void GfPoolFree(void* pointer)
 	if( !pointer )
 		return;
 
+	// Use new Memory Manager ...
+	#ifdef __DEBUG_MEMORYMANAGER__
+	unsigned short Color = 99;
+	Color = GfMemoryManagerSetGroup(Color);
+	#endif
+	// ... Use new Memory Manager
+
 	if( data->next )
 		data->next->prev = data->prev;
 	if( data->prev )
@@ -286,6 +313,12 @@ void GfPoolFree(void* pointer)
 	}
 
 	free( data );
+
+	// Use new Memory Manager ...
+	#ifdef __DEBUG_MEMORYMANAGER__
+	GfMemoryManagerSetGroup(Color);
+	#endif
+	// ... Use new Memory Manager
 }
 
 /**
@@ -301,6 +334,13 @@ void GfPoolFreePool(tMemoryPool* pool)
 	if( !pool )
 		return;
 
+	// Use new Memory Manager ...
+	#ifdef __DEBUG_MEMORYMANAGER__
+	unsigned short Color = 99;
+	Color = GfMemoryManagerSetGroup(Color);
+	#endif
+	// ... Use new Memory Manager
+
 	cur = *pool;
 
 	/* Zero the pool */
@@ -313,6 +353,12 @@ void GfPoolFreePool(tMemoryPool* pool)
 
 		free( prev );
 	}
+
+	// Use new Memory Manager ...
+	#ifdef __DEBUG_MEMORYMANAGER__
+	GfMemoryManagerSetGroup(Color);
+	#endif
+	// ... Use new Memory Manager
 }
 
 /**
@@ -492,6 +538,19 @@ void GfInit(bool bWithLogging)
             GfLogInfo(")");
         GfLogInfo("\n");
     }
+    // Trace SDL info
+    SDL_version compiled;
+
+    SDL_VERSION(&compiled);
+    GfLogInfo("Compiled against SDL version %d.%d.%d \n",
+       compiled.major, compiled.minor, compiled.patch);
+
+#if SDL_MAJOR_VERSION >= 2
+    SDL_version linked;
+    SDL_GetVersion(&linked);
+    GfLogInfo("Linking against SDL version %d.%d.%d.\n",
+       linked.major, linked.minor, linked.patch);
+#endif
 }
 
 
@@ -519,6 +578,8 @@ void GfShutdown(void)
 	freez(gfDataDir);
 	freez(gfLibDir);
 	freez(gfBinDir);
+
+	gfTraceShutdown();
 }
 
 

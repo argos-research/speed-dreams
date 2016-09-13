@@ -1,16 +1,19 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitmain.cpp
 //--------------------------------------------------------------------------*
-// A robot for SPEED-DREAMS-Version 2.X simuV4
+// A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Interface to SPEED-DREAMS
 // 
 // File         : unitmain.cpp 
 // Created      : 2008.01.27
-// Last changed : 2013.07.05
-// Copyright    : © 2007-2013 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 4.01.000
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
+//--------------------------------------------------------------------------*
+// V4.05.000:
+// New code for additional features of simuv4
 //--------------------------------------------------------------------------*
 // V4.01.000:
 // New code for avoiding and overtaking 
@@ -291,6 +294,8 @@ void SetUpSimplix()
     SetParameters(NBBOTS, "car1-trb1");
     TDriver::AdvancedParameters = true;
     TDriver::SkillingFactor = 0.1f;         // Skilling factor for career-mode
+	TDriver::UseWingControl = true;
+	TDriver::UseRacinglineParameters = true;
 };
 //==========================================================================*
 
@@ -300,12 +305,42 @@ void SetUpSimplix()
 void SetUpSimplix_mpa1()
 {
 	cRobotType = RTYPE_SIMPLIX_MPA1;
-	SetParameters(NBBOTS, "indycar01");
+    SetParameters(NBBOTS, "mpa1-murasama");
     TDriver::AdvancedParameters = true;
     TDriver::UseBrakeLimit = false;
     TDriver::UseMPA1Skilling = true;            
     TDriver::SkillingFactor = 0.1f;         // Skilling factor for career-mode
 	TDriver::UseRacinglineParameters = true;
+};
+//==========================================================================*
+
+//==========================================================================*
+// Schismatic entry point for simplix_mpa11
+//--------------------------------------------------------------------------*
+void SetUpSimplix_mpa11()
+{
+    cRobotType = RTYPE_SIMPLIX_MPA11;
+    SetParameters(NBBOTS, "mpa11-murasama");
+    TDriver::AdvancedParameters = true;
+    TDriver::UseBrakeLimit = false;
+    TDriver::UseMPA1Skilling = true;
+    TDriver::SkillingFactor = 0.1f;         // Skilling factor for career-mode
+    TDriver::UseRacinglineParameters = true;
+};
+//==========================================================================*
+
+//==========================================================================*
+// Schismatic entry point for simplix_mpa12
+//--------------------------------------------------------------------------*
+void SetUpSimplix_mpa12()
+{
+    cRobotType = RTYPE_SIMPLIX_MPA12;
+    SetParameters(NBBOTS, "mpa12-murasama");
+    TDriver::AdvancedParameters = true;
+    TDriver::UseBrakeLimit = false;
+    TDriver::UseMPA1Skilling = true;
+    TDriver::SkillingFactor = 0.1f;         // Skilling factor for career-mode
+    TDriver::UseRacinglineParameters = true;
 };
 //==========================================================================*
 
@@ -335,6 +370,22 @@ void SetUpSimplix_sc()
 //==========================================================================*
 
 //==========================================================================*
+// Schismatic entry point for simplix_srw
+//--------------------------------------------------------------------------*
+void SetUpSimplix_srw()
+{
+    cRobotType = RTYPE_SIMPLIX_SRW;
+	TDriver::RobotType = cRobotType;
+    SetParameters(NBBOTS, "srw-sector-p4");
+    TDriver::AdvancedParameters = true;
+    TDriver::UseSCSkilling = true;          // Use supercar skilling
+    TDriver::SkillingFactor = 0.1f;         // Skilling factor for career-mode
+	TDriver::UseWingControl = true;
+	TDriver::UseRacinglineParameters = true;
+};
+//==========================================================================*
+
+//==========================================================================*
 // Schismatic entry point for simplix_36GP
 //--------------------------------------------------------------------------*
 void SetUpSimplix_36GP()
@@ -342,8 +393,8 @@ void SetUpSimplix_36GP()
     cRobotType = RTYPE_SIMPLIX_36GP;
     SetParameters(NBBOTS, "36GP-alfa12c");
     TDriver::AdvancedParameters = true;
-    TDriver::UseBrakeLimit = true;
-    TDriver::UseGPBrakeLimit = true;
+    //TDriver::UseBrakeLimit = true;
+    //TDriver::UseGPBrakeLimit = true;
     TDriver::SkillingFactor = 0.1f;         // Skilling factor for career-mode
 };
 //==========================================================================*
@@ -409,7 +460,7 @@ void SetUpSimplix_lp1()
 void SetUpSimplix_ref()
 {
     cRobotType = RTYPE_SIMPLIX_REF;
-    SetParameters(NBBOTS, "ref.sector-p4");
+    SetParameters(NBBOTS, "ref-sector-p4");
 	TDriver::UseRacinglineParameters = true;
 	TDriver::UseWingControl = true;
 };
@@ -522,10 +573,16 @@ int moduleWelcomeV1_00
 		SetUpSimplix_trb1();
 	else if (strncmp(RobName,"simplix_sc",strlen("simplix_sc")) == 0)
 		SetUpSimplix_sc();
+	else if (strncmp(RobName,"simplix_srw",strlen("simplix_srw")) == 0)
+		SetUpSimplix_srw();
 	else if (strncmp(RobName,"simplix_36GP",strlen("simplix_36GP")) == 0)
 		SetUpSimplix_36GP();
 	else if (strncmp(RobName,"simplix_mpa1",strlen("simplix_mpa1")) == 0)
 		SetUpSimplix_mpa1();
+    else if (strncmp(RobName,"simplix_mpa11",strlen("simplix_mpa11")) == 0)
+        SetUpSimplix_mpa11();
+    else if (strncmp(RobName,"simplix_mpa12",strlen("simplix_mpa12")) == 0)
+        SetUpSimplix_mpa12();
 	else if (strncmp(RobName,"simplix_ls1",strlen("simplix_ls1")) == 0)
 		SetUpSimplix_ls1();
 	else if (strncmp(RobName,"simplix_ls2",strlen("simplix_ls2")) == 0)
@@ -673,6 +730,8 @@ int simplixEntryPoint(tModInfo *ModInfo, void *RobotSettings)
 	  strncpy(&DriverDescs[I*DESCRPLEN], DriverDesc, DESCRPLEN-1);
     }
 
+	GfParmReleaseHandle(RobotSettings);
+
     return moduleInitialize(ModInfo);
 }
 //==========================================================================*
@@ -749,22 +808,16 @@ static int InitFuncPt(int Index, void *Pt)
 	LogSimplix.debug("#cRobotType == RTYPE_SIMPLIX\n");
     cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix;
     cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_Identity;
-    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix;
-    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix;
+//    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix;
+    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
+//    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix;
+    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix_Identity;
     cInstances[Index-IndexOffset].cRobot->ScaleSide(0.95f,0.95f);
     cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.20f);
   }
   else if (cRobotType == RTYPE_SIMPLIX_TRB1)
   {
     LogSimplix.debug("#cRobotType == RTYPE_SIMPLIX_TRB1\n");
-/*
-    cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix;
-    cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_TRB1;
-    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
-    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix;
-    cInstances[Index-IndexOffset].cRobot->ScaleSide(0.95f,0.95f);
-    cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.20f);
-*/
 	cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix;
     cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_Identity;
     cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
@@ -777,26 +830,61 @@ static int InitFuncPt(int Index, void *Pt)
     LogSimplix.debug("#cRobotType == RTYPE_SIMPLIX_SC\n");
     cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix_SC;
     cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_Identity;
-    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_SC;
-//    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
+    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
     cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix_Identity;
     cInstances[Index-IndexOffset].cRobot->ScaleSide(0.95f,0.95f);
     cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.10f);
+  }
+  else if (cRobotType == RTYPE_SIMPLIX_SRW)
+  {
+    LogSimplix.debug("#cRobotType == RTYPE_SIMPLIX_SRW\n");
+    cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix_SC;
+    cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_Identity;
+    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
+    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix_Identity;
+    cInstances[Index-IndexOffset].cRobot->ScaleSide(0.95f,0.95f);
+    cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.30f);
+    cInstances[Index-IndexOffset].cRobot->SideBorderInner(0.00f);
   }
   else if (cRobotType == RTYPE_SIMPLIX_36GP)
   {
     LogSimplix.debug("#cRobotType == RTYPE_SIMPLIX_36GP\n");
     cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix;
     cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_Identity;
-    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_36GP;
-    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix;
+//    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_36GP;
+    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
+//    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix;
+    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix_Identity;
     cInstances[Index-IndexOffset].cRobot->ScaleSide(0.95f,0.95f);
-    cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.75f);
-    cInstances[Index-IndexOffset].cRobot->UseFilterAccel();
+    cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.5f);
+    //cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.75f);
+    //cInstances[Index-IndexOffset].cRobot->UseFilterAccel();
   }  
   else if (cRobotType == RTYPE_SIMPLIX_MPA1)
   {
     LogSimplix.debug("#cRobotType == RTYPE_SIMPLIX_MPA1\n");
+    cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix_MPA1;
+    cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_Identity;
+    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
+    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix;
+    cInstances[Index-IndexOffset].cRobot->ScaleSide(0.95f,0.95f);
+    cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.00f);
+    cInstances[Index-IndexOffset].cRobot->UseFilterAccel();
+  }
+  else if (cRobotType == RTYPE_SIMPLIX_MPA11)
+  {
+    LogSimplix.debug("#cRobotType == RTYPE_SIMPLIX_MPA11\n");
+    cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix_MPA1;
+    cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_Identity;
+    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
+    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix;
+    cInstances[Index-IndexOffset].cRobot->ScaleSide(0.95f,0.95f);
+    cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.00f);
+    cInstances[Index-IndexOffset].cRobot->UseFilterAccel();
+  }
+  else if (cRobotType == RTYPE_SIMPLIX_MPA12)
+  {
+    LogSimplix.debug("#cRobotType == RTYPE_SIMPLIX_MPA12\n");
     cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix_MPA1;
     cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_Identity;
     cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
@@ -849,13 +937,17 @@ static int InitFuncPt(int Index, void *Pt)
   else if (cRobotType == RTYPE_SIMPLIX_REF)
   {
     LogSimplix.debug("#cRobotType == RTYPE_SIMPLIX_REF\n");
-    cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix;
-    cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_REF;
-    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix;
-    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix;
+    cInstances[Index-IndexOffset].cRobot->CalcSkillingFoo = &TDriver::CalcSkilling_simplix_SC;
+//    cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_REF;
+    cInstances[Index-IndexOffset].cRobot->CalcFrictionFoo = &TDriver::CalcFriction_simplix_Identity;
+//    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix;
+    cInstances[Index-IndexOffset].cRobot->CalcCrvFoo = &TDriver::CalcCrv_simplix_Identity;
+    cInstances[Index-IndexOffset].cRobot->CalcHairpinFoo = &TDriver::CalcHairpin_simplix_Identity;
     cInstances[Index-IndexOffset].cRobot->ScaleSide(0.95f,0.95f);
     cInstances[Index-IndexOffset].cRobot->SideBorderOuter(0.20f);
   }
+
+  GfParmReleaseHandle(RobotSettings);
 
   return 0;
 }

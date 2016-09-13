@@ -28,6 +28,16 @@ typedef struct
     tdble	I;
     tdble	radius;
     tdble	temp;
+
+	// Options that can be enabled in simuV4 
+	// by parameters in the car type setup file 
+
+	// Add variables here (tdble)
+	tdble	TCL;		// TCL factor
+	tdble	ABS;		// ABS factor
+
+	// Add switches here (bool)
+	bool	EnableABS;	// Switch to enable ABS 
 } tBrake;
 
 typedef struct

@@ -1,5 +1,5 @@
 // -*- Mode: c++ -*-
-// $Id: policy.cpp 3838 2011-08-27 09:41:31Z martkelder $
+// $Id: policy.cpp 6354 2016-02-02 15:20:35Z beaglejoe $
 
 // copyright (c) 2004 by Christos Dimitrakakis <dimitrak@idiap.ch>
 /***************************************************************************
@@ -12,6 +12,7 @@
  ***************************************************************************/
 
 #include <cstring>
+#include <math.h>
 #include "learn_debug.h"
 #include "policy.h"
 #include "MathFunctions.h"

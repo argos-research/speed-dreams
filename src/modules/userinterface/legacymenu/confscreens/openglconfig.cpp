@@ -4,7 +4,7 @@
     created     : Fri Jun 3 12:52:07 CET 2004
     copyright   : (C) 2005 Bernhard Wymann
     email       : berniw@bluewin.ch
-    version     : $Id: openglconfig.cpp 5180 2013-02-23 13:56:49Z torcs-ng $
+    version     : $Id: openglconfig.cpp 6158 2015-10-04 01:04:51Z torcs-ng $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 
 /** @file
              Open GL options menu
-    @version	$Id: openglconfig.cpp 5180 2013-02-23 13:56:49Z torcs-ng $
+    @version	$Id: openglconfig.cpp 6158 2015-10-04 01:04:51Z torcs-ng $
 */
 
 #include <cstdio>
@@ -32,6 +32,7 @@
 #include <portability.h>
 #include <tgfclient.h>
 #include <glfeatures.h>
+#include <raceman.h>
 
 #include "legacymenu.h"
 #include "openglconfig.h"
@@ -87,6 +88,13 @@ static int AnisotropicFilteringLabelId;
 static int AnisotropicFilteringLeftButtonId;
 static int AnisotropicFilteringRightButtonId;
 
+/* list of available graphic engine */
+static const int DefaultGraphicVersion = 1;
+static const char *GraphicSchemeList[] = {RM_VAL_MOD_SSGRAPH, RM_VAL_MOD_OSGGRAPH};
+static const char *GraphicDispNameList[] = 	{"ssggraph", "OsgGraph"};
+static const int NbGraphicScheme = sizeof(GraphicSchemeList) / sizeof(GraphicSchemeList[0]);
+static int CurGraphicScheme = DefaultGraphicVersion;
+
 
 // Multi-sampling (initialized in OpenGLMenuInit).
 static std::vector<std::string> VecMultiSampleTexts;
@@ -96,6 +104,8 @@ static int NCurMultiSampleIndex = 0;
 static int MultiSampleLabelId;
 static int MultiSampleLeftButtonId;
 static int MultiSampleRightButtonId;
+
+static int GraphicSchemeId;
 
 // GUI screen handles.
 static void	*ScrHandle = NULL;
@@ -130,7 +140,15 @@ static void onAccept(void *)
 
 	// Store settings from the GL features layer to the screen.xml file.
 	GfglFeatures::self().storeSelection();
-	
+
+	char buf[1024];
+	snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), RACE_ENG_CFG);
+	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+
+	GfParmSetStr(paramHandle, RM_SECT_MODULES, RM_ATTR_MOD_GRAPHIC, GraphicSchemeList[CurGraphicScheme]);
+	GfParmWriteFile(NULL, paramHandle, "raceengine");
+	GfParmReleaseHandle(paramHandle);
+
 	// Return to previous screen.
 	GfuiScreenActivate(PrevHandle);
 
@@ -202,6 +220,28 @@ static void changeAnisotropicFilteringState(void *vp)
     NCurAnisotropicFilteringIndex = (NCurAnisotropicFilteringIndex + (int)(long)vp + NAnisotropicFiltering) % NAnisotropicFiltering;
     GfuiLabelSetText(ScrHandle, AnisotropicFilteringLabelId, AAnisotropicFilteringTexts[NCurAnisotropicFilteringIndex]);
 }
+
+/* Change the graphc engine version (but only show really available modules) */
+static void
+onChangeGraphicVersion(void *vp)
+{
+	char buf[1024];
+
+	if (!vp)
+		return;
+
+	const int oldGraphicVersion = CurGraphicScheme;
+	do
+	{
+		CurGraphicScheme = (CurGraphicScheme + NbGraphicScheme + (int)(long)vp) % NbGraphicScheme;
+	
+		snprintf(buf, sizeof(buf), "%smodules/graphic/%s.%s", GfLibDir(), GraphicSchemeList[CurGraphicScheme], DLLEXT);
+	}
+	while (!GfFileExists(buf) && CurGraphicScheme != oldGraphicVersion);
+
+	GfuiLabelSetText(ScrHandle, GraphicSchemeId, GraphicDispNameList[CurGraphicScheme]);
+}
+
 
 
 static void onActivate(void * /* dummy */)
@@ -381,11 +421,14 @@ static void onActivate(void * /* dummy */)
         GfuiEnable(ScrHandle, AnisotropicFilteringRightButtonId, GFUI_DISABLE);
         GfuiLabelSetText(ScrHandle, AnisotropicFilteringLabelId, "Not supported");
     }
+
+	GfuiLabelSetText(ScrHandle, GraphicSchemeId, GraphicDispNameList[CurGraphicScheme]);
 }
 
 // OpenGL menu
 void* OpenGLMenuInit(void *prevMenu)
 {
+	const char *graphicSchemeName;
 	// Has screen already been created?
 	if (ScrHandle)
 		return ScrHandle;
@@ -395,6 +438,27 @@ void* OpenGLMenuInit(void *prevMenu)
 	ScrHandle = GfuiScreenCreate((float*)NULL, NULL, onActivate, NULL, (tfuiCallback)NULL, 1);
 	void *hparmMenu = GfuiMenuLoad("opengloptionsmenu.xml");
 	GfuiMenuCreateStaticControls(ScrHandle, hparmMenu);
+	
+	//Initialize current Graphic Engine
+	// ssggraph / OsgGraph
+	char buf[1024];
+	snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), RACE_ENG_CFG);
+
+	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+
+	// graphic engine
+	graphicSchemeName = GfParmGetStr(paramHandle, RM_SECT_MODULES, RM_ATTR_MOD_GRAPHIC, GraphicSchemeList[1]);
+	for (int i = 0; i < NbGraphicScheme; i++) 
+	{
+		if (strcmp(graphicSchemeName, GraphicSchemeList[i]) == 0)
+		{
+			CurGraphicScheme = i;
+			break;
+		}
+	}
+
+	GfParmWriteFile(NULL, paramHandle, "raceengine");
+	GfParmReleaseHandle(paramHandle);
 
 	// Texture compression.
 	TextureCompLeftButtonId =
@@ -448,6 +512,11 @@ void* OpenGLMenuInit(void *prevMenu)
                             changeAnisotropicFilteringState);
     AnisotropicFilteringLabelId = GfuiMenuCreateLabelControl(ScrHandle,hparmMenu,"AnisotropicFilteringLabel");
 
+	GraphicSchemeId = GfuiMenuCreateLabelControl(ScrHandle, hparmMenu, "graphiclabel");
+#ifndef OFFICIAL_ONLY
+    GfuiMenuCreateButtonControl(ScrHandle, hparmMenu, "graphicleftarrow", (void*)-1, onChangeGraphicVersion);
+    GfuiMenuCreateButtonControl(ScrHandle, hparmMenu, "graphicrightarrow", (void*)1, onChangeGraphicVersion);
+#endif
 
 	GfuiMenuCreateButtonControl(ScrHandle,hparmMenu,"ApplyButton",NULL, onAccept);
 	GfuiMenuCreateButtonControl(ScrHandle,hparmMenu,"CancelButton",prevMenu, GfuiScreenActivate);

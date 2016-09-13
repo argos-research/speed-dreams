@@ -4,7 +4,7 @@
     created              : Fri Aug 31 20:32:33 /etc/localtime 2001
     copyright            : (C) 2001 by Eric Espie
     email                : eric.espie@torcs.org
-    version              : $Id: track3.cpp 5349 2013-03-23 17:59:22Z pouillot $
+    version              : $Id: track3.cpp 6394 2016-03-29 18:27:45Z wdbee $
 
  ***************************************************************************/
 
@@ -1297,6 +1297,7 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     tTrackSeg		*pitExitSeg = NULL;
     tTrackSeg		*pitStart = NULL;
     tTrackSeg		*pitBuildingsStart = NULL; 
+    tTrackSeg		*pitBuildingsEnd = NULL; 
     tTrackSeg		*pitEnd = NULL;
     tTrackSeg		*curPitSeg = NULL;
     tTrackPitInfo	*pits;
@@ -1381,24 +1382,29 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 			}
 
 		}
-		segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_BUILDINGS_START, NULL);
-		if (segName != 0) {
-			pitBuildingsStart = theTrack->seg;
-			found = 0;
-			for(i = 0; i < theTrack->nseg; i++)  {
-				if (!strcmp(segName, pitBuildingsStart->name)) {
-					found = 1;
-				} else if (found) {
-					pitBuildingsStart = pitBuildingsStart->next;
-					break;
-				}
-				pitBuildingsStart = pitBuildingsStart->prev;
-			}
-			if (!found) {
-				pitBuildingsStart = NULL;
-			}
 
+		if (pitStart != NULL) {
+			segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_BUILDINGS_START, NULL);
+			if (segName != 0) {
+				pitBuildingsStart = theTrack->seg;
+				found = 0;
+				for(i = 0; i < theTrack->nseg; i++)  {
+					if (!strcmp(segName, pitBuildingsStart->name)) {
+						found = 1;
+					} else if (found) {
+						pitBuildingsStart = pitBuildingsStart->next;
+						break;
+					}
+					pitBuildingsStart = pitBuildingsStart->prev;
+				}
+				if (!found) {
+					pitBuildingsStart = pitStart;
+				}
+			} else {
+				pitBuildingsStart = pitStart;
+			}
 		}
+
 		segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_END, NULL);
 		if (segName != 0) {
 			pitEnd = theTrack->seg->next;
@@ -1415,7 +1421,28 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 			if (!found) {
 			pitEnd = NULL;
 	    }
+
+		if (pitEnd != NULL) {
+			segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_BUILDINGS_STOP, NULL);
+			if (segName != 0) {
+				pitBuildingsEnd = theTrack->seg;
+				found = 0;
+				for(i = 0; i < theTrack->nseg; i++) {
+					if (!strcmp(segName, pitBuildingsEnd->name)) {
+						found = 1;
+						break;
+					}
+					pitBuildingsEnd = pitBuildingsEnd->prev;
+				}
+				if (!found) {
+					pitBuildingsEnd = pitEnd;
+				} 
+			} else {
+				pitBuildingsEnd = pitEnd;
+			}
+		}
 	}
+
 	paramVal = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_SIDE, "right");
 	if (strcmp(paramVal, "right") == 0) {
 	    pits->side = TR_RGT;
@@ -1441,21 +1468,23 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     if (found && (strcmp(pitType, TRK_VAL_PIT_TYPE_SIDE) == 0)) {
 	pits->type     = TR_PIT_ON_TRACK_SIDE;
 	pits->nPitSeg  = 0;
-	if (pitStart->lgfromstart > pitEnd->lgfromstart) {
-	    pits->nPitSeg = (int)((theTrack->length - pitStart->lgfromstart +
-					     pitEnd->lgfromstart + pitEnd->length + pits->len / 2.0) / pits->len);
+
+	// If undefined used defaults
+	if (pitBuildingsStart == NULL)
+		pitBuildingsStart = pits->pitStart;
+	if (pitBuildingsEnd == NULL)
+		pitBuildingsEnd = pits->pitEnd;
+
+	if (pitBuildingsStart->lgfromstart > pitBuildingsEnd->lgfromstart) {
+	    pits->nPitSeg = (int)((theTrack->length - pitBuildingsStart->lgfromstart +
+					     pitBuildingsEnd->lgfromstart + pitBuildingsEnd->length + pits->len / 2.0) / pits->len);
 	} else {
-	    pits->nPitSeg = (int)((- pitStart->lgfromstart + pitEnd->lgfromstart +
-					     pitEnd->length + pits->len / 2.0) / pits->len);
+	    pits->nPitSeg = (int)((- pitBuildingsStart->lgfromstart + pitBuildingsEnd->lgfromstart +
+					     pitBuildingsEnd->length + pits->len / 2.0) / pits->len);
 	}
 	pits->nMaxPits = MIN(pits->nPitSeg,(int)GfParmGetNum(TrackHandle, path2, TRK_ATT_MAX_PITS, (char*)NULL, (tdble) pits->nPitSeg));
 	pits->driversPits = (tTrackOwnPit*)calloc(pits->nPitSeg, sizeof(tTrackOwnPit));
-	//GfOut("pits->nPitSeg: %d\n",pits->nPitSeg);
-	//GfOut("pits->nMaxPits: %d\n",pits->nMaxPits);
 
-	//mSeg = pits->pitStart->prev;
-	if (pitBuildingsStart == NULL)
-		pitBuildingsStart = pits->pitStart;
 	mSeg = pitBuildingsStart->prev;
 	changeSeg = 1;
 	toStart = 0;
@@ -1510,58 +1539,72 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	    i++;
 	}
 
+	// Setup pit speed limit
 	for (mSeg = pitStart->prev; mSeg != pitEnd->next->next; mSeg = mSeg->next) {
-	    curSeg2 = NULL;
-	    switch(pits->side) {
-	    case TR_RGT:
+		curSeg = curSeg2 = NULL;
+
+		switch(pits->side) {
+
+		case TR_RGT:
 		curSeg = mSeg->rside;
-		curSeg2 = curSeg->rside;
-		if ((mSeg != pitBuildingsStart->prev) && (mSeg != pitEnd->next)) {
-		    mSeg->barrier[0]->style = TR_PITBUILDING;
-		}
+		if (curSeg)
+			curSeg2 = curSeg->rside;
 		break;
-	    case TR_LFT:
+
+		case TR_LFT:
 		curSeg = mSeg->lside;
-		curSeg2 = curSeg->lside;
-        if ((mSeg != pitBuildingsStart->prev) && (mSeg != pitEnd->next)) {
-		    mSeg->barrier[1]->style = TR_PITBUILDING;
-		}
+		if (curSeg)
+			curSeg2 = curSeg->lside;
 		break;
-	    }
+
+		}
+
 	    if ((mSeg != pitStart->prev) && (mSeg != pitEnd->next)) {
-		curSeg->raceInfo |= TR_PIT | TR_SPEEDLIMIT;
-		if (curSeg2) {
-		    curSeg2->raceInfo |= TR_PIT | TR_SPEEDLIMIT;
-		}
+			if (curSeg) {
+				curSeg->raceInfo |= TR_PIT | TR_SPEEDLIMIT;
+				if (curSeg2) {
+					curSeg2->raceInfo |= TR_PIT | TR_SPEEDLIMIT;
+				}
+			}
 	    } else if (mSeg == pitStart->prev) {
-		curSeg->raceInfo |= TR_PITSTART;
-		if (curSeg2) {
-		    curSeg2->raceInfo |= TR_PITSTART;
-		}
+			if (curSeg) {
+				curSeg->raceInfo |= TR_PITSTART;
+				if (curSeg2) {
+					curSeg2->raceInfo |= TR_PITSTART;
+				}
+			}
 	    } else if (mSeg == pitEnd->next) {
-		curSeg->raceInfo |= TR_PITEND;
-		if (curSeg2) {
-		    curSeg2->raceInfo |= TR_PITEND;
-		}
+			if (curSeg) {
+				curSeg->raceInfo |= TR_PITEND;
+				if (curSeg2) {
+					curSeg2->raceInfo |= TR_PITEND;
+				} 
+			}
 	    }
 	}
-	    
     }
 
-	for (mSeg = pitBuildingsStart; mSeg != pitEnd; mSeg = mSeg->next) {
-	    curSeg2 = NULL;
+	for (mSeg = pitBuildingsStart; mSeg != pitBuildingsEnd; mSeg = mSeg->next) {
 	    switch(pits->side) {
-	    case TR_RGT:
-		curSeg = mSeg->rside;
-		curSeg2 = curSeg->rside;
-	    mSeg->barrier[0]->style = TR_PITBUILDING;
-		break;
-	    case TR_LFT:
-		curSeg = mSeg->lside;
-		curSeg2 = curSeg->lside;
-	    mSeg->barrier[1]->style = TR_PITBUILDING;
-		break;
-    }
+		    case TR_RGT:
+				mSeg->barrier[0]->style = TR_PITBUILDING;
+				curSeg = mSeg->rside;
+				if (curSeg){
+					curSeg2 = curSeg->rside;
+					if (curSeg2 != NULL)
+						curSeg2->raceInfo |= TR_PITBUILD;
+				}
+				break;
+			case TR_LFT:
+				mSeg->barrier[1]->style = TR_PITBUILDING;
+				curSeg = mSeg->lside;
+				if (curSeg){
+					curSeg2 = curSeg->lside;
+					if (curSeg2 != NULL)
+						curSeg2->raceInfo |= TR_PITBUILD;
+				}
+				break;
+		}
     }
 
 	/* 

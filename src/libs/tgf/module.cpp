@@ -4,7 +4,7 @@
     created              : Mod Mar 14 20:32:14 CEST 2011
     copyright            : (C) 2011 by Jean-Philippe Meuret
     web                  : http://www.speed-dreams.org
-    version              : $Id: module.cpp 5684 2013-08-17 09:22:08Z pouillot $
+    version              : $Id: module.cpp 5835 2014-11-14 17:29:58Z wdbee $
 ***************************************************************************/
 
 /***************************************************************************
@@ -18,7 +18,7 @@
 
 /** @file   
     		Dynamic module management.
-    @version	$Id: module.cpp 5684 2013-08-17 09:22:08Z pouillot $
+    @version	$Id: module.cpp 5835 2014-11-14 17:29:58Z wdbee $
     @ingroup	module
 */
 
@@ -84,6 +84,7 @@ GfModule::GfModule(const std::string& strShLibName, void* hShLibHandle)
 
 GfModule::~GfModule()
 {
+	_mapModulesByLibName.clear(); // Avoid memory leaks
 }
 
 GfModule* GfModule::load(const std::string& strShLibName)

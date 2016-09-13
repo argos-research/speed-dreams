@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-    file                 : networkclientconnectmenu.xml
-    created              : 2011
-    copyright            : (C) 2011 by Jean-Philippe Meuret
-    web                  : speed-dreams.sourceforge.net
-    version              : $Id: networkclientconnectmenu.xml 4988 2012-10-07 19:10:22Z torcs-ng $
+	file				 : networkclientconnectmenu.xml
+	created				: 2011
+	copyright			: (C) 2011 by Jean-Philippe Meuret
+	web					: speed-dreams.sourceforge.net
+	version				: $Id: networkclientconnectmenu.xml 6246 2015-11-22 13:25:22Z area42 $
 -->
 
-<!--    This program is free software; you can redistribute it and/or modify  -->
-<!--    it under the terms of the GNU General Public License as published by  -->
-<!--    the Free Software Foundation; either version 2 of the License, or     -->
-<!--    (at your option) any later version.                                   -->
+<!--	This program is free software; you can redistribute it and/or modify  -->
+<!--	it under the terms of the GNU General Public License as published by  -->
+<!--	the Free Software Foundation; either version 2 of the License, or	 -->
+<!--	(at your option) any later version.									 -->
 
 <!-- 
 
-    Network client race menu for specifying the server to connect to
+	Network client race menu for specifying the server to connect to
 
 -->
 
@@ -25,99 +25,136 @@
 
   <section name="dynamic controls">
 
-    <section name="IPAddrEdit">
-      <attstr name="type" val="edit box"/>                
-      <attstr name="tip" val="IP address of the server to connect to"/>
-      <attnum name="x" val="250"/>
-      <attnum name="y" val="360"/>
-      <attnum name="max len" val="16"/>
-      <attnum name="width" val="180"/>
-      <attstr name="font" val="medium"/>
-    </section>
+<section name="TitleLabel">
+	<attstr name="type" val="label"/>
+	<attnum name="max len" val="40"/>
+	<attnum name="x" val="361"/>
+	<attnum name="y" val="404"/>
+	<attstr name="h align" val="right"/>
+	<attstr name="font" val="medium"/>
+</section>
 
-    <section name="PlayerNameEdit">
-      <attstr name="type" val="edit box"/>                
-      <attstr name="tip" val="Name of the player"/>
-      <attnum name="x" val="250"/>
-      <attnum name="y" val="330"/>
-      <attnum name="max len" val="16"/>
-      <attnum name="width" val="180"/>
-      <attstr name="font" val="medium"/>
-    </section>
+	<section name="IPAddrEdit">
+		<attstr name="type" val="edit box"/>				
+		<attstr name="tip" val="IP address of the server to connect to"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="319"/>
+		<attnum name="max len" val="16"/>
+		<attnum name="width" val="180"/>
+		<attstr name="font" val="medium"/>
+	</section>
 
-    <section name="ConnectButton">
-      <attstr name="type" val="text button"/>
-      <attstr name="text" val="Connect"/>
-      <attstr name="tip" val="Connect to the specified server"/>
-      <attnum name="x" val="360"/>
-      <attnum name="y" val="40"/>
-      <attnum name="width" val="150"/>
-      <attstr name="h align" val="center"/>
-      <attstr name="font" val="medium"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="focused color" val="0xFFFFFF"/>
-      <attstr name="pushed color" val="0xFFCC00"/>
-      <attstr name="show box" val="no"/>
-    </section>
+	<section name="PlayerNameEdit">
+		<attstr name="type" val="edit box"/>				
+		<attstr name="tip" val="Name of the player"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="289"/>
+		<attnum name="max len" val="16"/>
+		<attnum name="width" val="180"/>
+		<attstr name="font" val="medium"/>
+	</section>
 
-    <section name="BackButton">
-      <attstr name="type" val="text button"/>
-      <attstr name="text" val="Back"/>
-      <attstr name="tip" val="Back to the previous menu"/>
-      <attnum name="x" val="140"/>
-      <attnum name="y" val="40"/>
-      <attnum name="width" val="150"/>
-      <attstr name="h align" val="center"/>
-      <attstr name="font" val="medium"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="focused color" val="0xFFFFFF"/>
-      <attstr name="pushed color" val="0xFFCC00"/>
-      <attstr name="show box" val="no"/>
-    </section>
+	<section name="ConnectButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Connect"/>
+		<attstr name="tip" val="Connect to the specified server"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="82"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>  
+	</section>
+
+	<section name="BackButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="Back"/>
+		<attstr name="tip" val="Back to the previous menu"/>
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="166"/>
+		<attnum name="y" val="82"/>
+		<attnum name="width" val="120"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>  
+	</section>
 
   </section>
 
   <section name="static controls">
 
-    <section name="1">
-      <attstr name="type" val="background image"/>
-      <attstr name="image" val="data/img/splash-networkclientconnect.jpg"/>
-    </section>
+	<section name="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-networkclientconnect.jpg"/>
+	</section>
 
-    <section name="2">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="-10"/>
-      <attnum name="y" val="380"/>
-      <attnum name="width" val="170"/>
-      <attnum name="height" val="100"/>
-      <attstr name="image" val="data/img/sd-logo.png"/>
-    </section>
-    
-    <section name="3">
-      <attstr name="type" val="label"/>                              
-      <attstr name="text" val="Connect to host"/>
-      <attnum name="x" val="270"/>
-      <attnum name="y" val="440"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="font" val="medium"/>
-    </section>
-    <section name="4">
-      <attstr name="type" val="label"/>                              
-      <attstr name="text" val="Server IP Address:"/>
-      <attnum name="x" val="20"/>
-      <attnum name="y" val="360"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="font" val="medium"/>
-    </section>
-    <section name="5">
-      <attstr name="type" val="label"/>                              
-      <attstr name="text" val="Player name:"/>
-      <attnum name="x" val="20"/>
-      <attnum name="y" val="330"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="font" val="medium"/>
-    </section>
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="212"/>
+		<attnum name="y" val="400"/>
+		<attnum name="width" val="450"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/head-raceman.png"/>
+	</section>
+
+	<section name="3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>
+	
+	<section name="4">
+		<attstr name="type" val="label"/>								
+		<attstr name="text" val="Connect to host"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="404"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="5">
+		<attstr name="type" val="label"/>								
+		<attstr name="text" val="Server IP Address:"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="319"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="6">
+		<attstr name="type" val="label"/>								
+		<attstr name="text" val="Player Name:"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="289"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
 
   </section>
 

@@ -60,7 +60,7 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     SET(OPTION_CHECK_CONTENTS false CACHE BOOL "Set to On if you don't want the build to be stopped by missing optional contents folders")
     MARK_AS_ADVANCED(OPTION_CHECK_CONTENTS)
 
-    SET(OPTION_OFFICIAL_ONLY true CACHE BOOL "Build / install only officially released contents")
+    SET(OPTION_OFFICIAL_ONLY false CACHE BOOL "Build / install only officially released contents")
 
     SET(OPTION_FORCE_DEBUG false CACHE BOOL "Force debug symbols even in Release build (Automatic in Debug builds)")
 
@@ -73,6 +73,21 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     SET(OPTION_SCHEDULE_SPY false CACHE BOOL "Enable fine grained scheduling spy")
   
     SET(OPTION_3RDPARTY_EXPAT true CACHE BOOL "Use 3rd party Expat library rather than bundled TXML")
+
+    SET(OPTION_3RDPARTY_SQLITE3 false CACHE BOOL "Use SQLite3 as database for record/replay")
+
+    SET(OPTION_OSGGRAPH true CACHE BOOL "Build OpenScenGraph-based WIP osggraph graphics module")
+
+    SET(OPTION_SDL2 true CACHE BOOL "Build with SDL2 instead of SDL 1.2")
+    SET(OPTION_SDL_JOYSTICK true CACHE BOOL "Use SDL for Joystick instead of PLIB")
+
+    SET(OPTION_WEBSERVER false CACHE BOOL "Build with WebServer functionality")
+
+    IF(APPLE)
+      # Automatically set OPTION_USE_MACPORTS (at least until someone fixes the regular APPLE build)
+      MESSAGE(STATUS "Automatically set OPTION_USE_MACPORTS (at least until someone fixes the regular APPLE build)")
+      SET(OPTION_USE_MACPORTS true CACHE BOOL "Use the MacPorts dependencies")
+    ENDIF(APPLE)
 
     # Enable building with 3rd party SOLID library under Windows, as we ship the binary package,
     # but not under Linux, where FreeSolid seems not to be available by default on most distros.
@@ -89,7 +104,16 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
       SET(OPTION_UNLOAD_SSGGRAPH true CACHE BOOL "If false, never unload ssggraph module (useful on some Linuxes to avoid XOrg crashes)")  
     ENDIF(UNIX)
 
-	SET(OPTION_OSGGRAPH false CACHE BOOL "Build OpenScenGraph-based WIP osggraph graphics module")
+    
+    IF(OPTION_USE_MACPORTS)
+       SET(CMAKE_MACOSX_RPATH TRUE)
+       #SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+       SET(CMAKE_PREFIX_PATH "/opt/local" CACHE PATH "Prepended to search path")
+       #SET(CMAKE_FIND_ROOT_PATH "/opt/local" CACHE PATH "Prepended to search path")
+       SET(CMAKE_FIND_FRAMEWORK LAST)
+       MESSAGE(STATUS "Remove the line below to true when OSG works on MacPorts")
+       SET(OPTION_OSGGRAPH false CACHE BOOL "Build OpenScenGraph-based WIP osggraph graphics module")
+    ENDIF(OPTION_USE_MACPORTS)
 	
     SET(OPTION_AUTOVERSION true CACHE BOOL "Enable automatic computation of the version from SVN source tree")
     
@@ -150,6 +174,10 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
       ADD_DEFINITIONS(-DTHIRD_PARTY_EXPAT)
     ENDIF(OPTION_3RDPARTY_EXPAT)
 
+    IF(OPTION_3RDPARTY_SQLITE3)
+      ADD_DEFINITIONS(-DTHIRD_PARTY_SQLITE3)
+    ENDIF(OPTION_3RDPARTY_SQLITE3)
+
     IF(OPTION_3RDPARTY_SOLID)
       ADD_DEFINITIONS(-DTHIRD_PARTY_SOLID)
     ENDIF(OPTION_3RDPARTY_SOLID)
@@ -161,6 +189,18 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     IF(OPTION_UNLOAD_SSGGRAPH)
       ADD_DEFINITIONS(-DUNLOAD_SSGGRAPH)
     ENDIF(OPTION_UNLOAD_SSGGRAPH)
+
+    IF(OPTION_SDL_JOYSTICK)
+          ADD_DEFINITIONS(-DSDL_JOYSTICK)
+    ENDIF(OPTION_SDL_JOYSTICK)
+
+    IF(OPTION_WEBSERVER)
+          ADD_DEFINITIONS(-DWEBSERVER)
+    ENDIF(OPTION_WEBSERVER)
+
+    IF(OPTION_USE_MACPORTS)
+          ADD_DEFINITIONS(-DUSE_MACPORTS)
+    ENDIF(OPTION_USE_MACPORTS)
 
     # Define for code that needs Torcs backward compatibility
     ADD_DEFINITIONS(-DSPEED_DREAMS)

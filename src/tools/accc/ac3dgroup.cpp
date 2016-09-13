@@ -3,7 +3,7 @@
  file        : ac3dgroup.cpp
  created     : Fri Apr 18 23:11:36 CEST 2003
  copyright   : (C) 2003 by Christophe Guionneau
- version     : $Id: ac3dgroup.cpp 5451 2013-05-12 23:47:53Z torcs-ng $
+ version     : $Id: ac3dgroup.cpp 5807 2014-08-21 02:56:49Z beaglejoe $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 /** @file   
 
  @author Christophe Guionneau
- @version    $Id: ac3dgroup.cpp 5451 2013-05-12 23:47:53Z torcs-ng $
+ @version    $Id: ac3dgroup.cpp 5807 2014-08-21 02:56:49Z beaglejoe $
  */
 
 #include <cstdio>
@@ -439,7 +439,7 @@ void loadAndGroup(char *OutputFileName)
             fprintf(ofile, "OBJECT group\n");
             fprintf(ofile, "name \"___%s_gl3\"\n", array_groups[i].tkmn->name);
             fprintf(ofile, "kids %d\n", array_groups[i].numkids3);
-            printf("writting group: ___%s_gl3\n", array_groups[i].tkmn->name);
+            printf("writing group: ___%s_gl3\n", array_groups[i].tkmn->name);
             tmpob = array_groups[i].kids3;
             while (tmpob != NULL)
             {
@@ -456,7 +456,7 @@ void loadAndGroup(char *OutputFileName)
             fprintf(ofile, "name \"%%___%s_gl2\"\n",
                     array_groups[i].tkmn->name);
             fprintf(ofile, "kids %d\n", array_groups[i].numkids2);
-            printf("writting group: ___%s_gl2\n", array_groups[i].tkmn->name);
+            printf("writing group: ___%s_gl2\n", array_groups[i].tkmn->name);
             tmpob = array_groups[i].kids2;
             while (tmpob != NULL)
             {
@@ -470,7 +470,7 @@ void loadAndGroup(char *OutputFileName)
             fprintf(ofile, "OBJECT group\n");
             fprintf(ofile, "name \"___%s_gl1\"\n", array_groups[i].tkmn->name);
             fprintf(ofile, "kids %d\n", array_groups[i].numkids1);
-            printf("writting group: ___%s_gl1\n", array_groups[i].tkmn->name);
+            printf("writing group: ___%s_gl1\n", array_groups[i].tkmn->name);
             tmpob = array_groups[i].kids1;
             while (tmpob != NULL)
             {
@@ -484,7 +484,7 @@ void loadAndGroup(char *OutputFileName)
         fprintf(ofile, "OBJECT group\n");
         fprintf(ofile, "name \"___%s_gl0\"\n", array_groups[i].tkmn->name);
         fprintf(ofile, "kids %d\n", array_groups[i].numkids0 + 1);
-        printf("writting group: ___%s_gl0\n", array_groups[i].tkmn->name);
+        printf("writing group: ___%s_gl0\n", array_groups[i].tkmn->name);
         tmpob = array_groups[i].kids0;
         while (tmpob != NULL)
         {

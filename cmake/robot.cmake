@@ -152,7 +152,7 @@ MACRO(ROBOT_MODULE)
       SET(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:msvcrt.lib")
   ENDIF(MSVC)
 
-  # The robot module is actually a shared library.
+  # The robot module is actually a module.
   SD_ADD_LIBRARY(${RBM_NAME} ROBOT ${RBM_SOURCES})
 
   # Customize shared library versions.
@@ -180,7 +180,7 @@ MACRO(ROBOT_MODULE)
   	  IF(NOT RUNTIME_OUTPUT_DIRECTORY)
         GET_TARGET_PROPERTY(MODLOC ${RBM_NAME} LIBRARY_OUTPUT_DIRECTORY)
   	  ENDIF()
-	  SET(MODLOC "${MODLOC}/${RBM_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+	  SET(MODLOC "${MODLOC}/${RBM_NAME}${CMAKE_SHARED_MODULE_SUFFIX}")
     ELSE(WIN32)
       GET_TARGET_PROPERTY(MODLOC ${RBM_NAME} LOCATION)
     ENDIF(WIN32)
@@ -188,11 +188,11 @@ MACRO(ROBOT_MODULE)
     FOREACH(CLONENAME ${RBM_CLONENAMES})
     
       SET(CLONE_MODDIR "${CMAKE_BINARY_DIR}/${SD_LIBDIR}/drivers/${CLONENAME}")
-      SET(CLONE_MODLOC "${CLONE_MODDIR}/${CLONENAME}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+      SET(CLONE_MODLOC "${CLONE_MODDIR}/${CLONENAME}${CMAKE_SHARED_MODULE_SUFFIX}")
       IF(FALSE) #IF(UNIX)
         # Might not work with GCC 4.5 or + (see above) 
         ADD_CUSTOM_COMMAND(TARGET ${RBM_NAME} POST_BUILD
-                           COMMAND ${CMAKE_COMMAND} -E echo "Cloning ${RBM_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX} into ${CLONE_MODLOC}.${RBM_VERSION}"
+                           COMMAND ${CMAKE_COMMAND} -E echo "Cloning ${RBM_NAME}${CMAKE_SHARED_MODULE_SUFFIX} into ${CLONE_MODLOC}.${RBM_VERSION}"
                            COMMAND ${CMAKE_COMMAND} -E make_directory "${CLONE_MODDIR}"
                            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${MODLOC} ${CLONE_MODLOC}.${RBM_VERSION})
         ADD_CUSTOM_COMMAND(TARGET ${RBM_NAME} POST_BUILD
@@ -204,7 +204,7 @@ MACRO(ROBOT_MODULE)
         ADD_CUSTOM_COMMAND(TARGET ${RBM_NAME} POST_BUILD
                            COMMAND ${CMAKE_COMMAND} -E echo "Creating directory ${CLONE_MODDIR}"
                            COMMAND ${CMAKE_COMMAND} -E make_directory "${CLONE_MODDIR}"
-                           COMMAND ${CMAKE_COMMAND} -E echo "Cloning ${RBM_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}=${MODLOC} into ${CLONE_MODLOC}"
+                           COMMAND ${CMAKE_COMMAND} -E echo "Cloning ${RBM_NAME}${CMAKE_SHARED_MODULE_SUFFIX}=${MODLOC} into ${CLONE_MODLOC}"
                            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${MODLOC} ${CLONE_MODLOC})
         SD_INSTALL_FILES(LIB drivers/${CLONENAME}
                          FILES ${CLONE_MODLOC})

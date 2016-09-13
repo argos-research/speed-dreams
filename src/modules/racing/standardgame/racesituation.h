@@ -3,7 +3,7 @@
     file        : racesituation.h
     copyright   : (C) 2010 by Jean-Philippe Meuret
     web         : www.speed-dreams.org 
-    version     : $Id: racesituation.h 4286 2011-12-18 18:33:11Z pouillot $
+    version     : $Id: racesituation.h 5803 2014-07-30 03:19:34Z mungewell $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 /** @file    
     		
     @author	    Jean-Philippe Meuret
-    @version	$Id: racesituation.h 4286 2011-12-18 18:33:11Z pouillot $
+    @version	$Id: racesituation.h 5803 2014-07-30 03:19:34Z mungewell $
 */
 
 #ifndef _RACESITUATION_H_
@@ -132,6 +132,12 @@ private:
 	
 	//! (Deep) Copy the given situation.
 	struct RmInfo* copySituation(struct RmInfo*& pTarget, const struct RmInfo* pSource);
+
+	// Record the situation to a replay database
+	void replaySituation(struct RmInfo*& pTarget);
+
+	// Record the situation to a replay database
+	void ghostcarSituation(struct RmInfo*& pTarget);
 
 	//! Free the given situation
 	void freezSituation(struct RmInfo*& pSituation);

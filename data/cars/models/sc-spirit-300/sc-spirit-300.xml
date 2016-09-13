@@ -22,6 +22,11 @@
 <!--    (at your option) any later version.                                   -->
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 <params name="Spirit 300" type="template">
+	<section name="Features">
+		<attstr name="enable abs" in="yes,no" val="yes"/>
+		<attstr name="enable tcl" in="yes,no" val="yes"/>
+		<attstr name="enable esp" in="yes,no" val="yes"/>
+	</section>
 	<!-- section name="Bonnet">
 		<attnum name="xpos" unit="m" val="-5.50"/>
 		<attnum name="ypos" unit="m" val="0.0"/>
@@ -209,6 +214,7 @@
 		<attnum name="turbo rpm" unit="rpm" val="3000"/>
 		<attnum name="turbo factor" val="1.0"/>
 		<attnum name="turbo lag" val="0.75"/>
+		<attnum name="enable tcl" min="0" max="1" val="1"/>
 		<section name="data points">
 			<section name="1">
 				<attnum name="rpm" unit="rpm" val="0"/>
@@ -381,7 +387,7 @@
 		<!-- Adherence -->
 		<attnum name="pressure" unit="PSI" min="30" max="55" val="45.0"/>
 		<attnum name="stiffness" val="16.0"/>
-		<attnum name="dynamic friction" unit="%" val="50"/>
+		<attnum name="dynamic friction" unit="%" val="60"/>
 		<attnum name="elasticity factor" val="0.86"/>
 		<attnum name="operating load" unit="N" val="3200"/>
 		<attnum name="rolling resistance" val="0.01"/>
@@ -400,7 +406,7 @@
 		<!-- Adherence -->
 		<attnum name="pressure" unit="PSI" min="30" max="55" val="45.0"/>
 		<attnum name="stiffness" val="16.0"/>
-		<attnum name="dynamic friction" unit="%" val="50"/>
+		<attnum name="dynamic friction" unit="%" val="60"/>
 		<attnum name="elasticity factor" val="0.86"/>
 		<attnum name="operating load" unit="N" val="3200"/>
 		<attnum name="rolling resistance" val="0.01"/>
@@ -419,7 +425,7 @@
 		<!-- Adherence -->
 		<attnum name="pressure" unit="PSI" min="30" max="55" val="45.0"/>
 		<attnum name="stiffness" val="16.0"/>
-		<attnum name="dynamic friction" unit="%" val="50"/>
+		<attnum name="dynamic friction" unit="%" val="60"/>
 		<attnum name="elasticity factor" val="0.86"/>
 		<attnum name="operating load" unit="N" val="3800"/>
 		<attnum name="rolling resistance" val="0.01"/>
@@ -438,7 +444,7 @@
 		<!-- Adherence -->
 		<attnum name="pressure" unit="PSI" min="30" max="55" val="45.0"/>
 		<attnum name="stiffness" val="16.0"/>
-		<attnum name="dynamic friction" unit="%" val="50"/>
+		<attnum name="dynamic friction" unit="%" val="60"/>
 		<attnum name="elasticity factor" val="0.86"/>
 		<attnum name="operating load" unit="N" val="3800"/>
 		<attnum name="rolling resistance" val="0.01"/>
@@ -455,7 +461,7 @@
 		<attnum name="bellcrank" val="2.5"/>
 	</section>
 	<section name="Front Right Suspension">
-		<attnum name="spring" unit="kN/m" val="67.0"/>
+		<attnum name="spring" unit="kN/m" val="37.0"/>
 		<attnum name="suspension course" unit="m" val="0.15"/>
 		<attnum name="bellcrank" val="1"/>
 		<attnum name="packers" unit="mm" val="0"/>
@@ -467,7 +473,7 @@
 		<attnum name="rebound limit velocity" unit="m/s" val="0.5"/>
 	</section>
 	<section name="Front Left Suspension">
-		<attnum name="spring" unit="kN/m" val="67.0"/>
+		<attnum name="spring" unit="kN/m" val="37.0"/>
 		<attnum name="suspension course" unit="m" val="0.15"/>
 		<attnum name="bellcrank" val="1"/>
 		<attnum name="packers" unit="mm" val="0"/>
@@ -479,7 +485,7 @@
 		<attnum name="rebound limit velocity" unit="m/s" val="0.5"/>
 	</section>
 	<section name="Rear Right Suspension">
-		<attnum name="spring" unit="kN/m" val="69.0"/>
+		<attnum name="spring" unit="kN/m" val="57.0"/>
 		<attnum name="suspension course" unit="m" val="0.15"/>
 		<attnum name="bellcrank" val="1"/>
 		<attnum name="packers" unit="mm" val="0"/>
@@ -491,7 +497,7 @@
 		<attnum name="rebound limit velocity" unit="m/s" val="0.5"/>
 	</section>
 	<section name="Rear Left Suspension">
-		<attnum name="spring" unit="kN/m" val="69.0"/>
+		<attnum name="spring" unit="kN/m" val="57.0"/>
 		<attnum name="suspension course" unit="m" val="0.15"/>
 		<attnum name="bellcrank" val="1"/>
 		<attnum name="packers" unit="mm" val="0"/>
@@ -506,22 +512,26 @@
 		<attnum name="disk diameter" unit="mm" val="380"/>
 		<attnum name="piston area" unit="cm2" val="50"/>
 		<attnum name="inertia" unit="kg.m2" val="0.1241"/>
+		<attnum name="enable abs" min="0" max="1" val="1"/>
 	</section>
 	<section name="Front Left Brake">
 		<attnum name="disk diameter" unit="mm" val="380"/>
 		<attnum name="piston area" unit="cm2" val="50"/>
 		<attnum name="inertia" unit="kg.m2" val="0.1241"/>
+		<attnum name="enable abs" min="0" max="1" val="1"/>
 	</section>
 	<section name="Rear Right Brake">
 		<attnum name="disk diameter" unit="mm" val="330"/>
 		<attnum name="piston area" unit="cm2" val="30"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0714"/>
 		<attnum name="mu" val="0.25"/>
+		<attnum name="enable abs" min="0" max="1" val="1"/>
 	</section>
 	<section name="Rear Left Brake">
 		<attnum name="disk diameter" unit="mm" val="330"/>
 		<attnum name="piston area" unit="cm2" val="30"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0714"/>
 		<attnum name="mu" val="0.25"/>
+		<attnum name="enable abs" min="0" max="1" val="1"/>
 	</section>
 </params>

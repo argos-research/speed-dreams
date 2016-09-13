@@ -4,7 +4,7 @@
     created              : Sun Jan 30 22:57:50 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: trackitf.cpp 5349 2013-03-23 17:59:22Z pouillot $
+    version              : $Id: trackitf.cpp 6097 2015-08-30 23:12:09Z beaglejoe $
 
  ***************************************************************************/
 
@@ -41,7 +41,7 @@ int closeGfModule()
 {
 	// Unregister it from the GfModule module manager.
 	if (TrackModule::_pSelf)
-		GfModule::unregister(TrackModule::_pSelf);
+		TrackModule::unregister(TrackModule::_pSelf);
 	
 	// Delete the (only) module instance.
 	delete TrackModule::_pSelf;

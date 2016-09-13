@@ -3,7 +3,7 @@
     file                 : timeanalysis.h
     created              : Sun Jun 07 11:15:00 CET 2009
     copyright            : (C) 2009 by Wolf-Dieter Beelitz
-    email                : wdb@wdbee.de
+    email                : wdbee@users.sourceforge.net
     version              : 
 
  ***************************************************************************/
@@ -20,7 +20,7 @@
 /** @file   
     This is a collection of useful functions for time analysis
 
-    @author	<a href=mailto:wdb@wdbee.de>Wolf-Dieter Beelitz</a>
+    @author	<a href=mailto:wdbee@users.sourceforge.net>Wolf-Dieter Beelitz</a>
     @version	
     @ingroup	robottools
 */

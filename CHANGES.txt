@@ -1,3 +1,54 @@
+Speed Dreams 2.X
+================================
+
+Speed Dreams 2.2.0
+================================
+
+ Physics
+ *Simuv4 : 
+   ABS, TCL, EPS implemented as integrated controller running with 500Hz and working
+   by braking single wheels/release throttle
+   Improved LSD implementation
+
+ Program
+ *New Memory Manager: 
+   Dumps a list of memory leaks at end of the program (incl. return address, block ID, block size)
+
+ Robots
+ *Simplix:
+  Can drive with supercars at wet tracks
+  Uses the ABS, TCL, EPS of simuV4 if enabled for the car (own functions otherwise)
+  *New robot: Dandroid
+
+ Cars
+  *New Supercars with Rear wings carset (WIP)
+  *Updates to mpa11 cars
+  
+ Tracks
+  *New alamo speedway
+  *New corn speedway
+  *Tracklights added to many tracks.
+  *Peters City re-worked.
+
+ Graphics
+  *Nice, real racing wheels tires for shadow sc fmc drivers
+  *Many logos updated
+  *New splash screen
+
+ General
+  *Available for OS X 10
+  *New easier modes, arcade and semi-rookie (see Players and Controls menu)
+  *New individaul tire slip indicators
+  *New ability to adjust car setup while driving (Brake bias,etc) and pre-select Pit actions
+  *Race can start in Paused state. (see Simulation menu)
+  *Cool down driving now allowed post race.(see Simulation menu)
+  *Window management changed from SDL1.2 to SDL2
+  *Joystick handling changed from PLIB to SDL2
+  *New graphics engine option (OpenSceneGraph) WIP (see OpenGL menu)
+  *Upadted AC3D exporter for Blender 2.63 - 2.76
+  *BugFixes
+
+
 Speed Dreams 2.1.0 Release notes
 ================================
 

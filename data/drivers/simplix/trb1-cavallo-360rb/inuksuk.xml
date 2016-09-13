@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- 
+    file          : alpine-2.xml 
+    created       : 24 Dec 2009
+    last modified : 24 Dec 2009
+    copyright     : (C) 2009 Wolf-Dieter Beelitz
+
+    SIMPLIX - CAR1-TRB1
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd">
+<params name="trb1-cavallo-360rb" type="template" mode="mw">
+	<section name="Front Wing">
+		<attnum name="angle" unit="deg" val="12"/>
+	</section>
+	<section name="Rear Wing">
+		<attnum name="angle" unit="deg" val="18"/>
+	</section>
+	<section name="Rear Differential">
+		<attnum name="ratio" val="3.95"/>
+	</section>
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" val="0.50"/>
+		<attnum name="max pressure" unit="kPa" val="36000"/>
+	</section>
+	<section name="Front Anti-Roll Bar">
+		<attnum name="spring" unit="lbs/in" val="500"/>
+	</section>
+	<section name="Rear Anti-Roll Bar">
+		<attnum name="spring" unit="lbs/in" val="0"/>
+	</section>
+	<section name="Front Right Suspension">
+		<attnum name="spring" unit="lbs/in" val="2400"/>
+	</section>
+	<section name="Front Left Suspension">
+		<attnum name="spring" unit="lbs/in" val="2400"/>
+	</section>
+	<section name="Rear Right Suspension">
+		<attnum name="spring" unit="lbs/in" val="2400"/>
+		<attnum name="bellcrank" val="0.85"/>
+	</section>
+	<section name="Rear Left Suspension">
+		<attnum name="spring" unit="lbs/in" val="2400"/>
+		<attnum name="bellcrank" val="0.85"/>
+	</section>
+	<section name="simplix private">
+		<attnum name="lookaheadfactor" val="0.08"/>
+		<attnum name="avoid width" val="0.25"/>
+		<attnum name="scale brake" val="1.0"/>
+		<attnum name="scale bump" val="0.3"/>
+		<attnum name="scale bump outer" val="0.4"/>
+		<attnum name="scale mu" val="1.00"/>
+		<attnum name="side mu" val="0.90"/>
+	</section>
+</params>

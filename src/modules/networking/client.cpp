@@ -4,7 +4,7 @@ file                 : network.cpp
 created              : July 2009
 copyright            : (C) 2009 Brian Gavin
 web                  : speed-dreams.sourceforge.net
-version              : $Id: client.cpp 5746 2013-12-05 07:19:29Z mungewell $
+version              : $Id: client.cpp 5841 2014-11-16 21:05:57Z wdbee $
 
  ***************************************************************************/
 
@@ -272,7 +272,8 @@ void NetClient::SetDriverReady(bool bReady)
         msg.pack_int(idx);
         msg.pack_int(bReady);
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("SetDriverReady: packed buffer error\n");
     }
@@ -332,7 +333,8 @@ bool NetClient::SendDriverInfoPacket(NetDriver *pDriver)
         msg.pack_string(pDriver->type, sizeof pDriver->type);
         msg.pack_int(pDriver->client);
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("SendDriverInfoPacket: packed buffer error\n");
     }
@@ -362,7 +364,8 @@ void NetClient::SendReadyToStartPacket()
         msg.pack_ubyte(CLIENTREADYTOSTART_PACKET);
         msg.pack_stdstring(strDName);
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("SendReadyToStartPacket: packed buffer error\n");
     }
@@ -388,7 +391,8 @@ void NetClient::SendServerTimeRequest()
     {
         msg.pack_ubyte(SERVER_TIME_REQUEST_PACKET);
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("SendServerTimeRequest: packed buffer error\n");
     }
@@ -417,7 +421,7 @@ double NetClient::WaitForRaceStart()
 
 void NetClient::ReadStartTimePacket(ENetPacket *pPacket)
 {
-    GfLogTrace("Recieved the start race Packet\n");
+    GfLogTrace("Received the start race Packet\n");
     //double time = GfTimeClock();
 
     PackedBuffer msg(pPacket->data, pPacket->dataLength);
@@ -429,7 +433,8 @@ void NetClient::ReadStartTimePacket(ENetPacket *pPacket)
         msg.unpack_ubyte();
         m_racestarttime = msg.unpack_double();
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("ReadStartTimePacket: packed buffer error\n");
     }
@@ -583,7 +588,7 @@ void NetClient::ReadPacket(ENetEvent event)
 
 void NetClient::ReadPrepareToRacePacket(ENetPacket *pPacket)
 {
-    GfLogTrace("Recieved the start race Packet\n");
+    GfLogTrace("Received the start race Packet\n");
 
     //unsigned char packetId = pPacket->data[0];
 
@@ -686,12 +691,13 @@ void NetClient::ReadAllDriverReadyPacket(ENetPacket *pPacket)
         UnlockNetworkData();
         SetRaceInfoChanged(true);
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("ReadAllDriverReadyPacket: packed buffer error\n");
     }
 
-    GfLogTrace("Recieved All Driver Ready Packet\n");
+    GfLogTrace("Received All Driver Ready Packet\n");
 }
 
 void NetClient::ReadFinishTimePacket(ENetPacket *pPacket)
@@ -708,12 +714,13 @@ void NetClient::ReadFinishTimePacket(ENetPacket *pPacket)
         pNData->m_finishTime = msg.unpack_double();
         UnlockNetworkData();
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("ReadFinishTimePacket: packed buffer error\n");
     }
 
-    GfOut("Recieved finish time packet\n");
+    GfOut("Received finish time packet\n");
 }
 
 void NetClient::ReadTimePacket(ENetPacket *pPacket)
@@ -733,7 +740,8 @@ void NetClient::ReadTimePacket(ENetPacket *pPacket)
         msg.unpack_ubyte();
         time = msg.unpack_double();
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("ReadTimePacket: packed buffer error\n");
     }
@@ -767,7 +775,8 @@ void NetClient::ReadFilePacket(ENetPacket *pPacket)
 
         msg.unpack_string(filedata, filesize);
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("ReadFilePacket: packed buffer error\n");
     }

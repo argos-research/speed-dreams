@@ -4,7 +4,7 @@
     created     : Sat Nov 16 18:22:00 CET 2002
     copyright   : (C) 2002 by Eric Espie
     email       : eric.espie@torcs.org   
-    version     : $Id: racerunningmenus.cpp 5107 2013-01-22 23:34:44Z torcs-ng $                                  
+    version     : $Id: racerunningmenus.cpp 6084 2015-08-21 00:07:15Z beaglejoe $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		The menus for when the race is running
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racerunningmenus.cpp 5107 2013-01-22 23:34:44Z torcs-ng $
+    @version	$Id: racerunningmenus.cpp 6084 2015-08-21 00:07:15Z beaglejoe $
 */
 
 #include <cstdlib>
@@ -180,6 +180,8 @@ static bool rmRacePaused = false;
 // Flag to know if the menu state has been changed (and thus needs a redraw+redisplay).
 static bool rmbMenuChanged = false;
 
+bool rmPreRacePause = false;
+
 struct RmMovieCapture
 {
     int		enabled;
@@ -320,7 +322,10 @@ rmRedisplay()
 #endif
 	
 	// Exec the "slow resume race" manager, if needed.
-	rmProgressiveTimeModifier.execute();
+	if (!rmPreRacePause)
+	{
+		rmProgressiveTimeModifier.execute();
+	}
 
 	// Redraw the graphics part of the GUI if requested.
 	const bool bUpdateGraphics =
@@ -388,7 +393,7 @@ rmScreenActivate(void * /* dummy */)
     GfuiApp().eventLoop().setRedisplayCB(rmRedisplay);
 
 	// If not paused ...
-    if (!rmRacePaused)
+	if ((!rmRacePaused)&&(!rmPreRacePause))
 	{
 		// Reset normal sound volume.
 		if (LegacyMenu::self().soundEngine())
@@ -408,10 +413,14 @@ rmScreenActivate(void * /* dummy */)
 static void
 rmRacePause(void * /* vboard */)
 {
-    if (rmRacePaused)
-	{
-		if (LegacyMenu::self().soundEngine())
-			LegacyMenu::self().soundEngine()->mute(false);
+   // Pause is disabled during Pre Race Pause
+   // as the simulation is already Paused
+   if (!rmPreRacePause)
+   {
+      if (rmRacePaused)
+      {
+         if (LegacyMenu::self().soundEngine())
+            LegacyMenu::self().soundEngine()->mute(false);
 
 		LmRaceEngine().start();
 
@@ -446,6 +455,7 @@ rmRacePause(void * /* vboard */)
 	
 	// The menu changed.
 	rmbMenuChanged = true;
+	}
 }
 
 static void
@@ -587,6 +597,7 @@ RmScreenInit()
     // We are starting "unpaused".
     GfuiVisibilitySet(rmScreenHandle, rmPauseId, GFUI_INVISIBLE);
 	rmRacePaused = false;
+	rmPreRacePause = false;
 
 	// Re-initialize the progressive time modifier,
 	// in case the race was exited while it was running.
@@ -630,6 +641,70 @@ RmShutdownReUpdateStateHook()
 {
 	GfuiHookRelease(pvUpdateStateHookHandle);
 	pvUpdateStateHookHandle = 0;
+}
+
+static void 
+RmReadyToRace(void * /* dummy */)
+{
+   if (GfuiRemoveKey(rmScreenHandle,GFUIK_RETURN,"Ready"))
+   {
+   		GfLogInfo("<Enter> key for Ready' removed \n");
+   }
+   else
+   {
+      GfLogInfo("FAILED to remove <Enter> to Start key \n");
+   }
+
+   // The menu changed.
+   rmbMenuChanged = true;
+
+   rmPreRacePause = false;
+
+   // Enable the sound
+   if (LegacyMenu::self().soundEngine())
+   {
+      LegacyMenu::self().soundEngine()->mute(false);
+   }
+
+   LmRaceEngine().stopPreracePause();
+}
+
+void 
+RmAddPreRacePauseItems()
+{
+   if(rmScreenHandle)
+   {
+      rmPreRacePause = true;
+      GfuiAddKey(rmScreenHandle, GFUIK_RETURN,  "Ready", 0, RmReadyToRace, NULL);
+      
+      // The menu changed.
+      rmbMenuChanged = true;
+
+      // Disable the sound
+      if (LegacyMenu::self().soundEngine())
+      {
+         LegacyMenu::self().soundEngine()->mute(true);
+      }
+   }
+}
+
+static void 
+RmResultShow(void * /* dummy */)
+{
+   LmRaceEngine().stopCooldown();
+}
+
+
+void 
+RmAddCooldownItems()
+{
+   if(rmScreenHandle)
+   {
+      GfuiAddKey(rmScreenHandle, GFUIK_RETURN,  "Results", 0, RmResultShow, NULL);
+      
+      // The menu changed.
+      rmbMenuChanged = true;
+   }
 }
 
 /**************************************************************************

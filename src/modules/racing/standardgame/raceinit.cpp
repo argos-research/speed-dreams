@@ -4,7 +4,7 @@
     created     : Sat Nov 16 10:34:35 CET 2002
     copyright   : (C) 2002 by Eric Espie
     email       : eric.espie@torcs.org
-    version     : $Id: raceinit.cpp 5320 2013-03-15 00:24:04Z kmetykog $
+    version     : $Id: raceinit.cpp 6270 2015-11-23 19:44:40Z madbad $
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file   
         Race initialization routines
     @author <a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version  $Id: raceinit.cpp 5320 2013-03-15 00:24:04Z kmetykog $
+    @version  $Id: raceinit.cpp 6270 2015-11-23 19:44:40Z madbad $
 */
 
 #include <cstdlib>
@@ -27,14 +27,26 @@
 #include <string>
 #include <sstream>
 #include <map>
+#ifdef WEBSERVER
+#include <ctime>
+#include <iostream>
+#endif //WEBSERVER
+
+#ifdef THIRD_PARTY_SQLITE3
+#include <sqlite3.h>
+#endif
 
 #include <raceman.h>
 #include <robot.h>
 #include <teammanager.h>
 #include <robottools.h>
+#include <replay.h>
 
 #include <portability.h>
 #include <tgf.hpp>
+#ifdef WEBSERVER
+#include <webserver.h>
+#endif //WEBSERVER
 
 #include <racemanagers.h>
 #include <race.h>
@@ -50,9 +62,13 @@
 
 #include "raceinit.h"
 
+#ifdef WEBSERVER
+extern TGFCLIENT_API WebServer webServer;
+#endif //WEBSERVER
+
 
 static const char *aPszSkillLevelNames[] =
-	{ ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
+	{ ROB_VAL_ARCADE, ROB_VAL_SEMI_ROOKIE, ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
 static const int NSkillLevels = (int)(sizeof(aPszSkillLevelNames)/sizeof(char*));
 
 // The list of robot modules loaded for the race.
@@ -60,6 +76,13 @@ tModList *ReRacingRobotsModList = 0;
 
 // The race situation
 tRmInfo	*ReInfo = 0;
+
+int replayRecord;
+double replayTimestamp;
+#ifdef THIRD_PARTY_SQLITE3
+sqlite3 *replayDB;
+sqlite3_stmt *replayBlobs[50];
+#endif
 
 // Race Engine reset
 void
@@ -79,11 +102,13 @@ ReReset(void)
 // Race Engine cleanup
 void ReCleanup(void)
 {
+	ReSituation::terminate();
+
     if (!ReInfo)
         return;
 
 	// Free ReInfo memory.
-	ReSituation::terminate();
+	// ReSituation::terminate();
 	ReInfo = 0;
 }
 
@@ -449,7 +474,9 @@ static tCarElt* reLoadSingleCar( int carindex, int listindex, int modindex, int 
   char buf2[256];
   char const *str;
   char const *category;
+  char const *subcategory;
   char const *teamname;
+  std::string carname;
   tModInfoNC *curModInfo;
   tRobotItf *curRobot;
   void *robhdle;
@@ -463,7 +490,15 @@ static tCarElt* reLoadSingleCar( int carindex, int listindex, int modindex, int 
 
   /* good robot found */
   curModInfo = &((*(ReInfo->robModList))->modInfo[modindex]);
-  GfLogInfo("Driver's name: %s\n", curModInfo->name);
+
+  subcategory = ReInfo->track->subcategory;
+
+#if 0 //SDW
+  if (replayReplay)
+    GfLogInfo("Driver in car %d being driven by replay\n", carindex);
+  else
+#endif
+    GfLogInfo("Driver's name: %s\n", curModInfo->name);
 
   isHuman = strcmp( cardllname, "human" ) == 0 || strcmp( cardllname, "networkhuman" ) == 0;
 
@@ -475,7 +510,14 @@ static tCarElt* reLoadSingleCar( int carindex, int listindex, int modindex, int 
   curRobot = (tRobotItf*)calloc(1, sizeof(tRobotItf));
 
   /* ... and initialize the driver */
+#if 0 // SDW
+  if (replayReplay) {
+    // Register against the Replay driver (which does nothing)
+    curModInfo->fctInit(carindex, (void*)(curRobot));
+  } else if (!(ReInfo->_displayMode & RM_DISP_MODE_SIMU_SIMU)) {
+#else
   if (!(ReInfo->_displayMode & RM_DISP_MODE_SIMU_SIMU)) {
+#endif
     curModInfo->fctInit(robotIdx, (void*)(curRobot));
   } else {
     curRobot->rbNewTrack = NULL;
@@ -587,17 +629,42 @@ static tCarElt* reLoadSingleCar( int carindex, int listindex, int modindex, int 
     elt->_endRaceMemPool = NULL;
     elt->_shutdownMemPool = NULL;
 
+	carname = elt->_carName;
+
     GfLogTrace("Driver #%d(%d) : module='%s', name='%s', car='%s', cat='%s', skin='%s' on %x\n",
 			   carindex, listindex, elt->_modName, elt->_name, elt->_carName,
 			   elt->_category, elt->_skinName, elt->_skinTargets);
-  
-    /* Retrieve and load car specs : merge car default specs,
-       category specs and driver modifications (=> handle) */
-    /* Read Car model specifications */
-    snprintf(buf, sizeof(buf), "cars/models/%s/%s.xml", elt->_carName, elt->_carName);
-    carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+    if ((strncmp(carname.c_str(), "mpa1", 4) == 0))
+	{
+		if (strcmp(subcategory, "long") == 0)
+			carname = carname+"-long";
+		else if (strcmp(subcategory, "short") == 0)
+			carname = carname+"-short";
+		else 
+			carname = carname+"-road";
+
+		GfLogTrace("MPA... Category car = %s \n", carname.c_str());
+
+		/* Retrieve and load car specs : merge car default specs,
+		category specs and driver modifications (=> handle) */
+		/* Read Car model specifications */
+		snprintf(buf, sizeof(buf), "cars/models/%s/%s.xml", elt->_carName, carname.c_str());
+		carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+	}
+	else
+	{  
+		/* Retrieve and load car specs : merge car default specs,
+		category specs and driver modifications (=> handle) */
+		/* Read Car model specifications */
+		snprintf(buf, sizeof(buf), "cars/models/%s/%s.xml", elt->_carName, elt->_carName);
+		carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	}
+
     category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
-    if (category) {
+    if (category)
+    {
 	  GfLogTrace("Checking/Merging %s specs into %s base setup for %s ...\n",
 				 category, elt->_carName, curModInfo->name);
       strncpy(elt->_category, category, MAX_NAME_LEN - 1);
@@ -606,6 +673,7 @@ static tCarElt* reLoadSingleCar( int carindex, int listindex, int modindex, int 
       snprintf(buf2, sizeof(buf2), "cars/categories/%s.xml", elt->_category);
       cathdle = GfParmReadFile(buf2, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	  int errorcode = 0;
+
       if ((errorcode = GfParmCheckHandle(cathdle, carhdle))) 
 	  {
         switch (errorcode)
@@ -628,6 +696,7 @@ static tCarElt* reLoadSingleCar( int carindex, int listindex, int modindex, int 
 	    } 
         return NULL;
       }
+
       carhdle = GfParmMergeHandles(cathdle, carhdle,
                                    GFPARM_MMODE_SRC | GFPARM_MMODE_DST | GFPARM_MMODE_RELSRC | GFPARM_MMODE_RELDST);
 	  
@@ -650,7 +719,7 @@ static tCarElt* reLoadSingleCar( int carindex, int listindex, int modindex, int 
       }
       else
         handle = NULL;
-      if (handle) {
+      if (handle && !replayReplay) {
 		GfLogTrace("Checking/Merging %s specific setup into %s setup.\n",
 				   curModInfo->name, elt->_carName);
         if (GfParmCheckHandle(carhdle, handle)) {
@@ -728,7 +797,14 @@ ReInitCars(void)
     snprintf(path, sizeof(path), "%s/%d", RM_SECT_DRIVERS_RACING, i);
     robotModuleName = GfParmGetStr(ReInfo->params, path, RM_ATTR_MODULE, "");
     robotIdx = (int)GfParmGetNum(ReInfo->params, path, RM_ATTR_IDX, NULL, 0);
-    snprintf(path, sizeof(path), "%sdrivers/%s/%s.%s", GfLibDir(), robotModuleName, robotModuleName, DLLEXT);
+
+#if 0 // SDW
+    if (replayReplay)
+      // Register against the Replay driver
+      snprintf(path, sizeof(path), "%sdrivers/replay/replay.%s", GfLibDir(), DLLEXT);
+    else
+#endif
+      snprintf(path, sizeof(path), "%sdrivers/%s/%s.%s", GfLibDir(), robotModuleName, robotModuleName, DLLEXT);
 
     /* Load the robot shared library */
     if (GfModLoad(CAR_IDENT, path, ReInfo->robModList)) 
@@ -805,13 +881,115 @@ ReInitCars(void)
     GfLogInfo("%d driver(s) ready to race\n", nCars);
   }
 
+  if (replayReplay)
+    replayRecord = 0;
+  else {
+        char buf[1024];
+	const char *replayRateSchemeName;
+        snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), RACE_ENG_CFG);
+
+        void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+        replayRateSchemeName = GfParmGetStr(paramHandle, RM_SECT_RACE_ENGINE, RM_ATTR_REPLAY_RATE, "0");
+        GfParmReleaseHandle(paramHandle);
+
+	replayRecord = atoi(replayRateSchemeName);
+  }
+
+  if (replayRecord || replayReplay) {
+#ifdef THIRD_PARTY_SQLITE3
+    int result;
+
+    result = sqlite3_open("/tmp/race.sqlite", &replayDB);
+    if (result) {
+      GfLogError("Replay: Unable to open Database: %s\n", sqlite3_errmsg(replayDB));
+      sqlite3_close(replayDB);
+      replayDB = NULL;
+    } else {
+      GfLogInfo("Replay: Database Opened 0x8%8.8X\n", replayDB);
+
+      if (replayRecord)
+        GfLogInfo("Replay: Record Timestep = %f\n", 1/(float)replayRecord);
+
+      if (replayReplay)
+        GfLogInfo("Replay: Playback from file\n");
+
+      /* speed up database by turning of synchronous behaviour/etc */
+      sqlite3_exec(replayDB, "PRAGMA synchronous = OFF", NULL, NULL, NULL);
+      sqlite3_exec(replayDB, "PRAGMA journal_mode = OFF", NULL, NULL, NULL);
+      sqlite3_exec(replayDB, "PRAGMA count_changes = OFF", NULL, NULL, NULL);
+#if 0 // This pragma seems to prevent re-opening the sqlite3 database
+      sqlite3_exec(replayDB, "PRAGMA locking_mode = EXCLUSIVE", NULL, NULL, NULL);
+#endif
+      sqlite3_exec(replayDB, "PRAGMA default_temp_store = MEMORY", NULL, NULL, NULL);
+
+      //replayBlobs = (sqlite3_stmt *) calloc(nCars, sizeof(void *)); //sqlite3_stmt));
+
+      replayTimestamp = -5;
+      ghostcarActive = 0;
+    }
+#endif
+  }
+
   ReInfo->s->_ncars = nCars;
   FREEZ(ReInfo->s->cars);
   ReInfo->s->cars = (tCarElt **)calloc(nCars, sizeof(tCarElt *));
   for (i = 0; i < nCars; i++)
   {
     ReInfo->s->cars[i] = &(ReInfo->carList[i]);
+
+#ifdef THIRD_PARTY_SQLITE3
+    //open a table for each car
+    if (replayDB) {
+      char command[200];
+      int result;
+
+      if (replayRecord) {
+        sprintf(command, "DROP TABLE IF EXISTS car%d", i);
+        result = sqlite3_exec(replayDB, command, 0, 0, 0);
+        if (result) GfLogInfo("Replay: Unable to drop table car%d: %s\n", i, sqlite3_errmsg(replayDB));
+      }
+
+      sprintf(command, "CREATE TABLE IF NOT EXISTS car%d (timestamp, lap, datablob BLOB)", i);
+      result = sqlite3_exec(replayDB, command, 0, 0, 0);
+      if (result) {
+         GfLogInfo("Replay: Unable to create table car%d: %s\n", i, sqlite3_errmsg(replayDB));
+         exit(0);
+      }
+
+      if (replayReplay) {
+        // Build index to allow faster read access
+        sprintf(command, "CREATE UNIQUE INDEX IF NOT EXISTS index%d ON car%d (timestamp)", i, i);
+        result = sqlite3_exec(replayDB, command, 0, 0, 0);
+        if (result) GfLogInfo("Replay: Unable to create index car%d: %s\n", i, sqlite3_errmsg(replayDB));
+      }
+    }
+#endif
   }
+	#ifdef WEBSERVER
+	// webServer lap logger.
+	//Find human cars
+	for (int i = 0; i < ReInfo->s->_ncars; i++) {
+		if(ReInfo->s->cars[i]->_driverType == RM_DRV_HUMAN){
+			
+			//login
+			webServer.sendLogin(ReInfo->s->cars[i]->_driverIndex);
+
+			//send race data
+			webServer.sendRaceStart (
+				ReInfo->s->cars[i]->_skillLevel,	//user_skill,
+				ReInfo->track->internalname,		//track_id,
+				ReInfo->s->cars[i]->_carName,		//car_id
+				ReInfo->s->_raceType,				//type of race: 0 practice/ 1 qualify/ 2 race
+				ReInfo->s->cars[i]->_carHandle,		//car setup file,
+				ReInfo->s->cars[i]->_pos,			//car starting position,
+				VERSION_LONG 						//speed dreams version
+			);
+
+		}
+	}
+	#endif //WEBSERVER
+
+
   ReInfo->_rePitRequester = 0;
 
   // TODO: reconsider splitting the call into one for cars, track and maybe other objects.
@@ -836,6 +1014,15 @@ ReRaceCleanup(void)
   ReStoreRaceResults(ReInfo->_reRaceName);
 
   ReRaceCleanDrivers();
+
+#ifdef THIRD_PARTY_SQLITE3
+  GfLogInfo("Replay: Database closed\n");
+  if (replayDB)
+    sqlite3_close(replayDB);
+
+  replayDB = NULL;
+#endif
+  replayRecord = 0;
 }
 
 

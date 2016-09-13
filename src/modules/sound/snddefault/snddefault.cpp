@@ -4,7 +4,7 @@
     created              : Thu Aug 17 23:19:19 CEST 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: snddefault.cpp 5095 2013-01-12 17:57:47Z pouillot $
+    version              : $Id: snddefault.cpp 6097 2015-08-30 23:12:09Z beaglejoe $
 
  ***************************************************************************/
 
@@ -40,7 +40,7 @@ int closeGfModule()
 {
 	// Unregister it from the GfModule module manager.
 	if (SndDefault::_pSelf)
-		GfModule::unregister(SndDefault::_pSelf);
+		SndDefault::unregister(SndDefault::_pSelf);
 	
 	// Delete the (only) module instance.
 	delete SndDefault::_pSelf;

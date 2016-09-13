@@ -116,6 +116,7 @@ typedef struct HumanContext
     tControlCmd		*cmdControl;
     bool		mouseControlUsed;
     int			lightCmd;
+    int         dashboardCounter;
 
     // simuV4 ...
     bool		useESP;
@@ -222,7 +223,11 @@ static const tControlCmd CmdControlRef[] = {
     {HM_ATT_HBOX_X,     GFCTRL_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
     {HM_ATT_HBOX_Y,     GFCTRL_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
     {HM_ATT_LEFTGLANCE, GFCTRL_TYPE_NOT_AFFECTED, -1, HM_ATT_L_GLANCE_MIN,   0.0, 0.0, HM_ATT_L_GLANCE_MAX,   0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_RIGHTGLANCE,GFCTRL_TYPE_NOT_AFFECTED, -1, HM_ATT_R_GLANCE_MIN,   0.0, 0.0, HM_ATT_R_GLANCE_MAX,   0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0}
+    {HM_ATT_RIGHTGLANCE,GFCTRL_TYPE_NOT_AFFECTED, -1, HM_ATT_R_GLANCE_MIN,   0.0, 0.0, HM_ATT_R_GLANCE_MAX,   0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_DASHB_NEXT ,GFCTRL_TYPE_NOT_AFFECTED, -1, HM_ATT_DASHB_NEXT_MIN, 0.0, 0.0, HM_ATT_DASHB_NEXT_MAX, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_DASHB_PREV ,GFCTRL_TYPE_NOT_AFFECTED, -1, HM_ATT_DASHB_PREV_MIN, 0.0, 0.0, HM_ATT_DASHB_PREV_MAX, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_DASHB_INC  ,GFCTRL_TYPE_NOT_AFFECTED, -1, HM_ATT_DASHB_INC_MIN,  0.0, 0.0, HM_ATT_DASHB_INC_MAX,  0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_DASHB_DEC  ,GFCTRL_TYPE_NOT_AFFECTED, -1, HM_ATT_DASHB_DEC_MIN,  0.0, 0.0, HM_ATT_DASHB_DEC_MAX,  0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0}
 };
 
 static const int NbCmdControl = sizeof(CmdControlRef) / sizeof(CmdControlRef[0]);
@@ -1208,6 +1213,86 @@ static void common_drive(const int index, tCarElt* car, tSituation *s)
     }
 
 
+    // dashboard handling
+    if ((cmd[CMD_DASHB_NEXT].type == GFCTRL_TYPE_JOY_BUT && joyInfo->edgeup[cmd[CMD_DASHB_NEXT].val])
+            || (cmd[CMD_DASHB_NEXT].type == GFCTRL_TYPE_MOUSE_BUT && mouseInfo->edgedn[cmd[CMD_DASHB_NEXT].val])
+            || (cmd[CMD_DASHB_NEXT].type == GFCTRL_TYPE_KEYBOARD && keyInfo[lookUpKeyMap(cmd[CMD_DASHB_NEXT].val)].edgeDn)
+            || (cmd[CMD_DASHB_NEXT].type == GFCTRL_TYPE_JOY_ATOB && cmd[CMD_DASHB_NEXT].deadZone != 0))
+    {
+        car->_dashboardActiveItem++;
+        if (car->_dashboardActiveItem >= car->_dashboardInstantNb + car->_dashboardRequestNb) 
+            {car->_dashboardActiveItem = 0;}
+    }
+    
+    if ((cmd[CMD_DASHB_PREV].type == GFCTRL_TYPE_JOY_BUT && joyInfo->edgeup[cmd[CMD_DASHB_PREV].val])
+            || (cmd[CMD_DASHB_PREV].type == GFCTRL_TYPE_MOUSE_BUT && mouseInfo->edgedn[cmd[CMD_DASHB_PREV].val])
+            || (cmd[CMD_DASHB_PREV].type == GFCTRL_TYPE_KEYBOARD && keyInfo[lookUpKeyMap(cmd[CMD_DASHB_PREV].val)].edgeDn)
+            || (cmd[CMD_DASHB_PREV].type == GFCTRL_TYPE_JOY_ATOB && cmd[CMD_DASHB_PREV].deadZone != 0))
+    {
+        car->_dashboardActiveItem--;
+        if (car->_dashboardActiveItem < 0)
+            {car->_dashboardActiveItem = car->_dashboardInstantNb + car->_dashboardRequestNb - 1;}
+    }
+    
+    tDashboardItem *item;
+    if (car->_dashboardActiveItem < car->_dashboardInstantNb) {
+        item = &(car->_dashboardInstant[car->_dashboardActiveItem]);
+    } else {
+        item = &(car->_dashboardRequest[car->_dashboardActiveItem - car->_dashboardInstantNb]);
+    }
+    if ((cmd[CMD_DASHB_INC].type == GFCTRL_TYPE_JOY_BUT && joyInfo->edgeup[cmd[CMD_DASHB_INC].val])
+            || (cmd[CMD_DASHB_INC].type == GFCTRL_TYPE_MOUSE_BUT && mouseInfo->edgedn[cmd[CMD_DASHB_INC].val])
+            || (cmd[CMD_DASHB_INC].type == GFCTRL_TYPE_KEYBOARD && keyInfo[lookUpKeyMap(cmd[CMD_DASHB_INC].val)].edgeDn)
+            || (cmd[CMD_DASHB_INC].type == GFCTRL_TYPE_JOY_ATOB && cmd[CMD_DASHB_INC].deadZone != 0))
+    {
+        HCtx[idx]->dashboardCounter = (int)(1.0/RCM_MAX_DT_ROBOTS);
+        item->setup->desired_value += item->setup->stepsize;
+        if (item->setup->desired_value > item->setup->max) {item->setup->desired_value = item->setup->max;}
+        item->setup->changed = TRUE;
+        car->ctrl.setupChangeCmd = item;
+    }
+    if ((cmd[CMD_DASHB_INC].type == GFCTRL_TYPE_JOY_BUT && joyInfo->levelup[cmd[CMD_DASHB_INC].val])
+            || (cmd[CMD_DASHB_INC].type == GFCTRL_TYPE_MOUSE_BUT && mouseInfo->button[cmd[CMD_DASHB_INC].val])
+            || (cmd[CMD_DASHB_INC].type == GFCTRL_TYPE_KEYBOARD && keyInfo[lookUpKeyMap(cmd[CMD_DASHB_INC].val)].state)
+            || (cmd[CMD_DASHB_INC].type == GFCTRL_TYPE_JOY_ATOB && cmd[CMD_DASHB_INC].deadZone != 0))
+    {
+        if (HCtx[idx]->dashboardCounter > 0) {
+            HCtx[idx]->dashboardCounter--;
+        } else {
+            item->setup->desired_value += item->setup->stepsize;
+            if (item->setup->desired_value > item->setup->max) {item->setup->desired_value = item->setup->max;}
+            item->setup->changed = TRUE;
+            car->ctrl.setupChangeCmd = item;
+        }
+    }
+    
+    if ((cmd[CMD_DASHB_DEC].type == GFCTRL_TYPE_JOY_BUT && joyInfo->edgeup[cmd[CMD_DASHB_DEC].val])
+            || (cmd[CMD_DASHB_DEC].type == GFCTRL_TYPE_MOUSE_BUT && mouseInfo->edgedn[cmd[CMD_DASHB_DEC].val])
+            || (cmd[CMD_DASHB_DEC].type == GFCTRL_TYPE_KEYBOARD && keyInfo[lookUpKeyMap(cmd[CMD_DASHB_DEC].val)].edgeDn)
+            || (cmd[CMD_DASHB_DEC].type == GFCTRL_TYPE_JOY_ATOB && cmd[CMD_DASHB_DEC].deadZone != 0))
+    {
+        HCtx[idx]->dashboardCounter = (int)(1.0/RCM_MAX_DT_ROBOTS);
+        item->setup->desired_value -= item->setup->stepsize;
+        if (item->setup->desired_value < item->setup->min) {item->setup->desired_value = item->setup->min;}
+        item->setup->changed = TRUE;
+        car->ctrl.setupChangeCmd = item;
+    }
+    if ((cmd[CMD_DASHB_DEC].type == GFCTRL_TYPE_JOY_BUT && joyInfo->levelup[cmd[CMD_DASHB_DEC].val])
+            || (cmd[CMD_DASHB_DEC].type == GFCTRL_TYPE_MOUSE_BUT && mouseInfo->button[cmd[CMD_DASHB_DEC].val])
+            || (cmd[CMD_DASHB_DEC].type == GFCTRL_TYPE_KEYBOARD && keyInfo[lookUpKeyMap(cmd[CMD_DASHB_DEC].val)].state)
+            || (cmd[CMD_DASHB_DEC].type == GFCTRL_TYPE_JOY_ATOB && cmd[CMD_DASHB_DEC].deadZone != 0))
+    {
+        if (HCtx[idx]->dashboardCounter > 0) {
+            HCtx[idx]->dashboardCounter--;
+        } else {
+            item->setup->desired_value -= item->setup->stepsize;
+            if (item->setup->desired_value < item->setup->min) {item->setup->desired_value = item->setup->min;}
+            item->setup->changed = TRUE;
+            car->ctrl.setupChangeCmd = item;
+        }
+    }
+    
+    
     switch (cmd[CMD_BRAKE].type) {
     case GFCTRL_TYPE_JOY_AXIS:
         brake = joyInfo->ax[cmd[CMD_BRAKE].val];
@@ -1632,7 +1717,7 @@ void HumanDriver::drive_mt(int index, tCarElt* car, tSituation *s)
                 || (cmd[CMD_UP_SHFT].type == GFCTRL_TYPE_KEYBOARD && keyInfo[lookUpKeyMap(cmd[CMD_UP_SHFT].val)].edgeUp)
                 || (cmd[CMD_UP_SHFT].type == GFCTRL_TYPE_JOY_ATOB && cmd[CMD_UP_SHFT].deadZone == 1))
         {
-            if (car->_gear > -1)
+            if (car->_gear > -1 && car->_gear < car->_gearNb - 1)
                 car->_gearCmd++;
             else if (HCtx[idx]->seqShftAllowNeutral && car->_gear == -1)
                 car->_gearCmd = 0;
@@ -1924,26 +2009,34 @@ int HumanDriver::pit_cmd(int index, tCarElt* car, tSituation *s)
     const int idx = index - 1;
 
     HCtx[idx]->nbPitStops++;  //Yet another pitstop
-    tdble curr_fuel = car->_tank - car->_fuel;  //Can receive max. this fuel
+    //tdble curr_fuel = car->_tank - car->_fuel;  //Can receive max. this fuel
 
-    tdble planned_stops = 1.0
-        + MAX(HCtx[idx]->nbPitStopProg - HCtx[idx]->nbPitStops, 0);  //Planned pitstops still ahead
+    /*tdble planned_stops = 1.0
+        + MAX(HCtx[idx]->nbPitStopProg - HCtx[idx]->nbPitStops, 0);*/  //Planned pitstops still ahead
 
     //Need this amount of extra fuel to finish the race
-    tdble fuel =
+    /*tdble fuel =
         ( MaxFuelPerMeter
           * (curTrack->length * car->_remainingLaps + car->_trkPos.seg->lgfromstart)
           + 2.7f / 60.0f * MAX(s->_totTime, 0) )
         / planned_stops
-        - car->_fuel;
+        - car->_fuel;*/
 
     //No need to check for limits as curr_fuel cannot be bigger
     //than the tank capacity
-    car->_pitFuel = MAX(MIN(curr_fuel, fuel), 0);
+    //car->_pitFuel = MAX(MIN(curr_fuel, fuel), 0);
+    car->_pitFuel = car->setup.fuel.desired_value - car->_fuel;
 
     HCtx[idx]->lastPitStopLap = car->_laps;
 
-    car->_pitRepair = (int)car->_dammage;
+    //car->_pitRepair = (int)car->_dammage;
+    car->_pitRepair = car->setup.reqRepair.desired_value;
+    
+    if (car->setup.reqPenalty.desired_value > 0.9) {
+        car->_pitStopType = RM_PIT_STOPANDGO;
+    } else {
+        car->_pitStopType = RM_PIT_REPAIR;
+    }
 
     if (HCtx[idx]) {
         const tControlCmd *cmd = HCtx[idx]->cmdControl;
@@ -1958,7 +2051,7 @@ int HumanDriver::pit_cmd(int index, tCarElt* car, tSituation *s)
         }//for i
     }//if HCtx
 
-    return ROB_PIT_MENU; /* The player is able to modify the value by menu */
+    return ROB_PIT_IM; /* With dashboard no need for menu */
 }
 
 
@@ -1975,7 +2068,7 @@ static void SetFuelAtRaceStart(tTrack* track, void **carParmHandle,
             PRM_FUEL, NULL, 0.0f);
 
     if (initial_fuel) {
-        // If starting fuel is set up explicitely,
+        // If starting fuel is set up explicitly,
         // no use computing anything...
         fuel_requested = initial_fuel;
     } else {
@@ -1997,7 +2090,7 @@ static void SetFuelAtRaceStart(tTrack* track, void **carParmHandle,
     }
 
     GfLogInfo("Human #%d : Starting race session with %.1f l of fuel (%s)\n",
-            idx, fuel_requested, initial_fuel ? "as explicitely stated" : "computed");
+            idx, fuel_requested, initial_fuel ? "as explicitly stated" : "computed");
 
     GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, NULL, fuel_requested);
 }  // SetFuelAtRaceStart

@@ -4,7 +4,7 @@
     created              : July 2009
     copyright            : (C) 2009 Brian Gavin
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: networkingmenu.cpp 5747 2013-12-06 05:16:42Z mungewell $
+    version              : $Id: networkingmenu.cpp 5870 2014-11-29 12:14:30Z wdbee $
 
  ***************************************************************************/
 
@@ -682,7 +682,7 @@ static void OnActivateNetworkClient(void *)
 		} else {
 			// Ensure menu system knows about all cars
 			GfDrivers::self()->reload();
-			tRmInfo* reInfo = LmRaceEngine().inData();
+			// tRmInfo* reInfo = LmRaceEngine().inData(); // Never used
 			LmRaceEngine().race()->load(LmRaceEngine().race()->getManager(), true);
 		}
 	}
@@ -731,7 +731,7 @@ rmCarSettingsMenu(void *pMenu)
 
 	if (nDriverIdx > -1) {
 		NetDriver driver;
-		char newName[64];
+		// char newName[64]; Never used
 		char dname[256];
 
 		// check for car change

@@ -4,21 +4,40 @@ INCLUDE(../../../cmake/macros.cmake)
 
 ADD_INTERFACE_INCLUDEDIR()
 ADD_SDLIB_INCLUDEDIR(tgf math portability)
-ADD_SDL_INCLUDEDIR()
+IF(OPTION_SDL2)
+	ADD_SDL2_INCLUDEDIR()
+ELSE(OPTION_SDL2)
+	ADD_SDL_INCLUDEDIR()
+ENDIF(OPTION_SDL2)
 ADD_JPEG_INCLUDEDIR()
 ADD_PLIB_INCLUDEDIR()
 ADD_OPENAL_INCLUDEDIR()
 ADD_VORBIS_INCLUDEDIR()
+IF(OPTION_WEBSERVER)
+	ADD_CURL_INCLUDEDIR()
+ENDIF(OPTION_WEBSERVER)
 
+IF(OPTION_WEBSERVER)
+	SET(_SOURCES control.cpp glfeatures.cpp guibutton.cpp guifont.cpp
+				 guiimage.cpp guimenu.cpp guiscrollbar.cpp guitexture.cpp
+				 tgfclient.cpp gui.cpp guiedit.cpp guihelp.cpp
+				 guilabel.cpp guiobject.cpp guiscrollist.cpp 
+				 guicombobox.cpp guicheckbox.cpp guiprogresbar.cpp 
+				 guiscreen.cpp guieventloop.cpp guiapplication.cpp 
+				 musicplayer.cpp musicplayer.h 
+				 glfeatures.h gui.h guiscreen.h guimenu.h tgfclient.h guifont.h 
+				 webserver.h webserver.cpp)
+ELSE(OPTION_WEBSERVER)
+	SET(_SOURCES control.cpp glfeatures.cpp guibutton.cpp guifont.cpp
+				 guiimage.cpp guimenu.cpp guiscrollbar.cpp guitexture.cpp
+				 tgfclient.cpp gui.cpp guiedit.cpp guihelp.cpp
+				 guilabel.cpp guiobject.cpp guiscrollist.cpp 
+				 guicombobox.cpp guicheckbox.cpp guiprogresbar.cpp 
+				 guiscreen.cpp guieventloop.cpp guiapplication.cpp 
+				 musicplayer.cpp musicplayer.h 
+				 glfeatures.h gui.h guiscreen.h guimenu.h tgfclient.h guifont.h)
+ENDIF(OPTION_WEBSERVER)
 
-SET(_SOURCES control.cpp glfeatures.cpp guibutton.cpp guifont.cpp
-             guiimage.cpp guimenu.cpp guiscrollbar.cpp guitexture.cpp
-             tgfclient.cpp gui.cpp guiedit.cpp guihelp.cpp
-             guilabel.cpp guiobject.cpp guiscrollist.cpp 
-             guicombobox.cpp guicheckbox.cpp guiprogresbar.cpp 
-             guiscreen.cpp guieventloop.cpp guiapplication.cpp 
-             musicplayer.cpp musicplayer.h 
-             glfeatures.h gui.h guiscreen.h guimenu.h tgfclient.h guifont.h )
 SET(_OTHER_SOURCES guimenutest.xml)
 
 SET(_SOURCES ${_SOURCES} 
@@ -50,12 +69,20 @@ SD_ADD_LIBRARY(tgfclient SHARED ${_SOURCES} ${_OTHER_SOURCES})
 # Might not work with GCC 4.5 or + (non-robot modules crash at 1st reload = after 1 dlclose) 
 #SET_TARGET_PROPERTIES(tgfclient PROPERTIES VERSION ${VERSION} SOVERSION 0.0.0)
 
-ADD_PLIB_LIBRARY(tgfclient ul sg sl)
+IF(OPTION_USE_MACPORTS)
+   ADD_PLIB_LIBRARY(tgfclient ul sg)
+ELSE(OPTION_USE_MACPORTS)
+   ADD_PLIB_LIBRARY(tgfclient ul sg sl)
+ENDIF(OPTION_USE_MACPORTS)
 
 ADD_SDLIB_LIBRARY(tgfclient portability tgf networking)
 
 ADD_PNG_LIBRARY(tgfclient)
 ADD_JPEG_LIBRARY(tgfclient)
+IF(OPTION_WEBSERVER)
+	ADD_CURL_LIBRARY(tgfclient)
+ENDIF(OPTION_WEBSERVER)
+
 IF(OPENGL_FOUND)
     TARGET_LINK_LIBRARIES(tgfclient ${OPENGL_LIBRARY})
 ENDIF(OPENGL_FOUND)
@@ -75,7 +102,12 @@ IF(OGG_FOUND)
 ENDIF(OGG_FOUND)
 
 ADD_PLIB_LIBRARY(tgfclient ul sg js)
-ADD_SDL_LIBRARY(tgfclient)
+
+IF(OPTION_SDL2)
+	ADD_SDL2_LIBRARY(tgfclient)
+ELSE(OPTION_SDL2)
+	ADD_SDL_LIBRARY(tgfclient)
+ENDIF(OPTION_SDL2)
 
 IF(WIN32)
 #joystick library

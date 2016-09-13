@@ -80,7 +80,7 @@ ssgBranch * cGrMoon::build( double moon_size )
     moon_state->enable( GL_ALPHA_TEST );
     moon_state->setAlphaClamp( 0.01f );
 
-    ssgBranch *moon = grMakeSphere( moon_state, moon_cl, moon_size, 15, 15,
+    ssgBranch *moon = grMakeSphere( moon_state, moon_cl, (float) moon_size, 15, 15,
 				    grMoonOrbPreDraw, grMoonOrbPostDraw );
 
     moon_transform->addKid( moon );
@@ -102,9 +102,9 @@ bool cGrMoon::repaint( double angle )
         moon_factor = (moon_factor / 2) + 0.5f;
 
         sgVec4 color;
-        color[1] = sqrt(moon_factor);
-        color[0] = sqrt(color[1]);
-        color[2] = moon_factor * moon_factor;
+        color[1] = (float) (sqrt(moon_factor));
+        color[0] = (float) (sqrt(color[1]));
+        color[2] = (float) (moon_factor * moon_factor);
         color[2] *= color[2];
         color[3] = 1.0;
 		//color[0] = (float)pow(moon_factor, 0.25);
@@ -131,12 +131,12 @@ bool cGrMoon::reposition(sgVec3 p, double angle, double moonrightAscension, doub
     sgMakeTransMat4( T1, p );
 
     sgSetVec3( axis, 0.0, 0.0, -1.0 );
-    sgMakeRotMat4( GST, angle, axis );
+    sgMakeRotMat4( GST, (float) angle, axis );
     sgSetVec3( axis, 0.0, 0.0, 1.0 );
-    sgMakeRotMat4( RA, (moonrightAscension * SGD_RADIANS_TO_DEGREES) - 90.0, axis );
+    sgMakeRotMat4( RA, (float) ((moonrightAscension * SGD_RADIANS_TO_DEGREES) - 90.0), axis );
     sgSetVec3( axis, 1.0, 0.0, 0.0 );
-    sgMakeRotMat4( DEC, moondeclination * SGD_RADIANS_TO_DEGREES, axis );
-    sgSetVec3( v, 0.0, moon_dist, 0.0 );
+    sgMakeRotMat4( DEC, (float) (moondeclination * SGD_RADIANS_TO_DEGREES), axis );
+    sgSetVec3( v, 0.0, (float) moon_dist, 0.0 );
     sgMakeTransMat4( T2, v );
 
     sgMat4 TRANSFORM;

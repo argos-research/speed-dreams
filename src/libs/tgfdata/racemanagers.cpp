@@ -4,7 +4,7 @@
     created              : December 2010
     copyright            : (C) 2010 Jean-Philippe Meuret
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: racemanagers.cpp 4902 2012-08-27 10:04:20Z kmetykog $
+    version              : $Id: racemanagers.cpp 5899 2014-12-17 21:00:23Z wdbee $
 
  ***************************************************************************/
 
@@ -118,7 +118,7 @@ GfRaceManagers::GfRaceManagers()
 		strRaceManId.erase(strlen(pFile->name) - strlen(PARAMEXT));
 		if (!hparmRaceMan)
 		{
-			GfLogWarning("GfRaceManagers : Ignoring race manager %s (failed to read from config/raceman/%s in %s and %s)\n",
+			GfLogInfo("GfRaceManagers : Ignoring race manager %s (failed to read from config/raceman/%s in %s and %s)\n",
 						 strRaceManId.c_str(), pFile->name, GfLocalDir(), GfDataDir());
 			continue;
 		}

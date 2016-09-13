@@ -4,7 +4,7 @@
     created     : Sat Nov 16 12:13:31 CET 2002
     copyright   : (C) 2002 by Eric Espie
     email       : eric.espie@torcs.org   
-    version     : $Id: racemain.cpp 5284 2013-03-10 10:49:04Z pouillot $
+    version     : $Id: racemain.cpp 6084 2015-08-21 00:07:15Z beaglejoe $
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racemain.cpp 5284 2013-03-10 10:49:04Z pouillot $
+    @version	$Id: racemain.cpp 6084 2015-08-21 00:07:15Z beaglejoe $
 */
 
 #include <sstream>
@@ -374,11 +374,14 @@ RePreRace(void)
 
 	// Get session type (race, qualification or practice).
 	raceType = GfParmGetStr(params, raceName, RM_ATTR_TYPE, RM_VAL_RACE);
-	if (!strcmp(raceType, RM_VAL_RACE)) {
+	if (!strcmp(raceType, RM_VAL_RACE))
+	{
 		ReInfo->s->_raceType = RM_TYPE_RACE;
-	} else if (!strcmp(raceType, RM_VAL_QUALIF)) {
+	} else if (!strcmp(raceType, RM_VAL_QUALIF))
+	{
 		ReInfo->s->_raceType = RM_TYPE_QUALIF;
-	} else if (!strcmp(raceType, RM_VAL_PRACTICE)) {
+	} else if (!strcmp(raceType, RM_VAL_PRACTICE))
+	{
 		ReInfo->s->_raceType = RM_TYPE_PRACTICE;
 	}
 
@@ -619,6 +622,41 @@ RePreRace(void)
 
 /* return state mode */
 int
+RePreRacePause(void)
+{
+	// by default: skip the PreRacePause (RM_NEXT_STEP)
+	int mode = RM_SYNC | RM_NEXT_STEP;
+
+	// Do NOT pause if Network Race
+	if(NULL != NetGetNetwork())
+	{
+		return mode;
+	}
+
+	// PreRacePause only applies in RM_DISP_MODE_NORMAL
+	if (RM_DISP_MODE_NORMAL == ReInfo->_displayMode)
+	{
+		// check if there is a human player AND if PreRacePause is enabled through the config
+		if ((ReSessionHasHuman()) && (true == ReUI().onRaceStartingPaused()))
+		{
+			mode = RM_ASYNC | RM_NEXT_STEP;
+			//ReStop();
+			ReSituation::self().setRaceMessage("Hit <Enter> to Start",-1/*always*/, /*big=*/true);
+			ReStop();
+		}
+	}
+	return mode;
+}
+
+void 
+ReStopPreracePause()
+{
+	ReSituation::self().setRaceMessage("", -1/*always*/, /*big=*/true);
+	::ReStart();
+}
+
+/* return state mode */
+int
 ReRaceRealStart(void)
 {
 	int i, j;
@@ -743,6 +781,7 @@ ReRaceRealStart(void)
 	{
 		memset(&(s->cars[i]->ctrl), 0, sizeof(tCarCtrl));
 		s->cars[i]->ctrl.brakeCmd = 1.0;
+        s->cars[i]->_commitBestLapTime = true;
 	}
 
 	for (j = 0; j < (int)(1.0 / RCM_MAX_DT_SIMU); j++)
@@ -1134,4 +1173,52 @@ ReCleanupStandardgame()
 	{
 		return false;
 	}
+}
+
+bool 
+ReSessionHasHuman()
+{
+	// check if there is a human player...
+	bool hasHuman = false;
+	for (int i = 0; i < ReInfo->s->_ncars; i++)
+	{
+		if (ReInfo->s->cars[i]->_driverType == RM_DRV_HUMAN)
+		{
+			hasHuman = true;
+			break;
+		}
+	}
+	return hasHuman;
+}
+
+int
+ReRaceCooldown()
+{
+	// by default: skip cooldown (RM_NEXT_STEP)
+	int mode = RM_ASYNC | RM_NEXT_STEP;
+
+	// Do NOT Cooldown if Network Race
+	if(NULL != NetGetNetwork())
+	{
+		return mode;
+	}
+
+	// cooldown only applies in RM_DISP_MODE_NORMAL
+	if (RM_DISP_MODE_NORMAL == ReInfo->_displayMode)
+	{
+		// check if there is a human player AND if cooldown is enabled through the UI
+		if ((ReSessionHasHuman()) && (true == ReUI().onRaceCooldownStarting()))
+		{
+			ReSituation::self().setRaceMessage("Hit <Enter> for Results", -1, /*big=*/true);
+			// enable cooldown
+			mode = RM_ASYNC;
+		}
+	}
+	return mode;
+}
+
+void 
+ReStopCooldown()
+{
+	ReStateApply((void*)RE_STATE_RACE_END);
 }

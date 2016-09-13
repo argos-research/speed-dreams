@@ -29,6 +29,7 @@ void SimCarCollideZ(tCar *car)
 	tdble dotProd;
 	tWheel *wheel;
 	const float CRASH_THRESHOLD = -5.0f;
+	tdble dz = 0.0f;
 
 	if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
 		return;
@@ -36,8 +37,9 @@ void SimCarCollideZ(tCar *car)
 
 	for (i = 0; i < 4; i++) {
 		wheel = &(car->wheel[i]);
-		if (wheel->state & SIM_SUSP_COMP) {
-			car->DynGCg.pos.z += wheel->susp.spring.packers - wheel->rideHeight;
+		if ( (wheel->state & SIM_SUSP_COMP)&&(!(wheel->state & SIM_WH_INAIR)) ) {
+			dz = MAX(dz, wheel->susp.spring.packers - wheel->rideHeight);
+			wheel->rideHeight = wheel->susp.spring.packers;
 			RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
 			dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z) * wheel->trkPos.seg->surface->kRebound;
 			if (dotProd < 0.0f) {
@@ -59,6 +61,7 @@ void SimCarCollideZ(tCar *car)
 			}
 		}
 	}
+	car->DynGCg.pos.z += dz; //elevate car when it is slightly sinken into ground
 }
 
 const tdble BorderFriction = 0.0f;

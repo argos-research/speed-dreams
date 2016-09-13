@@ -3,7 +3,7 @@
     file        : grSky.cpp
     copyright   : (C) 2009 by Xavier Bertaux (based on ssgasky plib code)
     web         : http://www.speed-dreams.org
-    version     : $Id: grSky.cpp 5332 2013-03-18 12:24:37Z torcs-ng $
+    version     : $Id: grSky.cpp 6152 2015-09-27 23:38:33Z torcs-ng $
 
  ***************************************************************************/
 
@@ -271,6 +271,10 @@ void cGrSky::postDraw( float alt )
 
 		float slop = 5.0; // if we are closer than this to a cloud layer, don't draw cloud
 
+		glDepthMask( GL_FALSE );
+        glStencilFunc( GL_EQUAL, 1, 1 );
+        glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
+
 		for ( int i = 0; i < num; i++ )
 		{
 			cGrCloudLayer *cloud = clouds.get(index[i]);
@@ -282,6 +286,9 @@ void cGrSky::postDraw( float alt )
 			if ( alt < asl - slop || alt > asl + thickness + slop )
 				cloud->draw();
 		}
+
+		glDepthMask( GL_TRUE );
+        glDisable( GL_STENCIL_TEST );
 
 		delete [] index;
 	}

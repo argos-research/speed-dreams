@@ -4,7 +4,7 @@
 	created              : Mon May 20 22:31:09 CEST 2002
 	copyright            : (C) 2001 by Eric Espie
 	email                : eric.espie@torcs.org
-	version              : $Id: elevation.cpp 3242 2011-01-05 21:21:58Z kmetykog $
+	version              : $Id: elevation.cpp 6393 2016-03-27 16:23:23Z beaglejoe $
 
 ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
 			
 	@author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-	@version	$Id: elevation.cpp 3242 2011-01-05 21:21:58Z kmetykog $
+	@version	$Id: elevation.cpp 6393 2016-03-27 16:23:23Z beaglejoe $
  */
 
 
@@ -56,7 +56,7 @@ void LoadElevation(tTrack *track, void *TrackHandle, char *imgFile)
 	tdble zmin, zmax;
 	tdble xmin, xmax, ymin, ymax;
 
-	ElvImage = GfTexReadImageFromPNG(imgFile, 2.2, &width, &height, 0, 0);
+	ElvImage = GfTexReadImageFromPNG(imgFile, 2.2, &width, &height, 0, 0, false);
 	if (!ElvImage) {
 		return;
 	}

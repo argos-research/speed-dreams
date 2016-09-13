@@ -3,7 +3,7 @@
     file        : legacymenu.h
     copyright   : (C) 2011 by Jean-Philippe Meuret
     email       : pouillot@users.sourceforge.net
-    version     : $Id: legacymenu.h 4965 2012-09-29 14:34:55Z pouillot $
+    version     : $Id: legacymenu.h 6084 2015-08-21 00:07:15Z beaglejoe $
 
  ***************************************************************************/
 
@@ -18,7 +18,7 @@
  
 /** @file    
     		The "legacy menu" user interface module
-    @version    $Id: legacymenu.h 4965 2012-09-29 14:34:55Z pouillot $
+    @version    $Id: legacymenu.h 6084 2015-08-21 00:07:15Z beaglejoe $
 */
 
 #ifndef _LEGACYMENU_H_
@@ -83,9 +83,18 @@ public:
 	virtual bool onRaceFinished(bool bEndOfSession);
 	virtual void onRaceEventFinishing();
 	virtual bool onRaceEventFinished(bool bMultiEvent, bool careerNonHumanGroup);
+	virtual void onOptimizationInitializing();
+
+	virtual bool onRaceStartingPaused();
+	virtual bool onRaceCooldownStarting();
 	
 	// Loading messages management.
 	virtual void addLoadingMessage(const char* pszText);
+
+	// Optimization messages management.
+	virtual void addOptimizationMessage(const char* pszText);
+    virtual void addOptimizationParameterMessage(int n, char** Labels, char** Values, char** Ranges);
+    virtual void addOptimizationStatusMessage(int LoopsDone, int LoopsRemaining, double VariationScale, double InitialLapTime,  double TotalLapTime,  double BestLapTime);
 
 	// Blind-race results table management.
 	virtual void setResultsTableTitles(const char* pszTitle, const char* pszSubTitle);
@@ -115,6 +124,10 @@ public:
 	// Loading screen management.
 	void activateLoadingScreen();
 	void shutdownLoadingScreen();
+
+	// Optimization screen management.
+	void activateOptimizationScreen();
+	void shutdownOptimizationScreen();
 
 	//! Game screen management.
 	void activateGameScreen();

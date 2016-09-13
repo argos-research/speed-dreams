@@ -4,7 +4,7 @@
     created              : October 2010
     copyright            : (C) 2010 Jean-Philippe Meuret
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: displayconfig.cpp 4902 2012-08-27 10:04:20Z kmetykog $
+    version              : $Id: displayconfig.cpp 5948 2015-04-05 16:56:10Z beaglejoe $
 
  ***************************************************************************/
 
@@ -424,6 +424,19 @@ DisplayMenu::DisplayMenu()
 #endif	
 }
 
+DisplayMenu::~DisplayMenu()
+{
+	int nDefColorDepths;
+	int* aDefColorDepths = GfScrGetDefaultColorDepths(&nDefColorDepths);
+	if (_aColorDepths && _aColorDepths != aDefColorDepths)
+		free(_aColorDepths);
+
+	int nDefScreenSizes;
+	tScreenSize* aDefScreenSizes = GfScrGetDefaultSizes(&nDefScreenSizes);
+	if (_aScreenSizes && _aScreenSizes != aDefScreenSizes)
+		free(_aScreenSizes);
+}
+
 bool DisplayMenu::initialize(void *pPreviousMenu)
 {
 	// Save the menu to return to.
@@ -517,5 +530,11 @@ void* DisplayMenuInit(void *pPreviousMenu)
 	return PDisplayMenu->getMenuHandle();
 }
 
-
-	
+/** Relase the display options menu screen.
+    @ingroup	screen
+*/
+void DisplayMenuRelease(void)
+{
+	delete PDisplayMenu;
+   PDisplayMenu = NULL;
+}

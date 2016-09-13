@@ -18,10 +18,15 @@ SET(_OTHER_SOURCES )
 
 ADD_INTERFACE_INCLUDEDIR()
 
-ADD_SDLIB_INCLUDEDIR(math portability robottools tgf tgfdata)
+ADD_SDLIB_INCLUDEDIR(math portability robottools tgf tgfclient tgfdata)
 
 ADD_PLIB_INCLUDEDIR()
-ADD_SDL_INCLUDEDIR()
+
+IF(OPTION_SDL2)
+	ADD_SDL2_INCLUDEDIR()
+ELSE(OPTION_SDL2)
+	ADD_SDL_INCLUDEDIR()
+ENDIF(OPTION_SDL2)
 
 # Disable developer warning
 IF (COMMAND CMAKE_POLICY)

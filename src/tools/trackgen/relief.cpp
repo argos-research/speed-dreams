@@ -4,7 +4,7 @@
     created              : Tue Mar  6 23:15:19 CET 2001
     copyright            : (C) 2000 by Eric Espie
     email                : eric.espie@torcs.org
-    version              : $Id: relief.cpp 3447 2011-03-13 16:43:11Z pouillot $
+    version              : $Id: relief.cpp 6139 2015-09-24 12:14:13Z torcs-ng $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: relief.cpp 3447 2011-03-13 16:43:11Z pouillot $
+    @version	$Id: relief.cpp 6139 2015-09-24 12:14:13Z torcs-ng $
 */
 
 #include <cstdio>

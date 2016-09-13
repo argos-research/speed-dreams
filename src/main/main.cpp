@@ -4,7 +4,7 @@
     created              : Sat Sep  2 10:40:47 CEST 2000
     copyright            : (C) 2000 by Patrice & Eric Espie
     email                : torcs@free.fr
-    version              : $Id: main.cpp 5366 2013-03-26 19:39:49Z pouillot $
+    version              : $Id: main.cpp 5854 2014-11-23 17:55:52Z wdbee $
 
  ***************************************************************************/
 
@@ -24,6 +24,7 @@
 #include <portability.h>
 #include <tgfclient.h>
 #include <tgfdata.h>
+#include <tgf.h>
 
 #ifdef WIN32
 #ifndef HAVE_CONFIG_H
@@ -39,6 +40,46 @@
 #include <iraceengine.h>
 #include <iuserinterface.h>
 
+// If defined in tgf.h:
+// Use new Memory Manager ...
+#ifdef __DEBUG_MEMORYMANAGER__
+#include "memmanager.h"
+
+// Use global variables for debugging ...
+IUserInterface* piUserItf = 0;
+GfModule* pmodUserItf = NULL;
+IRaceEngine* piRaceEngine = 0;
+GfModule* pmodRaceEngine = NULL;
+// ... Use global variables for debugging
+
+// Garbage Collection in case of GfuiApp().restart();
+void ReleaseData(void)
+{
+	// Shortcut: Use Memory Manager as garbage collector
+	GfMemoryManagerRelease(false); // Release the memory manager without dump
+
+	/*
+	// For debugging only ...
+	if (piUserItf && piRaceEngine)
+	{
+		// Shutdown and unload the user interface and race engine modules.
+		// piUserItf->shutdown();
+		// piRaceEngine->shutdown();
+		
+		// GfModule::unload(pmodUserItf);
+		// GfModule::unload(pmodRaceEngine);
+		
+		// Shutdown the data layer.
+		// GfData::shutdown();  << causes crashes if called from here
+
+		// Shortcut: Use Memory Manager as garbage collector
+		GfMemoryManagerRelease(false); // Release the memory manager without dump
+	}
+	// ... For debugging only
+	*/
+}
+#endif 
+// ... Use new Memory Manager
 
 /*
  * Function
@@ -57,6 +98,33 @@
 int
 main(int argc, char *argv[])
 {
+
+// If defined in tgf.h:
+// Use new Memory Manager ...
+#ifdef __DEBUG_MEMORYMANAGER__
+
+	#if defined(_DEBUG)
+	fprintf(stderr,"__DEBUG_MEMORYMANAGER__ enabled\n\n");
+	fprintf(stderr,"If debugging -> Attach to the process ... \n");
+	fprintf(stderr,"\nand than press [Enter] to start the program\n");
+	getchar();
+	#endif
+
+	// THIS HAS TO BE THE FIRST LINE OF CODE (except the console output)!!!
+	GfMemoryManagerInitialize();
+
+	// For hunting of corrupted memory blocks comment the following line
+	//GfMemoryManagerSetup(4); // Add 4 bytes per block
+#else
+	// Use local variables ...
+	IUserInterface* piUserItf = 0;
+	GfModule* pmodUserItf = NULL;
+	IRaceEngine* piRaceEngine = 0;
+	GfModule* pmodRaceEngine = NULL;
+	// ... Use local variables
+#endif
+// ... Use new Memeory Manager
+
 	// Look for the "text-only" option flag in the command-line args.
 	bool bTextOnly = false;
 	for (int i = 1; i < argc; i++)
@@ -127,11 +195,10 @@ main(int argc, char *argv[])
 	}
 
 	// Load the user interface module (graphical or text-only UI).
-	GfModule* pmodUserItf =
+	pmodUserItf =
 		GfModule::load("modules/userinterface", (bTextOnly ?  "textonly" : "legacymenu"));
 
 	// Check that it implements IUserInterface.
-	IUserInterface* piUserItf = 0;
 	if (pmodUserItf)
 	{
 		piUserItf = pmodUserItf->getInterface<IUserInterface>();
@@ -146,10 +213,10 @@ main(int argc, char *argv[])
 	void* hREParams =
 		GfParmReadFile(ossParm.str().c_str(), GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	const char* pszModName = GfParmGetStr(hREParams, "Modules", "racing", "standardgame");
-	GfModule* pmodRaceEngine = GfModule::load("modules/racing", pszModName);
+
+	pmodRaceEngine = GfModule::load("modules/racing", pszModName);
 
 	// Check that it implements IRaceEngine.
-	IRaceEngine* piRaceEngine = 0;
 	if (pmodRaceEngine)
 	{
 		piRaceEngine = pmodRaceEngine->getInterface<IRaceEngine>();
@@ -164,6 +231,11 @@ main(int argc, char *argv[])
 	
 	if (piUserItf && piRaceEngine)
 	{
+#ifdef __DEBUG_MEMORYMANAGER__
+		// Allow to use Garbage Collection in case of GfuiApp().restart();
+		pApp->ReleaseData = &ReleaseData;
+#endif
+
 		// Enter the user interface.
 		if (piUserItf->activate())
 		{
@@ -185,14 +257,26 @@ main(int argc, char *argv[])
 	// Done with the app instance.
 	const std::string strAppName(pApp->name());
 	delete pApp;
-	
+
  	// That's all (but trace what we are doing).
 	if (piUserItf && piRaceEngine)
 		GfLogInfo("Exiting normally from %s.\n", strAppName.c_str());
 	else
 		std::cerr << "Exiting from " << strAppName
 				  << " after some error occurred (see above)." << std::endl;
-	
+
+	// If defined in tgf.h:
+	// Use new Memory Manager ...
+	#ifdef __DEBUG_MEMORYMANAGER__
+
+	GfMemoryManagerSaveToFile();
+
+	// THIS HAS TO BE THE LAST LINE OF CODE BEFORE RETURN!!!
+	GfMemoryManagerRelease();
+
+	#endif
+	// ... Use new Memory Manager
+
 	return (piUserItf && piRaceEngine) ? 0 : 1;
 }
 

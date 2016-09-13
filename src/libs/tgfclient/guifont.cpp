@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:19:09 CEST 1999
     copyright            : (C) 1999 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: guifont.cpp 4211 2011-11-27 13:57:12Z pouillot $
+    version              : $Id: guifont.cpp 5829 2014-11-12 22:38:12Z wdbee $
  ***************************************************************************/
 
 /***************************************************************************
@@ -61,6 +61,16 @@ void swap32(unsigned int *p, unsigned int size)
 }
 #endif
 #endif
+
+void gfuiFreeFonts(void)
+{
+	GfuiFontClass* font;
+	for ( int I = 0; I < GFUI_FONT_NB; I++)
+	{
+		font = gfuiFont[I];
+		delete font;
+	}
+}
 
 void gfuiLoadFonts(void)
 {
@@ -144,7 +154,7 @@ GfuiFontClass::GfuiFontClass(char *FileName)
 	//fread(font, sizeof(GLFONT), 1, Input);
 	readSize = fread(font, 24, 1, Input); // for IA64...
 	if( readSize <= 0 )
-		GfLogWarning( "Not all bytes are succesfully read" );
+		GfLogWarning( "Not all bytes are successfully read" );
 	//GfLogDebug("Font(%s) : texW=%d, texH=%d\n", FileName, font->TexWidth, font->TexHeight);
 
 #ifndef WIN32
@@ -167,7 +177,7 @@ GfuiFontClass::GfuiFontClass(char *FileName)
     //Read glFont characters
 	readSize = fread(font->Char, sizeof(GLFONTCHAR), Num, Input);
 	if( readSize <= 0 )
-		GfLogWarning( "Not all bytes are succesfully read" );
+		GfLogWarning( "Not all bytes are successfully read" );
 
 #ifndef WIN32
 #if BYTE_ORDER == BIG_ENDIAN
@@ -193,7 +203,7 @@ GfuiFontClass::GfuiFontClass(char *FileName)
 	//Read texture data
 	readSize = fread(TexBytes, sizeof(char), Num, Input);
 	if( readSize < Num )
-		GfLogWarning( "Not all bytes are succesfully read" );
+		GfLogWarning( "Not all bytes are successfully read" );
 
 	fclose(Input);
 

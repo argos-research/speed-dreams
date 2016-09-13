@@ -19,7 +19,7 @@
  *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  *      MA 02110-1301, USA.
  * 
- *      $Id: raceline.cpp 3817 2011-08-17 21:35:38Z kmetykog $
+ *      $Id: raceline.cpp 5880 2014-12-01 16:22:22Z wdbee $
  * 
  */
 
@@ -477,7 +477,7 @@ void LRaceLine::Interpolate(int Step, int rl) {
 void LRaceLine::InitTrack(const tTrack * const track, void **parm_handle,
     const tSituation *s, const double filterSideSkill) {
   min_corner_inverse_ = GfParmGetNum(*parm_handle, KILO_SECT_PRIV,
-                                      KILO_ATT_MINCORNER, NULL, 0.002);
+                                      KILO_ATT_MINCORNER, NULL, 0.002f);
   corner_speed_ = GfParmGetNum(*parm_handle, KILO_SECT_PRIV,
                                       KILO_ATT_CORNERSP, NULL, 15.0);
   avoid_speed_adjust_ = GfParmGetNum(*parm_handle, KILO_SECT_PRIV,
@@ -818,8 +818,8 @@ void LRaceLine::GetPoint(const double offset, const double lookahead,
                           vec2f * const rt) const {
   double dLane = (width_ / 2.0 - offset) / width_;
   vec2f last;
-  last.x = dLane * seg_[this_].txRight + (1.0 - dLane) * seg_[this_].txLeft;
-  last.y = dLane * seg_[this_].tyRight + (1.0 - dLane) * seg_[this_].tyLeft;
+  last.x = (tdble) (dLane * seg_[this_].txRight + (1.0 - dLane) * seg_[this_].txLeft);
+  last.y = (tdble) (dLane * seg_[this_].tyRight + (1.0 - dLane) * seg_[this_].tyLeft);
 
   int ndiv = next_;
   double dLength = 0.0;
@@ -827,8 +827,8 @@ void LRaceLine::GetPoint(const double offset, const double lookahead,
                 * MIN(1.0, MAX(0.8, car_->_speed_x / target_speed_));
   int iLookaheadLimit = static_cast<int>(la / div_length_);
   for (int count = 0; count < iLookaheadLimit && dLength < la; count++) {
-    rt->x = dLane * seg_[ndiv].txRight + (1 - dLane) * seg_[ndiv].txLeft;
-    rt->y = dLane * seg_[ndiv].tyRight + (1 - dLane) * seg_[ndiv].tyLeft;
+    rt->x = (tdble) (dLane * seg_[ndiv].txRight + (1 - dLane) * seg_[ndiv].txLeft);
+    rt->y = (tdble) (dLane * seg_[ndiv].tyRight + (1 - dLane) * seg_[ndiv].tyLeft);
     vec2f d = (*rt) - last;
     dLength += Mag(d.x, d.y);
 

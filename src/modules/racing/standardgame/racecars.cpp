@@ -4,7 +4,7 @@
     created     : Sat Nov 23 09:05:23 CET 2002
     copyright   : (C) 2002 by Eric Espie 
     email       : eric.espie@torcs.org 
-    version     : $Id: racecars.cpp 5734 2013-11-10 00:21:54Z torcs-ng $
+    version     : $Id: racecars.cpp 6363 2016-02-27 18:48:29Z kakukri $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racecars.cpp 5734 2013-11-10 00:21:54Z torcs-ng $
+    @version	$Id: racecars.cpp 6363 2016-02-27 18:48:29Z kakukri $
 */
 
 #include <cstdlib>
@@ -31,6 +31,7 @@
 #include <robot.h>
 #include <robottools.h>
 #include <teammanager.h>
+#include <replay.h>
 
 #include "standardgame.h"
 
@@ -39,6 +40,12 @@
 #include "raceresults.h"
 #include "racecars.h"
 
+int ghostcarActive;
+double ghostcarTimeOffset;
+tReplayElt curGhostcarData, nextGhostcarData;
+#ifdef THIRD_PARTY_SQLITE3
+sqlite3_stmt *ghostcarBlob;
+#endif
 
 /* Compute Pit stop time */
 void
@@ -52,13 +59,15 @@ ReCarsUpdateCarPitTime(tCarElt *car)
 	// GfLogDebug("ReCarsUpdateCarPitTime(%s) : typ=%d, fuel=%f, rep=%d\n",
 	// 		   car->_name, car->_pitStopType, car->_pitFuel, car->_pitRepair);
 
-	switch (car->_pitStopType) {
+    switch (car->_pitStopType)
+    {
 		case RM_PIT_REPAIR:
 			info->totalPitTime = 2.0f + fabs((double)(car->_pitFuel)) / 8.0f + (tdble)(fabs((double)(car->_pitRepair))) * 0.007f;
 			car->_scheduledEventTime = s->currentTime + info->totalPitTime;
 			RePhysicsEngine().reconfigureCar(car);
 
-			for (i=0; i<4; i++) {
+            for (i=0; i<4; i++)
+            {
 				car->_tyreCondition(i) = 1.01f;
 				car->_tyreT_in(i) = 50.0f;
 				car->_tyreT_mid(i) = 50.0f;
@@ -151,7 +160,7 @@ reCarsApplyRaceRules(tCarElt *car)
 {
 	char msg[64];
     tCarPenalty		*penalty;
-    tTrack		*track = ReInfo->track;
+    tTrack          *track = ReInfo->track;
     tRmCarRules		*rules = &(ReInfo->rules[car->index]);
     tTrackSeg		*seg = RtTrackGetSeg(&(car->_trkPos));
     tReCarInfo		*info = &(ReInfo->_reCarInfo[car->index]);
@@ -166,6 +175,7 @@ reCarsApplyRaceRules(tCarElt *car)
 	// to enjoy the landscape.
 	// Also - don't remove cars that are currently being repaired in pits
 	// TODO: Make it configurable.
+
 	if ((car->_curLapTime > 84.5 + ReInfo->track->length/10.0) &&
 	    !(car->_state & RM_CAR_STATE_PIT) &&
 	    (car->_driverType != RM_DRV_HUMAN))
@@ -175,6 +185,105 @@ reCarsApplyRaceRules(tCarElt *car)
 		car->_state |= RM_CAR_STATE_ELIMINATED;
 	    return;
 	}
+
+    if (car->_skillLevel < 5)
+        return;
+
+    // Ignore some rules after the car has finished the race
+    if ((car->pub.state & RM_CAR_STATE_FINISH) == 0)
+    {
+        // If a car hits the track wall the lap time is invalidated, because of tracks where this behaviour allows much faster laps (e.g. alpine-2)
+        // Invalidation and message is just shown on the first hit
+        if (car->_commitBestLapTime && (car->priv.simcollision & SEM_COLLISION_XYSCENE))
+        {
+            if (ReInfo->s->_raceType != RM_TYPE_RACE)
+            {
+                car->_commitBestLapTime = false;
+                snprintf(msg, sizeof(msg), "%s Hit Wall, laptime invalidate", car->_name);
+                msg[sizeof(msg)-1] = 0; // Some snprintf implementations fail to do so.
+                ReSituation::self().setRaceMessage(msg, 5);
+            }
+        }
+    }
+
+    if (car->_skillLevel < 2)
+        return;
+
+    // If the car cuts a corner the lap time is invalidated. Cutting a corner means: the center of gravity is more than 0.7 times the car width
+    // away from the main track segment on the inside of a turn. The rule does not apply on the outside and on straights, pit entry and exit
+    // count as well as track.
+    tTrackSeg *mainseg = car->_trkPos.seg;
+    bool pit = false;
+    tTrackPitInfo pitInfo = track->pits;
+    tdble toborder = 0.0f;
+    tdble minradius = 1.0f;
+
+    if (mainseg->type != TR_STR)
+    {
+        if (track->pits.type == TR_PIT_ON_TRACK_SIDE)
+        {
+            if (pitInfo.pitEntry->id < pitInfo.pitExit->id)
+            {
+                if ((mainseg->id >= pitInfo.pitEntry->id) && (mainseg->id <= pitInfo.pitExit->id))
+                {
+                    pit = true;
+                }
+            } else
+            {
+                if ((mainseg->id >= pitInfo.pitEntry->id) || (mainseg->id <= pitInfo.pitExit->id))
+                {
+                    pit = true;
+                }
+            }
+        }
+
+        if (mainseg->type == TR_LFT)
+        {
+            if (!(pit && (pitInfo.side == TR_LFT)))
+            {
+                toborder = car->_trkPos.toLeft;
+                minradius = mainseg->radiusl;
+            }
+        } else if (mainseg->type == TR_RGT)
+        {
+            if (!(pit && (pitInfo.side == TR_RGT)))
+            {
+                toborder = car->_trkPos.toRight;
+                minradius = mainseg->radiusr;
+            }
+        }
+    }
+
+    tdble cuttinglimit = car->_dimension_y*0.7f;
+    if (toborder < -cuttinglimit)
+    {
+        if (ReInfo->s->_raceType != RM_TYPE_RACE && car->_commitBestLapTime)
+        {
+            car->_commitBestLapTime = false;
+            snprintf(msg, sizeof(msg), "%s Cut corner, laptime invalidated", car->_name);
+            msg[sizeof(msg)-1] = 0; // Some snprintf implementations fail to do so.
+            ReSituation::self().setRaceMessage(msg, 5);
+        }
+
+        if (ReInfo->s->_raceType == RM_TYPE_RACE)
+        {
+            // In race, apply additionally corner cutting time penalty
+            minradius -= cuttinglimit;
+            if (minradius > 1.0f)
+            {
+                car->_commitBestLapTime = false;
+                /* Temporarily replace the message to work around #944
+		snprintf(msg, sizeof(msg), "%s 10s Penalty Time", car->_name);
+		*/
+		snprintf(msg, sizeof(msg), "%s Cut corner, laptime invalidated", car->_name);
+                msg[sizeof(msg)-1] = 0; // Some snprintf implementations fail to do so.
+                ReSituation::self().setRaceMessage(msg, 5);
+                /* Temporarily remove to work around #944
+		reCarsAddPenalty(car, RM_PENALTY_10SEC_STOPANDGO);
+		*/
+            }
+        }
+    }
 
 	// Stop here (no more rules) if not in "Pro" skill level.
 	if (car->_skillLevel < 3)
@@ -190,8 +299,10 @@ reCarsApplyRaceRules(tCarElt *car)
 	//          to avoid doing this again and again as long as the penalty is not cleared
 	//          whereas it's only needed when the penalty reaches the _penaltyList head.
 	penalty = GF_TAILQ_FIRST(&(car->_penaltyList));
-    if (penalty) {
-		switch (penalty->penalty) {
+    if (penalty)
+    {
+        switch (penalty->penalty)
+        {
 			case RM_PENALTY_DRIVETHROUGH:
 				snprintf(car->ctrl.msg[3], RM_CMD_MAX_MSG_SIZE, "Drive-Through Penalty");
 				break;
@@ -213,8 +324,10 @@ reCarsApplyRaceRules(tCarElt *car)
 	}
     
 	// 2) Check if not too late for the 1st penalty if any.
-    if (penalty) {
-		if (car->_laps > penalty->lapToClear) {
+    if (penalty)
+    {
+        if (car->_laps > penalty->lapToClear)
+        {
 			// The penalty was not "executed" : too late to clear => disqualified (out of race)
 			reCarsAddPenalty(car, RM_PENALTY_DISQUALIFIED);
 			GfLogInfo("%s disqualified (penalty not executed after 5 laps).\n", car->_name);
@@ -224,14 +337,18 @@ reCarsApplyRaceRules(tCarElt *car)
 
 	// 3) Check if we can hopefuly clear the penalty because just entered the pit lane.
 	//    (means that we enter the clearing process, but that it may fail ; nothing sure)
-    if (prevSeg->raceInfo & TR_PITSTART) {
+    if (prevSeg->raceInfo & TR_PITSTART)
+    {
 
 		//if (seg->raceInfo & TR_PIT)
 		//	GfLogDebug("%s crossed pit lane entry.\n", car->_name);
-		if (penalty) {
+        if (penalty)
+        {
 			// just entered the pit lane
-			if (seg->raceInfo & TR_PIT) {
-				switch (penalty->penalty) {
+            if (seg->raceInfo & TR_PIT)
+            {
+                switch (penalty->penalty)
+                {
 					case RM_PENALTY_DRIVETHROUGH:
 						snprintf(msg, sizeof(msg), "%s Drive-Through penalty clearing", car->_name);
 						msg[sizeof(msg)-1] = 0; // Some snprintf implementations fail to do so.
@@ -252,13 +369,17 @@ reCarsApplyRaceRules(tCarElt *car)
 		}
 		
 	// 4) If in pit lane for more than 1 segment :
-    } else if (prevSeg->raceInfo & TR_PIT) {
+    } else if (prevSeg->raceInfo & TR_PIT)
+    {
 		
-		if (seg->raceInfo & TR_PIT) {
+        if (seg->raceInfo & TR_PIT)
+        {
 			// 4a) Check if we can go on with clearing the penalty because stopped in pit.
-			if (car->_state & RM_CAR_STATE_PIT) {
+            if (car->_state & RM_CAR_STATE_PIT)
+            {
 				//GfLogDebug("%s is pitting.\n", car->_name);
-				if (rules->ruleState & RM_PNST_STOPANDGO && car->_pitStopType == RM_PIT_STOPANDGO) {
+                if (rules->ruleState & RM_PNST_STOPANDGO && car->_pitStopType == RM_PIT_STOPANDGO)
+                {
 					GfLogInfo("%s Stop-and-Go accepted.\n", car->_name);
 					rules->ruleState |= RM_PNST_STOPANDGO_OK; // Stop-and-Go really done.
 				}
@@ -267,7 +388,8 @@ reCarsApplyRaceRules(tCarElt *car)
 			//GfLogDebug("%s crossing pit lane exit.\n", car->_name);
 			// 4b) Check if the penalty can really and finally be removed because exiting pit lane
 			//     and everything went well in the clearing process til then.
-			if (rules->ruleState & (RM_PNST_DRIVETHROUGH | RM_PNST_STOPANDGO_OK)) {
+            if (rules->ruleState & (RM_PNST_DRIVETHROUGH | RM_PNST_STOPANDGO_OK))
+            {
 				snprintf(msg, sizeof(msg), "%s penalty cleared", car->_name);
 				msg[sizeof(msg)-1] = 0; // Some snprintf implementations fail to do so.
 				ReSituation::self().setRaceMessage(msg, 5);
@@ -280,7 +402,8 @@ reCarsApplyRaceRules(tCarElt *car)
 		} else {
 			// 4c) Exiting pit lane the wrong way : add new stop and go penalty if possible.
 			//GfLogDebug("%s exiting pit lane by a side (bad).\n", car->_name);
-			if (!(rules->ruleState & RM_PNST_STOPANDGO)) {
+            if (!(rules->ruleState & RM_PNST_STOPANDGO))
+            {
 				reCarsAddPenalty(car, RM_PENALTY_STOPANDGO);
 				rules->ruleState = RM_PNST_STOPANDGO;
 				GfLogInfo("%s got a Stop-and-Go penalty (went out the pits at a wrong place).\n",
@@ -296,7 +419,8 @@ reCarsApplyRaceRules(tCarElt *car)
 	// 6) Entering the pits at a wrong place, add new stop and go penalty if possible.
     } else if (seg->raceInfo & TR_PIT) {
 		//GfLogDebug("%s entering pit lane by a side (bad).\n", car->_name);
-		if (!(rules->ruleState & RM_PNST_STOPANDGO)) {
+        if (!(rules->ruleState & RM_PNST_STOPANDGO))
+        {
 			reCarsAddPenalty(car, RM_PENALTY_STOPANDGO);
 			rules->ruleState = RM_PNST_STOPANDGO;
 			GfLogInfo("%s got a Stop-and-Go penalty (went in the pits at a wrong place).\n",
@@ -305,9 +429,11 @@ reCarsApplyRaceRules(tCarElt *car)
     }
 
 	// 7) If too fast in a speed limited section, add new drive-through penalty if possible.
-    if (seg->raceInfo & TR_SPEEDLIMIT) {
+    if (seg->raceInfo & TR_SPEEDLIMIT)
+    {
 		if (!(rules->ruleState & (RM_PNST_OVERSPEED | RM_PNST_STOPANDGO))
-			&& car->_speed_x > track->pits.speedLimit) {
+            && car->_speed_x > track->pits.speedLimit)
+        {
 			rules->ruleState |= RM_PNST_OVERSPEED;
 			reCarsAddPenalty(car, RM_PENALTY_DRIVETHROUGH);
 			GfLogInfo("%s got a Drive-Through penalty (too fast in the pits).\n", car->_name);
@@ -315,8 +441,10 @@ reCarsApplyRaceRules(tCarElt *car)
     }
 
     // Check for jumping starting lights
-    if (ReInfo->s->_raceState & RM_RACE_PRESTART  && car->_speed_x > 1) {
-		if (!(rules->ruleState & (RM_PNST_STOPANDGO))) {
+    if (ReInfo->s->_raceState & RM_RACE_PRESTART  && car->_speed_x > 1)
+    {
+        if (!(rules->ruleState & (RM_PNST_STOPANDGO)))
+        {
 			reCarsAddPenalty(car, RM_PENALTY_STOPANDGO);
 			rules->ruleState = RM_PNST_STOPANDGO;
 			GfLogInfo("%s got a Stop-and-Go penalty (jumped starting lights).\n",
@@ -524,16 +652,18 @@ ReCarsManageCar(tCarElt *car, bool& bestLapChanged)
 	}
 	
 	/* Start Line Crossing */
-	if (info->prevTrkPos.seg != car->_trkPos.seg) {
+    if (info->prevTrkPos.seg != car->_trkPos.seg)
+    {
 		
 		if ((info->prevTrkPos.seg->raceInfo & TR_LAST)
-			&& (car->_trkPos.seg->raceInfo & TR_START)) {
+            && (car->_trkPos.seg->raceInfo & TR_START))
+        {
 			
-			if (info->lapFlag == 0) {
-
+            if (info->lapFlag == 0)
+            {
 				// If the car has not yet finished the race :
-				if (!(car->_state & RM_CAR_STATE_FINISH)) {
-
+                if (!(car->_state & RM_CAR_STATE_FINISH))
+                {
 					// 1 more lap completed
 					// (Note: lap with index 0 finishes when the car crosses the start line the 1st time,
 					//        and is thus considered a real lap, whereas it is not).
@@ -553,48 +683,62 @@ ReCarsManageCar(tCarElt *car, bool& bestLapChanged)
 					}
 					
 					car->_currentSector = 0;
-					if (car->_laps > 1) {
+                    if (car->_laps > 1)
+                    {
 						car->_lastLapTime = s->currentTime - info->sTime;
-						if (car->_bestLapTime != 0) {
+                        if (car->_bestLapTime != 0)
+                        {
 							car->_deltaBestLapTime = car->_lastLapTime - car->_bestLapTime;
 						}
-						if ((car->_lastLapTime < car->_bestLapTime) || (car->_bestLapTime == 0)) {
-							car->_bestLapTime = car->_lastLapTime;
-							memcpy(car->_bestSplitTime, car->_curSplitTime, sizeof(double)*(ReInfo->track->numberOfSectors - 1) );
-							if (s->_raceType != RM_TYPE_RACE && s->_ncars > 1)
-							{
-								/* Best lap time is made better : update times behind leader */
-								bestLapChanged = true;
-								car->_timeBehindLeader = car->_bestLapTime - s->cars[0]->_bestLapTime;
-								if (car->_pos > 1)
-								{
-									car->_timeBehindPrev = car->_bestLapTime - s->cars[car->_pos - 1]->_bestLapTime;
-								}
-								else
-								{
-									/* New best time for the leader : update the differences */
-									for (xx = 1; xx < s->_ncars; ++xx)
-									{
-										if (s->cars[xx]->_bestLapTime > 0.0f)
-											s->cars[xx]->_timeBehindLeader = s->cars[xx]->_bestLapTime - car->_bestLapTime;
-									}
-								}
-								if (car->_pos + 1 < s->_ncars && s->cars[car->_pos+1]->_bestLapTime > 0.0f)
-									car->_timeBeforeNext = s->cars[car->_pos + 1]->_bestLapTime - car->_bestLapTime;
-								else
-									car->_timeBeforeNext = 0;
-							}
-						}
-					}
-					if (car->_laps > 0) {
+
+                        if ((car->_lastLapTime < car->_bestLapTime) || (car->_bestLapTime == 0))
+                        {
+                            if (car->_commitBestLapTime)
+                            {
+                                car->_bestLapTime = car->_lastLapTime;
+                                car->_bestLap = car->_laps - 1;
+                                memcpy(car->_bestSplitTime, car->_curSplitTime, sizeof(double)*(ReInfo->track->numberOfSectors - 1) );
+
+                                if (s->_raceType != RM_TYPE_RACE && s->_ncars > 1)
+                                {
+                                    /* Best lap time is made better : update times behind leader */
+                                    bestLapChanged = true;
+                                    car->_timeBehindLeader = car->_bestLapTime - s->cars[0]->_bestLapTime;
+                                    if (car->_pos > 1)
+                                    {
+                                        car->_timeBehindPrev = car->_bestLapTime - s->cars[car->_pos - 1]->_bestLapTime;
+                                    }
+                                    else
+                                    {
+                                        /* New best time for the leader : update the differences */
+                                        for (xx = 1; xx < s->_ncars; ++xx)
+                                        {
+                                            if (s->cars[xx]->_bestLapTime > 0.0f)
+                                                s->cars[xx]->_timeBehindLeader = s->cars[xx]->_bestLapTime - car->_bestLapTime;
+                                        }
+                                    }
+                                    if (car->_pos + 1 < s->_ncars && s->cars[car->_pos+1]->_bestLapTime > 0.0f)
+                                        car->_timeBeforeNext = s->cars[car->_pos + 1]->_bestLapTime - car->_bestLapTime;
+                                    else
+                                        car->_timeBeforeNext = 0;
+                                }
+                            }
+                        }
+
+                        car->_commitBestLapTime = true;
+                    }
+                    if (car->_laps > 0)
+                    {
 						car->_curTime += s->currentTime - info->sTime;
 						
-						if (car->_pos != 1 && s->_raceType == RM_TYPE_RACE) {
+                        if (car->_pos != 1 && s->_raceType == RM_TYPE_RACE)
+                        {
 							car->_timeBehindLeader = car->_curTime - s->cars[0]->_curTime;
 							car->_lapsBehindLeader = s->cars[0]->_laps - car->_laps;
 							car->_timeBehindPrev = car->_curTime - s->cars[car->_pos - 2]->_curTime;
 							s->cars[car->_pos - 2]->_timeBeforeNext = car->_timeBehindPrev;
-						} else if (s->_raceType == RM_TYPE_RACE) {
+                        } else if (s->_raceType == RM_TYPE_RACE)
+                        {
 							car->_timeBehindLeader = 0;
 							car->_lapsBehindLeader = 0;
 							car->_timeBehindPrev = 0;
@@ -627,11 +771,14 @@ ReCarsManageCar(tCarElt *car, bool& bestLapChanged)
 	
 					info->topSpd = car->_speed_x;
 					info->botSpd = car->_speed_x;
-					if ((car->_remainingLaps < 0 && s->currentTime > s->_totTime) || (s->_raceState == RM_RACE_FINISHING)) {
+                    if ((car->_remainingLaps < 0 && s->currentTime > s->_totTime) || (s->_raceState == RM_RACE_FINISHING))
+                    {
 						car->_state |= RM_CAR_STATE_FINISH;
 						s->_raceState = RM_RACE_FINISHING;
-						if (ReInfo->s->_raceType == RM_TYPE_RACE) {
-							if (car->_pos == 1) {
+                        if (ReInfo->s->_raceType == RM_TYPE_RACE)
+                        {
+                            if (car->_pos == 1)
+                            {
 								snprintf(msg, sizeof(msg), "Winner %s", car->_name);
 								msg[sizeof(msg)-1] = 0; // Some snprintf implementations fail to do so.
 								ReSituation::self().setRaceMessage(msg, 10, /*big=*/true);
@@ -641,8 +788,10 @@ ReCarsManageCar(tCarElt *car, bool& bestLapChanged)
 								}
 							} else {
 								const char *numSuffix = "th";
-								if (abs(12 - car->_pos) > 1) { /* leave suffix as 'th' for 11 to 13 */
-									switch (car->_pos % 10) {
+                                if (abs(12 - car->_pos) > 1)        /* leave suffix as 'th' for 11 to 13 */
+                                {
+                                    switch (car->_pos % 10)
+                                    {
 										case 1:
 											numSuffix = "st";
 											break;
@@ -671,18 +820,48 @@ ReCarsManageCar(tCarElt *car, bool& bestLapChanged)
 				} else {
 					// Prevent infinite looping of cars around track,
 					// allowing one lap after finish for the first car, but no more
-					for (i = 0; i < s->_ncars; i++) {
+                    for (i = 0; i < s->_ncars; i++)
+                    {
 						s->cars[i]->_state |= RM_CAR_STATE_FINISH;
 					}
 					return;
 				}
 
+#if 0 //def THIRD_PARTY_SQLITE3
+				// Re-read the best lap for ghostcar
+				if (replayDB != NULL && car->_bestLap) {
+					char command[200];
+					int result;
+
+					GfLogInfo("Re-reading best lap\n");
+					sprintf(command, "SELECT datablob FROM car0 where lap=%d", car->_bestLap);
+					result = sqlite3_prepare_v2(replayDB, command, -1, &ghostcarBlob, 0);
+
+					if (result) {
+						GfLogInfo("Unable to read ghostlap %d: %s\n", car->_bestLap, sqlite3_errmsg(replayDB));
+					} else {
+						// read the first 2 records
+						result = sqlite3_step(ghostcarBlob);
+						if (result == SQLITE_ROW) {
+							memcpy(&curGhostcarData, sqlite3_column_blob(ghostcarBlob, 0), sizeof(tReplayElt));
+						}
+						result = sqlite3_step(ghostcarBlob);
+						if (result == SQLITE_ROW) {
+							memcpy(&nextGhostcarData, sqlite3_column_blob(ghostcarBlob, 0), sizeof(tReplayElt));
+						}
+
+						ghostcarTimeOffset = s->currentTime - curGhostcarData.currentTime;
+						ghostcarActive = 1;
+					}
+				}
+#endif
 			} else {
 				info->lapFlag--;
 			}
 		}
 		if ((info->prevTrkPos.seg->raceInfo & TR_START)
-			&& (car->_trkPos.seg->raceInfo & TR_LAST)) {
+            && (car->_trkPos.seg->raceInfo & TR_LAST))
+        {
 			/* going backward through the start line */
 			info->lapFlag++;
 		}

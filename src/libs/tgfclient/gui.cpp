@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:01:33 CEST 1999
     copyright            : (C) 1999 by Eric Espie                         
     email                : torcs@free.fr   
-    version              : $Id: gui.cpp 5108 2013-01-25 20:47:12Z torcs-ng $                                  
+    version              : $Id: gui.cpp 6285 2015-11-28 18:30:04Z beaglejoe $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,10 +19,9 @@
 /** @file
     		This API is used to manage all the menu screens.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: gui.cpp 5108 2013-01-25 20:47:12Z torcs-ng $
+    @version	$Id: gui.cpp 6285 2015-11-28 18:30:04Z beaglejoe $
     @ingroup	gui
 */
-
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -42,6 +41,15 @@
 #include "guimenu.h"
 #include "musicplayer.h"
 
+#ifdef WIN32
+PFNGLUSEPROGRAMOBJECTARBPROC glUseProgram = NULL;
+PFNGLACTIVETEXTUREARBPROC   glActiveTextureARB ;
+#endif
+
+
+#if SDL_MAJOR_VERSION >= 2
+SDL_Window* 	GfuiWindow = NULL;
+#endif
 
 tGfuiScreen	*GfuiScreen;	/* current screen */
 static int	GfuiMouseVisible = 1;
@@ -118,13 +126,18 @@ gfuiInit(void)
 	gfuiInitMenu();
 	initMusic();
 
-	//gfctrlJoyInit(); // Not here ; done later on the fly, when really needed.
+#ifdef WIN32
+	glUseProgram = (PFNGLUSEPROGRAMOBJECTARBPROC)wglGetProcAddress("glUseProgram");
+    glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC)wglGetProcAddress("glActiveTextureARB");
+#endif
+	gfctrlJoyInit(); // Not here ; done later on the fly, when really needed.
 }
 
 void
 gfuiShutdown(void)
 {
 	gfctrlJoyShutdown();
+	gfuiFreeFonts();
 	shutdownMusic();
 }
 
@@ -251,6 +264,8 @@ GfuiRedraw(void)
 {
 	tGfuiObject	*curObj;
 	
+	glUseProgram(0);
+	glActiveTextureARB(GL_TEXTURE0);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
@@ -267,6 +282,10 @@ GfuiRedraw(void)
 	gluOrtho2D(0, GfuiScreen->width, 0, GfuiScreen->height);
 	glMatrixMode(GL_MODELVIEW);  
 	glLoadIdentity();
+	glMatrixMode(GL_TEXTURE);  
+	glLoadIdentity();
+	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+	
 	
 	if (GfuiScreen->bgColor.alpha != 0.0) {
 		glClearColor(GfuiScreen->bgColor.red,
@@ -275,7 +294,7 @@ GfuiRedraw(void)
 			     GfuiScreen->bgColor.alpha);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
-	
+
 	// Display backround image if any.
 	if (GfuiScreen->bgImage) {
 
@@ -283,9 +302,12 @@ GfuiRedraw(void)
 		glDisable(GL_BLEND);
 		glEnable(GL_TEXTURE_2D);
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
+
 		glColor3f(gfuiColors[GFUI_BASECOLORBGIMAGE][0], 
 				  gfuiColors[GFUI_BASECOLORBGIMAGE][1],
 				  gfuiColors[GFUI_BASECOLORBGIMAGE][2]);
+
 		glBindTexture(GL_TEXTURE_2D, GfuiScreen->bgImage);
 
 		// Get real 2^N x 2^P texture size (may have been 0 padded at load time
@@ -325,6 +347,7 @@ GfuiRedraw(void)
 		}
 
 		// Display texture.
+
 		glBegin(GL_QUADS);
 
 		glTexCoord2f(tx1, ty1); glVertex3f(0.0, 0.0, 0.0);
@@ -334,6 +357,8 @@ GfuiRedraw(void)
 
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
+		
+
 		glEnable(GL_BLEND);
 	}
 	
@@ -426,13 +451,18 @@ gfuiKeyboardDown(int key, int modifier, int /* x */, int /* y */)
 		do 
 		{
 			curKey = curKey->next;
-
 			// Ignore Shift modifier when printable unicode,
 			// as the unicode generator already took care of it.
 			if (curKey->key == key
 				&& (curKey->modifier == modifier
+#if SDL_MAJOR_VERSION < 2
 					|| (curKey->modifier == (modifier & (~GFUIM_SHIFT))
-						&& key >= ' ' && key <= 'z')))
+						&& key >= ' ' && key <= 'z')
+#else
+				|| (curKey->modifier == (modifier & (~GFUIM_SHIFT))
+					&& isprint(key))
+#endif
+				))
 			{
 				if (curKey->onPress)
 					curKey->onPress(curKey->userData);
@@ -506,7 +536,11 @@ void GfuiMouseSetPos(int x, int y)
 {
 	if (GfuiScreen)
 	{
+#if SDL_MAJOR_VERSION >= 2
+		SDL_WarpMouseInWindow(GfuiWindow, x,y);
+#else
 		SDL_WarpMouse(x,y);
+#endif
 		GfuiMouse.X = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
 		GfuiMouse.Y = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
 	}
@@ -522,7 +556,11 @@ gfuiMouseButton(int button, int state, int x, int y)
 		GfuiMouse.X = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
 		GfuiMouse.Y = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
 
+#if SDL_MAJOR_VERSION >= 2
+		if (button == SDL_MOUSEWHEEL) {
+#else
 		if (button == SDL_BUTTON_WHEELUP || button == SDL_BUTTON_WHEELDOWN) {
+#endif
 			// Up/down happens very quickly, leaving no time for the system to see them 
 			// this just toggle every down event
 			if (state == SDL_PRESSED) {
@@ -582,6 +620,17 @@ GfuiScreenIsActive(void *screen)
 	return GfuiScreen == screen;
 }
 
+/** Get the screen.
+    @ingroup	gui
+    @param	
+    @return	screen handle.
+ */
+void*
+GfuiGetScreen(void)
+{
+	return GfuiScreen;
+}
+
 /** Activate a screen and make it current.
     @ingroup	gui
     @param	screen	Screen to activate
@@ -604,10 +653,17 @@ GfuiScreenActivate(void *screen)
 	GfuiApp().eventLoop().setMousePassiveMotionCB(gfuiMousePassiveMotion);
 	GfuiApp().eventLoop().setRecomputeCB(0);
 
+#if SDL_MAJOR_VERSION < 2
 	if (GfuiScreen->keyAutoRepeat)
 		SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 	else
 		SDL_EnableKeyRepeat(0, 0);
+//#else
+#if SDL_JOYSTICK
+	GfuiApp().eventLoop().setJoystickAxisCB(GfctrlJoySetAxis);
+	GfuiApp().eventLoop().setJoystickButtonCB(GfctrlJoySetButton);
+#endif
+#endif
 
 	if (GfuiScreen->onlyCallback == 0) 
 	{
@@ -644,7 +700,7 @@ GfuiScreenReplace(void *screen)
 	tGfuiScreen	*oldScreen = GfuiScreen;
 
 	if (oldScreen) 
-		GfuiScreenRelease(oldScreen);
+//		GfuiScreenRelease(oldScreen);
 	GfuiScreenActivate(screen);
 }
 
@@ -704,6 +760,8 @@ GfuiScreenCreate(float *bgColor,
 	
 	screen->keyAutoRepeat = 1; // Default key auto-repeat on.
  
+	RegisterScreens(screen);
+
 	return (void*)screen;
 }
 
@@ -720,6 +778,8 @@ GfuiScreenRelease(void *scr)
 	tGfuiKey *curKey;
 	tGfuiKey *nextKey;
 	tGfuiScreen *screen = (tGfuiScreen*)scr;
+
+	UnregisterScreens(screen);
 
 	if (GfuiScreen == screen) {
 		GfuiScreenDeactivate();
@@ -770,6 +830,8 @@ GfuiHookCreate(void *userDataOnActivate, tfuiCallback onActivate)
 	screen->onActivate = onActivate;
 	screen->userActData = userDataOnActivate;
 	screen->onlyCallback = 1;
+
+	RegisterScreens(screen);
 	
 	return (void*)screen;
 }
@@ -781,6 +843,7 @@ GfuiHookCreate(void *userDataOnActivate, tfuiCallback onActivate)
 void
 GfuiHookRelease(void *hook)
 {
+	UnregisterScreens(hook);
 	free(hook);
 }
 
@@ -1010,6 +1073,80 @@ GfuiAddKey(void *scr, int key, int modifier, const char *descr, void *userData,
 	}
 }
 
+/** Remove a Keyboard shortcut from the screen 
+	 @ingroup	gui
+	 @param	scr		Target screen
+	 @param	key		Key code : the ASCII code when possible (for 'a', '_', '[' ...), or else the tgfclient::GFUIK_* value for special keys) ; Always in [0, GFUIK_MAX]
+	 @param	modifier	Key modifiers (GFUIM_NONE or GFUIM_XX|GFUIM_YY|...)
+	 @param	descr		Description for help screen
+	 @return	true for success false if key not found
+ */
+ bool 
+GfuiRemoveKey(void *scr, int key, const char *descr)
+ {
+	 return GfuiRemoveKey(scr, key, GFUIM_NONE, descr);
+ }
+
+bool 
+GfuiRemoveKey(void *scr, int key, int modifier, const char *descr)
+{
+	bool bFound = false;
+
+	tGfuiScreen* screen = (tGfuiScreen*)scr;
+	if ((screen)&&(screen->userKeys))
+	{
+		tGfuiKey* prevKey = screen->userKeys;
+		tGfuiKey* checkKey = screen->userKeys;
+		do
+		{
+			// Try to find the key: the key, modifier, and description (descr) MUST match
+			if (checkKey->key == key && checkKey->modifier == modifier)
+			{
+				// if there are descriptions then they MUST match
+				if ((checkKey->descr) && (descr))
+				{
+					if (0 != strncmp(descr,checkKey->descr,strlen(descr)))
+					{
+						continue;
+					}
+				}
+
+				bFound = true;
+
+				// unlink the removed key
+				prevKey->next = checkKey->next;
+				
+				// First key in list
+				if (prevKey == screen->userKeys)
+				{
+					// only one key in list: set list to null
+					if (screen->userKeys == screen->userKeys->next)
+					{
+						screen->userKeys = 0;
+					}
+					else
+					{
+						// Goto the end of the list and set end->next to the new head of the list
+						tGfuiKey* lastKey = screen->userKeys;
+						while(lastKey->next != screen->userKeys)
+						{
+							lastKey = lastKey->next;
+						}
+						lastKey->next = screen->userKeys = prevKey->next;
+					}
+				}
+
+				// free the memory used by the removed key
+				FREEZ(checkKey->name);
+				FREEZ(checkKey->descr);
+				FREEZ(checkKey);
+				break;
+			}
+		} while (prevKey = checkKey,(checkKey = checkKey->next) != screen->userKeys);
+	}
+	return bFound;
+}
+
 /** Enable/disable the key auto-repeat for the given screen.
     @ingroup	screen
     @param	scr		Screen
@@ -1108,14 +1245,24 @@ GfuiInitWindowPositionAndSize(int x, int y, int w, int h)
 	// No need to resize, already done when setting the video mode.
 	SDL_SysWMinfo wmInfo;
 	SDL_VERSION(&wmInfo.version);
-	if (SDL_GetWMInfo(&wmInfo))
-	{
+#if SDL_MAJOR_VERSION >= 2
+	if (SDL_GetWindowWMInfo(GfuiWindow, &wmInfo)) {
+#else
+	if (SDL_GetWMInfo(&wmInfo)) {
+#endif
 #ifdef WIN32
+#if SDL_MAJOR_VERSION >= 2
+		SetWindowPos(wmInfo.info.win.window, HWND_TOP, x, y, 0, 0, SWP_NOSIZE);
+#else
 		SetWindowPos(wmInfo.window, HWND_TOP, x, y, 0, 0, SWP_NOSIZE);
+#endif
 #else
 		// TODO.
 		GfLogWarning("GfuiInitWindowPositionAndSize not yet implemented under non-Windows OSes\n");
 #endif // WIN32
+	}
+	else{
+		GfLogWarning("SDL_GetWindowWMInfo() failed: SDL_GetError() returns: %s\n", SDL_GetError());
 	}
 }
 
@@ -1127,5 +1274,9 @@ GfuiInitWindowPositionAndSize(int x, int y, int w, int h)
 void 
 GfuiSwapBuffers(void)
 {
+#if SDL_MAJOR_VERSION >= 2
+	SDL_GL_SwapWindow(GfuiWindow);
+#else
 	SDL_GL_SwapBuffers();
+#endif
 }

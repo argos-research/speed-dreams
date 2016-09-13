@@ -1,18 +1,17 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitstrategy.cpp
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
-// A robot for Speed Dreams-Version 1.4.0/2.X
+// A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Pitstop strategy
 // Boxenstop-Strategie
 // 
 // File         : unitstrategy.cpp
 // Created      : 2007.02.20
-// Last changed : 2013.06.25
-// Copyright    : © 2007-2013 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 4.00.002
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // Teile diese Unit basieren auf dem erweiterten Robot-Tutorial bt
 //
@@ -22,7 +21,7 @@
 // dem Roboter delphin
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // und dem Roboter mouse_2006
 //    Copyright: (C) 2006 Tim Foden
@@ -60,6 +59,8 @@ const float TSimpleStrategy::cMAX_FUEL_PER_METER = 0.0008f;
 const int TSimpleStrategy::cPIT_DAMMAGE = 5000;
 const short int NEEDED_MAJOR_VERSION = 1;
 const short int NEEDED_MINOR_VERSION = 1;
+static const char *WheelSect[4] = 
+{SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
 //==========================================================================*
 
 //==========================================================================*
@@ -99,6 +100,11 @@ void TSimpleStrategy::Init(TDriver *Driver)
 {
   oDriver = Driver;
   oPit = new TPit(Driver);
+
+  oTireLimitFront = oDriver->TyreTreadDepthFront();
+  oTireLimitRear = oDriver->TyreTreadDepthRear();
+  oDegradationPerLap = 0.0;
+  oLaps = 0;
 }
 //==========================================================================*
 
@@ -109,9 +115,11 @@ bool TSimpleStrategy::IsPitFree()
 {
     bool IsFree = RtTeamIsPitFree(oDriver->TeamIndex());
 	if (IsFree)
-		LogSimplix.debug("#%s pit is free (%d)\n",oDriver->GetBotName(),oDriver->TeamIndex());
+		LogSimplix.debug("#%s pit is free (%d)\n",
+		  oDriver->GetBotName(),oDriver->TeamIndex());
 	else
-		LogSimplix.debug("#%s pit is locked (%d)\n",oDriver->GetBotName(),oDriver->TeamIndex());
+		LogSimplix.debug("#%s pit is locked (%d)\n",
+		  oDriver->GetBotName(),oDriver->TeamIndex());
     return IsFree;
 }
 //==========================================================================*
@@ -127,7 +135,31 @@ bool TSimpleStrategy::NeedPitStop()
   else                                           // If known
     FuelConsum = oFuelPerM;                      //   use it
 
-  bool Result = RtTeamNeedPitStop(oDriver->TeamIndex(), FuelConsum, RepairWanted(cPIT_DAMMAGE));
+  bool Result = RtTeamNeedPitStop(oDriver->TeamIndex(), 
+	  FuelConsum, RepairWanted(cPIT_DAMMAGE));
+
+  if (oDriver->oCarHasTYC)
+  {
+	double TdF = oDriver->TyreTreadDepthFront(); // Check tyre condition
+	double TdR = oDriver->TyreTreadDepthRear();  // Pit stop needed if
+	oDegradationPerLap = (oLaps * oDegradationPerLap 
+	  + MAX(oTireLimitFront - TdF,oTireLimitRear - TdR));
+	oDegradationPerLap /= ++oLaps;
+
+	if (MIN(TdF,TdR) < 1.5 * oDegradationPerLap) // tyres become critical
+	{
+		LogSimplix.warning("Tyre condition D: %.1f%% F: %.1f%% R: %.1f%% (%s)\n",
+	    oDegradationPerLap,TdF,TdR,oDriver->GetBotName());
+
+	  if ((TdF < 1.1 * oDegradationPerLap) 
+		|| (TdR < 1.1 * oDegradationPerLap))
+	  {
+        Result = true;                           //   to stop in pit
+	  }
+	}
+	oTireLimitFront = TdF;
+	oTireLimitRear = TdR;
+  }
 
   if (oDriver->oTestPitStop)                     // If defined, try
     Result = true;                               //   to stop in pit

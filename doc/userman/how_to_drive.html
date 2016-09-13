@@ -3,7 +3,7 @@
 	created     : Fri Aug  12 13:39:11 CET 2005
 	copyright   : (C) 2005 Eric Espie, 2009 The Speed Dreams Team
 	web         : speed-dreams.sourceforge.net
-	version     : $Id: how_to_drive.html 2925 2010-10-17 19:17:45Z pouillot $
+	version     : $Id: how_to_drive.html 6377 2016-02-29 16:23:05Z beaglejoe $
 
 	Permission is granted to copy, distribute and/or modify this document
 	under the terms of the GNU Free Documentation License, Version 1.2
@@ -15,16 +15,12 @@
 	<h1>I want to drive !</h1>
 	
 	<p>
-		Here is the manual for the players who want to drive in Speed Dreams <b>1.4.0</b>.
+		Here is the manual for the players who want to drive in Speed Dreams <b>2.2.0</b>.
 	</p>
 	
 	<p>
-		Note: The following screenshots may appear slightly different from what you'll really get ; they were actually shot for the 1.4.0-beta1, and some details have changed since then in the buttons shape, colors and highlight effects ; definitely nothing bad ;-)
-	</p>
-	
-	<p>
-		First of all you should install and run Speed Dreams ; for that, please read see the
-		INSTALL file <a href="http://speed-dreams.svn.sourceforge.net/viewvc/speed-dreams/tags/1.4.0">here</a>.
+		First of all you should install and run Speed Dreams ; for that, please read the
+		INSTALL file <a href="http://sourceforge.net/p/speed-dreams/code/HEAD/tree/tags/2.2.0/INSTALL.txt">here</a>.
 	</p>
 	
 	<p>
@@ -55,12 +51,12 @@
 	</p>
 	
 	<p>
-		Wait ! A last but important tip : never forget to hit the F1 key if you need help
-		about the available keyboard shortcuts in the current menu ...
+		Wait ! A last but important tip : you can always hit the F1 key if you need help
+		about the available keyboard shortcuts for the current menu ...
 	</p>
 	
 	<p>
-		You first need to configure a "human player" in order to choose you car and control device(s) : 
+		You first need to configure a "human player" in order to choose your car and control device(s) : 
 		go to the Player Configuration menu.
 	</p>
 	
@@ -72,9 +68,9 @@
 		To select a player to configure, click in the "Players" list box on one player's name. 
 		You can also :
 		<ul>
-			<li>create a new player through the New button under the list box (all default settings),</li>
-			<li>copy the selected one with the Copy button (all his settings will be copied, you'll then need to give him a new name),</li>
-			<li>delete the selected one with the Delete button.</li>
+			<li>create a new player through the New button (+ icon) under the list box (all default settings),</li>
+			<li>copy the selected one with the Copy button (two pages icon) (all his settings will be copied, you'll then need to give him a new name),</li>
+			<li>delete the selected one with the Delete button (trash can icon).</li>
 		</ul>
 	</p> 
 	
@@ -91,39 +87,29 @@
 	</p>
 		<img src="images/playerconfig-editname.jpg">
 	<p>
-		Tip: If you do not want to come back later to change the car / control settings,
-		create here multiple players with different cars / control settings ...
+		Tip: If you do not want to come back later to change the control settings,
+		create here multiple players with different control settings ...
 	</p>
 	
 	<p>
 		This configuration screen is also used to:
 		<ul>
-			<li>Select the player's car:
-				<ol>
-					<li>First select the car's category you want:
-						<ul>
-							<li><b>36 GP</b>: These terrible Grand-Prix cars of the thirties</li>
-							<li><b>Supercars</b>: The ones you dream of, in their unmodified version</li>
-							<li><b>TRB1</b>: The Speed Dreams setups of the well known GTs from Torcs</li>
-							<li><b>LS-GT1</b>: The future awesome Speed Dreams GT1 series</li>
-						</ul>
-					</li>
-					<li>Then select your car within the category.</li>
-				</ol>
-			</li>
-			<li>Select the transmission mode (automatic, sequential or grid)</li>
+			<li>Select the transmission mode (automatic, sequential, grid or hbox)</li>
 				<ul>
 					<li><b>automatic</b>: Just throttle down or brake, the computer takes car of the gears</li>
 					<li><b>sequential</b>: Shift up and down like in a F1 car</li>
-					<li><b>grid</b>: Enjoy the good old grid shifter, like grand father's</li>
+					<li><b>grid</b>: Enjoy the good old grid shifter, like grandfather's</li>
+					<li><b>hbox</b>: standard shifter</li>
 				</ul>
 			<li>Program the number of pit stops you want for the race, so the initial fuel amount is adjusted accordingly.</li>
 			<li>Change the player's skill level:
 				<ul>
-					<li><b>Rookie</b>: No damages (0%),  high traction (+40%)</li>
-					<li><b>Amateur</b>: Small damages (50%),  high traction (+35%)</li>
-					<li><b>Semi-Pro</b>: Medium damages (80%), medium traction (+30%)</li>
-					<li><b>Pro</b>: High damages (100%), low traction (+0%)</li>
+					<li><b>Arcade</b>: No damages (0%),  high traction (+40%)</li>
+					<li><b>Semi-Rookie</b>: Tiny damages (10%),  high traction (+30%)</li>
+					<li><b>Rookie</b>: Small damages (30%),  high traction (+20%)</li>
+					<li><b>Amateur</b>: Medium damages (50%),  high traction (+10%)</li>
+					<li><b>Semi-Pro</b>: High damages (80%), medium traction (+0%)</li>
+					<li><b>Pro</b>: Full damages (100%), low traction (+0%)</li>
 				</ul>
 			</li>
 			<li>Select the auto reverse function (engage automatically the reverse gear when the car is stopped and you continue to brake).</li>
@@ -136,7 +122,7 @@
 	<h1>Player's Control Configuration</h1>
 	
 	<p>
-		To configure the controls click on the "Controls" button
+		To configure the controls click on the "Controls" button.
 	</p>
 	
 	<p>
@@ -194,11 +180,11 @@
 	</p>
 	
 	<p>
-		Then you probably want to calibrate the relevant axes, if any specified.
+		Then you probably want to calibrate the relevant axes, if any were specified.
 	</p>
 	
 	<p>
-		Note: Of course, the "Calibrate" will only appear if you selected a mouse
+		Note: Of course, the "Calibrate" button will only appear if you have selected a mouse
 		or joystick axis.
 	</p>
 	
@@ -215,7 +201,7 @@
 	</p>
 	
 	<p>
-		The calibration screen is a bit different when you choosed the mouse.
+		The calibration screen is a bit different when you choose the mouse.
 	</p>
 	
 	<p>
@@ -226,8 +212,7 @@
 		Note: If you selected at least one mouse axis and one joystick axis in the Control Configuration menu, don't be surprised if the mouse and then the joystick calibration menus appear one after the other : you actually need to calibrate the two devices.
 	</p>
 	<p>
-		When the calibration is done, press the "Next" button 
-		(yes, the screenshot showes a "Back" one, but it is not totally up-to-date ;-).
+		When the calibration is done, press the "Done" button. 
 		If something went wrong during the calibration process for a device, don't panic, 
 		use the "reset" button to start over the calibration for this device.
 	</p>
@@ -268,9 +253,15 @@
 	</p>
 	
 	<p>
-		You can adjust the screen / window resolution, the colour depth,
-		the display mode (windowed or fullscreen), the video initialization mode
-		("compatible" normally works, while best may produce odd graphic effects ...).
+		Here you can adjust:
+		<ul>
+			<li>window resolution </li>
+			<li>the colour depth</li>
+			<li>the display mode (windowed or fullscreen)</li>
+			<li>the video modes detection (auto or manual) ("auto" populates the window size choices as reported by SDL, "manual" populates the window size choices from an internal list)</li>
+			<li>the video initialization mode
+		("compatible" normally works, while "best possible" will try to configure OpenGL options for the best graphics (this may produce odd graphic effects or poor performance)</li>
+		</ul>
 	</p>
 	<p>
 		<img src="images/display-accept.jpg">
@@ -283,7 +274,7 @@
 	<p>
 		<b>Note:</b> If the program does not restart with the parameters you have chosen, 
 		don't panic, just edit the "screen.xml" file and reset the values 
-		to a more conservative choice (this file is normally located in ~/.speed-dreams/config under Unixes, or <My documents>/speed-dreams.settings/config under Windows).
+		to a more conservative choice (this file is normally located in ~/.speed-dreams-2/config under Unixes, or <My Documents>/speed-dreams-2.settings/config under Windows).
 	</p>
 	
 	<p>
@@ -300,7 +291,7 @@
 	</p>
 	
 	<p>
-        The Graphic parameters are located in the "Graphic" menu
+        The Graphic parameters are located in the "Graphics" menu
     </p>
 	<p>
 		<img src="images/options-graphic.jpg">
@@ -308,20 +299,33 @@
 	
 	<p>The following parameters are customisable:</p>
 	    <ul>
-	        <li><b>Visibility</b>: The depth of view factor (> 0), you can go beyond 100%</li>
+	        <li><b>Visibility</b>: The depth of view factor (> 0) when Sky dome is disabled, you can go beyond 100%</li>
 	        <li><b>Smoke</b>: The number of smokes per car (>= 0)</li>
 	        <li><b>Skid Marks</b>: The number of skid marks per car (>= 0)</li>
 	        <li><b>LOD Factor</b>: The cars LOD (Level Of Detail) threshold (>= 0.0)</li>
+	        <li><b>Sky dome distance</b>: The distance where our dynamic sky is drawn, set it 0 to disable it and use a simple background image for sky</li>
 	    </ul>
 	<p>
-        As a general rule for all these parameters, greater values will need a more powerfull system :
-        play a little to find the ones that fit best your hardware</p>
+        As a general rule for all these parameters, greater values will need a more powerful system :
+        play a little to find the ones that best fit your hardware.</p>
 	<p>
 		<img src="images/graphic-accept.jpg">
 	</p>
-	
+		<p>
+        Even more Graphic parameters are located in the "Advanced Graphics" menu.
+    </p>
 	<p>
-		The Open GL settings can be changed in the "Open GL" menu
+		<img src="images/options-advanced-graphics.jpg">
+	</p>
+
+   	<p>
+        Again, you may want to experiment a little to find the ones that best fit your hardware.</p>
+	<p>
+		<img src="images/advanced-graphic-accept.jpg">
+	</p>
+
+	<p>
+		The Open GL settings can be changed in the "Open GL" menu.
 	</p>
 	
 	<p>
@@ -329,15 +333,22 @@
 	</p>
 	
 	<p>
-		You can enable or disable the texture compresssion if your hardware supports it
-		and adjust the maximum texture size (as the number of pixels for each side of a square).
+		You can enable or disable the texture compresssion, 
+		adjust the maximum texture size (as the number of pixels for each side of a square), 
+		enable or disable multi-texturing, set your anti-aliasing number, bump mapping, and anisotropic filtering level.
+		Only the options supported by your hardware can be changed.
+		In the last row you can switch between graphic engines:
+		<ul>
+	        <li><b>ssggraph</b>: Our old and tested graphic engine, this is the default</li>
+	        <li><b>OsgGraph</b>: Our experimental new graphic engine for the adventurous, it is not yet feature-full</li>
+	    </ul>
 	</p>
 	<p>
 		<img src="images/opengl-accept.jpg">
 	</p>
 	
 	<p>
-		The Sound parameters can be changed in the "Sound" menu
+		The Sound parameters can be changed in the "Sound" menu.
 	</p>
 	
 	<p>
@@ -346,16 +357,17 @@
 	
 	<p>
 		You can disable in-game sound, or select the OpenAL or PLib backend
-		(OpenAL generaly gives a better 16 bits sound ; choose PLib if OpenAL doesn't work
+		(OpenAL generally gives better 16 bits sound ; choose PLib if OpenAL doesn't work
         or according to your taste).
 		You can also adjust the master volume (from 0 to 100% of the current OS level).
+		You can also enable or disable menu music and set its volume.
 	</p>
 	<p>
 		<img src="images/sound-accept.jpg">
 	</p>
 	
 	<p>
-		The Simulation Engine settings can be changed in the "Simulation" menu
+		The Simulation Engine settings can be changed in the "Simulation" menu.
 	</p>
 	
 	<p>
@@ -365,16 +377,25 @@
 	<p>
 		You can select here the physics engine you prefer :
 	    <ul>
-	        <li><b>Simu V2</b>: The current official engine (2.5D) ; the cars and robots are optimized for this engine</li>
-	        <li><b>Simu V3</b>: The future Speed Dream engine (3D) ; experimental for the moment</li>
+	        <li><b>Simu V4</b>: The current official engine with all new features; the cars and robots are optimized for this engine</li>
+	        <li><b>Simu V2.1</b>: A previous physics engine to give a stable reference point</li>
 	    </ul>
+	</p>
+	<p>
+	    You can then set multi-threading on, off or auto. Setting it on will use 2 of your CPU cores if it has more than one.
+	    If CPU affinity is set on, the game will try to detect the number of cores in your CPU, and use multi threading only when it thinks there are more cores.
+	    Note: in certain CPU / OS combo only one core is detected even if there are multiple ones - switch off CPU affinity if you think you are in this situation.
+	</p>
+	<p>
+		You can also decide here whether you want your race start as paused (then you need to hit Enter to start the race),
+		or whether you want to drive a cool-down lap or rather go to the results screen as soon as the last car crossed the finish line.
 	</p>
 	<p>
 		<img src="images/simulation-accept.jpg">
 	</p>
 	
 	<p>
-		The AI opponents settings can be changed in the "AI Opponents" menu
+		The AI opponents settings can be changed in the "AI Opponents" menu.
 	</p>
 	
 	<p>
@@ -403,7 +424,7 @@
 	
 	<p>
 		Select one of the race types : "Quick Race" is the one, if you want to be able
-		configure everything for the race.
+		to configure everything for the race.
 	</p>
 	
 	<p>
@@ -411,7 +432,7 @@
 	</p>
 	
 	<p>
-		Configure you race (note you have here a shortcut to the "Player Configuration" menu) :
+		Configure your race (note, you have here a shortcut to the "Player Configuration" menu) :
 	</p>
 	
 	<p>
@@ -426,8 +447,8 @@
 	        <li><b>Dirt Tracks</b>: All terrain tracks</li>
 	        <li><b>Speedways</b>: American "oval" tracks or alike</li>
 	    </ul>
-        Note the screen background gives you an overview of the currently selected track,
-        while the track outline is displayed on the left.
+        Note, that the screen background gives you an overview of the currently selected track,
+        while the track outline is displayed on the left. The base package contains only one track (Espie), for more tracks you need to install other packages.
 	</p>
 	
 	<p>
@@ -435,22 +456,21 @@
 	</p>
 	
 	<p>
-		Once you found the track you want, click on the "Accept" button :
+		Once you found the track you want, click on the "Next" button :
         you've reached the drivers selection menu (AI and also human ones).
 	</p>
 	
 	<p>
-		On the right, the list of the available drivers : you can filter the drivers list 
-		by car category and by driver type (human, AI USR and AI Simplix)
-        you've reached the drivers selection menu (AI and also human ones).
+		On the left is the list of the available drivers ("Candidates"), you can filter the drivers list 
+		by car category and by driver type (human or various AI robot types).
 	</p>
 	
 	<p>
-		On the left, the list of the selected drivers : to select a driver for the race,
-		click on him on the right list, and then click on the "(De)Select" button (or hit the space bar).
-        To unselect him, click on him on the left list, and do the same. 
-        You can also change the starting grid order with the "Move Up" and "Move Down" buttons :
-        they change the position of the selected driver in the left list.
+		On the right is the list of the selected drivers : to select a driver for the race,
+		click on him on the left list, and then click on the '+' button, or hit the space bar.
+        To unselect him, click on him on the right list, and then click on the 'X' button, or hit the space bar.
+        You can also change the starting grid order with the up and down arrow buttons :
+        they change the position of the selected driver in the right list.
 	</p>
 	
 	<p>
@@ -458,15 +478,29 @@
 	</p>
 	
 	<p>
-		When happy with the selected drivers, save it with the "Accept" button. 
+		By pressing the "Garage" button, you can select your (the human players) car in the "Garage" menu.
+		<li>First select the car's category you want:
+			<ul>
+				<li><b>1936 Grand Prix</b>: These terrible Grand-Prix cars of the thirties</li>
+				<li><b>Long Day Series GT1</b>: The awesome Speed Dreams GT1 series</li>
+				<li><b>Monoposto America 1</b>: American single seater cars from the early 2000's</li>
+				<li><b>Supercars</b>: The ones you dream of, in their unmodified version</li>
+				<li><b>TORCS Racing Board 1</b>: The Speed Dreams setups of the well known GTs from Torcs</li>
+			</ul>
+		</li>
+		<li>Then select your car model within the category.</li>
+		<li>Finally select your cars skin (that is painting).</li>
+		Note: the base package contains only Supercars, for other cars you need to install more packages.
+		On the left you can see a preview of the car, while on the right you can watch its performance numbers and most important technical data.
+		When happy with the selected car, save it with the "Apply" button. 
 	</p>
 	
 	<p>
-		<img src="images/selectdrivers-accept.jpg">
+		<img src="images/garage-apply.jpg">
 	</p>
 	
 	<p>
-		Finally, configure the race length (as a number of laps or a distance) :
+		Finally, configure the race length (as a number of laps or a distance) and the weather (note: with most of the robots chosen as participant the weather cannot be configured) :
 	</p>
 	
 	<p>
@@ -496,11 +530,16 @@
     </p>
 	
 	<p>
-		<img src="images/race-f2cam1.jpg">
+		<img src="images/race-f2cam0.jpg">
 	</p>
 	
 	<p>
+		You might need to hit "Enter" to start the race, if you have enabled "Pause before race start" (it is enabled by default).
 		Press <b>F2</b> to cycle through the driver views:
+	</p>
+	
+	<p>
+		<img src="images/race-f2cam1.jpg">
 	</p>
 	
 	<p>
@@ -516,11 +555,7 @@
 	</p>
 	
 	<p>
-		<img src="images/race-f2cam0.jpg">
-	</p>
-	
-	<p>
-		At any time during the race, press <b>F1</b> to get help about all the commands (and pause the game). 
+		At any time during the race, press <b>F1</b> to get help about all the commands. 
 		Beware, most views, cameras and the map keys are "modal", so if you hit them multiple times,
 		you will get different variants of the view / camera / map.
 	</p>
@@ -529,11 +564,76 @@
 		<img src="images/race-help.jpg">
 	</p>
 	
-	<p>Now drive as fast as you can ... and try being faster that the robots !</p>
+	<p>
+		Now drive as fast as you can ... and try being faster than the robots !
+		At the end of each race, you get the board, and know what's still to improve ;-)
+	</p>
 
 	<p>
 		<img src="images/race-results.jpg">
 	</p>
 	
-	<p>(at the end of each race, you get the board, and know what's still to improve ;-)</p>
+	<p>
+		Press the "Continue" button to go back to the race menu or to go to the next session in multi-session events.
+	</p>
 
+	<!--pagebreak-->
+	
+	<h1>Pitting and using the dashboard</h1>
+	
+	<p>
+		In version 2.2.0 when you stop in your pit box you are no longer asked about fuel and repair amount, 
+		instead you have to set it through the new dashboard before pitting. Just as in real life. 
+		Press the key <b>6</b> to cycle through the dashboards positions: bottom, up and none.
+	</p>
+	
+	<p>
+		In the "Controls Configuration" four controls can be set to use the dashboard:
+		"Next dash item" and "Previous dash item" to cycle through various options,
+		and "Increase dash items" and "Decrease dash items" to change the selected value.
+	</p>
+	
+	<p>
+		Usually first an item with a red number is present. The red number means changing this item has an immediate effect.
+		Such items are: front-rear brake repartition (a. k. a. brake balance), front and rear anti-roll bars and differential settings in very advanced cars.
+		The actual list depends on your chosen car. You can use these to tune the balance of the car while driving.
+	</p>
+	
+	<p>
+		<img src="images/dashboard-brakerep.jpg">
+	</p>
+	
+	<p>
+		By pressing the "Next dash item" control a few times you arrive to "Fuel", the first item where requests can be made for your next pit stop.
+		In these items the yellow number shows your request, it will be the amount of fuel after your stop, the cyan value shows your actual amount of fuel.
+	</p>
+	
+	<p>
+		<img src="images/dashboard-fuel.jpg">
+	</p>
+	
+	<p>
+		The next item is "Repair", here the yellow number shows the amount of repair you wants, the cyan number shows your actual damage value.
+		If you have non-zero damage and set your repair amount equal with it, it will automatically follow your amount of damage if it is increasing.
+		Note: when damage reaches 10000, it means your car is too wrecked to continue racing, you are out of race.
+	</p>
+	
+	<p>
+		<img src="images/dashboard-repair.jpg">
+	</p>
+	
+	<p>
+		If you have enabled the experimental tire degradation, you have an item to select whether to change tires during the next pit stop or not.
+		If your car has wing(s), you have items to request new wing angles set during your stop.
+		In every case there is the "Next pit type" option. 
+		You need to set this to "PENALTY" to serve your Stop and go or Drive through penalty, otherwise you need to set it to "REPAIR" (in this case your car is repaired and fuelled, if needed wing angles and tires are changed, too).
+		Do not forget to check and set it every time you pit!
+	</p>
+	
+	<p>
+		<img src="images/dashboard-pittype.jpg">
+	</p>
+	
+	<p>
+		That's it for now, have fun playing Speed-Dreams!
+	</p>

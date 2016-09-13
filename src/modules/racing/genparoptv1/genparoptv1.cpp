@@ -3,7 +3,7 @@
     file        : genparoptv1.cpp
     copyright   : (C) 2012 by Wolf-Dieter Beelitz
     email       : pouillot@users.sourceforge.net
-    version     : $Id: genparoptv1.cpp 5366 2013-03-26 19:39:49Z pouillot $
+    version     : $Id: genparoptv1.cpp 6097 2015-08-30 23:12:09Z beaglejoe $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 /** @file    
   		A race engine module designed for optimising car and AI driver setups
 		(parameters) through a genetic algorithm
-    @version    $Id: genparoptv1.cpp 5366 2013-03-26 19:39:49Z pouillot $
+    @version    $Id: genparoptv1.cpp 6097 2015-08-30 23:12:09Z beaglejoe $
 */
 
 #include <sstream>
@@ -65,7 +65,7 @@ int closeGfModule()
 {
 	// Unregister it from the GfModule module manager.
 	if (GenParOptV1::_pSelf)
-		GfModule::unregister(GenParOptV1::_pSelf);
+		GenParOptV1::unregister(GenParOptV1::_pSelf);
 
 	// Delete the (only) module instance.
 	delete GenParOptV1::_pSelf;
@@ -311,11 +311,12 @@ bool GenParOptV1::loadPhysicsEngine()
 	}
 
 	// 3) Load it.
+/*
 	std::ostringstream ossLoadMsg;
 	ossLoadMsg << "Loading physics engine (" << strModName << ") ...";
 	if (_piUserItf)
-		_piUserItf->addLoadingMessage(ossLoadMsg.str().c_str());
-
+		_piUserItf->addOptimizationMessage(ossLoadMsg.str().c_str());
+*/
 	GfModule* pmodPhysEngine = GfModule::load("modules/simu", strModName.c_str());
 	if (pmodPhysEngine)
 		_piPhysEngine = pmodPhysEngine->getInterface<IPhysicsEngine>();

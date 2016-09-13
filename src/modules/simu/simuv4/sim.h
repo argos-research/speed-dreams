@@ -46,18 +46,23 @@ extern void SimUpdateSingleCar(int index, double deltaTime,tSituation *s);
 extern tDynPt* GetSimCarTable(int index);
 
 
-extern void SimAxleConfig(tCar *car, int index, tdble weight0);
+extern void SimAxleConfig(tCar *car, int index);
+extern void SimAxleReConfig(tCar *car, int index, tdble weight0);
+extern void SimArbReConfig(tCar *car, int index);
 extern void SimAxleUpdate(tCar *car, int index);
 
 extern void SimCarConfig(tCar *car);
+extern void SimCarReConfig(tCar *car);
 extern void SimCarUpdate(tCar *car, tSituation*);
 extern void SimCarUpdate2(tCar *car, tSituation*);
 
 extern void SimSuspCheckIn(tSuspension *susp);
 extern void SimSuspUpdate(tSuspension *susp);
-extern void SimSuspConfig(void *hdle, const char *section, tSuspension *susp, tdble F0, tdble X0);
+extern void SimSuspConfig(tCar *car, void *hdle, const char *section, tSuspension *susp, int index);
+extern void SimSuspReConfig(tCar *car, tSuspension *susp, int index, tdble F0, tdble X0);
 
 extern void SimWheelConfig(tCar *car, int index);
+extern void SimWheelReConfig(tCar *car, int index);
 extern void SimWheelUpdateRide(tCar *car, int index);
 extern void SimWheelUpdateForce(tCar *car, int index);
 extern void SimWheelUpdateRotation(tCar *car);
@@ -65,28 +70,34 @@ extern void SimUpdateFreeWheels(tCar *car, int axlenb);
 
 
 extern void SimSteerConfig(tCar *car);
+extern void SimSteerReConfig(tCar *car);
 extern void SimSteerUpdate(tCar *car);
 
 extern void SimBrakeConfig(void *hdle, const char *section, tBrake *brake);
 extern void SimBrakeUpdate(tCar *car, tWheel *wheel, tBrake *brake);
 extern void SimBrakeSystemConfig(tCar *car);
+extern void SimBrakeSystemReConfig(tCar *car);
 extern void SimBrakeSystemUpdate(tCar *car);
 
 extern void SimAeroConfig(tCar *car);
 extern void SimAeroUpdate(tCar *car, tSituation *s);
 extern void SimWingConfig(tCar *car, int index);
+extern void SimWingReConfig(tCar *car, int index);
 extern void SimWingUpdate(tCar *car, int index, tSituation *s);
 
 extern void SimCarUpdateWheelPos(tCar *car);
 
 extern void SimTransmissionConfig(tCar *car);
+extern void SimTransmissionReConfig(tCar *car);
 extern void SimTransmissionUpdate(tCar *car);
 extern void SimGearboxUpdate(tCar *car);
 
-extern void SimDifferentialConfig(void *hdle, const char *section, tDifferential *differential);
+extern void SimDifferentialConfig(tCar *car, int index);
+extern void SimDifferentialReConfig(tCar *car, int index);
 extern void SimDifferentialUpdate(tCar *car, tDifferential *differential, int first);
 
 extern void SimEngineConfig(tCar *car);
+extern void SimEngineReConfig(tCar *car);
 extern void SimEngineUpdateTq(tCar *car);
 extern tdble SimEngineUpdateRpm(tCar *car, tdble axleRpm);
 extern void SimEngineShutdown(tCar *car);

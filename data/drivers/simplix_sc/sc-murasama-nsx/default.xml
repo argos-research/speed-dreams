@@ -2,8 +2,8 @@
 <!-- 
     file          : default.xml 
     created       : 05 Dec 2008
-    last changed  : 05 Mar 2013
-    copyright     : (C) 2008-2013 Wolf-Dieter Beelitz
+    last changed  : 09 Nov 2014
+    copyright     : (C) 2008-2014 Wolf-Dieter Beelitz
 
     SIMPLIX_SC - SC-MURASAMA-NSX
 -->
@@ -13,42 +13,40 @@
 <!--    (at your option) any later version.                                   -->
 <!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd">
 <params name="sc-murasama-nsx" type="template" mode="mw">
+	<section name="Features">
+		<attstr name="enable abs" in="yes,no" val="yes"/>
+		<attstr name="enable tcl" in="yes,no" val="yes"/>
+		<attstr name="enable esp" in="yes,no" val="yes"/>
+	</section>
+
 	<section name="Brake System">
-		<attnum name="front-rear brake repartition" min="0.5" max="0.65" val="0.58"/>
-		<attnum name="max pressure" unit="kPa" min="1000" max="20000"  val="13000"/>
-		<attnum name="brake corr lr" min="0" max="0.5" val="0.2951"/>
-		<attnum name="brake corr fr" min="0" max="0.5" val="0.08898"/>
+		<attnum name="front-rear brake repartition" min="0.5" max="0.65" val="0.65"/>
+		<attnum name="max pressure" unit="kPa" min="1000" max="20000"  val="18500"/>
 	</section>
 
 	<section name="simplix private">
 		<attnum name="genetic optimisation" min="0" max="1" val="0"/>
 		<attnum name="initial fuel" min="-1" max="100.0" val="-1"/>
 
-	 	<attnum name="scale brake" min="0.5" max="1.5" val="0.98"/>
-		<attnum name="scale mu" min="0.5" max="1.5" val="0.83"/>
+	 	<attnum name="scale brake" min="0.5" max="1.5" val="0.76"/>
+		<attnum name="scale mu" min="0.5" max="1.5" val="0.76"/>
 		<attnum name="scale bump" min="0.001" max="0.6" val="0.4"/>
 
-		<attnum name="_base mode" min="0.97" max="0.999" val="0.997"/>
-		<attnum name="_base scale" min="1" max="1.05" val="1.016"/>
+		<attnum name="base mode" min="0.97" max="1.03" val="0.985"/>
+		<attnum name="base scale" min="1" max="1.05" val="1.003"/>
 
-		<attnum name="base mode" min="0.97" max="1.03" val="1.00437"/>
-		<attnum name="base scale" min="1" max="1.05" val="1.00218"/>
-
-		<attnum name="BC_P" min="0" max="10" val="0.7321"/>
-		<attnum name="BC_I" min="0.0001" max="1" val="0.0016"/>
-		<attnum name="BC_D" min="0" max="10" val="1.045"/>
-		<attnum name="BC_MAX" min="0" max="100" val="0.99"/>
-		<attnum name="BC_MIN" min="-100" max="0" val="-0.88"/>
-
-		<attnum name="lookaheadfactor" min="0.01" max="0.09" val="0.069"/>
+		<attnum name="lookaheadfactor" min="0.01" max="0.09" val="0.03"/>
 
 		<attnum name="side mu" min="0.8" max="1.0" val="0.85"/>
 		<attnum name="side brake" min="0.8" max="1.0" val="0.85"/>
+
 		<attnum name="pit test stop" min="0" max="1" val="0"/>
 		<attnum name="qualification" min="0" max="1" val="0"/>
 		<attnum name="reserve" min="0.0" max="20000.0" val="2000"/>
 		<attnum name="fuelper100km" min="1.0" max="100.0" val="70.0"/>
+
 		<attnum name="lookaheadfactor" min="0.0" max="0.5" val="0.05"/>
+
 		<attnum name="avoid width" min="0.0" max="3.0" val="0.25"/>
 		<attnum name="scale avoid" min="1.0" max="20.0" val="10.0"/>
 		<attnum name="scale bump outer" min="0" max="2" val="0.6"/>

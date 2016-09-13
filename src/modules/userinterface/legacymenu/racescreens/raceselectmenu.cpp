@@ -4,7 +4,7 @@
     created     : Sat Nov 16 09:36:29 CET 2002
     copyright   : (C) 2002 by Eric Espie
     email       : eric.espie@torcs.org   
-    version     : $Id: raceselectmenu.cpp 5158 2013-02-17 17:06:28Z wdbee $                                  
+    version     : $Id: raceselectmenu.cpp 5854 2014-11-23 17:55:52Z wdbee $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		Race selection menu
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: raceselectmenu.cpp 5158 2013-02-17 17:06:28Z wdbee $
+    @version	$Id: raceselectmenu.cpp 5854 2014-11-23 17:55:52Z wdbee $
 */
 
 #include <map>
@@ -150,7 +150,13 @@ RmRaceSelectInit(void *prevMenu)
 		std::string strButtonCtrlName(*itRaceManType);
 		if (!SupportsHumanDrivers)
 		{
-			if (strButtonCtrlName != "Practice")
+			if ((strButtonCtrlName != "Practice")
+				&& (strButtonCtrlName != "OptimizationMT"))
+				continue;
+		}
+		else
+		{
+			if (strButtonCtrlName == "OptimizationMT")
 				continue;
 		}
 

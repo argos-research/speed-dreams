@@ -4,7 +4,7 @@
     created     : Sat Dec  26 12:00:00 CET 2009
 	copyright   : (C) 2009 The Speed Dreams Team
 	web         : speed-dreams.sourceforge.net
-    version     : $Id: aiconfig.cpp 4903 2012-08-27 11:31:33Z kmetykog $
+    version     : $Id: aiconfig.cpp 6143 2015-09-24 16:49:32Z torcs-ng $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 
 /** @file
 
-    @version	$Id: aiconfig.cpp 4903 2012-08-27 11:31:33Z kmetykog $
+    @version	$Id: aiconfig.cpp 6143 2015-09-24 16:49:32Z torcs-ng $
 */
 
 #include <cstdio>
@@ -35,8 +35,8 @@
 static const char* AIGlobalSkillFilePathName = "config/raceman/extra/skill.xml";
 
 /* Available skill level names and associated values */
-static const char *SkillLevels[] = { ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
-static const tdble SkillLevelValues[] = { 10.0, 7.0, 3.0, 0.0};
+static const char *SkillLevels[] = { ROB_VAL_ARCADE, ROB_VAL_SEMI_ROOKIE, ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
+static const tdble SkillLevelValues[] = { 30.0, 20.0, 10.0, 7.0, 3.0, 0.0};
 static const int NSkillLevels = sizeof(SkillLevels) / sizeof(SkillLevels[0]);
 static int CurSkillLevelIndex = 0;
 

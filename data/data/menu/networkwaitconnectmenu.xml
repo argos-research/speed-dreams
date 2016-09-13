@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-    file                 : networkwaitconnectmenu.xml
-    created              : 2011
-    copyright            : (C) 2011 by Jean-Philippe Meuret
-    web                  : speed-dreams.sourceforge.net
-    version              : $Id: networkwaitconnectmenu.xml 3712 2011-07-10 10:50:58Z pouillot $
+	file				 : networkwaitconnectmenu.xml
+	created				: 2011
+	copyright			: (C) 2011 by Jean-Philippe Meuret
+	web					: speed-dreams.sourceforge.net
+	version				: $Id: networkwaitconnectmenu.xml 6247 2015-11-22 13:31:55Z area42 $
 -->
 
-<!--    This program is free software; you can redistribute it and/or modify  -->
-<!--    it under the terms of the GNU General Public License as published by  -->
-<!--    the Free Software Foundation; either version 2 of the License, or     -->
-<!--    (at your option) any later version.                                   -->
+<!--	This program is free software; you can redistribute it and/or modify  -->
+<!--	it under the terms of the GNU General Public License as published by  -->
+<!--	the Free Software Foundation; either version 2 of the License, or	 -->
+<!--	(at your option) any later version.									 -->
 
 <!-- 
 
-    Menu displayed when waiting for connection to server
+	Menu displayed when waiting for connection to server
 
 -->
 
@@ -29,28 +29,28 @@
 
   <section name="static controls">
 
-    <section name="1">
-      <attstr name="type" val="background image"/>
-      <attstr name="image" val="data/img/splash-networkwaitconnect.jpg"/>
-    </section>
+	<section name="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-networkwaitconnect.jpg"/>
+	</section>
 
-    <section name="2">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="-10"/>
-      <attnum name="y" val="380"/>
-      <attnum name="width" val="170"/>
-      <attnum name="height" val="100"/>
-      <attstr name="image" val="data/img/sd-logo.png"/>
-    </section>	
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>	
 
-    <section name="3">
-      <attstr name="type" val="label"/>                              
-      <attstr name="text" val="Trying to connect to server ..."/>
-      <attnum name="x" val="220"/>
-      <attnum name="y" val="350"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="font" val="medium"/>
-    </section>
+	<section name="3">
+		<attstr name="type" val="label"/>								
+		<attstr name="text" val="Trying to connect to server ..."/>
+		<attnum name="x" val="220"/>
+		<attnum name="y" val="289"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="large"/>
+	</section>
 
   </section>
 

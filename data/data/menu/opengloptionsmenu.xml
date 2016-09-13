@@ -5,7 +5,7 @@
     created              : 2009
     copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: opengloptionsmenu.xml 5180 2013-02-23 13:56:49Z torcs-ng $
+    version              : $Id: opengloptionsmenu.xml 6158 2015-10-04 01:04:51Z torcs-ng $
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -250,6 +250,47 @@
                 <attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
                 <attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
         </section>
+		
+		<section name="graphiclabel">
+			<attstr name="type" val="label"/>
+			<attnum name="max len" val="15"/>
+			<attstr name="tip" val="Select your Graphic Engine used in SD"/>
+			<attnum name="x" val="295"/>
+			<attnum name="y" val="142"/>
+			<attnum name="width" val="160"/>
+			<attstr name="h align" val="center"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="font" val="medium"/>
+		</section>
+		
+		<section name="graphicleftarrow">
+			<attstr name="type" val="image button"/>
+			<attnum name="width" val="24"/>
+			<attnum name="height" val="24"/>
+			<attstr name="tip" val=""/>
+			<attnum name="x" val="265"/>
+			<attnum name="y" val="138"/>
+			<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+			<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+			<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+			<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+		</section>
+
+		<section name="graphicrightarrow">
+			<attstr name="type" val="image button"/>
+			<attnum name="width" val="24"/>
+			<attnum name="height" val="24"/>
+			<attstr name="tip" val=""/>
+			<attnum name="x" val="465"/>
+			<attnum name="y" val="138"/>
+			<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+			<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+			<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+			<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+		</section>
+
+
+
 
 
 
@@ -383,6 +424,16 @@
                 <attnum name="width" val="220"/>
                 <attstr name="font" val="small_t"/>
         </section>
+		
+		<section name="10">
+			<attstr name="type" val="label"/>
+			<attnum name="x" val="20"/>
+			<attnum name="y" val="142"/>
+			<attstr name="text" val="Graphic Engine:"/>
+			<attnum name="width" val="220"/>
+			<attstr name="h align" val="right"/>
+			<attstr name="font" val="small_t"/>
+	</section>
 
 
 	</section>

@@ -4,7 +4,7 @@
     created              : Sun Nov 21 19:00:00 CET 2010
     copyright            : (C) 2010 by Jean-Philippe MEURET
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: race.cpp 4304 2011-12-27 13:45:00Z pouillot $
+    version              : $Id: race.cpp 5899 2014-12-17 21:00:23Z wdbee $
                       
  ***************************************************************************/
 
@@ -428,7 +428,7 @@ void GfRace::load(GfRaceManager* pRaceMan, bool bKeepHumans, void* hparmResults)
 		GfDriver* pCompetitor = GfDrivers::self()->getDriver(pszModName, nItfIndex);
 		if (!pCompetitor)
 		{
-			GfLogWarning("Ignoring '%s' driver #%d : not found in available drivers\n",
+			GfLogInfo("Ignoring '%s' driver #%d : not found in available drivers\n",
 						 pszModName, nItfIndex);
 			
 			// We are no more consistent with the race params (in memory).
@@ -441,7 +441,7 @@ void GfRace::load(GfRaceManager* pRaceMan, bool bKeepHumans, void* hparmResults)
 		// because there is a threshold on the number of competitors.
 		if (!acceptsMoreCompetitors())
 		{
-			GfLogWarning("Ignoring subsequent competitors (max=%u)\n",
+			GfLogInfo("Ignoring subsequent competitors (max=%u)\n",
 						 _pPrivate->nMaxCompetitors);
 			
 			// We are no more consistent with the race params (in memory).
@@ -454,7 +454,7 @@ void GfRace::load(GfRaceManager* pRaceMan, bool bKeepHumans, void* hparmResults)
 		// because we are requested to exclude humans from the race.
 		if (!bKeepHumans && pCompetitor->isHuman())
 		{
-			GfLogWarning("Ignoring '%s' (%s' #%d) : humans excluded from this race\n",
+			GfLogInfo("Ignoring '%s' (%s' #%d) : humans excluded from this race\n",
 						 pCompetitor->getName().c_str(), pszModName, nItfIndex);
 			
 			// We are no more consistent with the race params (in memory).
@@ -503,7 +503,7 @@ void GfRace::load(GfRaceManager* pRaceMan, bool bKeepHumans, void* hparmResults)
 		}
 		else
 		{
-			GfLogWarning("Ignoring '%s' (%s' #%d) : Type or car category not accepted by the race\n",
+			GfLogInfo("Ignoring '%s' (%s' #%d) : Type or car category not accepted by the race\n",
 						 pCompetitor->getName().c_str(), pszModName, nItfIndex);
 			
 			// We are no more consistent with the race params (in memory).

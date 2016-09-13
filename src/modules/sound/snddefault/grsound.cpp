@@ -4,7 +4,7 @@
     created              : Thu Aug 17 23:57:10 CEST 2000
     copyright            : (C) 2000-2003 by Eric Espie, Christos Dimitrakakis
     email                : torcs@free.fr, dimitrak@idiap.ch
-    version              : $Id: grsound.cpp 5284 2013-03-10 10:49:04Z pouillot $
+    version              : $Id: grsound.cpp 6099 2015-08-31 00:03:46Z beaglejoe $
 
 ***************************************************************************/
 
@@ -22,7 +22,9 @@
 #include <sound.h>
 
 #include "OpenalSoundInterface.h"
+#if !defined(USE_MACPORTS)
 #include "PlibSoundInterface.h"
+#endif
 #include "CarSoundData.h"
 
 static int soundInitialized = 0;
@@ -64,8 +66,10 @@ void grInitSound(tSituation* s, int ncars)
 		sound_interface = new OpenalSoundInterface (44100, 32);
 		break;
 	case PLIB_MODE:
+#if !defined(USE_MACPORTS)
 		sound_interface = new PlibSoundInterface(44100, 32);
 		break;
+#endif
 	case DISABLED:
 		return;
 	default:
@@ -170,10 +174,12 @@ grShutdownSound()
 
     delete sound_interface;
 
+#if !defined(USE_MACPORTS)
     if (__slPendingError) {
 		GfLogError("Plib: The following error was ignored: %s\n", __slPendingError);
 		__slPendingError = 0; // ARG!!! ugly ugly bad thing... but should not occur anymore now
     }
+#endif
 }
 
 

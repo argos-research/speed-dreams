@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:15:46 CEST 1999
     copyright            : (C) 1999 by Eric Espie                         
     email                : torcs@free.fr   
-    version              : $Id: gui.h 5107 2013-01-22 23:34:44Z torcs-ng $                                  
+    version              : $Id: gui.h 6129 2015-09-15 22:46:58Z beaglejoe $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -22,7 +22,6 @@
 #include "tgfclient.h"
 #include "glfeatures.h"
 #include "guifont.h"
-
 
 // Predefined colors (array and indexes).
 #define GFUI_COLORNB	24
@@ -298,6 +297,7 @@ typedef struct GfuiKey
 /* screen definition */
 typedef struct 
 {
+	int			ScreenID; /* Identify screen in registration */
     float		width, height; /* in menu/screen objects coordinate system */
     GfuiColor		bgColor; /* RGBA */
     GLuint		bgImage; /* Should always be 2^N x 2^P  (for low-end graphic hardwares) */
@@ -414,6 +414,7 @@ extern void gfuiReleaseCheckbox(tGfuiObject *obj);
 extern void gfuiReleaseProgressbar(tGfuiObject *obj);
 
 extern void gfuiLoadFonts(void);
+extern void gfuiFreeFonts(void);
 
 extern void gfuiEditboxKey(tGfuiObject *obj, int key, int modifier);
 

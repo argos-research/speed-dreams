@@ -3,7 +3,7 @@
     file        : standardgame.cpp
     copyright   : (C) 2010 by Jean-Philippe Meuret                        
     email       : pouillot@users.sourceforge.net   
-    version     : $Id: standardgame.cpp 5366 2013-03-26 19:39:49Z pouillot $                                  
+    version     : $Id: standardgame.cpp 6097 2015-08-30 23:12:09Z beaglejoe $                                  
 
  ***************************************************************************/
 
@@ -18,7 +18,7 @@
  
 /** @file    
     		The standard game race engine module
-    @version    $Id: standardgame.cpp 5366 2013-03-26 19:39:49Z pouillot $
+    @version    $Id: standardgame.cpp 6097 2015-08-30 23:12:09Z beaglejoe $
 */
 
 #include <sstream>
@@ -31,6 +31,7 @@
 #include <tgfdata.h>
 #include <race.h>
 #include <tracks.h>
+#include <replay.h>
 
 #include "racesituation.h"
 #include "racemain.h"
@@ -40,6 +41,7 @@
 
 #include "standardgame.h"
 
+int replayReplay;
 
 // The singleton.
 StandardGame* StandardGame::_pSelf = 0;
@@ -61,7 +63,7 @@ int closeGfModule()
 {
 	// Unregister it from the GfModule module manager.
 	if (StandardGame::_pSelf)
-		GfModule::unregister(StandardGame::_pSelf);
+		StandardGame::unregister(StandardGame::_pSelf);
 
 	// Delete the (only) module instance.
 	delete StandardGame::_pSelf;
@@ -208,8 +210,22 @@ void StandardGame::resumeRace()
 //************************************************************
 void StandardGame::startRace()
 {
-	// TODO: Process error status ?
-	(void)::ReRaceRealStart();
+	int mode = ::ReRaceRealStart();
+	if(mode & RM_ERROR)
+	{
+		GfLogError("ReRaceRealStart() ERROR in RaceEngine::startRace() \n");
+		ReInfo->_reState = RE_STATE_ERROR;
+	}
+	else
+	{
+		// Maybe should be RE_STATE_NETWORK_WAIT
+		ReInfo->_reState = RE_STATE_PRE_RACE_PAUSE;
+	}
+}
+
+void StandardGame::stopCooldown()
+{
+	::ReStopCooldown();
 }
 
 void StandardGame::abandonRace()
@@ -254,6 +270,11 @@ void StandardGame::step(double dt)
 	::ReOneStep(dt);
 }
 #endif
+
+void StandardGame::stopPreracePause()
+{
+   ::ReStopPreracePause();
+}
 
 //************************************************************
 GfRace* StandardGame::race()
@@ -315,6 +336,13 @@ bool StandardGame::loadPhysicsEngine()
 		_piPhysEngine = pmodPhysEngine->getInterface<IPhysicsEngine>();
 	if (pmodPhysEngine && !_piPhysEngine)
 		GfModule::unload(pmodPhysEngine);
+
+	// don't record if we're 'replaying'
+	printf("Checking type of SIMU\n");
+	if (strcmp(RM_VAL_MOD_SIMU_REPLAY, strModName.c_str()) == 0)
+		replayReplay = 1;
+	else
+		replayReplay = 0;
 
 	return _piPhysEngine ? true : false;
 }

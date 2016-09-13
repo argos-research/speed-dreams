@@ -4,7 +4,7 @@
     created              : Wed Apr 26 20:05:12 CEST 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: playerconfig.cpp 5713 2013-11-03 23:30:20Z torcs-ng $
+    version              : $Id: playerconfig.cpp 6270 2015-11-23 19:44:40Z madbad $
 
 ***************************************************************************/
 
@@ -29,6 +29,9 @@
 #include <playerpref.h>
 #include <graphic.h>
 #include <gui.h>
+#ifdef WEBSERVER
+#include <webserver.h>
+#endif //WEBSERVER
 
 #include <drivers.h>
 
@@ -40,8 +43,12 @@ static const char *PlayerNamePrompt	= "-- Enter name --";
 static const char *NoPlayer = "-- No one --";
 static const char *HumanDriverModuleName  = "human";
 static const char *DefaultCarName  = "sc-lynx-220";
+#ifdef WEBSERVER
+static const char *DefaultWebserverusername  = "username";
+static const char *DefaultWebserverpassword  = "password";
+#endif //WEBSERVER
 
-static const char *SkillLevelString[] = { ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
+static const char *SkillLevelString[] = { ROB_VAL_ARCADE, ROB_VAL_SEMI_ROOKIE, ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
 static const int NbSkillLevels = sizeof(SkillLevelString) / sizeof(SkillLevelString[0]);
 
 static char buf[1024];
@@ -65,12 +72,21 @@ static int AutoReverseEditId;
 static int AutoReverseLeftId;
 static int AutoReverseRightId;
 static int AutoReverseLabelId;
+#ifdef WEBSERVER
+static int WebUsernameEditId;
+static int WebPasswordEditId;
+#endif //WEBSERVER
 
 /* Struct to define a generic ("internal name / id", "displayable name") pair */
 typedef struct tInfo
 {
     char	*name;
     char	*dispname;
+    #ifdef WEBSERVER
+    char	*webserverusername;
+    char	*webserverpassword;
+	#endif //WEBSERVER
+    
 } tInfo;
 
 /* Player info struct */
@@ -82,7 +98,13 @@ public:
 				const char *defcarname = 0, int racenumber = 0, int skilllevel = 0,
 				float *color = 0, 
 				tGearChangeMode gearchangemode = GEAR_MODE_AUTO, int autoreverse = 0, 
-				int nbpitstops = 0) 
+				int nbpitstops = 0
+				#ifdef WEBSERVER
+				,
+				const char *webserverusername = 0,
+				const char *webserverpassword = 0
+				#endif //WEBSERVER
+				) 
 	{
 		_info.name = 0;
 		setName(name);
@@ -94,7 +116,13 @@ public:
 		_gearchangemode = gearchangemode; 
 		_nbpitstops = nbpitstops; 
 		_skilllevel = skilllevel; 
-		_autoreverse = autoreverse; 
+		_autoreverse = autoreverse;
+		#ifdef WEBSERVER
+		_webserverusername = 0;
+		setWebserverusername(webserverusername);
+		_webserverpassword = 0;
+		setWebserverpassword(webserverpassword);
+		#endif //WEBSERVER	
 		_color[0] = color ? color[0] : 1.0; 
 		_color[1] = color ? color[1] : 1.0; 
 		_color[2] = color ? color[2] : 0.5; 
@@ -113,7 +141,13 @@ public:
 		_gearchangemode = src._gearchangemode; 
 		_nbpitstops = src._nbpitstops; 
 		_skilllevel = src._skilllevel; 
-		_autoreverse = src._autoreverse; 
+		_autoreverse = src._autoreverse;
+		#ifdef WEBSERVER
+		_info.webserverusername = 0;
+		setWebserverusername(src._info.webserverusername);
+		_info.webserverpassword = 0;
+		setWebserverpassword(src._info.webserverpassword);
+		#endif //WEBSERVER
 		_color[0] = src._color[0]; 
 		_color[1] = src._color[1]; 
 		_color[2] = src._color[2]; 
@@ -129,6 +163,10 @@ public:
 	float color(int idx) const { return (idx >= 0 && idx < 4) ? _color[idx] : 0.0; }
 	int skillLevel() const { return _skilllevel; }
 	int autoReverse() const { return _autoreverse; }
+	#ifdef WEBSERVER
+	const char *webserverusername()  const { return _webserverusername; }
+	const char *webserverpassword()  const { return _webserverpassword; }
+	#endif //WEBSERVER
 
 	void setName(const char *name)
 	{
@@ -157,6 +195,28 @@ public:
 		_defcarname = new char[strlen(defcarname)+1];
 		strcpy(_defcarname, defcarname); // Can't use strdup : free crashes in destructor !?
 	}
+	
+	#ifdef WEBSERVER
+	void setWebserverusername(const char *webserverusername)
+	{
+		if (_webserverusername)
+			delete[] _webserverusername;
+		if (!webserverusername || strlen(webserverusername) == 0)
+			webserverusername = DefaultWebserverusername;
+		_webserverusername = new char[strlen(webserverusername)+1];
+		strcpy(_webserverusername, webserverusername); // Can't use strdup : free crashes in destructor !?
+	}
+	void setWebserverpassword(const char *webserverpassword)
+	{
+		if (_webserverpassword)
+			delete[] _webserverpassword;
+		if (!webserverpassword || strlen(webserverpassword) == 0)
+			webserverpassword = DefaultWebserverpassword;
+		_webserverpassword = new char[strlen(webserverpassword)+1];
+		strcpy(_webserverpassword, webserverpassword); // Can't use strdup : free crashes in destructor !?
+	}
+	#endif //WEBSERVER
+
 	void setRaceNumber(int raceNumber) { _racenumber = raceNumber; }
 	void setGearChangeMode(tGearChangeMode gearChangeMode) { _gearchangemode = gearChangeMode; }
 	void setNbPitStops(int nbPitStops) { _nbpitstops = nbPitStops; }
@@ -171,6 +231,14 @@ public:
 			delete[] _info.name;
 		if (_defcarname)
 			delete[] _defcarname;
+
+		#ifdef WEBSERVER
+		if (_webserverusername)
+			delete[] _webserverusername;
+		if (_webserverpassword)
+			delete[] _webserverpassword;
+		#endif //WEBSERVER			
+
 	}
 
 	// Gear change mode enum to string conversion
@@ -201,6 +269,10 @@ private:
 	float			_color[4];
 	int				_skilllevel;
 	int				_autoreverse;
+	#ifdef WEBSERVER
+	char*			_webserverusername;
+	char*			_webserverpassword;
+	#endif //WEBSERVER	
 };
 
 
@@ -244,6 +316,14 @@ refreshEditVal(void)
 
 		GfuiLabelSetText(ScrHandle, AutoReverseEditId, "");
 		GfuiEnable(ScrHandle, AutoReverseEditId, GFUI_DISABLE);
+		
+		#ifdef WEBSERVER
+		GfuiEditboxSetString(ScrHandle, WebUsernameEditId, "");
+		GfuiEnable(ScrHandle, WebUsernameEditId, GFUI_DISABLE);
+
+		GfuiEditboxSetString(ScrHandle, WebPasswordEditId, "");
+		GfuiEnable(ScrHandle, WebPasswordEditId, GFUI_DISABLE);
+		#endif //WEBSERVER
 
     } else {
 
@@ -270,6 +350,17 @@ refreshEditVal(void)
 
 		GfuiLabelSetText(ScrHandle, AutoReverseEditId, Yn[(*CurrPlayer)->autoReverse()]);
 		GfuiEnable(ScrHandle, AutoReverseEditId, GFUI_ENABLE);
+
+		#ifdef WEBSERVER
+		snprintf(buf, sizeof(buf), "%s", (*CurrPlayer)->webserverusername());		
+		GfuiEditboxSetString(ScrHandle, WebUsernameEditId, buf);
+		GfuiEnable(ScrHandle, WebUsernameEditId, GFUI_ENABLE);
+
+		snprintf(buf, sizeof(buf), "%s", (*CurrPlayer)->webserverpassword());		
+		GfuiEditboxSetString(ScrHandle, WebPasswordEditId, buf);
+		GfuiEnable(ScrHandle, WebPasswordEditId, GFUI_ENABLE);
+		#endif //WEBSERVER
+		
 
 		if ((*CurrPlayer)->gearChangeMode() == GEAR_MODE_AUTO)
 			autoRevVisible = GFUI_VISIBLE;
@@ -372,6 +463,11 @@ PutPlayerSettings(unsigned index)
     GfParmSetStr(PrefHdle, drvSectionPath, HM_ATT_TRANS, player->gearChangeModeString());
     GfParmSetNum(PrefHdle, drvSectionPath, HM_ATT_NBPITS, (char*)NULL, (tdble)player->nbPitStops());
     GfParmSetStr(PrefHdle, drvSectionPath, HM_ATT_AUTOREVERSE, Yn[player->autoReverse()]);
+	#ifdef WEBSERVER
+    GfParmSetStr(PrefHdle, drvSectionPath, "WebServerUsername", player->webserverusername());
+    GfParmSetStr(PrefHdle, drvSectionPath, "WebServerPassword", player->webserverpassword());
+	#endif //WEBSERVER    
+    
     
     /* Allow neutral gear in sequential mode if neutral gear command not defined */
     if (player->gearChangeMode() == GEAR_MODE_SEQ
@@ -570,7 +666,7 @@ GenPlayerList(void)
         delete *playerIter;
     PlayersInfo.clear();
 
-    /* Load players settings from human.xml file */
+    /* Load players settings from human.xml file *//*was meant: preferences.xml file?*/
     snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), HM_DRV_FILE);
     PlayerHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (PlayerHdle == NULL) {
@@ -602,7 +698,8 @@ GenPlayerList(void)
 												  defaultCar, // Default car name.
 												  racenumber, // Race number
 												  skilllevel, // skill level
-												  color)); // Colors
+												  color));  // Colors
+ 
 		}
     }
 
@@ -612,7 +709,7 @@ GenPlayerList(void)
 	/* Update scroll-list from PlayersInfo */
     UpdtScrollList();
 
-    /* Load players settings from human.xml file*/
+    /* Load players settings from human/preferences.xml file*/
     snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (!PrefHdle) {
@@ -637,6 +734,16 @@ GenPlayerList(void)
 		} else {
 			PlayersInfo[i]->setAutoReverse(1);
 		}
+
+		#ifdef WEBSERVER
+		str = GfParmGetStr(PrefHdle, sstring, "WebServerUsername", 0);
+		PlayersInfo[i]->setWebserverusername(str);
+
+		str = GfParmGetStr(PrefHdle, sstring, "WebServerPassword", 0);
+		PlayersInfo[i]->setWebserverpassword(str);
+		#endif //WEBSERVER
+
+
     }
 
     return 0;
@@ -721,6 +828,69 @@ onChangeName(void * /* dummy */)
     UpdtScrollList();
 }
 
+#ifdef WEBSERVER
+static void
+onChangeWebserverusername(void * /* dummy */)
+{
+    char	*val;
+
+    if (CurrPlayer != PlayersInfo.end()) {
+        val = GfuiEditboxGetString(ScrHandle, WebUsernameEditId);
+
+        // Remove leading spaces (#587)
+        std::string strIn(val);
+        size_t startpos = strIn.find_first_not_of(" \t"); // Find the first character position after excluding leading blank spaces
+        size_t endpos = strIn.find_last_not_of(" \t");  // Find last non-whitespace char position
+        if (startpos != std::string::npos && endpos != std::string::npos) {
+            strIn = strIn.substr(startpos, endpos - startpos + 1);
+        } else {
+            strIn.assign(DefaultWebserverusername); // If it was all whitespace, assign default
+        }
+        (*CurrPlayer)->setWebserverusername(strIn.c_str());
+
+    }
+
+    UpdtScrollList();
+}
+
+static void
+onChangeWebserverpassword(void * /* dummy */)
+{
+    char	*val;
+
+    if (CurrPlayer != PlayersInfo.end()) {
+        val = GfuiEditboxGetString(ScrHandle, WebPasswordEditId);
+
+        // Remove leading spaces (#587)
+        std::string strIn(val);
+        size_t startpos = strIn.find_first_not_of(" \t"); // Find the first character position after excluding leading blank spaces
+        size_t endpos = strIn.find_last_not_of(" \t");  // Find last non-whitespace char position
+        if (startpos != std::string::npos && endpos != std::string::npos) {
+            strIn = strIn.substr(startpos, endpos - startpos + 1);
+        } else {
+            strIn.assign(DefaultWebserverpassword); // If it was all whitespace, assign default
+        }
+        (*CurrPlayer)->setWebserverpassword(strIn.c_str());
+    }
+
+    UpdtScrollList();
+}
+
+static void onWebserverLoginTest(void * /* dummy */)
+{
+	if (CurrPlayer != PlayersInfo.end()) {
+
+		std::string username = (*CurrPlayer)->webserverusername();
+		std::string password = (*CurrPlayer)->webserverpassword();
+		
+		extern TGFCLIENT_API WebServer webServer;
+		webServer.sendLogin(username.c_str(),password.c_str());
+
+		//request a redisplay
+	    GfuiApp().eventLoop().postRedisplay();
+	}
+}
+#endif //WEBSERVER
 
 //#641 New player name should get empty when clicking on it
 // In the Player Configuration menu, when you create
@@ -923,6 +1093,16 @@ PlayerConfigMenuInit(void *prevMenu)
     // Accept and Cancel buttons.
     GfuiMenuCreateButtonControl(ScrHandle, param, "ApplyButton", NULL, onSavePlayerList);
     GfuiMenuCreateButtonControl(ScrHandle, param, "CancelButton", NULL, onQuitPlayerConfig);
+
+	#ifdef WEBSERVER
+    /* Web username and password editbox */
+    WebUsernameEditId = GfuiMenuCreateEditControl(ScrHandle, param, "webusernameedit", NULL, NULL, onChangeWebserverusername);
+    WebPasswordEditId = GfuiMenuCreateEditControl(ScrHandle, param, "webpasswordedit", NULL, NULL, onChangeWebserverpassword);
+
+    /* Web test button */
+    GfuiMenuCreateButtonControl(ScrHandle, param, "weblogintest", NULL, onWebserverLoginTest);
+	#endif //WEBSERVER
+
 
     // Close menu XML descriptor.
     GfParmReleaseHandle(param);

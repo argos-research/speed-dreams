@@ -21,6 +21,9 @@
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 <params name="Murasama NSX" type="template">
 	<section name="Features">
+		<attstr name="enable abs" in="yes,no" val="yes"/>
+		<attstr name="enable tcl" in="yes,no" val="yes"/>
+		<attstr name="enable esp" in="yes,no" val="yes"/>
 		<attstr name="shifting aero coordinates" in="yes,no" val="yes"/>
 	</section>
 	<section name="Bonnet">
@@ -176,6 +179,7 @@
 		<attnum name="brake linear coefficient" val="0.032"/>
 		<attnum name="brake coefficient" val="0.054"/>
 		<attstr name="turbo" in="true,false" val="false"/>
+		<attnum name="enable tcl" min="0" max="1" val="1"/>
 		<section name="data points">
 			<section name="1">
 				<attnum name="rpm" unit="rpm" val="0"/>
@@ -464,23 +468,27 @@
 		<attnum name="piston area" unit="cm2" val="32.67"/>
 		<attnum name="inertia" unit="kg.m2" val="0.14"/>
 		<attnum name="mu" val="0.25"/>
+		<attnum name="enable abs" min="0" max="1" val="1"/>
 	</section>
 	<section name="Front Left Brake">
 		<attnum name="disk diameter" unit="mm" val="330"/>
 		<attnum name="piston area" unit="cm2" val="32.67"/>
 		<attnum name="inertia" unit="kg.m2" val="0.14"/>
 		<attnum name="mu" val="0.25"/>
+		<attnum name="enable abs" min="0" max="1" val="1"/>
 	</section>
 	<section name="Rear Right Brake">
 		<attnum name="disk diameter" unit="mm" val="300"/>
 		<attnum name="piston area" unit="cm2" val="24.75"/>
 		<attnum name="inertia" unit="kg.m2" val="0.092"/>
 		<attnum name="mu" val="0.25"/>
+		<attnum name="enable abs" min="0" max="1" val="1"/>
 	</section>
 	<section name="Rear Left Brake">
 		<attnum name="disk diameter" unit="mm" val="300"/>
 		<attnum name="piston area" unit="cm2" val="24.75"/>
 		<attnum name="inertia" unit="kg.m2" val="0.092"/>
 		<attnum name="mu" val="0.25"/>
+		<attnum name="enable abs" min="0" max="1" val="1"/>
 	</section>
 </params>

@@ -15,6 +15,12 @@
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
 <params name="sc-lynx-220" type="template">
+	<section name="Features">
+		<attstr name="enable abs" in="yes,no" val="yes"/>
+		<attstr name="enable tcl" in="yes,no" val="yes"/>
+		<attstr name="enable esp" in="yes,no" val="yes"/>
+	</section>
+	
 	<section name="Brake System">
 		<attnum name="front-rear brake repartition" min="0.5" max="0.65" val="0.59"/>
 		<attnum name="max pressure" unit="kPa" min="5000" max="40000" val="39400"/>

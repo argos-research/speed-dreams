@@ -4,7 +4,7 @@
     created              : Sun Feb 22 23:43:00 CET 2009
     last changed         : Sun May 29 23:00:00 CET 2011
     copyright            : (C) 2009-2011 by Wolf-Dieter Beelitz
-    email                : wdb@wdbee.de
+    email                : wdbee@users.sourceforge.net
     version              : 1.1
 
  ***************************************************************************/
@@ -24,7 +24,7 @@
 	It can handle teams with more drivers than cars per pit.
 	You can see how to use in the simplix robots. 
 
-    @author	<a href=mailto:wdb@wdbee.de>Wolf-Dieter Beelitz</a>
+    @author	<a href=mailto:wdbee@users.sourceforge.net>Wolf-Dieter Beelitz</a>
     @version	
     @ingroup	robottools
 */

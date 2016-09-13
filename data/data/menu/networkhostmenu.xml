@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-    file                 : networkhostmenu.xml
-    created              : 2009
-    copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
-    web                  : speed-dreams.sourceforge.net
-    version              : $Id: networkhostmenu.xml 5746 2013-12-05 07:19:29Z mungewell $
+	file				 : networkhostmenu.xml
+	created				: 2009
+	copyright			: (C) 2009 by Brian Gavin, Eckhard M. Jaeger
+	web					: speed-dreams.sourceforge.net
+	version				: $Id: networkhostmenu.xml 6253 2015-11-22 20:28:35Z area42 $
 -->
 
-<!--    This program is free software; you can redistribute it and/or modify  -->
-<!--    it under the terms of the GNU General Public License as published by  -->
-<!--    the Free Software Foundation; either version 2 of the License, or     -->
-<!--    (at your option) any later version.                                   -->
+<!--	This program is free software; you can redistribute it and/or modify  -->
+<!--	it under the terms of the GNU General Public License as published by  -->
+<!--	the Free Software Foundation; either version 2 of the License, or	 -->
+<!--	(at your option) any later version.									 -->
 
 <!-- 
 
-    Network race host (server) menu
+	Network race host (server) menu
 
 -->
 
@@ -25,394 +25,411 @@
 
   <section name="dynamic controls">
 
-    <section name="trackname">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="35"/>
-      <attstr name="font" val="medium"/>
-      <attnum name="x" val="230"/>
-      <attnum name="y" val="450"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="lapcountname">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="15"/>
-      <attstr name="font" val="medium"/>
-      <attnum name="x" val="560"/>
-      <attnum name="y" val="450"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="carcatname">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="30"/>
-      <attstr name="font" val="medium"/>
-      <attnum name="x" val="270"/>
-      <attnum name="y" val="425"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
+	<section name="trackname">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="35"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="0"/>
+		<attnum name="y" val="100"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attnum name="width" val="220"/>
+	</section>
+	<section name="lapcountname">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="15"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="310"/>
+		<attnum name="y" val="420"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="carcatname">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="30"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="460"/>
+		<attnum name="y" val="420"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
 
-    <!-- Starting grid ; TODO: Use template controls for this ! -->
-    <section name="ready0">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="230"/>
-      <attnum name="y" val="380"/>
-      <attnum name="width" val="20"/>
-      <attnum name="height" val="20"/>
-      <attstr name="image" val="data/img/notready.png"/>
-      <attstr name="image 1" val="data/img/ready.png"/>
-    </section>
-    <section name="driver0">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="260"/>
-      <attnum name="y" val="380"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="car0">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="450"/>
-      <attnum name="y" val="380"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="ready1">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="230"/>
-      <attnum name="y" val="365"/>
-      <attnum name="width" val="20"/>
-      <attnum name="height" val="20"/>
-      <attstr name="image" val="data/img/notready.png"/>
-      <attstr name="image 1" val="data/img/ready.png"/>
-    </section>
-    <section name="driver1">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="260"/>
-      <attnum name="y" val="365"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>    
-    </section>
-    <section name="car1">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="450"/>
-      <attnum name="y" val="365"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="ready2">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="230"/>
-      <attnum name="y" val="350"/>
-      <attnum name="width" val="20"/>
-      <attnum name="height" val="20"/>
-      <attstr name="image" val="data/img/notready.png"/>
-      <attstr name="image 1" val="data/img/ready.png"/>
-    </section>
-    <section name="driver2">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="260"/>
-      <attnum name="y" val="350"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="car2">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="450"/>
-      <attnum name="y" val="350"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="ready3">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="230"/>
-      <attnum name="y" val="335"/>
-      <attnum name="width" val="20"/>
-      <attnum name="height" val="20"/>
-      <attstr name="image" val="data/img/notready.png"/>
-      <attstr name="image 1" val="data/img/ready.png"/>
-    </section>
-    <section name="driver3">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="260"/>
-      <attnum name="y" val="335"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>   
-    </section>
-    <section name="car3">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="450"/>
-      <attnum name="y" val="335"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="ready4">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="230"/>
-      <attnum name="y" val="320"/>
-      <attnum name="width" val="20"/>
-      <attnum name="height" val="20"/>
-      <attstr name="image" val="data/img/notready.png"/>
-      <attstr name="image 1" val="data/img/ready.png"/>
-    </section>
-    <section name="driver4">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="260"/>
-      <attnum name="y" val="320"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="car4">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="450"/>
-      <attnum name="y" val="320"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="ready5">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="230"/>
-      <attnum name="y" val="305"/>
-      <attnum name="width" val="20"/>
-      <attnum name="height" val="20"/>
-      <attstr name="image" val="data/img/notready.png"/>
-      <attstr name="image 1" val="data/img/ready.png"/>
-    </section>
-    <section name="driver5">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="260"/>
-      <attnum name="y" val="305"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="car5">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="450"/>
-      <attnum name="y" val="305"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="ready6">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="230"/>
-      <attnum name="y" val="290"/>
-      <attnum name="width" val="20"/>
-      <attnum name="height" val="20"/>
-      <attstr name="image" val="data/img/notready.png"/>
-      <attstr name="image 1" val="data/img/ready.png"/>
-    </section>
-    <section name="driver6">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="260"/>
-      <attnum name="y" val="290"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="car6">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="450"/>
-      <attnum name="y" val="290"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="ready7">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="230"/>
-      <attnum name="y" val="275"/>
-      <attnum name="width" val="20"/>
-      <attnum name="height" val="20"/>
-      <attstr name="image" val="data/img/notready.png"/>
-      <attstr name="image 1" val="data/img/ready.png"/>
-    </section>
-    <section name="driver7">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="260"/>
-      <attnum name="y" val="275"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
-    <section name="car7">
-      <attstr name="type" val="label"/>
-      <attnum name="max len" val="20"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="450"/>
-      <attnum name="y" val="275"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0xFFFFFF"/>
-    </section>
+	<!-- Starting grid ; TODO: Use template controls for this ! -->
+	<section name="ready0">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="240"/>
+		<attnum name="y" val="355"/>
+		<attnum name="width" val="20"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/notready.png"/>
+		<attstr name="image 1" val="data/img/ready.png"/>
+	</section>
+	<section name="driver0">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="360"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="car0">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="360"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="ready1">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="240"/>
+		<attnum name="y" val="325"/>
+		<attnum name="width" val="20"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/notready.png"/>
+		<attstr name="image 1" val="data/img/ready.png"/>
+	</section>
+	<section name="driver1">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="330"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>	
+	</section>
+	<section name="car1">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="330"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="ready2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="240"/>
+		<attnum name="y" val="295"/>
+		<attnum name="width" val="20"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/notready.png"/>
+		<attstr name="image 1" val="data/img/ready.png"/>
+	</section>
+	<section name="driver2">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="300"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="car2">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="300"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="ready3">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="240"/>
+		<attnum name="y" val="265"/>
+		<attnum name="width" val="20"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/notready.png"/>
+		<attstr name="image 1" val="data/img/ready.png"/>
+	</section>
+	<section name="driver3">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="270"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>   
+	</section>
+	<section name="car3">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="270"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="ready4">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="240"/>
+		<attnum name="y" val="235"/>
+		<attnum name="width" val="20"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/notready.png"/>
+		<attstr name="image 1" val="data/img/ready.png"/>
+	</section>
+	<section name="driver4">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="240"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="car4">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="240"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="ready5">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="240"/>
+		<attnum name="y" val="205"/>
+		<attnum name="width" val="20"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/notready.png"/>
+		<attstr name="image 1" val="data/img/ready.png"/>
+	</section>
+	<section name="driver5">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="210"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="car5">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="210"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="ready6">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="240"/>
+		<attnum name="y" val="175"/>
+		<attnum name="width" val="20"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/notready.png"/>
+		<attstr name="image 1" val="data/img/ready.png"/>
+	</section>
+	<section name="driver6">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="180"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="car6">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="180"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="ready7">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="240"/>
+		<attnum name="y" val="145"/>
+		<attnum name="width" val="20"/>
+		<attnum name="height" val="20"/>
+		<attstr name="image" val="data/img/notready.png"/>
+		<attstr name="image 1" val="data/img/ready.png"/>
+	</section>
+	<section name="driver7">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="150"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="car7">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="20"/>
+		<attstr name="font" val="small"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="150"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
 
-    <section name="outlineimage">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="10"/>
-      <attnum name="y" val="160"/>
-      <attnum name="width" val="200"/>
-      <attnum name="height" val="200"/>
-      <attstr name="image" val="data/img/transparent.png"/>
-    </section>
+	<section name="outlineimage">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="120"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="200"/>
+		<attstr name="image" val="data/img/transparent.png"/>
+	</section>
 
-    <section name="playerreadycheckbox">
-      <attstr name="type" val="check box"/>
-      <attstr name="text" val="Ready to race"/>
-      <attstr name="tip" val="Check to warn everyone you are ready for the race"/>
-      <attnum name="x" val="440"/>
-      <attnum name="y" val="40"/>
-      <attnum name="image width" val="24"/>
-      <attnum name="image height" val="24"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="font" val="medium"/>
-      <attstr name="checked" val="no"/>
-    </section>
+	<section name="playerreadycheckbox">
+		<attstr name="type" val="check box"/>
+		<attstr name="text" val="Ready to race"/>
+		<attstr name="tip" val="Check to warn everyone you are ready for the race"/>
+		<attnum name="x" val="470"/>
+		<attnum name="y" val="92"/>
+		<attnum name="image width" val="24"/>
+		<attnum name="image height" val="28"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="checked" val="no"/>
+	</section>
 
-    <section name="networkhostsettings">
-      <attstr name="type" val="text button"/>
-      <attstr name="text" val="Config Host"/>
-      <attstr name="tip" val="Configure the race server"/>
-      <attnum name="x" val="50"/>
-      <attnum name="y" val="120"/>
-      <attstr name="h align" val="center"/>
-      <attnum name="width" val="100"/>
-      <attstr name="font" val="medium"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="focused color" val="0xFFFFFF"/>
-      <attstr name="pushed color" val="0xFFCC00"/>
-      <attstr name="show box" val="no"/>                  
-    </section>
+	<section name="cancel">
+		<attstr name="type" val="text button"/>
+		<attstr name="text" val="Cancel"/>
+		<attstr name="tip" val="Cancel the race"/>
+		<attstr name="show box" val="no"/>
+		<attnum name="x" val="50"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="90"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>
+	</section>
 
-    <section name="racesetup">
-      <attstr name="type" val="text button"/>
-      <attstr name="text" val="Config Race"/>
-      <attstr name="tip" val="Configure the race"/>
-      <attnum name="x" val="50"/>
-      <attnum name="y" val="80"/>
-      <attstr name="h align" val="center"/>
-      <attnum name="width" val="100"/>
-      <attstr name="font" val="medium"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="focused color" val="0xFFFFFF"/>
-      <attstr name="pushed color" val="0xFFCC00"/>
-      <attstr name="show box" val="no"/>                  
-    </section>
+	<section name="networkhostsettings">
+		<attstr name="type" val="text button"/>
+		<attstr name="text" val="Config Host"/>
+		<attstr name="tip" val="Configure the race server"/>
+		<attstr name="show box" val="no"/>
+		<attnum name="x" val="180"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="90"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>				
+	</section>
 
-    <section name="start race">
-      <attstr name="type" val="text button"/>
-      <attstr name="text" val="Force Start"/>
-      <attstr name="tip" val="Start the race"/>
-      <attnum name="x" val="270"/>
-      <attnum name="y" val="40"/>
-      <attstr name="h align" val="center"/>
-      <attnum name="width" val="100"/>
-      <attstr name="font" val="medium"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="focused color" val="0xFFFFFF"/>
-      <attstr name="pushed color" val="0xFFCC00"/>
-      <attstr name="show box" val="no"/>                  
-    </section>
+	<section name="racesetup">
+		<attstr name="type" val="text button"/>
+		<attstr name="text" val="Config Race"/>
+		<attstr name="tip" val="Configure the race"/>
+		<attstr name="show box" val="no"/>
+		<attnum name="x" val="345"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="90"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>				
+	</section>
 
-    <section name="cancel">
-      <attstr name="type" val="text button"/>
-      <attstr name="text" val="Cancel"/>
-      <attstr name="tip" val="Cancel the race"/>
-      <attnum name="x" val="50"/>
-      <attnum name="y" val="40"/>
-      <attstr name="h align" val="center"/>
-      <attnum name="width" val="100"/>
-      <attstr name="font" val="medium"/>
-      <attstr name="color" val="0xFFFFFF"/>
-      <attstr name="focused color" val="0xFFFFFF"/>
-      <attstr name="pushed color" val="0xFFCC00"/>
-      <attstr name="show box" val="no"/>                  
-    </section>
+	<section name="start race">
+		<attstr name="type" val="text button"/>
+		<attstr name="text" val="Force Start"/>
+		<attstr name="tip" val="Start the race"/>
+		<attstr name="show box" val="no"/>
+		<attnum name="x" val="510"/>
+		<attnum name="y" val="44"/>
+		<attnum name="width" val="90"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-10"/>
+		<attnum name="image y" val="4"/>
+		<attnum name="image width" val="60"/>
+		<attnum name="image height" val="16"/>
+		<attstr name="focused image" val="data/img/button-left-focused.png"/>
+		<attstr name="enabled image" val="data/img/button-left.png"/>
+		<attstr name="pushed image" val="data/img/button-left-pushed.png"/>					
+	</section>
 
   </section>
 
   <section name="static controls">
 
-    <section name="1">
-      <attstr name="type" val="background image"/>
-      <attstr name="image" val="data/img/splash-networkhost.jpg"/>
-    </section>
+	<section name="1">
+		<attstr name="type" val="background image"/>
+		<attstr name="image" val="data/img/splash-networkhost.jpg"/>
+	</section>
 
-    <section name="2">
-      <attstr name="type" val="static image"/>
-      <attnum name="x" val="-10"/>
-      <attnum name="y" val="380"/>
-      <attnum name="width" val="170"/>
-      <attnum name="height" val="100"/>
-      <attstr name="image" val="data/img/sd-logo.png"/>
-    </section>	
+	<section name="2">
+		<attstr name="type" val="static image"/>
+		<attnum name="x" val="-10"/>
+		<attnum name="y" val="335"/>
+		<attnum name="width" val="200"/>
+		<attnum name="height" val="120"/>
+		<attstr name="image" val="data/img/sd-logo.png"/>
+	</section>	
 
-    <section name="3">
-      <attstr name="type" val="label"/>
-      <attstr name="text" val="Car Class:"/>
-      <attnum name="x" val="160"/>
-      <attnum name="y" val="425"/>
-      <attstr name="color" val="0x000000"/>
-      <attstr name="font" val="medium"/>
-    </section>
-    <section name="4">
-      <attstr name="type" val="label"/>
-      <attstr name="text" val="Laps:"/>
-      <attnum name="x" val="500"/>
-      <attnum name="y" val="450"/>
-      <attstr name="color" val="0x000000"/>    
-      <attstr name="font" val="medium"/>
-    </section>
-    <section name="5">
-      <attstr name="type" val="label"/>
-      <attstr name="text" val="Track:"/>
-      <attnum name="x" val="160"/>
-      <attnum name="y" val="450"/>
-      <attstr name="color" val="0x000000"/>
-      <attstr name="font" val="medium"/>
-    </section>
-    <section name="6">
-      <attstr name="type" val="label"/>
-      <attstr name="text" val="Driver"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="260"/>
-      <attnum name="y" val="400"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0x000000"/>
-    </section>
-    <section name="7">
-      <attstr name="type" val="label"/>
-      <attstr name="text" val="Car"/>
-      <attstr name="font" val="small"/>
-      <attnum name="x" val="450"/>
-      <attnum name="y" val="400"/>
-      <attstr name="h align" val="left"/>
-      <attstr name="color" val="0x000000"/>
-    </section>
+	<section name="3">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Car Class:"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="420"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="4">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Laps:"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="420"/>
+		<attstr name="color" val="0xFFFFFF"/>	
+		<attstr name="font" val="small_t"/>
+	</section>
+	<section name="5">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Driver:"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="271"/>
+		<attnum name="y" val="390"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
+	<section name="6">
+		<attstr name="type" val="label"/>
+		<attstr name="text" val="Car:"/>
+		<attstr name="font" val="small_t"/>
+		<attnum name="x" val="400"/>
+		<attnum name="y" val="390"/>
+		<attstr name="h align" val="left"/>
+		<attstr name="color" val="0xFFFFFF"/>
+	</section>
 
   </section>
 

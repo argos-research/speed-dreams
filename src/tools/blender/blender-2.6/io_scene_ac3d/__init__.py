@@ -215,16 +215,16 @@ class ExportAC3D(bpy.types.Operator, ExportHelper):
 							description="Export selected objects only",
 							default=False,
 							)
-	skip_data = BoolProperty(
-							name="Skip Data",
-							description="don't export mesh names as data fields",
-							default=False,
-							)
-	global_coords = BoolProperty(
-							name="Global Co-ordinates",
-							description="Transform all vertices of all meshes to global coordinates",
-							default=False,
-							)
+#	skip_data = BoolProperty(
+#							name="Skip Data",
+#							description="don't export mesh names as data fields",
+#							default=False,
+#							)
+#	global_coords = BoolProperty(
+#							name="Global Co-ordinates",
+#							description="Transform all vertices of all meshes to global coordinates",
+#							default=False,
+#							)
 	mircol_as_emis = BoolProperty(
 							name="Mirror col as Emis",
 							description="export mirror colour as emissive colour",
@@ -238,7 +238,7 @@ class ExportAC3D(bpy.types.Operator, ExportHelper):
 	crease_angle = FloatProperty(
 							name="Default Crease Angle",
 							description="Default crease angle for exported .ac faces",
-							default=radians(179.0),
+							default=radians(35.0),
 							options={"ANIMATABLE"},
 							unit="ROTATION",
 							subtype="ANGLE",
