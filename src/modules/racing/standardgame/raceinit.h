@@ -4,7 +4,7 @@
     created     : Sat Nov 16 12:24:26 CET 2002
     copyright   : (C) 2002 by Eric Espie
     email       : eric.espie@torcs.org   
-    version     : $Id: raceinit.h 4497 2012-02-12 19:45:17Z pouillot $
+    version     : $Id: raceinit.h 6270 2015-11-23 19:44:40Z madbad $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file    
     		
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: raceinit.h 4497 2012-02-12 19:45:17Z pouillot $
+    @version	$Id: raceinit.h 6270 2015-11-23 19:44:40Z madbad $
 */
 
 #ifndef _RACEINIT_H_

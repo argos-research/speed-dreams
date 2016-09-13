@@ -5,7 +5,7 @@
     created              : 2009
     copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: controlconfigmenu.xml 4605 2012-03-24 20:26:34Z area42 $
+    version              : $Id: controlconfigmenu.xml 6275 2015-11-23 19:47:51Z area42 $
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -21,13 +21,13 @@
 
 <!DOCTYPE params SYSTEM "../tgf/params.dtd">
 
-<params name="controlconfigmenu" version="1.0">	
+<params name="controlconfigmenu" version="1.2">	
   
 	<section name="dynamic controls">
 
 	<section name="left steer">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
+		<attnum name="x" val="30"/>
 		<attnum name="y" val="358"/>
 		<attstr name="text" val="Left steer:"/>
 		<attstr name="h align" val="right"/>
@@ -52,8 +52,8 @@
 
 	<section name="right steer">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
-		<attnum name="y" val="334"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="336"/>
 		<attstr name="text" val="Right steer:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -66,7 +66,7 @@
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
 		<attnum name="x" val="170"/>
-		<attnum name="y" val="328"/>
+		<attnum name="y" val="330"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -77,8 +77,8 @@
 
 	<section name="throttle">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
-		<attnum name="y" val="310"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="314"/>
 		<attstr name="text" val="Throttle:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -91,7 +91,7 @@
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
 		<attnum name="x" val="170"/>
-		<attnum name="y" val="304"/>
+		<attnum name="y" val="308"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -102,8 +102,8 @@
 
 	<section name="brake">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
-		<attnum name="y" val="286"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="292"/>
 		<attstr name="text" val="Brake:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -116,7 +116,7 @@
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
 		<attnum name="x" val="170"/>
-		<attnum name="y" val="280"/>
+		<attnum name="y" val="286"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -127,8 +127,8 @@
 
 	<section name="ebrake cmd">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
-		<attnum name="y" val="262"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="270"/>
 		<attstr name="text" val="E-brake:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -141,7 +141,7 @@
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
 		<attnum name="x" val="170"/>
-		<attnum name="y" val="256"/>
+		<attnum name="y" val="264"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -152,8 +152,8 @@
 
 	<section name="Speed Limiter">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
-		<attnum name="y" val="238"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="248"/>
 		<attstr name="text" val="Speed limiter:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -166,7 +166,7 @@
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
 		<attnum name="x" val="170"/>
-		<attnum name="y" val="232"/>
+		<attnum name="y" val="242"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -177,8 +177,8 @@
 
 	<section name="clutch">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
-		<attnum name="y" val="214"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="226"/>
 		<attstr name="text" val="Clutch:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -191,7 +191,7 @@
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
 		<attnum name="x" val="170"/>
-		<attnum name="y" val="208"/>
+		<attnum name="y" val="220"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -202,8 +202,8 @@
 
 	<section name="ABS cmd">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
-		<attnum name="y" val="190"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="204"/>
 		<attstr name="text" val="ABS:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -216,7 +216,7 @@
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
 		<attnum name="x" val="170"/>
-		<attnum name="y" val="184"/>
+		<attnum name="y" val="198"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -227,8 +227,8 @@
 
 	<section name="ASR cmd">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
-		<attnum name="y" val="166"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="184"/>
 		<attstr name="text" val="TCS:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -241,7 +241,7 @@
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
 		<attnum name="x" val="170"/>
-		<attnum name="y" val="160"/>
+		<attnum name="y" val="176"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -252,8 +252,8 @@
 
 	<section name="Light1 cmd">
 		<attstr name="type" val="label"/>
-		<attnum name="x" val="40"/>
-		<attnum name="y" val="142"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="160"/>
 		<attstr name="text" val="Light:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -266,7 +266,57 @@
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
 		<attnum name="x" val="170"/>
-		<attnum name="y" val="136"/>
+		<attnum name="y" val="154"/>
+		<attstr name="h align" val="center"/>
+		<attnum name="width" val="140"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFCC00"/>
+	</section>
+	
+	<section name="left glance">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="138"/>
+		<attstr name="text" val="Left glance:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="140"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="left glance button">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
+		<attstr name="tip" val="Click to configure"/>
+		<attnum name="x" val="170"/>
+		<attnum name="y" val="132"/>
+		<attstr name="h align" val="center"/>
+		<attnum name="width" val="140"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFCC00"/>
+	</section>
+
+	<section name="right glance">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="30"/>
+		<attnum name="y" val="116"/>
+		<attstr name="text" val="Right glance:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="140"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="right glance button">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
+		<attstr name="tip" val="Click to configure"/>
+		<attnum name="x" val="170"/>
+		<attnum name="y" val="110"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -291,7 +341,7 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
+		<attnum name="x" val="435"/>
 		<attnum name="y" val="352"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
@@ -304,7 +354,7 @@
 	<section name="neutral gear">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="334"/>
+		<attnum name="y" val="336"/>
 		<attstr name="text" val="Neutral gear:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -316,8 +366,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="328"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="330"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -326,21 +376,10 @@
 		<attstr name="pushed color" val="0xFFCC00"/>
 	</section>
 
-	<section name="hbox x">
-		<attstr name="type" val="label"/>
-		<attnum name="x" val="290"/>
-		<attnum name="y" val="310"/>
-		<attstr name="text" val="HBox X:"/>
-		<attstr name="h align" val="right"/>
-		<attnum name="width" val="140"/>
-		<attstr name="font" val="small_t"/>
-	</section>
-
-
 	<section name="down shift">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="310"/>
+		<attnum name="y" val="314"/>
 		<attstr name="text" val="Down shift:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -352,8 +391,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="304"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="308"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -365,7 +404,7 @@
 	<section name="up shift">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="286"/>
+		<attnum name="y" val="292"/>
 		<attstr name="text" val="Up shift:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -377,8 +416,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="280"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="286"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -387,13 +426,23 @@
 		<attstr name="pushed color" val="0xFFCC00"/>
 	</section>
 
+	<section name="hbox x">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="290"/>
+		<attnum name="y" val="314"/>
+		<attstr name="text" val="HBox X:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="140"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
 	<section name="hbox x button">
 		<attstr name="type" val="text button"/>
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="304"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="308"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -405,7 +454,7 @@
 	<section name="hbox y">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="286"/>
+		<attnum name="y" val="292"/>
 		<attstr name="text" val="HBox Y:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -417,8 +466,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="280"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="286"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -429,7 +478,7 @@
 	<section name="1st gear">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="310"/>
+		<attnum name="y" val="314"/>
 		<attstr name="text" val="1st gear:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -441,8 +490,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="304"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="308"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -454,7 +503,7 @@
 	<section name="2nd gear">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="286"/>
+		<attnum name="y" val="292"/>
 		<attstr name="text" val="2nd gear:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -466,8 +515,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="280"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="286"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -479,7 +528,7 @@
 	<section name="3rd gear">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="262"/>
+		<attnum name="y" val="270"/>
    		<attstr name="text" val="3rd gear:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -491,8 +540,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="256"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="264"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -504,7 +553,7 @@
 	<section name="4th gear">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="238"/>
+		<attnum name="y" val="248"/>
 		<attstr name="text" val="4th gear:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -516,8 +565,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="232"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="242"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -529,7 +578,7 @@
 	<section name="5th gear">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="214"/>
+		<attnum name="y" val="226"/>
 		<attstr name="text" val="5th gear:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -541,8 +590,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="208"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="220"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -554,7 +603,7 @@
 	<section name="6th gear">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="190"/>
+		<attnum name="y" val="204"/>
 		<attstr name="text" val="6th gear:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
@@ -566,8 +615,8 @@
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="184"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="198"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -576,23 +625,23 @@
 		<attstr name="pushed color" val="0xFFCC00"/>
 		</section>
 
-	<section name="left glance">
+	<section name="dashboard next item">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="166"/>
-		<attstr name="text" val="Left glance:"/>
+		<attnum name="y" val="182"/>
+		<attstr name="text" val="Next dash item:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="small_t"/>
 	</section>
 
-	<section name="left glance button">
+	<section name="dashboard next item button">
 		<attstr name="type" val="text button"/>
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="160"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="176"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -600,24 +649,74 @@
 		<attstr name="focused color" val="0xFFFFFF"/>
 		<attstr name="pushed color" val="0xFFCC00"/>
 	</section>
-
-	<section name="right glance">
+	
+	<section name="dashboard previous item">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="290"/>
-		<attnum name="y" val="142"/>
-		<attstr name="text" val="Right glance:"/>
+		<attnum name="y" val="160"/>
+		<attstr name="text" val="Previous dash item:"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="small_t"/>
 	</section>
 
-	<section name="right glance button">
+	<section name="dashboard previous item button">
 		<attstr name="type" val="text button"/>
 		<attstr name="show box" val="no"/>
 		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
 		<attstr name="tip" val="Click to configure"/>
-		<attnum name="x" val="430"/>
-		<attnum name="y" val="136"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="154"/>
+		<attstr name="h align" val="center"/>
+		<attnum name="width" val="140"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFCC00"/>
+	</section>
+	
+	<section name="dashboard increase">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="290"/>
+		<attnum name="y" val="138"/>
+		<attstr name="text" val="Increase dash items:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="140"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="dashboard increase button">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
+		<attstr name="tip" val="Click to configure"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="132"/>
+		<attstr name="h align" val="center"/>
+		<attnum name="width" val="140"/>
+		<attstr name="font" val="medium"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFCC00"/>
+	</section>
+	
+	<section name="dashboard decrease">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="290"/>
+		<attnum name="y" val="116"/>
+		<attstr name="text" val="Decrease dash items:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="140"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="dashboard decrease button">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>
+		<attstr name="text" val="MOUSE_MIDDLE_BUTTON"/>
+		<attstr name="tip" val="Click to configure"/>
+		<attnum name="x" val="435"/>
+		<attnum name="y" val="110"/>
 		<attstr name="h align" val="center"/>
 		<attnum name="width" val="140"/>
 		<attstr name="font" val="medium"/>
@@ -630,9 +729,9 @@
 	<section name="Steer Sensitivity">
 		<attstr name="type" val="label"/>
 		<attstr name="text" val="Steer sens:"/>
-		<attstr name="tip" val="Configure steer sensitivity to steer command ]0 = none, any positive["/>
+		<attstr name="tip" val="Configure steer sensitivity to steer command (0 = none, any positive)"/>
 		<attnum name="x" val="60"/>
-		<attnum name="y" val="109"/>
+		<attnum name="y" val="76"/>
 		<attstr name="font" val="small_t"/>
 	</section>
 
@@ -640,9 +739,9 @@
 		<attstr name="type" val="edit box"/>
 		<attstr name="text" val=""/>
 		<attnum name="max len" val="5"/>
-		<attstr name="tip" val="Configure steer sensitivity to steer command ]0 = none, any positive["/>
+		<attstr name="tip" val="Configure steer sensitivity to steer command (0 = none, any positive)"/>
 		<attnum name="x" val="125"/>
-		<attnum name="y" val="106"/>
+		<attnum name="y" val="73"/>
 		<attnum name="width" val="82"/>
 		<attstr name="h align" val="right"/>
 		<attstr name="font" val="medium"/>
@@ -651,9 +750,9 @@
 	<section name="Steer Speed Sensitivity">
 		<attstr name="type" val="label"/>
 		<attstr name="text" val="Speed sens:"/>
-		<attstr name="tip" val="Configure steer sensitivity to car speed [0 = none, any positive["/>
+		<attstr name="tip" val="Configure steer sensitivity to car speed (0 = none, any positive)"/>
 		<attnum name="x" val="250"/>
-		<attnum name="y" val="109"/>
+		<attnum name="y" val="76"/>
 		<attstr name="font" val="small_t"/>
 	</section>
 
@@ -661,9 +760,9 @@
 		<attstr name="type" val="edit box"/>
 		<attstr name="text" val=""/>
 		<attnum name="max len" val="5"/>
-		<attstr name="tip" val="Configure steer sensitivity to car speed [0 = none, any positive["/>
+		<attstr name="tip" val="Configure steer sensitivity to car speed (0 = none, any positive)"/>
 		<attnum name="x" val="315"/>
-		<attnum name="y" val="106"/>
+		<attnum name="y" val="73"/>
 		<attnum name="width" val="82"/>
 		<attstr name="h align" val="right"/>
 		<attstr name="font" val="medium"/>
@@ -672,9 +771,9 @@
 	<section name="Steer Dead Zone">
 		<attstr name="type" val="label"/>
 		<attstr name="text" val="Dead zone:"/>
-		<attstr name="tip" val="Configure steer dead zone [0 = none, 1 = all["/>
+		<attstr name="tip" val="Configure steer dead zone (0 = none, 1 = all)"/>
 		<attnum name="x" val="440"/>
-		<attnum name="y" val="109"/>
+		<attnum name="y" val="76"/>
 		<attstr name="font" val="small_t"/>
 	</section>
 
@@ -682,9 +781,9 @@
 		<attstr name="type" val="edit box"/>
 		<attstr name="text" val=""/>
 		<attnum name="max len" val="5"/>
-		<attstr name="tip" val="Configure steer dead zone [0 = none, 1 = all["/>
+		<attstr name="tip" val="Configure steer dead zone (0 = none, 1 = all)"/>
 		<attnum name="x" val="505"/>
-		<attnum name="y" val="106"/>
+		<attnum name="y" val="73"/>
 		<attnum name="width" val="82"/>
 		<attstr name="h align" val="right"/>
 		<attstr name="font" val="medium"/>
@@ -698,7 +797,7 @@
 		<attstr name="tip" val="Cancel changes"/>
 		<attstr name="h align" val="left"/>
 		<attnum name="x" val="130"/>
-		<attnum name="y" val="44"/>
+		<attnum name="y" val="34"/>
 		<attnum name="width" val="120"/>
 		<attstr name="font" val="medium"/>
 		<attstr name="color" val="0xFFFFFF"/>
@@ -720,7 +819,7 @@
 		<attstr name="tip" val="Calibrate input device(s)"/>
 		<attstr name="h align" val="left"/>
 		<attnum name="x" val="288"/>
-		<attnum name="y" val="44"/>
+		<attnum name="y" val="34"/>
 		<attnum name="width" val="120"/>
 		<attstr name="font" val="medium"/>
 		<attstr name="color" val="0xFFFFFF"/>
@@ -742,7 +841,7 @@
 		<attstr name="tip" val="Accept and save changes"/>
 		<attstr name="h align" val="left"/>
 		<attnum name="x" val="460"/>
-		<attnum name="y" val="44"/>
+		<attnum name="y" val="34"/>
 		<attnum name="width" val="120"/>
 		<attstr name="font" val="medium"/>
 		<attstr name="color" val="0xFFFFFF"/>

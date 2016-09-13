@@ -206,13 +206,73 @@ SimReConfig(tCarElt *carElt)
 	car->dammage -= carElt->pitcmd.repair;
 	if (car->dammage < 0) car->dammage = 0;
     }
+    carElt->setup.reqRepair.desired_value = 0.0;
     
-    for(i=0; i<4; i++) {
-		car->wheel[i].treadDepth = 1.0;
-		car->wheel[i].Ttire = car->wheel[i].Tinit;
+    if (carElt->setup.reqTireset.desired_value > 0.9) {
+		for(i=0; i<4; i++) {
+			car->wheel[i].treadDepth = 1.0;
+			car->wheel[i].Ttire = car->wheel[i].Tinit;
+		}
 	}
+	
+	SimWingReConfig(car, 0);
+	SimWingReConfig(car, 1);
 }
 
+
+/* deal with dashboardInstant changes */
+void
+SimInstantReConfig(tCar *car)
+{
+	tCarSetupItem *setup;
+	
+	if (car->ctrl->setupChangeCmd) {
+		setup = (car->ctrl->setupChangeCmd->setup);
+	} else return;
+	
+	switch (car->ctrl->setupChangeCmd->type) {
+		case DI_BRAKE_REPARTITION:
+			SimBrakeSystemReConfig(car);
+			break;
+		case DI_FRONT_ANTIROLLBAR:
+			SimArbReConfig(car, 0);
+			break;
+		case DI_REAR_ANTIROLLBAR:
+			SimArbReConfig(car, 1);
+			break;
+		case DI_FRONT_DIFF_MAX_SLIP_BIAS:
+			car->transmission.differential[TRANS_FRONT_DIFF].dSlipMax = setup->desired_value;
+			setup->value = car->transmission.differential[TRANS_FRONT_DIFF].dSlipMax;
+			setup->changed = FALSE;
+			break;
+		case DI_FRONT_DIFF_COAST_MAX_SLIP_BIAS:
+			car->transmission.differential[TRANS_FRONT_DIFF].dCoastSlipMax = setup->desired_value;
+			setup->value = car->transmission.differential[TRANS_FRONT_DIFF].dCoastSlipMax;
+			setup->changed = FALSE;
+			break;
+		case DI_REAR_DIFF_MAX_SLIP_BIAS:
+			car->transmission.differential[TRANS_REAR_DIFF].dSlipMax = setup->desired_value;
+			setup->value = car->transmission.differential[TRANS_REAR_DIFF].dSlipMax;
+			setup->changed = FALSE;
+			break;
+		case DI_REAR_DIFF_COAST_MAX_SLIP_BIAS:
+			car->transmission.differential[TRANS_REAR_DIFF].dCoastSlipMax = setup->desired_value;
+			setup->value = car->transmission.differential[TRANS_REAR_DIFF].dCoastSlipMax;
+			setup->changed = FALSE;
+			break;
+		case DI_CENTRAL_DIFF_MAX_SLIP_BIAS:
+			car->transmission.differential[TRANS_CENTRAL_DIFF].dSlipMax = setup->desired_value;
+			setup->value = car->transmission.differential[TRANS_CENTRAL_DIFF].dSlipMax;
+			setup->changed = FALSE;
+			break;
+		case DI_CENTRAL_DIFF_COAST_MAX_SLIP_BIAS:
+			car->transmission.differential[TRANS_CENTRAL_DIFF].dCoastSlipMax = setup->desired_value;
+			setup->value = car->transmission.differential[TRANS_CENTRAL_DIFF].dCoastSlipMax;
+			setup->changed = FALSE;
+			break;
+	}
+	car->ctrl->setupChangeCmd = NULL;
+}
 
 static void
 RemoveCar(tCar *car, tSituation *s)
@@ -408,6 +468,8 @@ SimUpdate(tSituation *s, double deltaTime)
 		CHECK(car);
 		ctrlCheck(car);
 		CHECK(car);
+		SimInstantReConfig(car);
+		CHECK(car);
 		SimSteerUpdate(car);
 		CHECK(car);
 		SimGearboxUpdate(car);
@@ -481,6 +543,7 @@ SimUpdate(tSituation *s, double deltaTime)
 			carElt->pub.corner[i] = car->corner[i].pos;
 		}
 		carElt->_gear = car->transmission.gearbox.gear;
+		carElt->_gearNext = car->transmission.gearbox.gearNext;
 		carElt->_enginerpm = car->engine.rads;
 		carElt->_fuel = car->fuel;
 		carElt->priv.collision |= car->collision;
@@ -553,6 +616,8 @@ SimUpdateSingleCar(int index, double deltaTime,tSituation *s)
 	CHECK(car);
 	ctrlCheck(car);
 	CHECK(car);
+	SimInstantReConfig(car);	
+	CHECK(car);
 	SimSteerUpdate(car);
 	CHECK(car);
 	SimGearboxUpdate(car);
@@ -603,6 +668,7 @@ SimUpdateSingleCar(int index, double deltaTime,tSituation *s)
 		carElt->pub.corner[i] = car->corner[i].pos;
 	}
 	carElt->_gear = car->transmission.gearbox.gear;
+	carElt->_gearNext = car->transmission.gearbox.gearNext;
 	carElt->_enginerpm = car->engine.rads;
 	carElt->_fuel = car->fuel;
 	carElt->priv.collision |= car->collision;

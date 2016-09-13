@@ -4,7 +4,7 @@
     created              : Sun Apr 30 15:45:57 CEST 2000
     copyright            : (C) 2000 by Eric Espie                         
     email                : torcs@free.fr   
-    version              : $Id: espie.xml 4808 2012-07-19 18:26:48Z torcs-ng $                                  
+    version              : $Id: espie.xml 6163 2015-10-04 22:25:15Z torcs-ng $                                  
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -93,9 +93,7 @@
 
   <section name="Graphic">
     <attstr name="3d description" val="espie.acc"/>
-    <attstr name="3d description rain" val="espie.acc"/>
-    <attstr name="3d description night" val="espie.acc"/>
-    <attstr name="3d description rain+night" val="espie.acc"/>
+    
     <attstr name="background image" val="background.jpg"/>
     <attnum name="background type" val="4"/>
 
@@ -146,6 +144,9 @@
 
     <attnum name="width" unit="m" val="13"/>
     <attnum name="profil steps length" unit="m" val="10"/>
+		<attnum name="raceline widthscale" val="1.5"/>
+		<attnum name="raceline int" val="2"/>
+		<attnum name="raceline ext" val="2"/>
 
     <!-- PITS -->
     <section name="Pits">

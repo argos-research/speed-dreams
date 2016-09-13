@@ -4,7 +4,7 @@
     created              : Sun Jan 30 22:59:17 CET 2000
     copyright            : (C) 2000,2002 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: raceman.h 5696 2013-10-01 22:15:36Z torcs-ng $
+    version              : $Id: raceman.h 6142 2015-09-24 15:16:10Z torcs-ng $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file
     		This is the race information structures.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: raceman.h 5696 2013-10-01 22:15:36Z torcs-ng $
+    @version	$Id: raceman.h 6142 2015-09-24 15:16:10Z torcs-ng $
     @ingroup	raceinfo
 */
  
@@ -103,18 +103,24 @@ typedef struct Situation {
 /** Race Engine states */
 #define RE_STATE_CONFIG			0
 #define RE_STATE_EVENT_INIT		1
+#define RE_STATE_EVENT_LOOP		2
 #define RE_STATE_PRE_RACE		3
-#define RE_STATE_RACE_START		5
-#define RE_STATE_NETWORK_WAIT   6
-#define RE_STATE_RACE			7
-#define RE_STATE_RACE_STOP		8
-#define RE_STATE_RACE_END		9
-#define RE_STATE_POST_RACE		10
-#define RE_STATE_EVENT_SHUTDOWN	11
-#define RE_STATE_EVOLUTION		12
-#define RE_STATE_SHUTDOWN		13
-#define RE_STATE_ERROR			14
-#define RE_STATE_EXIT			15
+#define RE_STATE_RACE_START		4
+#define RE_STATE_NETWORK_WAIT   5
+#define RE_STATE_RACE			6
+#define RE_STATE_RACE_STOP		7
+#define RE_STATE_RACE_END		8
+#define RE_STATE_POST_RACE		9
+#define RE_STATE_EVENT_SHUTDOWN	10
+#define RE_STATE_EVOLUTION		11
+#define RE_STATE_SHUTDOWN		12
+#define RE_STATE_RESULTS		13
+#define RE_STATE_CLEANUP		14
+#define RE_STATE_WAITFORKEYPRESS 15
+#define RE_STATE_ERROR			16
+#define RE_STATE_EXIT			17
+#define RE_STATE_PRE_RACE_PAUSE	18
+#define RE_STATE_RACE_COOLDOWN	19
 
 /** Race Engine Car Information about the race */
 typedef struct 
@@ -416,8 +422,18 @@ typedef struct RmInfo
 #define RM_VAL_MOD_SIMU_V2_1	"simuv2.1"
 #define RM_VAL_MOD_SIMU_V3		"simuv3"
 #define RM_VAL_MOD_SIMU_V4		"simuv4"
+#define RM_VAL_MOD_SIMU_REPLAY		"simureplay"
 #define RM_VAL_MOD_TRACK		"track"
 #define RM_VAL_MOD_SSGRAPH		"ssggraph"
+#define RM_VAL_MOD_OSGGRAPH		"osggraph"
+
+/* Replay Settings */
+
+#define RM_VAL_REPLAY_OFF		"0"
+#define RM_VAL_REPLAY_LOW		"2"
+#define RM_VAL_REPLAY_NORMAL		"10"
+#define RM_VAL_REPLAY_HIGH		"30"
+#define RM_VAL_REPLAY_PERFECT		"100"
 
 /* Race Engine itself */
 
@@ -425,6 +441,10 @@ typedef struct RmInfo
 
 #define RM_ATTR_MULTI_THREADING		"multi-threading"
 #define RM_ATTR_THREAD_AFFINITY		"thread affinity"
+#define RM_ATTR_REPLAY_RATE		"replay rate"
+
+#define RM_ATTR_STARTPAUSED		"startpaused"
+#define RM_ATTR_COOLDOWN		"cooldown"
 
 #define RM_VAL_AUTO		"auto"
 #define RM_VAL_ON		"on"

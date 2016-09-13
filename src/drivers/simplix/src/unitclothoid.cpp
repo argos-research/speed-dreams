@@ -1,18 +1,17 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitclothoid.cpp
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
-// A robot for Speed Dreams-Version 2.X
+// A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Lane clothoide like
-// Fahrspur clothoiden�hnlich
+// Fahrspur clothoiden ähnlich
 //
 // File         : unitclothoid.cpp
 // Created      : 2007.11.25
-// Last changed : 2013.03.02
-// Copyright    : � 2007-2013 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 4.00.000
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // Teile diese Unit basieren auf diversen Header-Dateien von TORCS
 //
@@ -27,12 +26,12 @@
 // dem Roboter delphin
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // dem Roboter wdbee_2007
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // und dem Roboter mouse_2006
 //
@@ -393,7 +392,7 @@ void TClothoidLane::SetOffset
 	  + MAX(0.0,MIN(oFixCarParam.oMaxBorderInner, 
 	  oFixCarParam.oBorderScale * fabs(Crv) - 1));
   double BorderOuter = oFixCarParam.oBorderOuter;
-
+ 
   if (Crv >= 0) // turn to left
   {
     if (LaneType == ltLeft)
@@ -668,16 +667,16 @@ bool TClothoidLane::SaveToFile(const char* Filename)
   fprintf(F, "%d\n",oTrack->Count());
   fprintf(F, "%g\n",oTrack->Length());
   fprintf(F, "%g\n",oTrack->Length()/oTrack->Count());
-
+  fprintf(F, "%g\n",oTrack->Width());
 
   for (int I = 0; I < oTrack->Count(); I++)
   {
 	TPathPt& P = oPathPoints[I];                 // Points in this lane
 	const TVec3d& C = P.Pt();
 	const TVec3d& N = P.Norm();
-	fprintf(F, "%d\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n",
-	  I,C.x, C.y, C.z, N.x, N.y, N.z, P.WtoL(), P.Offset, P.WtoR(),
-	  P.Point.x, P.Point.y);
+	fprintf(F, "%d\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n",
+	  I,C.x, C.y, C.z, N.x, N.y, N.z, P.WToL, P.Offset, P.WToR,
+	  P.Point.x, P.Point.y, P.AccSpd);
   }
 
   fclose(F);

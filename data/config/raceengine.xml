@@ -4,7 +4,7 @@
     created     : Sat Nov 16 19:39:26 CET 2002
     copyright   : (C) 2002 by Eric Espie
     email       : Eric.Espie@torcs.org
-    version     : $Id: raceengine.xml 5719 2013-11-05 09:08:24Z beaglejoe $
+    version     : $Id: raceengine.xml 5813 2014-11-05 10:51:46Z kmetykog $
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../tgf/params.dtd">
 
-<params name="" type="template" mode="mw" version="1.8">
+<params name="" type="template" mode="mw" version="2.0">
 
   <section name="Modules">
     <attstr name="racing" val="standardgame"/>
@@ -33,6 +33,8 @@
   <section name="Race Engine">
     <attstr name="multi-threading" in="auto,on,off" val="off"/>
     <attstr name="thread affinity" in="on,off" val="off"/>
+    <attstr name="startpaused" in="on,off" val="on"/>
+    <attstr name="cooldown" in="on,off" val="on"/>
   </section>
 
 </params>

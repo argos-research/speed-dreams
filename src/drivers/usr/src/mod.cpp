@@ -4,7 +4,7 @@
     created              : Wed May 14 19:53:00 CET 2003
     copyright            : (C) 2003-2004 by Bernhard Wymann
     email                : berniw@bluewin.ch
-    version              : $Id: mod.cpp 4734 2012-05-26 13:02:20Z torcs-ng $
+    version              : $Id: mod.cpp 5950 2015-04-05 19:34:04Z torcs-ng $
 
  ***************************************************************************/
 
@@ -22,42 +22,42 @@
 
 void AddMod( LRLMod *mod, int divstart, int divend, double dval, int ival )
 {
- if (!mod) return;
+    if (!mod) return;
 
- mod->data[mod->used].divstart = divstart;
- mod->data[mod->used].divend = divend;
- mod->data[mod->used].dval = dval;
- mod->data[mod->used].ival = ival;
- mod->used++;
+    mod->data[mod->used].divstart = divstart;
+    mod->data[mod->used].divend = divend;
+    mod->data[mod->used].dval = dval;
+    mod->data[mod->used].ival = ival;
+    mod->used++;
 }
 
 
 double GetModD( LRLMod *mod, int div )
 {
- int i;
+    int i;
 
- if (!mod)
-  return 0.0;
+    if (!mod)
+        return 0.0;
 
- for (i=0; i<mod->used; i++)
- {
-  if (div >= mod->data[i].divstart && div <= mod->data[i].divend)
-   return mod->data[i].dval;
- }
- return 0.0;
+    for (i=0; i<mod->used; i++)
+    {
+        if (div >= mod->data[i].divstart && div <= mod->data[i].divend)
+            return mod->data[i].dval;
+    }
+    return 0.0;
 }
 
 int GetModI( LRLMod *mod, int div )
 {
- int i;
+    int i;
 
- if (!mod)
-  return 0;
+    if (!mod)
+        return 0;
 
- for (i=0; i<mod->used; i++)
- {
-  if (div >= mod->data[i].divstart && div <= mod->data[i].divend)
-   return mod->data[i].ival;
- }
- return 0;
+    for (i=0; i<mod->used; i++)
+    {
+        if (div >= mod->data[i].divstart && div <= mod->data[i].divend)
+            return mod->data[i].ival;
+    }
+    return 0;
 }

@@ -28,13 +28,18 @@ SimEngineConfig(tCar *car)
 	tdble	rpmMaxTq = 0;
 	char	idx[64];
 	tEngineCurveElem *data;
+	tCarSetupItem *setupRevLimit = &(car->carElt->setup.revsLimiter);
 	struct tEdesc {
 		tdble rpm;
 		tdble tq;
 	} *edesc;
 
 
-	car->engine.revsLimiter = GfParmGetNum(hdle, SECT_ENGINE, PRM_REVSLIM, (char*)NULL, 800);
+	setupRevLimit->desired_value = setupRevLimit->min = setupRevLimit->max = 800;
+	GfParmGetNumWithLimits(hdle, SECT_ENGINE, PRM_REVSLIM, (char*)NULL, &(setupRevLimit->desired_value), &(setupRevLimit->min), &(setupRevLimit->max));
+	setupRevLimit->changed = TRUE;
+	setupRevLimit->stepsize = (tdble) RPM2RADS(100.0);
+	car->engine.revsLimiter = setupRevLimit->desired_value;
 	car->carElt->_enginerpmRedLine = car->engine.revsLimiter;
 	car->engine.revsMax     = GfParmGetNum(hdle, SECT_ENGINE, PRM_REVSMAX, (char*)NULL, 1000);
 	car->carElt->_enginerpmMax = car->engine.revsMax;
@@ -48,6 +53,20 @@ SimEngineConfig(tCar *car)
 	car->engine.Tq_response = 0.0f;
 	car->engine.I_joint = car->engine.I;
 	car->engine.timeInLimiter = 0.0f;
+
+	// Option TCL ...
+	if (car->features & FEAT_TCLINSIMU)
+	{
+		car->engine.TCL        = 1.0f;
+		car->engine.EnableTCL  = GfParmGetNum(hdle, SECT_ENGINE, PRM_TCLINSIMU, (char*)NULL, 0.0f) > 0;
+/*
+		if (car->engine.EnableTCL)
+			fprintf(stderr,"TCL: Enabled\n");
+		else
+			fprintf(stderr,"TCL: Disabled\n");
+*/
+	}
+	// ... Option TCL
 
 	sprintf(idx, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
 	car->engine.curve.nbPts = GfParmGetEltNb(hdle, idx);
@@ -109,6 +128,24 @@ SimEngineConfig(tCar *car)
 	    car->engine.revsLimiter = car->engine.revsMax;
 	    GfLogWarning("Revs limiter is bigger than revs maxi.\nIt is set to %g.\n",car->engine.revsLimiter);
 	}
+	if (setupRevLimit->max > car->engine.revsMax) {
+		setupRevLimit->max = car->engine.revsMax;
+		if (setupRevLimit->min > setupRevLimit->max)
+			{setupRevLimit->min = setupRevLimit->max;}
+	}
+}
+
+void
+SimEngineReConfig(tCar *car)
+{/* called by SimCarReConfig in car.cpp */
+	tCarSetupItem *setupRevLimit = &(car->carElt->setup.revsLimiter);
+	
+	if (setupRevLimit->changed) {
+		car->engine.revsLimiter = MIN(setupRevLimit->max, MAX(setupRevLimit->min, setupRevLimit->desired_value));
+		car->carElt->_enginerpmRedLine = car->engine.revsLimiter;
+		setupRevLimit->value = car->engine.revsLimiter;
+		setupRevLimit->changed = FALSE;
+	}
 }
 
 /* Update torque output with engine rpm and accelerator command */
@@ -156,6 +193,19 @@ SimEngineUpdateTq(tCar *car)
 	        engine->timeInLimiter = 0.1f;
 	    }
         }
+
+	// Option TCL ...
+	if (car->features & FEAT_TCLINSIMU)
+	{
+		if (engine->EnableTCL)
+			Tq_max *= (tdble) MAX(0.0,MIN(1.0,engine->TCL));
+/*
+		if (engine->EnableTCL)
+			fprintf(stderr,"TCL: %.1f %%\n", engine->TCL * 100);
+*/
+	}
+	// ... Option TCL
+
 	if ( (car->features & FEAT_REVLIMIT) && (engine->timeInLimiter > 0.0f) ) {
 	    alpha = 0.0;
 	    engine->timeInLimiter -= SimDeltaTime;

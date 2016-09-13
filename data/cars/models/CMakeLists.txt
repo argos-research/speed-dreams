@@ -28,6 +28,11 @@ SD_ADD_SUBDIRECTORY(sc-kongei-kk8s)
 SD_ADD_SUBDIRECTORY(sc-murasama-nsx)
 SD_ADD_SUBDIRECTORY(sc-spirit-300)
 
+SD_ADD_SUBDIRECTORY(srw-sector-p4)
+SD_ADD_SUBDIRECTORY(srw-kongei-kk8s)
+SD_ADD_SUBDIRECTORY(srw-boxer-ts)
+SD_ADD_SUBDIRECTORY(srw-kanagawa-gtr)
+
 SD_ADD_SUBDIRECTORY(ls1-archer-r9)
 SD_ADD_SUBDIRECTORY(ls1-cavallo-570s1)
 SD_ADD_SUBDIRECTORY(ls1-newcastle-fury)
@@ -64,6 +69,8 @@ SD_ADD_SUBDIRECTORY(rs2-lion-2m)
 # Work-in-progress car sets.
 IF(NOT OPTION_OFFICIAL_ONLY)
 
+	SD_ADD_SUBDIRECTORY(67gp-upping-ut19)
+
 	SD_ADD_SUBDIRECTORY(ref-boxer-gt3-rs-2010)
 	SD_ADD_SUBDIRECTORY(ref-sector-p4)
 	SD_ADD_SUBDIRECTORY(ref-sphere-osg)
@@ -75,6 +82,9 @@ IF(NOT OPTION_OFFICIAL_ONLY)
 	SD_ADD_SUBDIRECTORY(mp1-diamond-d25)
 	SD_ADD_SUBDIRECTORY(mp1-cavallo-tr06)
 	SD_ADD_SUBDIRECTORY(mp1-vicente)
+	
+	SD_ADD_SUBDIRECTORY(mpa11-murasama)
+	SD_ADD_SUBDIRECTORY(mpa12-murasama)
 
 	SD_ADD_SUBDIRECTORY(lp1-lolita-exr57)
 	SD_ADD_SUBDIRECTORY(lp1-luxura-lp02)

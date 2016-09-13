@@ -4,7 +4,7 @@
     created              : Thu Aug 17 23:19:19 CEST 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: ssggraph.cpp 5095 2013-01-12 17:57:47Z pouillot $
+    version              : $Id: ssggraph.cpp 6097 2015-08-30 23:12:09Z beaglejoe $
 
  ***************************************************************************/
 
@@ -45,7 +45,7 @@ int closeGfModule()
 {
     // Unregister it from the GfModule module manager.
     if (SsgGraph::_pSelf)
-        GfModule::unregister(SsgGraph::_pSelf);
+        SsgGraph::unregister(SsgGraph::_pSelf);
 
     // Delete the (only) module instance.
     delete SsgGraph::_pSelf;

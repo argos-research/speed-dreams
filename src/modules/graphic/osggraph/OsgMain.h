@@ -24,8 +24,6 @@
 #include <graphic.h>
 #include <raceman.h>	//tSituation
 
-//#include "CameraGroup.h"
-
 extern int m_Winx, m_Winy, m_Winw, m_Winh;
 extern int grVectFlag;
 extern int grVectDispFlag[];
@@ -47,25 +45,14 @@ extern void shutdownCars(void);
 extern void shutdownTrack(void);
 extern void shutdownView(void);
 extern Camera * getCamera(void);
-//extern void bendCar (int index, sgVec3 poc, sgVec3 force, int cnt);
 
 extern int grMaxTextureUnits;
 extern tdble grMaxDammage;
 
 // Number of active screens.
 extern int m_NbActiveScreens;
-//extern osg::ref_ptr<osgViewer::Viewer> m_sceneViewer;
-
-//extern class cGrScreen *Screens[];
-//extern class cGrScreen* grGetCurrentScreen(void);
-
-/*class SDScenery;
-class SDCars;
-class SDRender;
-class SDView;*/
 
 //static 
-
 #define SD_SPLIT_ADD	0
 #define SD_SPLIT_REM	1
 #define SD_SPLIT_ARR	2
@@ -79,16 +66,17 @@ extern tdble grLodFactorValue;
 
 class SDFrameInfo
 {
- public:
-	double fInstFps;        // "Instant" frame rate (average along a 1 second shifting window).
-	double fAvgFps;         // Average frame rate (since the beginning of the race).
-	unsigned nInstFrames;   // Nb of frames since the last "instant" FPS refresh time
-	unsigned nTotalFrames;  // Total nb of frames since initView
+public:
+    double fInstFps;        // "Instant" frame rate (average along a 1 second shifting window).
+    double fAvgFps;         // Average frame rate (since the beginning of the race).
+    unsigned nInstFrames;   // Nb of frames since the last "instant" FPS refresh time
+    unsigned nTotalFrames;  // Total nb of frames since initView
 };
 
 void * getScreens();
 void * getRender();
 void * getCars();
 void * getScenery();
+//void * getOptions();
 
-#endif /* _OSGMAIN_H_ */ 
+#endif /* _OSGMAIN_H_ */

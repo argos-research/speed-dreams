@@ -4,7 +4,7 @@
     created              : Mon Apr 14 22:30:04 CEST 2011
     copyright            : (C) 2011 by Jean-Philippe Meuret
     web                  : http://www.speed-dreams.org
-    version              : $Id: application.cpp 5428 2013-05-07 19:42:07Z beaglejoe $
+    version              : $Id: application.cpp 5858 2014-11-25 19:58:53Z wdbee $
 ***************************************************************************/
 
 /***************************************************************************
@@ -18,7 +18,7 @@
 
 /** @file   
     		Application base
-    @version	$Id: application.cpp 5428 2013-05-07 19:42:07Z beaglejoe $
+    @version	$Id: application.cpp 5858 2014-11-25 19:58:53Z wdbee $
     @ingroup	tgf
 */
 
@@ -213,6 +213,12 @@ void GfApplication::restart()
 
 	// Delete the event loop if any.
 	delete _pEventLoop;
+	_pEventLoop = 0;
+
+	// Reset the Memory Manager
+	#ifdef __DEBUG_MEMORYMANAGER__
+	(*ReleaseData)();
+	#endif
 
 	// Restart the process, using same command line args.
 	// 1) The process executable path-name is the 1st arg left untouched.
@@ -472,6 +478,8 @@ void GfApplication::registerOption(const std::string& strShortName,
 	std::list<Option>::const_iterator itOpt;
 	for (itOpt = _lstOptions.begin(); itOpt != _lstOptions.end(); itOpt++)
 	{
+		try
+		{
 		if (itOpt->strShortName == strShortName)
 		{
 			GfLogError("Can't register option -%s/--%s "
@@ -488,6 +496,12 @@ void GfApplication::registerOption(const std::string& strShortName,
 					   itOpt->strShortName.c_str(), itOpt->strLongName.c_str());
 			return;
 		}
+		}
+		catch (std::bad_exception)
+		{
+			GfLogError("GfApplication::registerOption -%s",strShortName.c_str());
+		}
+
 	}
 
 	// All's right : register.

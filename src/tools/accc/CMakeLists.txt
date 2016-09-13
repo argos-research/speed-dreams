@@ -20,3 +20,14 @@ ENDIF(UNIX)
 
 SD_INSTALL_FILES(BIN TARGETS ${_TARGET_NAME})
 
+IF((APPLE) AND ("${CMAKE_INSTALL_PREFIX}" MATCHES "\\.app$"))
+   SET(APPS "\${CMAKE_INSTALL_PREFIX}/games/${_TARGET_NAME}")
+   SET(DIRS /opt/local)
+   SET(DIRS ${DIRS} "\${CMAKE_INSTALL_PREFIX}/lib64/games/${_TARGET_NAME}/lib")
+   SET(PlugIns)
+
+   INSTALL(CODE "
+   INCLUDE(BundleUtilities)
+   SET(BU_CHMOD_BUNDLE_ITEMS ON)
+   FIXUP_BUNDLE(\"${APPS}\" \"${PlugIns}\" \"${DIRS}\")")
+endif()

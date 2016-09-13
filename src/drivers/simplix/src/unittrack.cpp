@@ -1,8 +1,7 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unittrack.cpp
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
-// A robot for Speed Dreams-Version 1.4.0/2.X
+// A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Track description with variable step length
 // Streckenbeschreibung mit variabler Abtastrate
@@ -10,10 +9,10 @@
 // 
 // File         : unittrack.cpp 
 // Created      : 2007.11.17
-// Last changed : 2013.06.25
-// Copyright    : © 2007-2011 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 4.00.002
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // Stellt Funktionen zur Streckenbeschreibung zur Verfügung
 //--------------------------------------------------------------------------*
@@ -30,12 +29,12 @@
 // dem Roboter delphin
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // dem Roboter wdbee_2007
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // dem Roboter mouse_2006
 //    Copyright: (C) 2006 Tim Foden
@@ -493,6 +492,15 @@ void TTrackDescription::InitTrack
 	  bool PitOnly = false;                      // Reset flag
 	  while(PSide)                               // Loop all side-segments
 	  {
+/*
+	    if (S == TR_SIDE_LFT)
+		{
+  	      fprintf(stderr,"%s %d r:%.3f kfr:%.3f krh:%.3f krr:%.3f kkw:%.3f \n",Seg->name,Seg->id,Seg->radius,PSide->surface->kFriction,PSide->surface->kRoughness,PSide->surface->kRollRes,PSide->Kzw);
+
+		  if (Seg->id == 565)
+  	        fprintf(stderr,"Now!\n");
+		}
+*/
 	    double Wpit = 0.0;                       // Initialize
 		double WCurb = 0.0;                      // additional with
 		double W = PSide->startWidth + T *       // Estimate width of section
@@ -628,7 +636,7 @@ void TTrackDescription::InitTrack
 		else
 		{
 		  // Wall of some sort
-		  WCurb = (PSide->style >= TR_WALL) ? -1.0 : 0.0;
+//		  WCurb = (PSide->style >= TR_WALL) ? -1.0 : 0.0;
 		  Done = true;
 		}
 

@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:27:57 CEST 1999
     copyright            : (C) 1999 by Eric Espie
     email                : torcs@free.fr   
-    version              : $Id: params.cpp 5189 2013-02-23 18:40:36Z pouillot $
+    version              : $Id: params.cpp 6270 2015-11-23 19:44:40Z madbad $
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file
     		This is the parameters manipulation API.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: params.cpp 5189 2013-02-23 18:40:36Z pouillot $
+    @version	$Id: params.cpp 6270 2015-11-23 19:44:40Z madbad $
     @ingroup	params
 */
 
@@ -146,6 +146,8 @@ struct parmHandle
 	GF_TAILQ_ENTRY (struct parmHandle)	linkHandle;	/**< Next configuration handle */
 };
 
+/** Trace == true: Switches loggers on **/
+static bool TraceLoggersAvailable = true;
 
 GF_TAILQ_HEAD (parmHead, struct parmHandle);
 
@@ -653,7 +655,10 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 	if (parmHandle->flag & PARM_HANDLE_FLAG_PARSE_ERROR) 
 	{
 		// parse error occured, ignore.
-		GfLogWarning("xmlStartElement: parsing error ; ignoring\n");
+		if (TraceLoggersAvailable)
+			GfLogWarning("xmlStartElement: parsing error ; ignoring\n");
+		else
+			fprintf(stderr,"xmlStartElement: parsing error ; ignoring\n");
 		return;
 	}
 
@@ -678,7 +683,10 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if (!parmHandle->curSection->fullName) 
 		{
-			GfLogError ("xmlStartElement: strdup (\"\") failed\n");
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: strdup (\"\") failed\n");
+			else
+				fprintf(stderr,"xmlStartElement: strdup (\"\") failed\n");
 			goto bailout;
 		}
 
@@ -692,7 +700,10 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 				conf->name = strdup(s2);
 				if (!conf->name) 
 				{
-					GfLogError ("xmlStartElement: strdup (\"%s\") failed\n", s2);
+					if (TraceLoggersAvailable)
+						GfLogError ("xmlStartElement: strdup (\"%s\") failed\n", s2);
+					else
+						fprintf(stderr,"xmlStartElement: strdup (\"%s\") failed\n", s2);
 					goto bailout;
 				}
 				//break;
@@ -736,7 +747,10 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if (!parmHandle->curSection) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"params\" tag\n");
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"params\" tag\n");
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"params\" tag\n");
 			goto bailout;
 		}
 
@@ -755,7 +769,10 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if (!shortName) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"name\" field in section definition\n");
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"name\" field in section definition\n");
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"name\" field in section definition\n");
 			goto bailout;
 		}
 
@@ -765,7 +782,10 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 			fullName = (char *) malloc (len);
 			if (!fullName) 
 			{
-				GfLogError ("xmlStartElement: malloc (%d) failed\n", len);
+				if (TraceLoggersAvailable)
+					GfLogError ("xmlStartElement: malloc (%d) failed\n", len);
+				else
+					fprintf(stderr,"xmlStartElement: malloc (%d) failed\n", len);
 				goto bailout;
 			}
 		    sprintf (fullName, "%s/%s", parmHandle->curSection->fullName, shortName);
@@ -779,8 +799,10 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if (!parmHandle->curSection) 
 		{
-			GfLogError ("xmlStartElement: addSection failed\n");
-			goto bailout;
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: addSection failed\n");
+			else
+				fprintf(stderr,"xmlStartElement: addSection failed\n");	
 		}
 
 	} else if (!strcmp(name, "attnum")) 
@@ -788,7 +810,10 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if ((!parmHandle->curSection) || (!strlen (parmHandle->curSection->fullName))) 
 		{
+			if (TraceLoggersAvailable)
 	    		GfLogError ("xmlStartElement: Syntax error, missing \"section\" tag\n");
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"section\" tag\n");
 			goto bailout;
 		}
 
@@ -820,20 +845,29 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if (!shortName) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
 			goto bailout;
 		}
 
 		if (!val) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
 			goto bailout;
 		}
 
 		curParam = addParam (conf, parmHandle->curSection, shortName, val);
 		if (!curParam) 
 		{
-			GfLogError ("xmlStartElement: addParam failed\n");
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: addParam failed\n");
+			else
+				fprintf(stderr,"xmlStartElement: addParam failed\n");
 			goto bailout;
 		}
 
@@ -856,15 +890,25 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if (curParam->min > curParam->valnum) 
 		{
-			GfLogWarning("Param '%s' : Loaded value (%f) < min (%f); fixing the min\n",
+			if (TraceLoggersAvailable)
+				GfLogWarning("Param '%s' : Loaded value (%f) < min (%f); fixing the min\n",
 						 shortName, curParam->valnum, curParam->min);
+			else
+				fprintf(stderr,"Param '%s' : Loaded value (%f) < min (%f); fixing the min\n",
+						 shortName, curParam->valnum, curParam->min);
+
 			curParam->min = curParam->valnum;
 		}
 
 		if (curParam->max < curParam->valnum) 
 		{
-			GfLogWarning("Param '%s' : Loaded value (%f) > max (%f); fixing the max\n",
+			if (TraceLoggersAvailable)
+				GfLogWarning("Param '%s' : Loaded value (%f) > max (%f); fixing the max\n",
 						 shortName, curParam->valnum, curParam->max);
+			else
+				fprintf(stderr,"Param '%s' : Loaded value (%f) > max (%f); fixing the max\n",
+						 shortName, curParam->valnum, curParam->max);
+
 			curParam->max = curParam->valnum;
 		}
 
@@ -881,7 +925,11 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if ((!parmHandle->curSection) || (!strlen (parmHandle->curSection->fullName))) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"section\" tag\n");
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"section\" tag\n");
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"section\" tag\n");
+
 			goto bailout;
 		}
 
@@ -907,20 +955,29 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if (!shortName) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
 			goto bailout;
 		}
 
 		if (!val) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
 			goto bailout;
 		}
 
 		curParam = addParam (conf, parmHandle->curSection, shortName, val);
 		if (!curParam) 
 		{
-			GfLogError ("xmlStartElement: addParam failed\n");
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: addParam failed\n");
+			else
+				fprintf(stderr,"xmlStartElement: addParam failed\n");
 			goto bailout;
 		}
 
@@ -943,7 +1000,10 @@ static void xmlStartElement (void *userData , const char *name, const char **att
     	
 		if ((!parmHandle->curSection) || (!strlen (parmHandle->curSection->fullName))) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"section\" tag\n");
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"section\" tag\n");
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"section\" tag\n");
 			goto bailout;
 		}
 
@@ -966,20 +1026,29 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 		if (!shortName) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
 			goto bailout;
 		}
 
 		if (!val) 
 		{
-			GfLogError ("xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
+			else
+				fprintf(stderr,"xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
 			goto bailout;
 		}
 
 		curParam = addParam (conf, parmHandle->curSection, shortName, val);
 		if (!curParam) 
 		{
-			GfLogError ("xmlStartElement: addParam failed\n");
+			if (TraceLoggersAvailable)
+				GfLogError ("xmlStartElement: addParam failed\n");
+			else
+				fprintf(stderr,"xmlStartElement: addParam failed\n");
 			goto bailout;
 		}
 
@@ -1085,14 +1154,21 @@ xmlExternalEntityRefHandler (XML_Parser mainparser,
 static int
 parseXml (struct parmHandle *parmHandle, char *buf, int len, int done)
 {
-	if (!XML_Parse(parmHandle->parser, buf, len, done)) {
-		GfLogError ("parseXml: %s at line %d\n",
-			(char*)XML_ErrorString (XML_GetErrorCode (parmHandle->parser)),
-			XML_GetCurrentLineNumber (parmHandle->parser));
+    if (!XML_Parse(parmHandle->parser, buf, len, done))
+    {
+		if (TraceLoggersAvailable)
+			GfLogError ("parseXml: %s at line %d\n",
+				(char*)XML_ErrorString (XML_GetErrorCode (parmHandle->parser)),
+				XML_GetCurrentLineNumber (parmHandle->parser));
+		else
+            fprintf (stderr,"parseXml: %s at line %lu\n",
+				(char*)XML_ErrorString (XML_GetErrorCode (parmHandle->parser)),
+				XML_GetCurrentLineNumber (parmHandle->parser));
 		return 1;
 	}
 
-	if (done) {
+    if (done)
+    {
 		XML_ParserFree(parmHandle->parser);
 		parmHandle->parser = 0;
 	}
@@ -1201,7 +1277,7 @@ GfParmReadFileLocal(const char *file, int mode, bool neededFile)
     <br>0 if Error
 */
 void *
-GfParmReadFile (const char *file, int mode, bool neededFile)
+GfParmReadFile (const char *file, int mode, bool neededFile, bool trace)
 {
     FILE		*in = NULL;
     struct parmHeader	*conf;
@@ -1210,6 +1286,9 @@ GfParmReadFile (const char *file, int mode, bool neededFile)
     int			len;
     int			done;
 
+    /* switch on/off loggers */
+	TraceLoggersAvailable = trace;
+
     /* search for an already open header & clean the conf if necessary */
     conf = getSharedHeader (file, mode);
 
@@ -1217,7 +1296,10 @@ GfParmReadFile (const char *file, int mode, bool neededFile)
     if (conf == NULL) {
 	conf = createParmHeader (file);
 	if (!conf) {
-	    GfLogError ("GfParmReadFile: conf header creation failed\n");
+		if (TraceLoggersAvailable)
+		    GfLogError ("GfParmReadFile: conf header creation failed\n");
+		else
+		    fprintf(stderr,"GfParmReadFile: conf header creation failed\n");
 	    goto bailout;
 	}
 	mode |= GFPARM_RMODE_REREAD;
@@ -1227,9 +1309,15 @@ GfParmReadFile (const char *file, int mode, bool neededFile)
     parmHandle = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
     if (!parmHandle) {
 #ifdef _MSC_VER
-	GfLogError ("GfParmReadFile: calloc (1, %03Iu) failed\n", sizeof (struct parmHandle));
+		if (TraceLoggersAvailable)
+			GfLogError ("GfParmReadFile: calloc (1, %03Iu) failed\n", sizeof (struct parmHandle));
+		else
+			fprintf(stderr,"GfParmReadFile: calloc (1, %03Iu) failed\n", sizeof (struct parmHandle));
 #else //_MSC_VER
-	GfLogError ("GfParmReadFile: calloc (1, %zu) failed\n", sizeof (struct parmHandle));
+		if (TraceLoggersAvailable)
+			GfLogError ("GfParmReadFile: calloc (1, %zu) failed\n", sizeof (struct parmHandle));
+		else
+			fprintf(stderr,"GfParmReadFile: calloc (1, %zu) failed\n", sizeof (struct parmHandle));
 #endif //_MSC_VER
 	goto bailout;
     }
@@ -1245,28 +1333,41 @@ GfParmReadFile (const char *file, int mode, bool neededFile)
     if (mode & GFPARM_RMODE_REREAD) {
 	in = fopen (file, "r");
 	if (!in && ((mode & GFPARM_RMODE_CREAT) == 0)) {
-		if (neededFile)
-	      GfLogTrace ("Failed to load \"%s\" (fopen failed)\n", file);
+		if (neededFile){
+			if (TraceLoggersAvailable)
+				GfLogTrace ("Failed to load \"%s\" (fopen failed)\n", file);
+			else
+				fprintf(stderr,"Failed to load \"%s\" (fopen failed)\n", file);
+		}
 	    goto bailout;
 	}
 
 	if (in) {
 	    /* Parsers Initialization */
 	    if (parserXmlInit (parmHandle)) {
-		GfLogError ("GfParmReadBuf: parserInit failed for file \"%s\"\n", file);
-		goto bailout;
+			if (TraceLoggersAvailable)
+				GfLogError ("GfParmReadBuf: parserInit failed for file \"%s\"\n", file);
+			else
+				fprintf(stderr,"GfParmReadBuf: parserInit failed for file \"%s\"\n", file);
+			goto bailout;
 	    }
 	    /* Parameters reading */
 	    do {
 		len = fread (buf, 1, sizeof(buf), in);
 		done = len < (int)sizeof(buf);
 		if (parseXml (parmHandle, buf, len, done)) {
-		    GfLogError ("GfParmReadFile: Parsing failed in file \"%s\"\n", file);
+			if (TraceLoggersAvailable)
+			    GfLogError ("GfParmReadFile: Parsing failed in file \"%s\"\n", file);
+			else
+				fprintf(stderr,"GfParmReadFile: Parsing failed in file \"%s\"\n", file);
 		    goto bailout;
 		}
 		if (parmHandle->flag & PARM_HANDLE_FLAG_PARSE_ERROR) {
 		    /* parse error occured, ignore */
-		    GfLogError ("GfParmReadFile: Parsing failed in file \"%s\"\n", file);
+			if (TraceLoggersAvailable) 
+			    GfLogError ("GfParmReadFile: Parsing failed in file \"%s\"\n", file);
+			else
+				fprintf(stderr,"GfParmReadFile: Parsing failed in file \"%s\"\n", file);
 		    goto bailout;
 		}
 	    } while (!done);
@@ -1275,7 +1376,10 @@ GfParmReadFile (const char *file, int mode, bool neededFile)
 	    in = NULL;
 	}
 
-	GfLogTrace("Loaded %s (%p)\n", file, parmHandle);
+	if (TraceLoggersAvailable)
+		GfLogTrace("Loaded %s (%p)\n", file, parmHandle);
+	else
+		fprintf(stderr,"Loaded %s (%p)\n", file, parmHandle);
     }
 
     GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandle, linkHandle);
@@ -1522,15 +1626,16 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int /* size */, bo
 
 /** Write a configuration buffer.
     @ingroup	conf
-    @param	logHandle	log handle
-    @param	parmHandle	Configuration handle
-    @param	buf		buffer to write the configuration
-    @param	size		buffer size
+    @param	handle	Configuration handle
+    @param	buf		buffer to write the configuration to
+    @param	size	buffer size (has to be > 0)
     @return	0 if OK
-    		<br>1 if Error
+			<br>-1 if data was truncated
+    		<br>1 if other error
 */
+
 int
-GfParmWriteBuf (void *handle, char *buf, int size)
+GfParmWriteBuf (void *handle, char *buf, int size) /* Never used in current codebase: to be removed? */
 {
     struct parmHandle	*parmHandle = (struct parmHandle *)handle;
     char		line[LINE_SZ];
@@ -1540,8 +1645,17 @@ GfParmWriteBuf (void *handle, char *buf, int size)
 
     if ((parmHandle == NULL) || (parmHandle->magic != PARM_MAGIC)) {
 		GfLogFatal ("GfParmWriteBuf: bad handle (%p)\n", parmHandle);
-		return 1;
+		return 1; // Error
     }
+
+    // Check buf for NULL before memcpy()ing to it later
+    if((buf == NULL) || (size <= 0)){
+       GfLogFatal ("GfParmWriteBuf: bad buf or size (%p) (%d) \n", buf,size);
+       return 1; // Error
+    }
+
+	// Clear buf to contain 0 for all chars
+	memset(buf,0,size);
 
     parmHandle->outCtrl.state = 0;
     parmHandle->outCtrl.curSection = NULL;
@@ -1551,17 +1665,53 @@ GfParmWriteBuf (void *handle, char *buf, int size)
 
     while (curSize && xmlGetOuputLine (parmHandle, line, sizeof (line))) {
 	len = strlen (line);
-	if (len > curSize) {
+	// We need space for the terminating 0, len has to be < curSize! 
+	if (len >= curSize) {
 	    len = curSize;
+		memcpy (s, line, len - 1);
+		// Don't fall through and return 0;
+		return -1; // This is an error: data has been truncated
 	}
 	memcpy (s, line, len);
 	s += len;
 	curSize -= len;
     }
-    buf [size - 1] = 0;
+    // buf [size - 1] = 0; redundant: memset(buf,0,size); and if(len >= curSize){...
     
-    return 0;
+    return 0; // Success
 }
+
+#ifdef WEBSERVER
+/** Write a configuration string.
+    @ingroup	conf
+    @param	handle	Configuration handle
+    @param	str		a std:string to vrite the configuration to
+    @return	0 if OK
+    		<br>1 bad handle
+*/
+
+int
+GfParmWriteString (void *handle, std::string& str)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    char		line[LINE_SZ];
+
+    if ((parmHandle == NULL) || (parmHandle->magic != PARM_MAGIC)) {
+		GfLogFatal ("GfParmWriteString: bad handle (%p)\n", parmHandle);
+		return 1; // Error
+    }
+    
+    parmHandle->outCtrl.state = 0;
+    parmHandle->outCtrl.curSection = NULL;
+    parmHandle->outCtrl.curParam = NULL;
+
+    while (xmlGetOuputLine (parmHandle, line, sizeof (line))) {
+		str.append(line);
+    }
+   
+    return 0; // Success
+}
+#endif //WEBSERVER
 
 /** Set the dtd path and header if necessary
     @ingroup	conf
@@ -1665,15 +1815,20 @@ GfParmWriteFile (const char *file, void *parmHandle, const char *name)
     <br>1 if Error
 */
 int
-GfParmWriteFileSDHeader (const char *file, void *parmHandle, const char *name, const char *author)
+GfParmWriteFileSDHeader (const char *file, void *parmHandle, const char *name, const char *author, bool trace)
 {
     struct parmHandle *handle = (struct parmHandle *)parmHandle;
     struct parmHeader *conf;
     char line[LINE_SZ];
     FILE *fout;
- 
+
+    TraceLoggersAvailable = trace;
+
     if ((handle == NULL) || (handle->magic != PARM_MAGIC)) {
-		GfLogError ("GfParmWriteFileSDHeader: bad handle (%p)\n", handle);
+		if (TraceLoggersAvailable)
+			GfLogError ("GfParmWriteFileSDHeader: bad handle (%p)\n", handle);
+		else
+			fprintf(stderr,"GfParmWriteFileSDHeader: bad handle (%p)\n", handle);
 		return 1;
     }
 
@@ -1703,13 +1858,20 @@ GfParmWriteFileSDHeader (const char *file, void *parmHandle, const char *name, c
 	if (!file) {
 	file = conf->filename;
 	if (!file) {
-	    GfLogError ("GfParmWriteFileSDHeader: bad file name\n");
+		if (TraceLoggersAvailable)
+		    GfLogError ("GfParmWriteFileSDHeader: bad file name\n");
+		else
+			fprintf(stderr,"GfParmWriteFileSDHeader: bad file name\n");
+
 	    return 1;
 	}
     }
     fout = safeFOpen(file, "wb");
 	if (!fout) {
-	GfLogError ("gfParmWriteFileSDHeader: fopen (%s, \"wb\") failed\n", file);
+		if (TraceLoggersAvailable)
+			GfLogError ("GfParmWriteFileSDHeader: fopen (%s, \"wb\") failed\n", file);
+		else
+			fprintf(stderr,"GfParmWriteFileSDHeader: fopen (%s, \"wb\") failed\n", file);
 	return 1;
     }
 
@@ -1747,16 +1909,24 @@ GfParmWriteFileSDHeader (const char *file, void *parmHandle, const char *name, c
 		  if (file)
 		  {
 			const char * ld = GfLocalDir();
-	        int n = strlen(ld);
-			if (strncmp(ld,file,n) == 0)
+			if (ld != NULL)
 			{
-			  strncpy(buf,&file[n],strlen(file)-n-4);
-			  buf[strlen(file)-n-4] = 0;
+				int n = strlen(ld);
+				if (strncmp(ld,file,n) == 0)
+				{
+					strncpy(buf,&file[n],strlen(file)-n-4);
+					buf[strlen(file)-n-4] = 0;
+				}
+				else
+				{
+					strncpy(buf,file,strlen(file)-4);
+					buf[strlen(file)-4] = 0;
+				}
 			}
 			else
 			{
-			  strncpy(buf,file,strlen(file)-4);
-			  buf[strlen(file)-4] = 0;
+				strncpy(buf,file,strlen(file));
+				buf[strlen(file)] = 0;
 			}
 			fputs (buf, fout);
 		  }
@@ -1764,7 +1934,7 @@ GfParmWriteFileSDHeader (const char *file, void *parmHandle, const char *name, c
 		  fputs (time_buf, fout);
   	      fputs ("\n    last modified : ", fout);
 		  fputs (time_buf, fout);
-		  snprintf(buf,sizeof(buf),"\n    copyright     : (C) 2010-2013 %s\n",author);
+		  snprintf(buf,sizeof(buf),"\n    copyright     : (C) 2010-2014 %s\n",author);
   	      fputs (buf, fout);
   	      fputs ("\n", fout);
 		  snprintf(buf,sizeof(buf),"    SVN version   : $%s$\n","Id:"); // Written in a way that is not replaced here
@@ -1779,7 +1949,10 @@ GfParmWriteFileSDHeader (const char *file, void *parmHandle, const char *name, c
 
     fclose (fout);
   
-    GfLogTrace ("Wrote %s (%p)\n", file, parmHandle);
+	if (TraceLoggersAvailable)
+	    GfLogTrace ("Wrote %s (%p)\n", file, parmHandle);
+	else
+		fprintf(stderr,"Wrote %s (%p)\n", file, parmHandle);
     
     return 0;
 }
@@ -2879,6 +3052,68 @@ GfParmGetNumMax (void *handle, char const *path, const char *key, const char *un
 	}
 	
     return max;
+}
+
+
+
+/** Get a numerical parameter in a config file with limits.
+    @ingroup	paramsdata
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	unit	unit to convert the result to (NULL if SI wanted)	
+    @param	value	pointer to value
+    @param	min	pointer to minimum
+    @param	max	pointer to maximum
+    @return	0 in success, -1 otherwise
+    in success value, min and max is changed
+ */
+int
+GfParmGetNumWithLimits (void *handle, char const *path, const char *key, const char *unit, tdble* value, tdble* min, tdble* max)
+{
+	struct parmHandle *parmHandle = (struct parmHandle *)handle;
+	struct parmHeader *conf;
+	struct param *param;
+
+	if ((parmHandle == NULL) || (parmHandle->magic != PARM_MAGIC)) {
+		GfLogError ("GfParmGetNum: bad handle (%p)\n", parmHandle);
+		return -1;
+	}
+
+	conf = parmHandle->conf;
+
+	if (parmHandle->magic != PARM_MAGIC) 
+	{
+		GfLogFatal ("GfParmGetNum: bad handle (%p)\n", parmHandle);
+		return -1;
+	}
+
+	param = getParamByName (conf, path, key, 0);
+    if (!param ||  (param->type != P_NUM && param->type != P_FORM)) 
+    {
+		return -1;
+    }
+    if (param->type == P_FORM) 
+    {
+	 GfFormCalcFuncNew( param->formula, parmHandle, path, NULL, NULL, value, NULL );
+	 (*min) = (*value);
+	 (*max) = (*value);
+    }
+	else 
+    {
+	 (*value) = param->valnum;
+	 (*min) = param->min;
+	 (*max) = param->max;
+    }
+
+	if (unit) 
+	{
+		(*value) = GfParmSI2Unit(unit, *value);
+		(*min) = GfParmSI2Unit(unit, *min);
+		(*max) = GfParmSI2Unit(unit, *max);
+	}
+	
+    return 0;
 }
 
 

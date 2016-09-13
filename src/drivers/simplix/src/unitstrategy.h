@@ -1,18 +1,17 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitstrategy.h
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
-// A robot for Speed Dreams-Version 1.4.0/2.X
+// A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Pitstop strategy
 // Boxenstop-Strategie
 //
 // File         : unitstrategy.h
 // Created      : 2007.02.20
-// Last changed : 2013.06.25
-// Copyright    : © 2007-2013 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 4.00.002
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // Teile diese Unit basieren auf dem erweiterten Robot-Tutorial bt
 //
@@ -22,7 +21,7 @@
 // dem Roboter delphin
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // und dem Roboter mouse_2006
 //    Copyright: (C) 2006 Tim Foden
@@ -96,6 +95,10 @@ class TAbstractStrategy
 
 	double oDistToSwitch;                        // Dist to Pit
 	double oStartFuel;                           // Fuel at start
+	double oTireLimitFront;
+	double oTireLimitRear;
+	double oDegradationPerLap;
+	int oLaps;
 
 	TAbstractStrategy()
 	  :oState(PIT_NONE),oGoToPit(false),oCar(NULL),oTrack(NULL),oPit(NULL),oDriver(NULL),oDistToSwitch(100),oStartFuel(-1){};

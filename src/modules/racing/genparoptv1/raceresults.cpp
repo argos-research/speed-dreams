@@ -4,7 +4,7 @@
     created     : Thu Jan  2 12:43:10 CET 2003
     copyright   : (C) 2002 by Eric Espie
     email       : eric.espie@torcs.org
-    version     : $Id: raceresults.cpp 5284 2013-03-10 10:49:04Z pouillot $                                  
+    version     : $Id: raceresults.cpp 5854 2014-11-23 17:55:52Z wdbee $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		Results managment for all race types
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: raceresults.cpp 5284 2013-03-10 10:49:04Z pouillot $
+    @version	$Id: raceresults.cpp 5854 2014-11-23 17:55:52Z wdbee $
 */
 
 #include <ctime>
@@ -449,11 +449,11 @@ ReInitCurRes()
 	{
 		if (ReInfo->s->_raceType == RM_TYPE_QUALIF)
 		{
-			ReUpdateQualifCurRes(ReInfo->s->cars[0]);
+			//ReUpdateQualifCurRes(ReInfo->s->cars[0]);
 		}
 		else if (ReInfo->s->_raceType == RM_TYPE_PRACTICE && ReInfo->s->_ncars > 1)
 		{
-			ReUpdatePracticeCurRes(ReInfo->s->cars[0]);
+			//ReUpdatePracticeCurRes(ReInfo->s->cars[0]);
 		}
 		else
 		{
@@ -500,7 +500,7 @@ ReUpdatePracticeCurRes(tCarElt *car, bool bForceNew)
 	}
 	else
 	{
-		ReUpdateQualifCurRes(car);
+		//ReUpdateQualifCurRes(car);
 	}
 }
 

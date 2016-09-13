@@ -37,12 +37,14 @@ static const char* BackgroundTypeValues[] = { GR_ATT_BGSKY_RING, GR_ATT_BGSKY_LA
 static const int NbBackgroundTypeValues = sizeof(BackgroundTypeValues) / sizeof(BackgroundTypeValues[0]);
 //static const char* SpectatorValues[] = { GR_ATT_AGR_NULL, GR_ATT_AGR_LITTLE, GR_ATT_AGR_MEDIUM, GR_ATT_AGR_FULL, GR_ATT_AGR_HIGH };
 //static const int NbSpectatorValues = sizeof(SpectatorValues) / sizeof(SpectatorValues[0]);
-static const char* ForestValues[] = { GR_ATT_AGR_NULL, GR_ATT_AGR_LITTLE, GR_ATT_AGR_MEDIUM, GR_ATT_AGR_FULL, GR_ATT_AGR_HIGH };
-static const int NbForestValues = sizeof(ForestValues) / sizeof(ForestValues[0]);
-static const char* TreeValues[] = { GR_ATT_AGR_NULL, GR_ATT_AGR_LITTLE, GR_ATT_AGR_MEDIUM, GR_ATT_AGR_FULL, GR_ATT_AGR_HIGH };
-static const int NbTreeValues = sizeof(TreeValues) / sizeof(TreeValues[0]);
-static const char* ParkingValues[] = { GR_ATT_AGR_NULL, GR_ATT_AGR_LITTLE, GR_ATT_AGR_MEDIUM, GR_ATT_AGR_FULL, GR_ATT_AGR_HIGH };
-static const int NbParkingValues = sizeof(ParkingValues) / sizeof(ParkingValues[0]);
+static const char* ShadowValues[] = { GR_ATT_SHADOW_NONE, GR_ATT_SHADOW_SM, GR_ATT_SHADOW_SSM, GR_ATT_SHADOW_PSSM, GR_ATT_SHADOW_LSPM, GR_ATT_SHADOW_VOLUME, GR_ATT_SHADOW_VDSM};
+static const int NbShadowValues = sizeof(ShadowValues) / sizeof(ShadowValues[0]);
+static const char* TexSizeValues[] = { GR_ATT_SHADOW_512, GR_ATT_SHADOW_1024, GR_ATT_SHADOW_2048, GR_ATT_SHADOW_4096, GR_ATT_SHADOW_8192 };
+static const int NbTexSizeValues = sizeof(TexSizeValues) / sizeof(TexSizeValues[0]);
+static const char* QualityValues[] = { GR_ATT_AGR_LITTLE, GR_ATT_AGR_MEDIUM, GR_ATT_AGR_FULL };
+static const int NbQualityValues = sizeof(QualityValues) / sizeof(QualityValues[0]);
+static const char* ShadersValues[] = { GR_ATT_AGR_NULL, GR_ATT_AGR_LITTLE, GR_ATT_AGR_FULL };
+static const int NbShadersValues = sizeof(ShadersValues) / sizeof(ShadersValues[0]);
 static const char* SpansplitValues[] = { GR_VAL_NO, GR_VAL_YES };
 static const int NbSpansplitValues = sizeof(SpansplitValues) / sizeof(SpansplitValues[0]);
 static const char* MonitorValues[] = { GR_VAL_MONITOR_16BY9, GR_VAL_MONITOR_4BY3, GR_VAL_MONITOR_NONE };
@@ -51,17 +53,19 @@ static const int NbMonitorValues = sizeof(MonitorValues) / sizeof(MonitorValues[
 static void	*ScrHandle = NULL;
 
 static int	BackgroundTypeLabelId, BackgroundTypeLeftButtonId, BackgroundTypeRightButtonId;
-static int	ForestLabelId, ForestLeftButtonId, ForestRightButtonId;
-static int	TreeLabelId, TreeLeftButtonId, TreeRightButtonId;
-static int	ParkingLabelId, ParkingLeftButtonId, ParkingRightButtonId;
+static int	ShadowLabelId, ShadowLeftButtonId, ShadowRightButtonId;
+static int	TexSizeLabelId, TexSizeLeftButtonId, TexSizeRightButtonId;
+static int	QualityLabelId, QualityLeftButtonId, QualityRightButtonId;
+static int	ShadersLabelId, ShadersLeftButtonId, ShadersRightButtonId;
 static int	SpansplitLabelId, SpansplitLeftButtonId, SpansplitRightButtonId;
 static int	MonitorLabelId, MonitorLeftButtonId, MonitorRightButtonId;
 
 static int	BackgroundTypeIndex = 0;
 //static int	SpectatorsIndex = 0;
-static int	ForestIndex = 0;
-static int	TreeIndex = 0;
-static int	ParkingIndex = 0;
+static int	ShadowIndex = 0;
+static int	TexSizeIndex = 0;
+static int	QualityIndex = 0;
+static int  ShadersIndex = 0;
 static int	SpansplitIndex = 0;
 static float	BezelComp = 110.0f;
 static int	BezelCompId;
@@ -94,41 +98,53 @@ loadOptions()
 		}
 	}
 
-	ForestIndex = 0; // Default value index, in case file value not found in list.
-	const char* pszForest =
-		GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_AGR_FOREST, GR_ATT_AGR_NULL);
-	for (int i = 0; i < NbForestValues; i++) 
+    ShadowIndex = 0; // Default value index, in case file value not found in list.
+    const char* pszShadow =
+        GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_SHADOW_TYPE, GR_ATT_SHADOW_NONE);
+    for (int i = 0; i < NbShadowValues; i++)
 	{
-		if (!strcmp(pszForest, ForestValues[i]))
+        if (!strcmp(pszShadow, ShadowValues[i]))
 		{
-			ForestIndex = i;
+            ShadowIndex = i;
 			break;
 		}
 	}
 
-	TreeIndex = 0; // Default value index, in case file value not found in list.
-	const char* pszTree =
-		GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_AGR_TREE, GR_ATT_AGR_NULL);
-	for (int i = 0; i < NbTreeValues; i++) 
+    TexSizeIndex = 0; // Default value index, in case file value not found in list.
+    const char* pszTexSize =
+        GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_SHADOW_SIZE, GR_ATT_SHADOW_1024);
+    for (int i = 0; i < NbTexSizeValues; i++)
 	{
-		if (!strcmp(pszTree, TreeValues[i]))
+        if (!strcmp(pszTexSize, TexSizeValues[i]))
 		{
-			TreeIndex = i;
+            TexSizeIndex = i;
 			break;
 		}
 	}
 
-	ParkingIndex = 0; // Default value index, in case file value not found in list.
-	const char* pszParking =
-		GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_AGR_PARKING, GR_ATT_AGR_NULL);
-	for (int i = 0; i < NbParkingValues; i++) 
+    QualityIndex = 0; // Default value index, in case file value not found in list.
+    const char* pszQuality =
+        GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_AGR_QUALITY, GR_ATT_AGR_NULL);
+    for (int i = 0; i < NbQualityValues; i++)
 	{
-		if (!strcmp(pszParking, ParkingValues[i]))
+        if (!strcmp(pszQuality, QualityValues[i]))
 		{
-			ParkingIndex = i;
+            QualityIndex = i;
 			break;
 		}
 	}
+
+    ShadersIndex = 0; // Default value index, in case file value not found in list.
+    const char* pszShaders =
+        GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_SHADERS, GR_VAL_NO);
+    for (int i = 0; i < NbShadersValues; i++)
+    {
+        if (!strcmp(pszShaders, ShadersValues[i]))
+        {
+            ShadersIndex = i;
+            break;
+        }
+    }
 
 	SpansplitIndex = 0; // Default value index, in case file value not found in list.
 	const char* pszSpansplit =
@@ -200,9 +216,10 @@ saveOptions()
     void* grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     
     GfParmSetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_BGSKYTYPE, BackgroundTypeValues[BackgroundTypeIndex]);
-	GfParmSetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_AGR_FOREST, ForestValues[ForestIndex]);
-	GfParmSetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_AGR_TREE, TreeValues[TreeIndex]);
-	GfParmSetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_AGR_PARKING, ParkingValues[ParkingIndex]);
+    GfParmSetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_SHADOW_TYPE, ShadowValues[ShadowIndex]);
+    GfParmSetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_SHADOW_SIZE, TexSizeValues[TexSizeIndex]);
+    GfParmSetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_AGR_QUALITY, QualityValues[QualityIndex]);
+    GfParmSetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_SHADERS, ShadersValues[ShadersIndex]);
 	GfParmSetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_SPANSPLIT, SpansplitValues[SpansplitIndex]);
 	GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_BEZELCOMP, "%", BezelComp);
 	GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SCREENDIST, NULL, ScreenDist);
@@ -225,28 +242,36 @@ onChangeBackgroundType(void* vp)
 }
 
 static void
-onChangeForest(void* vp)
+onChangeShadow(void* vp)
 {
     const long delta = (long)vp;
-    ForestIndex = (ForestIndex + NbForestValues + delta) % NbForestValues;
-    GfuiLabelSetText(ScrHandle, ForestLabelId, ForestValues[ForestIndex]);
+    ShadowIndex = (ShadowIndex + NbShadowValues + delta) % NbShadowValues;
+    GfuiLabelSetText(ScrHandle, ShadowLabelId, ShadowValues[ShadowIndex]);
 }
 
 static void
-onChangeTree(void* vp)
+onChangeTexSize(void* vp)
 {
     const long delta = (long)vp;
-    TreeIndex = (TreeIndex + NbTreeValues + delta) % NbTreeValues;
-    GfuiLabelSetText(ScrHandle, TreeLabelId, TreeValues[TreeIndex]);
+    TexSizeIndex = (TexSizeIndex + NbTexSizeValues + delta) % NbTexSizeValues;
+    GfuiLabelSetText(ScrHandle, TexSizeLabelId, TexSizeValues[TexSizeIndex]);
 }
 
 static void
-onChangeParking(void* vp)
+onChangeQuality(void* vp)
 {
     const long delta = (long)vp;
-    ParkingIndex = (ParkingIndex + NbParkingValues + delta) % NbParkingValues;
-    GfuiLabelSetText(ScrHandle, ParkingLabelId, ParkingValues[ParkingIndex]);
+    QualityIndex = (QualityIndex + NbQualityValues + delta) % NbQualityValues;
+    GfuiLabelSetText(ScrHandle, QualityLabelId, QualityValues[QualityIndex]);
 } 
+
+static void
+onChangeShaders(void* vp)
+{
+    const long delta = (long)vp;
+    ShadersIndex = (ShadersIndex + NbShadersValues + delta) % NbShadersValues;
+    GfuiLabelSetText(ScrHandle, ShadersLabelId, ShadersValues[ShadersIndex]);
+}
 
 static void
 onChangeSpansplit(void* vp)
@@ -320,9 +345,10 @@ onActivate(void* /* dummy */)
 
 	// Load GUI control values.
     onChangeBackgroundType(0);
-	onChangeForest(0);
-	onChangeTree(0);
-	onChangeParking(0);	
+    onChangeShadow(0);
+    onChangeTexSize(0);
+    onChangeQuality(0);
+    onChangeShaders(0);
 	onChangeSpansplit(0);	
 	onChangeBezelComp(0);	
 	onChangeScreenDist(0);	
@@ -366,23 +392,29 @@ AdvancedGraphMenuInit(void* prevMenu)
 		GfuiMenuCreateButtonControl(ScrHandle, param, "bgskyrightarrow", (void*)1, onChangeBackgroundType);
     BackgroundTypeLabelId =	GfuiMenuCreateLabelControl(ScrHandle, param, "bgskydomelabel");
 
-	ForestLeftButtonId =
-		GfuiMenuCreateButtonControl(ScrHandle, param, "forestleftarrow", (void*)-1, onChangeForest);
-    ForestRightButtonId =
-		GfuiMenuCreateButtonControl(ScrHandle, param, "forestrightarrow", (void*)1, onChangeForest);
-    ForestLabelId =	GfuiMenuCreateLabelControl(ScrHandle, param, "forestlabel");
+    ShadowLeftButtonId =
+        GfuiMenuCreateButtonControl(ScrHandle, param, "shadowleftarrow", (void*)-1, onChangeShadow);
+    ShadowRightButtonId =
+        GfuiMenuCreateButtonControl(ScrHandle, param, "shadowrightarrow", (void*)1, onChangeShadow);
+    ShadowLabelId =	GfuiMenuCreateLabelControl(ScrHandle, param, "shadowlabel");
 
-	TreeLeftButtonId =
-		GfuiMenuCreateButtonControl(ScrHandle, param, "treeleftarrow", (void*)-1, onChangeTree);
-    TreeRightButtonId =
-		GfuiMenuCreateButtonControl(ScrHandle, param, "treerightarrow", (void*)1, onChangeTree);
-    TreeLabelId = GfuiMenuCreateLabelControl(ScrHandle, param, "treelabel");
+    TexSizeLeftButtonId =
+        GfuiMenuCreateButtonControl(ScrHandle, param, "texsizeleftarrow", (void*)-1, onChangeTexSize);
+    TexSizeRightButtonId =
+        GfuiMenuCreateButtonControl(ScrHandle, param, "texsizerightarrow", (void*)1, onChangeTexSize);
+    TexSizeLabelId = GfuiMenuCreateLabelControl(ScrHandle, param, "texsizelabel");
 
-	ParkingLeftButtonId =
-		GfuiMenuCreateButtonControl(ScrHandle, param, "parkingleftarrow", (void*)-1, onChangeParking);
-    ParkingRightButtonId =
-		GfuiMenuCreateButtonControl(ScrHandle, param, "parkingrightarrow", (void*)1, onChangeParking);
-    ParkingLabelId = GfuiMenuCreateLabelControl(ScrHandle, param, "parkinglabel");
+    QualityLeftButtonId =
+        GfuiMenuCreateButtonControl(ScrHandle, param, "qualityleftarrow", (void*)-1, onChangeQuality);
+    QualityRightButtonId =
+        GfuiMenuCreateButtonControl(ScrHandle, param, "qualityrightarrow", (void*)1, onChangeQuality);
+    QualityLabelId = GfuiMenuCreateLabelControl(ScrHandle, param, "qualitylabel");
+
+    ShadersLeftButtonId =
+        GfuiMenuCreateButtonControl(ScrHandle, param, "carleftarrow", (void*)-1, onChangeShaders);
+    ShadersRightButtonId =
+        GfuiMenuCreateButtonControl(ScrHandle, param, "carrightarrow", (void*)1, onChangeShaders);
+    ShadersLabelId = GfuiMenuCreateLabelControl(ScrHandle, param, "carlabel");
 
 	SpansplitLeftButtonId =
 		GfuiMenuCreateButtonControl(ScrHandle, param, "spansplitleftarrow", (void*)-1, onChangeSpansplit);

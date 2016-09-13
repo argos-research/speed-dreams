@@ -4,7 +4,7 @@
     created              : Wed Mai 14 19:53:00 CET 2003
     copyright            : (C) 2003-2004 by Bernhard Wymann
     email                : berniw@bluewin.ch
-    version              : $Id: spline.h 3221 2011-01-02 01:16:45Z kmetykog $
+    version              : $Id: spline.h 5950 2015-04-05 19:34:04Z torcs-ng $
 
  ***************************************************************************/
 
@@ -20,23 +20,25 @@
 #ifndef _SPLINE_H_
 #define _SPLINE_H_
 
-class SplinePoint {
-	public:
-		float x;	// x coordinate.
-		float y;	// y coordinate.
-		float s;	// slope.
+class SplinePoint
+{
+public:
+    float x;	// x coordinate.
+    float y;	// y coordinate.
+    float s;	// slope.
 };
 
 
-class Spline {
-	public:
-		Spline(int dim, SplinePoint *s);
+class Spline
+{
+public:
+    Spline(int dim, SplinePoint *s);
 
-		float evaluate(float z);
+    float evaluate(float z);
 
-	private:
-		SplinePoint *s;
-		int dim;
+private:
+    SplinePoint *s;
+    int dim;
 };
 
 #endif // _SPLINE_H_

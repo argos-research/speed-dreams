@@ -1,10 +1,10 @@
 /***************************************************************************
 
-	file                 : grboard.cpp
-	created              : Thu Aug 17 23:52:20 CEST 2000
-	copyright            : (C) 2000 by Eric Espie
-	email                : torcs@free.fr
-	version              : $Id: grboard.cpp 5320 2013-03-15 00:24:04Z kmetykog $
+    file                 : grboard.cpp
+    created              : Thu Aug 17 23:52:20 CEST 2000
+    copyright            : (C) 2000 by Eric Espie
+    email                : torcs@free.fr
+    version              : $Id: grboard.cpp 6389 2016-03-21 19:18:31Z wdbee $
 
  ***************************************************************************/
 
@@ -39,6 +39,7 @@ static const string rgba[4] =
 
 static const int NB_BOARDS = 3;
 static const int NB_LBOARDS = 5;    // # of leaderboard states
+static const int NB_GFLAG = 3;
 static const int NB_DEBUG = 4;
 
 // Boards work on a OrthoCam with fixed height of 600, width flows
@@ -48,6 +49,23 @@ static const int BOTTOM_ANCHOR = 0;
 static const int DEFAULT_WIDTH = 800;
 
 static const int BUFSIZE = 256;
+
+//string constants for dashboard
+const char strBrakeRep[] = "F/R Brake Rep.";
+const char strFrontARB[] = "Front ARB";
+const char strRearARB[] = "Rear ARB";
+const char strFDiffMSB[] = "F Pow Max Slip";
+const char strFDiffCMSB[] = "F Coa Max Slip";
+const char strRDiffMSB[] = "R Pow Max Slip";
+const char strRDiffCMSB[] = "R Coa Max Slip";
+const char strCDiffMSB[] = "C Pow Max Slip";
+const char strCDiffCMSB[] = "C Coa Max Slip";
+const char strFuel[] = "Fuel";
+const char strRepair[] = "Repair";
+const char strTireSet[] = "New tires";
+const char strFrontWing[] = "Front wing";
+const char strRearWing[] = "Rear wing";
+const char strPenalty[] = "Next pit type";
 
 
 cGrBoard::cGrBoard(int myid) :
@@ -114,7 +132,8 @@ cGrBoard::loadDefaults(const tCarElt *curCar)
   leaderFlag  = (int)GfParmGetNum(grHandle, path, GR_ATT_LEADER, NULL, 1);
   leaderNb  = (int)GfParmGetNum(grHandle, path, GR_ATT_NBLEADER, NULL, 10);
   counterFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_COUNTER, NULL, 1);
-  GFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_GGRAPH, NULL, 1);
+  GFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_GGRAPH, NULL, 2);
+  dashboardFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_DASHBOARD, NULL, 1);
   arcadeFlag  = (int)GfParmGetNum(grHandle, path, GR_ATT_ARCADE, NULL, 0);
   boardWidth  = (int)GfParmGetNum(grHandle, path, GR_ATT_BOARDWIDTH, NULL, 100);
   speedoRise  = (int)GfParmGetNum(grHandle, path, GR_ATT_SPEEDORISE, NULL, 0);
@@ -125,18 +144,19 @@ cGrBoard::loadDefaults(const tCarElt *curCar)
   // Only apply driver preferences when not spanning split screens
   pszSpanSplit = GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_SPANSPLIT, GR_VAL_NO);
   if (strcmp(pszSpanSplit, GR_VAL_YES) && curCar->_driverType == RM_DRV_HUMAN) {
-	snprintf(path, sizeof(path), "%s/%s", GR_SCT_DISPMODE, curCar->_name);
-	debugFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_DEBUG, NULL, debugFlag);
-	boardFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_BOARD, NULL, boardFlag);
-	leaderFlag  = (int)GfParmGetNum(grHandle, path, GR_ATT_LEADER, NULL, leaderFlag);
-	leaderNb  = (int)GfParmGetNum(grHandle, path, GR_ATT_NBLEADER, NULL, leaderNb);
-	counterFlag   = (int)GfParmGetNum(grHandle, path, GR_ATT_COUNTER, NULL, counterFlag);
-	GFlag   = (int)GfParmGetNum(grHandle, path, GR_ATT_GGRAPH, NULL, GFlag);
-	arcadeFlag  = (int)GfParmGetNum(grHandle, path, GR_ATT_ARCADE, NULL, arcadeFlag);
-	boardWidth  = (int)GfParmGetNum(grHandle, path, GR_ATT_BOARDWIDTH, NULL, boardWidth);
-	speedoRise  = (int)GfParmGetNum(grHandle, path, GR_ATT_SPEEDORISE, NULL, speedoRise);
-	trackMap->setViewMode((int)GfParmGetNum(grHandle, path, GR_ATT_MAP,
-								NULL, trackMap->getViewMode()));
+    snprintf(path, sizeof(path), "%s/%s", GR_SCT_DISPMODE, curCar->_name);
+    debugFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_DEBUG, NULL, debugFlag);
+    boardFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_BOARD, NULL, boardFlag);
+    leaderFlag  = (int)GfParmGetNum(grHandle, path, GR_ATT_LEADER, NULL, leaderFlag);
+    leaderNb  = (int)GfParmGetNum(grHandle, path, GR_ATT_NBLEADER, NULL, leaderNb);
+    counterFlag   = (int)GfParmGetNum(grHandle, path, GR_ATT_COUNTER, NULL, counterFlag);
+    GFlag   = (int)GfParmGetNum(grHandle, path, GR_ATT_GGRAPH, NULL, GFlag);
+    dashboardFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_DASHBOARD, NULL, dashboardFlag);
+    arcadeFlag  = (int)GfParmGetNum(grHandle, path, GR_ATT_ARCADE, NULL, arcadeFlag);
+    boardWidth  = (int)GfParmGetNum(grHandle, path, GR_ATT_BOARDWIDTH, NULL, boardWidth);
+    speedoRise  = (int)GfParmGetNum(grHandle, path, GR_ATT_SPEEDORISE, NULL, speedoRise);
+    trackMap->setViewMode((int)GfParmGetNum(grHandle, path, GR_ATT_MAP,
+                                NULL, trackMap->getViewMode()));
   }
 
   if (boardWidth < 0 || boardWidth > 100)
@@ -164,30 +184,34 @@ cGrBoard::selectBoard(int val)
   snprintf(path, sizeof(path), "%s/%d", GR_SCT_DISPMODE, id);
 
   switch (val) {
-	case 0:
-	  boardFlag = (boardFlag + 1) % NB_BOARDS;
-	  GfParmSetNum(grHandle, path, GR_ATT_BOARD, (char*)NULL, (tdble)boardFlag);
-	  break;
-	case 1:
-	  counterFlag = (counterFlag + 1) % NB_BOARDS;
-	  GfParmSetNum(grHandle, path, GR_ATT_COUNTER, (char*)NULL, (tdble)counterFlag);
-	  break;
-	case 2:
-	  leaderFlag = (leaderFlag + 1) % NB_LBOARDS;
-	  GfParmSetNum(grHandle, path, GR_ATT_LEADER, (char*)NULL, (tdble)leaderFlag);
-	  break;
-	case 3:
-	  debugFlag = (debugFlag + 1) % NB_DEBUG;
-	  GfParmSetNum(grHandle, path, GR_ATT_DEBUG, (char*)NULL, (tdble)debugFlag);
-	  break;
-	case 4:
-	  GFlag = 1 - GFlag;
-	  GfParmSetNum(grHandle, path, GR_ATT_GGRAPH, (char*)NULL, (tdble)GFlag);
-	  break;
-	case 5:
-	  arcadeFlag = 1 - arcadeFlag;
-	  GfParmSetNum(grHandle, path, GR_ATT_ARCADE, (char*)NULL, (tdble)arcadeFlag);
-	  break;
+    case 0:
+      boardFlag = (boardFlag + 1) % NB_BOARDS;
+      GfParmSetNum(grHandle, path, GR_ATT_BOARD, (char*)NULL, (tdble)boardFlag);
+      break;
+    case 1:
+      counterFlag = (counterFlag + 1) % NB_BOARDS;
+      GfParmSetNum(grHandle, path, GR_ATT_COUNTER, (char*)NULL, (tdble)counterFlag);
+      break;
+    case 2:
+      leaderFlag = (leaderFlag + 1) % NB_LBOARDS;
+      GfParmSetNum(grHandle, path, GR_ATT_LEADER, (char*)NULL, (tdble)leaderFlag);
+      break;
+    case 3:
+      debugFlag = (debugFlag + 1) % NB_DEBUG;
+      GfParmSetNum(grHandle, path, GR_ATT_DEBUG, (char*)NULL, (tdble)debugFlag);
+      break;
+    case 4:
+      GFlag = (GFlag + 1) % NB_GFLAG;
+      GfParmSetNum(grHandle, path, GR_ATT_GGRAPH, (char*)NULL, (tdble)GFlag);
+      break;
+    case 5:
+      arcadeFlag = 1 - arcadeFlag;
+      GfParmSetNum(grHandle, path, GR_ATT_ARCADE, (char*)NULL, (tdble)arcadeFlag);
+      break;
+    case 6:
+      dashboardFlag = (dashboardFlag + 1) % 3;
+      GfParmSetNum(grHandle, path, GR_ATT_DASHBOARD, (char*)NULL, (tdble)dashboardFlag);
+      break;
   }
   GfParmWriteFile(NULL, grHandle, "graph");
 }
@@ -355,6 +379,59 @@ cGrBoard::grDispGGraph()
   glVertex2f(XC + THNSS, YC);
   glVertex2f(XC + THNSS, YC + car_->ctrl.clutchCmd * 100.0f);
   glVertex2f(XC - THNSS, YC + car_->ctrl.clutchCmd * 100.0f);
+  
+  // Draw the tire slip color gauges
+  if (GFlag == 2) {
+    tdble s;
+    // FR wheel
+    s = car_->_wheelSlipNorm(0)/car_->_wheelSlipOpt(0);
+    if (s > 1.0) {
+      s = MIN(1.0f, s - 1.0f);
+      glColor4f(1.0f - 0.5f * s, 0.0f, 0.5f * s, 0.9f);
+    } else {
+      glColor4f(s, 0.5f + 0.5f * s, 0.0f, 0.9f);
+    }
+    glVertex2f(X1 + 40.0f, Y1 + 30.0f);
+    glVertex2f(X1 + 50.0f, Y1 + 30.0f);
+    glVertex2f(X1 + 50.0f, Y1 + 50.0f);
+    glVertex2f(X1 + 40.0f, Y1 + 50.0f);
+    // FL wheel
+    s = car_->_wheelSlipNorm(1)/car_->_wheelSlipOpt(1);
+    if (s > 1.0) {
+      s = MIN(1.0f, s - 1.0f);
+      glColor4f(1.0f - 0.5f * s, 0.0f, 0.5f * s, 0.9f);
+    } else {
+      glColor4f(s, 0.5f + 0.5f * s, 0.0f, 0.9f);
+    }
+    glVertex2f(X1 - 50.0f, Y1 + 30.0f);
+    glVertex2f(X1 - 40.0f, Y1 + 30.0f);
+    glVertex2f(X1 - 40.0f, Y1 + 50.0f);
+    glVertex2f(X1 - 50.0f, Y1 + 50.0f);
+    // RR wheel
+    s = car_->_wheelSlipNorm(2)/car_->_wheelSlipOpt(2);
+    if (s > 1.0) {
+      s = MIN(1.0f, s - 1.0f);
+      glColor4f(1.0f - 0.5f * s, 0.0f, 0.5f * s, 0.9f);
+    } else {
+      glColor4f(s, 0.5f + 0.5f * s, 0.0f, 0.9f);
+    }
+    glVertex2f(X1 + 40.0f, Y1 - 50.0f);
+    glVertex2f(X1 + 50.0f, Y1 - 50.0f);
+    glVertex2f(X1 + 50.0f, Y1 - 30.0f);
+    glVertex2f(X1 + 40.0f, Y1 - 30.0f);
+    // RL wheel
+    s = car_->_wheelSlipNorm(3)/car_->_wheelSlipOpt(3);
+    if (s > 1.0) {
+      s = MIN(1.0f, s - 1.0f);
+      glColor4f(1.0f - 0.5f * s, 0.0f, 0.5f * s, 0.9f);
+    } else {
+      glColor4f(s, 0.5f + 0.5f * s, 0.0f, 0.9f);
+    }
+    glVertex2f(X1 - 50.0f, Y1 - 50.0f);
+    glVertex2f(X1 - 40.0f, Y1 - 50.0f);
+    glVertex2f(X1 - 40.0f, Y1 - 30.0f);
+    glVertex2f(X1 - 50.0f, Y1 - 30.0f);
+  }
 
   glEnd();
 
@@ -367,6 +444,7 @@ cGrBoard::grDispGGraph()
   glColor4fv(emphasized_color_);
   glVertex2f(X1, Y1);
   glVertex2f(X2, Y2);
+
   glEnd();
 }
 
@@ -1284,16 +1362,18 @@ void cGrBoard::refreshBoard(tSituation *s, const cGrFrameInfo* frameInfo,
   if (arcadeFlag) {
 	grDispArcade(s);
   } else {
-	if (debugFlag)
-	  grDispDebug(s, frameInfo);
-	if (GFlag)
-	  grDispGGraph();
-	if (boardFlag)
-	  grDispCarBoard(s);
-	if (leaderFlag)
-	  grDispLeaderBoard(s);
-	if (counterFlag)
-	  grDispCounterBoard2();
+    if (debugFlag)
+      grDispDebug(s, frameInfo);
+    if (GFlag)
+      grDispGGraph();
+    if (boardFlag)
+      grDispCarBoard(s);
+    if (leaderFlag)
+      grDispLeaderBoard(s);
+    if (counterFlag)
+      grDispCounterBoard2();
+    if (dashboardFlag)
+      grDispDashboard();
   }
 
   trackMap->display(currCar, s, 0, 0, rightAnchor, TOP_ANCHOR);
@@ -1773,6 +1853,135 @@ cGrBoard::grGenerateLeaderBoardEntry(const tCarElt *car, const tSituation* s,
   return buf;
 }
 
+
+/**
+ * Display the dashboard,
+ * either the immediateely changeable parameters,
+ * or the desired changes during the next pit stop.
+ */
+void
+cGrBoard::grDispDashboard()
+{
+  const char *buf1 = NULL;
+  char buf2[9], buf3[9];
+  int dym = GfuiFontHeight(GFUI_FONT_MEDIUM_C);
+  int y1;
+  int dx = GfuiFontWidth(GFUI_FONT_LARGE_C, "E");
+  int x1 = (leftAnchor + rightAnchor) / 2 - 16 * dx;
+  int dy = GfuiFontHeight(GFUI_FONT_LARGE_C);
+  const tDashboardItem *item;
+
+  // Setup information string
+  if (car_->_dashboardActiveItem < car_->_dashboardInstantNb) {
+    item = &(car_->_dashboardInstant[car_->_dashboardActiveItem]);
+    switch (item->type) {
+      case DI_BRAKE_REPARTITION:
+        buf1 = strBrakeRep;
+        snprintf(buf2, sizeof(buf2), "%.1f %%", 100.0*item->setup->value);
+        break;
+      case DI_FRONT_ANTIROLLBAR:
+        buf1 = strFrontARB;
+        snprintf(buf2, sizeof(buf2), "%.0f kN/m", item->setup->value/1000.0);
+        break;
+      case DI_REAR_ANTIROLLBAR:
+        buf1 = strRearARB;
+        snprintf(buf2, sizeof(buf2), "%.0f kN/m", item->setup->value/1000.0);
+        break;
+      case DI_FRONT_DIFF_MAX_SLIP_BIAS:
+        buf1 = strFDiffMSB;
+        snprintf(buf2, sizeof(buf2), "%.0f %%", 100.0*item->setup->value);
+        break;
+      case DI_FRONT_DIFF_COAST_MAX_SLIP_BIAS:
+        buf1 = strFDiffCMSB;
+        snprintf(buf2, sizeof(buf2), "%.0f %%", 100.0*item->setup->value);
+        break;
+      case DI_REAR_DIFF_MAX_SLIP_BIAS:
+        buf1 = strRDiffMSB;
+        snprintf(buf2, sizeof(buf2), "%.0f %%", 100.0*item->setup->value);
+        break;
+      case DI_REAR_DIFF_COAST_MAX_SLIP_BIAS:
+        buf1 = strRDiffCMSB;
+        snprintf(buf2, sizeof(buf2), "%.0f %%", 100.0*item->setup->value);
+        break;
+      case DI_CENTRAL_DIFF_MAX_SLIP_BIAS:
+        buf1 = strCDiffMSB;
+        snprintf(buf2, sizeof(buf2), "%.0f %%", 100.0*item->setup->value);
+        break;
+      case DI_CENTRAL_DIFF_COAST_MAX_SLIP_BIAS:
+        buf1 = strCDiffCMSB;
+        snprintf(buf2, sizeof(buf2), "%.0f %%", 100.0*item->setup->value);
+        break;
+    }
+  } else {
+    item = &(car_->_dashboardRequest[car_->_dashboardActiveItem - car_->_dashboardInstantNb]);
+    switch (item->type) {
+      case DI_FUEL:
+        buf1 = strFuel;
+        snprintf(buf2, sizeof(buf2), "%.1f l", item->setup->desired_value);
+        snprintf(buf3, sizeof(buf3), "%.1f l", car_->_fuel);
+        break;
+      case DI_REPAIR:
+        buf1 =strRepair;
+        snprintf(buf2, sizeof(buf2), "%.0f", item->setup->desired_value);
+        snprintf(buf3, sizeof(buf3), "%d", car_->_dammage);
+        break;
+      case DI_TYRE_SET:
+        buf1 = strTireSet;
+        if (item->setup->desired_value > 0.9) {
+          snprintf(buf2, sizeof(buf2), "%s", "YES");
+        } else {
+          snprintf(buf2, sizeof(buf2), "%s", "NO");
+        }
+        snprintf(buf3, sizeof(buf3), "%s", "");
+        break;
+      case DI_FRONT_WING_ANGLE:
+        buf1 = strFrontWing;
+        snprintf(buf2, sizeof(buf2), "%.1f", RAD2DEG(item->setup->desired_value));
+        snprintf(buf3, sizeof(buf3), "%.1f", RAD2DEG(item->setup->value));
+        break;
+      case DI_REAR_WING_ANGLE:
+        buf1 = strRearWing;
+        snprintf(buf2, sizeof(buf2), "%.1f", RAD2DEG(item->setup->desired_value));
+        snprintf(buf3, sizeof(buf3), "%.1f", RAD2DEG(item->setup->value));
+        break;
+      case DI_PENALTY:
+        buf1 = strPenalty;
+        if (item->setup->desired_value > 0.9) {
+          snprintf(buf2, sizeof(buf2), "%s", "PENALTY");
+        } else {
+          snprintf(buf2, sizeof(buf2), "%s", "REPAIR");
+        }
+        snprintf(buf3, sizeof(buf3), "%s", "");
+        break;
+    }
+  }
+  
+  // Background
+  if (dashboardFlag == 2) {
+    y1  = TOP_ANCHOR - dym; //bottom of scrolling line leaderboard
+  } else {
+    y1 = 128 + dy; //in top of speedo
+  }
+  grSetupDrawingArea(x1, y1, x1 + 32 * dx, y1 - dy);
+  
+  // Write information
+  if (car_->_dashboardActiveItem < car_->_dashboardInstantNb) {
+	if (buf1)
+		GfuiDrawString(buf1, normal_color_, GFUI_FONT_LARGE_C, x1, y1 - dy, 16 * dx, GFUI_ALIGN_HR);
+    GfuiDrawString(buf2, danger_color_, GFUI_FONT_LARGE_C, x1 + 16 * dx, y1 - dy, 8 * dx, GFUI_ALIGN_HR);
+  } else {
+	if (buf1)
+	    GfuiDrawString(buf1, normal_color_, GFUI_FONT_LARGE_C, x1, y1 - dy, 16 * dx, GFUI_ALIGN_HR);
+    GfuiDrawString(buf2, emphasized_color_, GFUI_FONT_LARGE_C, x1 + 16 * dx, y1 - dy, 8 * dx, GFUI_ALIGN_HR);
+    GfuiDrawString(buf3, ahead_color_, GFUI_FONT_LARGE_C, x1 + 24 * dx, y1 - dy, 8 * dx, GFUI_ALIGN_HR);
+  }
+  /*
+   * normal_color_: white - text
+   * danger_color_: red - immediately changing value
+   * emphasized_color: yellow - value required at pit stop
+   * ahead_color: cyan ? ok_color: green - actual value
+   */
+}
 
 /**
  * Set up a drawing area to put textual info there.

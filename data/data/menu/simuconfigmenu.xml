@@ -5,7 +5,7 @@
     created              : 2009
     copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: simuconfigmenu.xml 5179 2013-02-23 13:49:23Z wdbee $
+    version              : $Id: simuconfigmenu.xml 6158 2015-10-04 01:04:51Z torcs-ng $
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -53,7 +53,7 @@
 
 	<section name="simulabel">
 		<attstr name="type" val="label"/>	  	  	  	  	  
-		<attnum name="max len" val="5"/>
+		<attnum name="max len" val="6"/>
 		<attstr name="tip" val="Choose your simulation engine (Warning: Physics setups designed only for V2.1 and V4.0)"/>
   		<attnum name="x" val="295"/>
 		<attnum name="y" val="322"/>
@@ -137,6 +137,140 @@
 		<attstr name="h align" val="center"/>
 		<attstr name="color" val="0xFFFFFF"/>
 		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="replayrateleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  	  	  	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="228"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="replayraterightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="228"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="replayratelabel">
+		<attstr name="type" val="label"/>	  	  	  	  	  
+		<attnum name="max len" val="8"/>
+		<attstr name="tip" val="Determines the quality (and size) of the replay file"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="232"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="startpausedleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="198"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="startpausedrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="198"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="startpausedlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="5"/>
+		<attstr name="tip" val="Start the race in the Paused state"/>
+		<attnum name="x" val="295"/>
+		<attnum name="y" val="202"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="startpausedstaticlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="202"/>
+		<attstr name="text" val="Pause before race start:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="cooldownleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="168"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="cooldownrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="168"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="cooldownlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="5"/>
+		<attstr name="tip" val="Allow post-race cooldown driving"/>
+		<attnum name="x" val="295"/>
+		<attnum name="y" val="172"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+
+	<section name="cooldownstaticlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="172"/>
+		<attstr name="text" val="Cooldown driving:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
 	</section>
 
 	<section name="CancelButton">
@@ -240,6 +374,36 @@
 		<attstr name="font" val="small_t"/>
 	</section>
     
+	<section name="7">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="232"/>
+		<attstr name="text" val="Replay Quality:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="8">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="202"/>
+		<attstr name="text" val="Pause before race start:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="9">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="172"/>
+		<attstr name="text" val="Cooldown driving:"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section> 
+
 </section>
 
 </params>

@@ -54,6 +54,9 @@ typedef struct
     tdble		exhaust_pressure;
     tdble		exhaust_refract;
     tdble		timeInLimiter; /* time to still spend with fuel cut, in secundum */
+
+	tdble		TCL;		// Optional TCL
+	bool		EnableTCL;	// Enable optional TCL
 } tEngine;
 
 #endif /* _ENGINE_H_ */ 

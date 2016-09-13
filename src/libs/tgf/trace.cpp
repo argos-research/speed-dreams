@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:32:45 CEST 1999
     copyright            : (C) 2010, 2013 by Jean-Philippe Meuret
     web                  : www.speed-dreams.org
-    version              : $Id: trace.cpp 5190 2013-02-23 19:11:31Z pouillot $
+    version              : $Id: trace.cpp 5827 2014-11-12 17:05:02Z wdbee $
                                   
 ***************************************************************************/
 
@@ -19,7 +19,7 @@
 
 /** @file
     Tracing / logging system
-    @version	$Id: trace.cpp 5190 2013-02-23 19:11:31Z pouillot $
+    @version	$Id: trace.cpp 5827 2014-11-12 17:05:02Z wdbee $
     @ingroup	trace
 */
 
@@ -70,6 +70,21 @@ gfTraceInit(bool bWithLogging)
 	// Beware: only GfLogDefault logger initialized at the end,
 	//         see GfLogger::setup for other loggers.
 	GfLogger::boot(bWithLogging);
+}
+
+// Delete all instances of all loggers created while running the program
+void
+gfTraceShutdown(void)
+{
+	// Iterator for all the loggers
+	std::map<std::string, GfLogger*>::iterator itLog;
+
+	// Delete all instances
+	for (itLog = gfMapLoggersByName.begin(); itLog != gfMapLoggersByName.end(); itLog++)
+		delete itLog->second;	// a map<x,y> iterator "points" to a pair<x,y> value
+
+	// Empty the map
+	gfMapLoggersByName.clear();
 }
 
 // GfLogger class implementation ==================================================

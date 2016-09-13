@@ -4,7 +4,7 @@
     created              : Sun Jan 30 22:54:56 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: track.cpp 5353 2013-03-24 10:26:22Z pouillot $
+    version              : $Id: track.cpp 6164 2015-10-04 23:14:42Z torcs-ng $
 
  ***************************************************************************/
 
@@ -66,6 +66,9 @@ TrackBuildv1(const char *trackfile)
 	break;
     case 4:
 	ReadTrack4(theTrack, TrackHandle, &theCamList, 0);
+   break;
+    case 5:
+	ReadTrack5(theTrack, TrackHandle, &theCamList, 0);
 	break;
     
     }
@@ -99,6 +102,9 @@ TrackBuildEx(const char *trackfile)
 			break;
     		case 4:
 			ReadTrack4(theTrack, TrackHandle, &theCamList, 1);
+         break;
+         case 5:
+         ReadTrack5(theTrack, TrackHandle, &theCamList, 1);
 			break;
 
     	}
@@ -129,10 +135,10 @@ GetTrackHeader(void *TrackHandle) {
     theTrack->name = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_NAME, "no name");
     theTrack->descr = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_DESCR, "no description");
     theTrack->version = (int)GfParmGetNum(TrackHandle, TRK_SECT_HDR, TRK_ATT_VERSION, (char*)NULL, 0);
-    theTrack->skyversion = (int)GfParmGetNum(TrackHandle, TRK_SECT_HDR, TRK_ATT_SKY_VERSION, (char*)NULL, 0);
     theTrack->width = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_WIDTH, (char*)NULL, 15.0);
     theTrack->authors = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_AUTHOR, "none");
     theTrack->category = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_CAT, "road");
+    theTrack->subcategory = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_SUBCAT, "none");
 
     // Read Local Info section
     tTrackLocalInfo *local = &theTrack->local;

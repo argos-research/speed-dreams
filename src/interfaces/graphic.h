@@ -4,7 +4,7 @@
     created              : Sun Jan 30 22:58:45 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: graphic.h 5513 2013-06-12 22:29:08Z torcs-ng $
+    version              : $Id: graphic.h 6071 2015-08-14 16:27:16Z kakukri $
 
  ***************************************************************************/
 
@@ -40,6 +40,7 @@
 #define GR_ATT_BOARDWIDTH	"board width"
 #define GR_ATT_SPEEDORISE	"speedometer vertical position"
 #define GR_ATT_NBLEADER		"Max leaders entries"
+#define GR_ATT_DASHBOARD    "dashboard"
 
 #define GR_SCT_TVDIR		"TV Director View"
 #define GR_ATT_CHGCAMINT	"change camera interval"
@@ -71,16 +72,26 @@
 #define GR_ATT_CLOUDLAYER	"cloudlayer"
 #define GR_ATT_AGR_FOREST	"forest LOD"
 #define GR_ATT_AGR_TREE		"tree LOD"
-#define GR_ATT_AGR_PARKING	"parking LOD"
+#define GR_ATT_AGR_QUALITY	"shadow quality"
 //#define GR_ATT_DYNAMICWEATHER	"dynamic weather"
 
 #define GR_ATT_SHADOW_TYPE  "shadow type"
-#define GR_ATT_SHADOW_NONE  "shadow none"
-#define GR_ATT_SHADOW_SM    "shadow map"
-#define GR_ATT_SHADOW_SSM   "soft shadow map"
-#define GR_ATT_SHADOW_PSSM  "paralele shadow map"
-#define GR_ATT_SHADOW_LSPM  "light shadow map"
+#define GR_ATT_SHADOW_NONE  "shadow static"
+#define GR_ATT_SHADOW_SM    "shadowmap"
+#define GR_ATT_SHADOW_SSM   "soft shadowmap"
+#define GR_ATT_SHADOW_PSSM  "paralele shadowmap"
+#define GR_ATT_SHADOW_LSPM  "light shadowmap"
+#define GR_ATT_SHADOW_VOLUME "shadow volume"
+#define GR_ATT_SHADOW_VDSM  "view dependent shadowmap"
+
 #define GR_ATT_SHADOW_SIZE  "texture shadow size"
+#define GR_ATT_SHADOW_512   "512"
+#define GR_ATT_SHADOW_1024  "1024"
+#define GR_ATT_SHADOW_2048  "2048"
+#define GR_ATT_SHADOW_4096  "4096"
+#define GR_ATT_SHADOW_8192  "8192"
+
+#define GR_ATT_SHADERS      "shaders"
 
 #define GR_ATT_ENV_TYPE     "texture environment"
 #define GR_ATT_AGR_NULL		"none"

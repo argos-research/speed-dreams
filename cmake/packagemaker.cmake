@@ -54,7 +54,7 @@ SET(CPACK_SOURCE_IGNORE_FILES
 
 ##########################################################################################
 # Put Linux install information here
-IF(UNIX)
+IF(UNIX AND NOT APPLE)
 
     SET(PACKAGERS_BINARY "DEB" CACHE STRING "CPack binary package generators to use (separated with ';', among DEB, RPM, STGZ, TGZ, TBZ2, TZ, ZIP)")
     MARK_AS_ADVANCED(PACKAGERS_BINARY)
@@ -69,7 +69,7 @@ IF(UNIX)
     # Source package specific settings.
     LIST(APPEND CPACK_SOURCE_IGNORE_FILES "Makefile$" "\\\\.so$")
 
-ENDIF(UNIX)
+ENDIF(UNIX AND NOT APPLE)
 
 ##########################################################################################
 # Put Windows install information here.

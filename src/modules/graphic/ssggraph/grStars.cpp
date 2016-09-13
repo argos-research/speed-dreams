@@ -3,7 +3,7 @@
     file        : grStars.cpp
     copyright   : (C) 2009 by Xavier Bertaux (based on ssgasky plib code)
     web         : http://www.speed-dreams.org
-    version     : $Id: grStars.cpp 3162 2010-12-05 13:11:22Z pouillot $
+    version     : $Id: grStars.cpp 6171 2015-10-17 02:43:08Z torcs-ng $
 
  ***************************************************************************/
 
@@ -223,10 +223,10 @@ bool cGrStars::repaint( double sol_angle, int num, sgdVec3 *star_data )
       mag = star_data[i][2];
       if ( mag < cutoff ) 
       {
-        nmag = ( 4.5 - mag ) / 5.5; // translate to 0 ... 1.0 scale
-        // alpha = nmag * 0.7 + 0.3; // translate to a 0.3 ... 1.0 scale
-        alpha = nmag * 0.85 + 0.15; // translate to a 0.15 ... 1.0 scale
-        alpha *= factor;          // dim when the sun is brighter
+        nmag = ( 4.5 - mag ) / 5.5;		// translate to 0 ... 1.0 scale
+        // alpha = nmag * 0.7 + 0.3;	// translate to a 0.3 ... 1.0 scale
+        alpha = nmag * 0.85 + 0.15;		// translate to a 0.15 ... 1.0 scale
+        alpha *= factor;				// dim when the sun is brighter
       }
       else 
       {

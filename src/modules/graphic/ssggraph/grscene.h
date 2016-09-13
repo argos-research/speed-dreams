@@ -4,7 +4,7 @@
     created              : Mon Aug 21 20:09:40 CEST 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: grscene.h 5674 2013-08-10 21:42:15Z torcs-ng $
+    version              : $Id: grscene.h 6113 2015-09-10 22:48:36Z torcs-ng $
 
  ***************************************************************************/
 
@@ -22,7 +22,7 @@
 
 //TODO: What is this??? kilo
 #ifdef GUIONS
-#include <glib.h> 
+#include <glib.h>
 #endif //GUIONS
 
 #include <track.h>	//tTrack
@@ -35,6 +35,7 @@ extern int grWrldY;
 extern int grWrldZ;
 extern int grWrldMaxSize;
 extern bool grSpeedway;
+extern bool grSpeedwayshort;
 extern tTrack *grTrack;
 
 extern ssgRoot *TheScene;
@@ -64,12 +65,13 @@ extern int grLoadScene(tTrack *track);
 extern void grDrawScene();
 extern void grShutdownScene(void);
 extern void grCustomizePits(void);
+extern void grLoadPitsIndicator(tdble x,tdble y, tdble z, char *buf, int Pitind);
 extern void grDrawBackground(class cGrCamera *, class cGrBackgroundCam *bgCam);
 
 //TODO: Question: What is this??? kilo
 //      Possible answer: Some try to lower GPU load by filtering the scene ? JP
 #ifdef GUIONS
-class cDoV 
+class cDoV
 {
 public:
   tdble FrontLevelGroupGlobal; /* the distance for the end of the front scene */
@@ -81,7 +83,7 @@ public:
   tdble RearLevelGroup1;
   tdble RearLevelGroup2;
   tdble RearLevelGroup3;
-  
+
   tdble FrontLevelMap1;      /* the distance for the end of the front scene with only one mapping*/
   tdble FrontLevelMap2;      /* the distance for the end of the front scene with two mapping*/
   tdble FrontLevelMap3;      /* the distance for the end of the front scene with three mapping*/
@@ -90,7 +92,7 @@ public:
   tdble RearLevelMap3;
 };
 
-class cHashMapElement 
+class cHashMapElement
 {
   char	*name;
   int		numberOfMapToApply;

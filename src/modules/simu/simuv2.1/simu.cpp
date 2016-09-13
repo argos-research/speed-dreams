@@ -4,7 +4,7 @@
     created              : Sun Mar 19 00:07:53 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: simu.cpp 4918 2012-09-05 03:58:00Z mungewell $
+    version              : $Id: simu.cpp 6319 2015-12-29 01:00:14Z kakukri $
 
  ***************************************************************************/
 
@@ -156,6 +156,7 @@ SimReConfig(tCarElt *carElt)
 	car->dammage -= carElt->pitcmd.repair;
 	if (car->dammage < 0) car->dammage = 0;
     }
+    carElt->setup.reqRepair.desired_value = 0.0;
 }
 
 

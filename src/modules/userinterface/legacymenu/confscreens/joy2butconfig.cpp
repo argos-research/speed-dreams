@@ -4,7 +4,7 @@
     created              : Wed Mar 21 21:46:11 CET 2001
     copyright            : (C) 2001 by Eric Espie
     email                : eric.espie@torcs.org
-    version              : $Id: joy2butconfig.cpp 5522 2013-06-17 21:03:25Z torcs-ng $
+    version              : $Id: joy2butconfig.cpp 6389 2016-03-21 19:18:31Z wdbee $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		Human player joystick configuration menu
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: joy2butconfig.cpp 5522 2013-06-17 21:03:25Z torcs-ng $
+    @version	$Id: joy2butconfig.cpp 6389 2016-03-21 19:18:31Z wdbee $
 */
 
 
@@ -59,10 +59,15 @@ static tCmdInfo *Cmd;
 static int MaxCmd;
 
 // Joystick info.
+#if SDL_JOYSTICK
+static tCtrlJoyInfo joyInfo;// = NULL;
+static tCtrlJoyInfo joyCenter;
+#else
 static jsJoystick* Joystick[GFCTRL_JOY_NUMBER];
 static float       JoyAxis[GFCTRL_JOY_MAX_AXES * GFCTRL_JOY_NUMBER];
 static float       JoyAxisCenter[GFCTRL_JOY_MAX_AXES * GFCTRL_JOY_NUMBER];
 static int         JoyButtons[GFCTRL_JOY_NUMBER];
+#endif
 
 // Menu screen handle.
 static void *ScrHandle = NULL;
@@ -93,14 +98,17 @@ static int DoneBut = 0;;
 static void
 onNext(void * /* dummy */)
 {
-    int index;
-
     /* Release up and running joysticks */
+#if SDL_JOYSTICK
+    //GfctrlJoyRelease(joyInfo);
+#else
+    int index;
     for (index = 0; index < GFCTRL_JOY_NUMBER; index++)
 	if (Joystick[index]) {
 	    delete Joystick[index];
 	    Joystick[index] = 0;
 	}
+#endif
 
     /* Back to previous screen */
     if (CalState == NbCalSteps && NextMenuHandle != NULL)
@@ -176,7 +184,11 @@ JoyCalAutomaton(void)
     switch (CalState) {
     case 0:
 	/* Grab snapshot of 'NULL' position */
+#if SDL_JOYSTICK
+   memcpy(&joyCenter, &joyInfo, sizeof(joyCenter));
+#else
 	memcpy(JoyAxisCenter, JoyAxis, sizeof(JoyAxisCenter));
+#endif
 
 	advanceStep();
 	break;
@@ -186,7 +198,11 @@ JoyCalAutomaton(void)
 	AtobList = (linked_item_t*)malloc(sizeof(linked_item_t));
 	AtobList->next = NULL;
 	AtobList->command = -1;
+#if SDL_JOYSTICK
+   AtobList->value = joyCenter.ax[AtobAxis];
+#else
 	AtobList->value = JoyAxisCenter[AtobAxis];
+#endif
 
 	CalState = 2;
 
@@ -197,7 +213,11 @@ JoyCalAutomaton(void)
 
 	new_in_list = (linked_item_t*)malloc(sizeof(linked_item_t));
 	new_in_list->command = AtobCount;
+#if SDL_JOYSTICK
+   new_in_list->value = joyInfo.ax[AtobAxis];
+#else
 	new_in_list->value = JoyAxis[AtobAxis];
+#endif
 		
 	if (new_in_list->value < item_in_list->value) {
 	    /* insert first position*/
@@ -269,9 +289,28 @@ JoyCalAutomaton(void)
 static void
 Idle2(void)
 {
+   int		index;
+#if SDL_JOYSTICK
+   /* Check for activity on Joystick buttons */
+   GfctrlJoyGetCurrentStates(&joyInfo);
+   for (index = 0; index < GFCTRL_JOY_NUMBER * GFCTRL_JOY_MAX_BUTTONS; index++) {
+      if (joyInfo.edgedn[index]) {
+         /* Check whether to ignore */
+         if(Cmd[CalState + CmdOffset].butIgnore == index)
+            break;
+
+         /* Button fired */
+         JoyCalAutomaton();
+         if (CalState >= NbCalSteps) {
+            GfuiApp().eventLoop().setRecomputeCB(0);
+         }
+         GfuiApp().eventLoop().postRedisplay();
+         return;
+      }
+#else
     int		mask;
     int		b, i;
-    int		index;
+    
 
     for (index = 0; index < GFCTRL_JOY_NUMBER; index++) {
 	if (Joystick[index]) {
@@ -296,6 +335,7 @@ Idle2(void)
 	    }
 	    JoyButtons[index] = b;
 	}
+#endif
     }
 
     /* Let CPU take breath (and fans stay at low and quite speed) */
@@ -307,8 +347,12 @@ static void
 onActivate(void * /* dummy */)
 {
     int i;
-    int index;
     
+#if SDL_JOYSTICK
+    //joyInfo = GfctrlJoyCreate();
+    GfctrlJoyGetCurrentStates(&joyInfo);
+#else
+    int index;
     // Create and test joysticks ; only keep the up and running ones.
     for (index = 0; index < GFCTRL_JOY_NUMBER; index++) {
 	Joystick[index] = new jsJoystick(index);
@@ -318,9 +362,10 @@ onActivate(void * /* dummy */)
 	    Joystick[index] = 0;
 	}
     }
+#endif
 
     CalState = 0;
-    AtobAxis = GFCTRL_JOY_NUMBER * GFCTRL_JOY_MAX_AXES;;
+    AtobAxis = GFCTRL_JOY_NUMBER * GFCTRL_JOY_MAX_AXES;
 
     /* Find commands which are ATOB */
     for (i = 0; i <= CMD_END_OF_LIST; i++) {
@@ -339,11 +384,14 @@ onActivate(void * /* dummy */)
     GfuiLabelSetText(ScrHandle, InstId, Instructions[CalState]);
     GfuiApp().eventLoop().setRecomputeCB(Idle2);
     GfuiApp().eventLoop().postRedisplay();
+
+#ifndef SDL_JOYSTICK
     for (index = 0; index < GFCTRL_JOY_NUMBER; index++) {
 	if (Joystick[index]) {
 	    Joystick[index]->read(&JoyButtons[index], &JoyAxis[index * GFCTRL_JOY_MAX_AXES]); /* initial value */
 	}
     }
+#endif
 
     GfuiEnable(ScrHandle, CancelBut, GFUI_ENABLE);
     if (DoneBut)

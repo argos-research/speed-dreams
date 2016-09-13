@@ -1,17 +1,16 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitcharacteristic.cpp
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
-// A robot for Speed Dreams-Version 1.4.0/2.X
+// A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Angepasste (angelernte) Kennlinie
 //
 // File         : unitcharacteristic.cpp
 // Created      : 2007.11.17
-// Last changed : 2011.06.02
-// Copyright    : © 2007-2011 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 3.01.000
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // This program was developed and tested on windows XP
 // There are no known Bugs, but:

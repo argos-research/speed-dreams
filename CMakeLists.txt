@@ -12,15 +12,15 @@ CHECK_LIBRARIES()
 
 # Determine version
 SET(NEXT_LESSER_VERSION 0) # The next lesser version
-SET(NEXT_MAJOR_MINOR_VERSION "2.1") # Next major.minor version
+SET(NEXT_MAJOR_MINOR_VERSION "2.2") # Next major.minor version
 
 # Uncomment if you don't want automatic SVN version detection
 # (poor performances under Windows, don't work with git-svn, ...)
-SET(OPTION_AUTOVERSION Off)
+# SET(OPTION_AUTOVERSION Off)
 
 IF(NOT OPTION_AUTOVERSION)
 	
-	SET(VERSION "${NEXT_MAJOR_MINOR_VERSION}-r5799")
+	SET(VERSION "${NEXT_MAJOR_MINOR_VERSION}-dev")
 	SET(VERSION_LONG "${VERSION}")
 	
 	MESSAGE(STATUS "Version '${VERSION_LONG}' (not auto-detected from SVN source tree)")
@@ -28,7 +28,7 @@ IF(NOT OPTION_AUTOVERSION)
 ELSE(NOT OPTION_AUTOVERSION)
 
 	# Use SVN HeadURL property on this CMakeLists.txt file in order to automatically get the current version
-	SET(HEAD_URL "$HeadURL: svn+ssh://mungewell@svn.code.sf.net/p/speed-dreams/code/trunk/CMakeLists.txt $")
+	SET(HEAD_URL "$HeadURL: svn://svn.code.sf.net/p/speed-dreams/code/tags/2.2.1/CMakeLists.txt $")
 
 	# Define regular expressions
 	SET(REGEX_TAG        "^\\$HeadURL:.*speed-dreams/code/tags/([^/\\$ ]*).*\\$$")

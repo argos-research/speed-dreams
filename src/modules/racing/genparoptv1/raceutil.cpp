@@ -4,7 +4,7 @@
     created     : Sat Nov 16 12:13:31 CET 2006
     copyright   : (C) 2006 Mart Kelder
     email       : mart@kelder31.nl   
-    version     : $Id: raceutil.cpp 3432 2011-03-08 17:14:29Z pouillot $
+    version     : $Id: raceutil.cpp 6144 2015-09-24 19:05:15Z torcs-ng $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		Useful functions for race engine
     @author	<a href=mailto:mart@kelder31.nl>Mart Kelder</a>
-    @version	$Id: raceutil.cpp 3432 2011-03-08 17:14:29Z pouillot $
+    @version	$Id: raceutil.cpp 6144 2015-09-24 19:05:15Z torcs-ng $
 */
 
 #include <tgf.h>
@@ -99,12 +99,16 @@ int RmGetFeaturesList( void* param )
 		sprintf( buf, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, caridx );
 		if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_TYPE, ROB_VAL_ROBOT ), ROB_VAL_HUMAN ) == 0 )
 		{
-			if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_LEVEL, ROB_VAL_ROOKIE ), ROB_VAL_ROOKIE ) == 0 )
-				driverFeatureMask |= RM_FEATURE_TIMEDSESSION | RM_FEATURE_WETTRACK;
-			else if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_LEVEL, ROB_VAL_ROOKIE ), ROB_VAL_AMATEUR ) == 0 )
+			if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_LEVEL, ROB_VAL_ARCADE ), ROB_VAL_ARCADE ) == 0 )
+				driverFeatureMask |= RM_FEATURE_TIMEDSESSION;
+			else if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_LEVEL, ROB_VAL_ARCADE ), ROB_VAL_SEMI_ROOKIE ) == 0 )
+				driverFeatureMask |= RM_FEATURE_TIMEDSESSION;
+			else if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_LEVEL, ROB_VAL_ARCADE ), ROB_VAL_ROOKIE ) == 0 )
+				driverFeatureMask |= RM_FEATURE_TIMEDSESSION;
+			else if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_LEVEL, ROB_VAL_ARCADE ), ROB_VAL_AMATEUR ) == 0 )
 				driverFeatureMask |= RM_FEATURE_TIMEDSESSION | RM_FEATURE_WETTRACK;
 			      /* | RM_FEATURE_BLUE */
-			else if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_LEVEL, ROB_VAL_ROOKIE ), ROB_VAL_SEMI_PRO ) == 0 )
+			else if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_LEVEL, ROB_VAL_ARCADE ), ROB_VAL_SEMI_PRO ) == 0 )
 				driverFeatureMask |= RM_FEATURE_TIMEDSESSION | RM_FEATURE_WETTRACK;
 			      /* | RM_FEATURE_PENALTIES | RM_FEATURE_SC | RM_FEATURE_YELLOW | RM_FEATURE_RED | */
 			else if( strcmp( GfParmGetStr( robhdle, buf, ROB_ATTR_LEVEL, ROB_VAL_ROOKIE ), ROB_VAL_PRO ) == 0 )

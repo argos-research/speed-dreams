@@ -4,7 +4,7 @@
     created     : Fri Jan  3 22:24:41 CET 2003
     copyright   : (C) 2003 by Eric Espie                        
     email       : eric.espie@torcs.org   
-    version     : $Id: racemanmenu.cpp 5158 2013-02-17 17:06:28Z wdbee $
+    version     : $Id: racemanmenu.cpp 6353 2016-01-31 16:22:09Z beaglejoe $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		The race manager menu (where you can configure, load, save, start a race)
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racemanmenu.cpp 5158 2013-02-17 17:06:28Z wdbee $
+    @version	$Id: racemanmenu.cpp 6353 2016-01-31 16:22:09Z beaglejoe $
 */
 
 #include <vector>
@@ -239,6 +239,7 @@ rmOnRaceDataChanged()
 	// Re-load competitors scroll list from the race.
 	GfuiScrollListClear(ScrHandle, CompetitorsScrollListId);
 	VecCompetitorsInfo.clear();
+    VecCompetitorsInfo.reserve(vecCompetitors.size());
     for (int nCompIndex = 0; nCompIndex < (int)vecCompetitors.size(); nCompIndex++)
 	{
 		const GfDriver* pComp = vecCompetitors[nCompIndex];
@@ -247,8 +248,12 @@ rmOnRaceDataChanged()
 		if (!pRaceMan->hasSubFiles()) // Don't show car name if Career mode (N/A here).
 			ossText << " (" << pComp->getCar()->getName() << ')';
 		VecCompetitorsInfo.push_back(ossText.str());
+	}
+	for (int nCompIndex = 0; nCompIndex < (int)vecCompetitors.size(); nCompIndex++)
+	{
+		const GfDriver* pComp = vecCompetitors[nCompIndex];
 		GfuiScrollListInsertElement(ScrHandle, CompetitorsScrollListId,
-									VecCompetitorsInfo.back().c_str(), nCompIndex+1, (void*)pComp);
+									VecCompetitorsInfo[nCompIndex].c_str(), nCompIndex+1, (void*)pComp);
 		//GfLogDebug("Added competitor %s (%s#%d)\n", ossText.str().c_str(),
 		//		   pComp->getModuleName().c_str(),  pComp->getInterfaceIndex());
 	}

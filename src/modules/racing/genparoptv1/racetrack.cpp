@@ -3,7 +3,7 @@
     file        : racetrack.cpp
     copyright   : (C) 2010 by Xavier Bertaux
     web         : www.speed-dreams.org 
-    version     : $Id: racetrack.cpp 5118 2013-02-10 10:45:03Z pouillot $
+    version     : $Id: racetrack.cpp 5863 2014-11-26 12:50:06Z wdbee $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 /** @file   
     		Track related functions
     @author	    Xavier Bertaux
-    @version	$Id: racetrack.cpp 5118 2013-02-10 10:45:03Z pouillot $
+    @version	$Id: racetrack.cpp 5863 2014-11-26 12:50:06Z wdbee $
 */
 
 #include <cstdlib>
@@ -42,7 +42,7 @@
 
 
 // Local functions.
-static void reTrackDump(const tTrack *track, int verbose);
+//static void reTrackDump(const tTrack *track, int verbose);
 static void reTrackInitTimeOfDay(void);
 static void reTrackInitWeather(void);
 static void reTrackUpdatePhysics(void);
@@ -60,7 +60,7 @@ ReTrackInit(void)
 	const char  *catName;
 
 	const int curTrkIdx =
-		(int)GfParmGetNum(ReInfo->results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1);
+		(int)GfParmGetNum(ReInfo->params, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1);
 	snprintf(buf, sizeof(buf), "%s/%d", RM_SECT_TRACKS, curTrkIdx);
 	trackName = GfParmGetStr(ReInfo->params, buf, RM_ATTR_NAME, 0);
 	if (!trackName)
@@ -74,12 +74,12 @@ ReTrackInit(void)
 	ReInfo->track = ReTrackLoader().load(buf);
 
 	snprintf(buf, sizeof(buf), "Loading %s track", ReInfo->track->name);
-	ReUI().addLoadingMessage(buf);
+	ReUI().addOptimizationMessage(buf);
 
 	reTrackInitTimeOfDay();
 	reTrackInitWeather();
 
-	reTrackDump(ReInfo->track, 0);
+	//reTrackDump(ReInfo->track, 0);
 
 	return 0;
 }//ReTrackInit
@@ -96,7 +96,7 @@ reTrackDump(const tTrack *track, int verbose)
 	
 	snprintf(buf, sizeof(buf), "  by %s (%.0f m long, %.0f m wide) ...", 
 			 track->authors, track->length, track->width);
-	ReUI().addLoadingMessage(buf);
+	ReUI().addOptimizationMessage(buf);
 
 	GfLogInfo("++++++++++++ Track ++++++++++++\n");
 	GfLogInfo("Name     = %s\n", track->name);

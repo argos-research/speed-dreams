@@ -3,7 +3,7 @@
     file        : racestartstop.cpp
     copyright   : (C) 2011 by Jean-Philippe Meuret                        
     email       : pouillot@users.sourceforge.net   
-    version     : $Id: racestopmenu.cpp 5272 2013-03-07 14:27:07Z beaglejoe $
+    version     : $Id: racestopmenu.cpp 6084 2015-08-21 00:07:15Z beaglejoe $
  ***************************************************************************/
 
 /***************************************************************************
@@ -33,6 +33,7 @@
 
 extern RmProgressiveTimeModifier rmProgressiveTimeModifier;
 
+extern bool rmPreRacePause;
 
 static void *hscreen = 0;
 static int curPlayerIdx = 0;
@@ -88,7 +89,7 @@ rmBackToRaceHookActivate(void * /* dummy */)
 	LegacyMenu::self().activateGameScreen();
 
 	// Launch the "slow resume race" manager if non-blind mode.
-	if (LmRaceEngine().outData()->_displayMode == RM_DISP_MODE_NORMAL)
+	if ((!rmPreRacePause) &&  (LmRaceEngine().outData()->_displayMode == RM_DISP_MODE_NORMAL))
 		rmProgressiveTimeModifier.start();
 }
 

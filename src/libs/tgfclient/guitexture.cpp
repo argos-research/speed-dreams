@@ -4,7 +4,7 @@
     created              : Tue Aug 17 20:13:08 CEST 1999
     copyright            : (C) 1999 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: guitexture.cpp 5424 2013-05-02 05:08:55Z wdbee $
+    version              : $Id: guitexture.cpp 6393 2016-03-27 16:23:23Z beaglejoe $
  ***************************************************************************/
 
 /***************************************************************************
@@ -20,7 +20,7 @@
     		Images manipulation tools.
 		Load and store png images with easy interface.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: guitexture.cpp 5424 2013-05-02 05:08:55Z wdbee $
+    @version	$Id: guitexture.cpp 6393 2016-03-27 16:23:23Z beaglejoe $
     @ingroup	img		
 */
 
@@ -132,7 +132,7 @@ GfTexScaleImagePowerof2(unsigned char *pSrcImg, int srcW, int srcH, GLenum forma
  */
 unsigned char *
 GfTexReadImageFromPNG(const char *filename, float screen_gamma, int *pWidth, int *pHeight,
-					  int *pPow2Width, int *pPow2Height)
+					  int *pPow2Width, int *pPow2Height, bool useGammaCorrection)
 {
 	static const int nPNGBytesToCheck = 4;
 
@@ -235,10 +235,12 @@ GfTexReadImageFromPNG(const char *filename, float screen_gamma, int *pWidth, int
 		png_set_filler(png_ptr, 0xff, PNG_FILLER_AFTER);
 	}
 	
-	if (png_get_gAMA(png_ptr, info_ptr, &gamma)) {
-		png_set_gamma(png_ptr, screen_gamma, gamma);
-	} else {
-		png_set_gamma(png_ptr, screen_gamma, 0.50);
+	if(useGammaCorrection){
+		if (png_get_gAMA(png_ptr, info_ptr, &gamma)) {
+			png_set_gamma(png_ptr, screen_gamma, gamma);
+		} else {
+			png_set_gamma(png_ptr, screen_gamma, 0.50);
+		}
 	}
 
 	// Store read image width and height.

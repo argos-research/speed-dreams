@@ -4,7 +4,7 @@
     created              : Mon Apr 21 22:30:04 CEST 2011
     copyright            : (C) 2009 Brian Gavin, 2011 Jean-Philippe Meuret
     web                  : http://www.speed-dreams.org
-    version              : $Id: eventloop.cpp 5353 2013-03-24 10:26:22Z pouillot $
+    version              : $Id: eventloop.cpp 6395 2016-04-04 03:40:56Z beaglejoe $
 ***************************************************************************/
 
 /***************************************************************************
@@ -68,7 +68,9 @@ GfEventLoop::Private::Private()
 	static bool bInitialized = false;
 	if (!bInitialized)
 	{
+#if SDL_MAJOR_VERSION < 2
 		SDL_EnableUNICODE(/*enable=*/1); // For keyboard "key press" event key code translation
+#endif
 		bInitialized = true;
 	}
 }
@@ -80,8 +82,13 @@ GfEventLoop::Private::Private()
 // is typed ; we never clears this map, but assume not that many such combinations
 // will be typed in a game session (could theorically go up to 2^23 combinations, though ;-)
 // Known issues (TODO): No support for Caps and NumLock keys ... don't use them !
+
+// As of SDL2, this translation to unicode is no longer needed. SDL2 has unicode support
+// It can now be used to translate keycodes to other keycodes. See SDLK_KP_ENTER
+// below, we do not want to treat the two <Enter> keys as distinct.
 int GfEventLoop::Private::translateKeySym(int code, int modifier, int unicode)
 {
+#if SDL_MAJOR_VERSION < 2
 	// Generate the key Id from its code and modifier.
 	const Uint32 keyId = ((Uint32)code & 0x1FF) | (((Uint32)modifier) << 9);
 
@@ -108,6 +115,42 @@ int GfEventLoop::Private::translateKeySym(int code, int modifier, int unicode)
 
 	// Done.
 	return keyUnicode;
+#else
+	int keyUnicode = code; //default to returning code
+
+	// Make the Numpad <Enter> key behave like the regular <Enter> key
+	if(SDLK_KP_ENTER == code)
+		keyUnicode = SDLK_RETURN;
+
+	else
+	{
+		const Uint32 keyId = ((Uint32)code & GF_MAX_KEYCODE) | (((Uint32)modifier) << 9);
+
+		// If unicode - add to the map...
+		if(unicode)
+		{
+			// Truncate unicodes above GF_MAX_KEYCODE (no need for more).
+			keyUnicode = (unsigned short)(unicode & GF_MAX_KEYCODE);
+			_mapUnicodes[keyId] = (unsigned short)keyUnicode;
+			GfLogDebug("translateKeySym(c=%X, m=%X, u=%X) : '%c', id=%X, ucode=%X (nk=%d)\n",
+				   code, modifier, unicode, // Truncate high bits for MSVC 2010 bugs.
+				   (keyUnicode > 0 && keyUnicode < 128 && isprint(keyUnicode & 0x7F))
+				   ? (char)(keyUnicode & 0x7F) : ' ',
+				   keyId, keyUnicode, _mapUnicodes.size());
+		}
+		else
+		{
+			// Search it in our unicode map.
+			const std::map<Uint32, Uint16>::const_iterator itUnicode = _mapUnicodes.find(keyId);
+			if (itUnicode != _mapUnicodes.end())
+			{
+				keyUnicode = (*itUnicode).second;
+			}
+		}
+	}
+
+	return keyUnicode;
+#endif
 }
 
 Uint32 GfEventLoop::Private::callTimerCB(Uint32 interval, void *pEvLoopPriv)
@@ -136,33 +179,22 @@ GfEventLoop::~GfEventLoop()
 void GfEventLoop::injectKeyboardEvent(int code, int modifier, int state,
 									  int unicode, int x, int y)
 {
-	// Ignore modifiers other than SHIFT, ALT, CTRL and META.
-	modifier &= (KMOD_LSHIFT | KMOD_RSHIFT | KMOD_LCTRL | KMOD_RCTRL
-				 | KMOD_LALT | KMOD_RALT | KMOD_LMETA | KMOD_RMETA);
-	
-	// Translate KMOD_RXX modifiers to KMOD_LXX (we make no difference).
-	if (modifier) // A little optimization.
+	// Translate KMOD_RXX modifiers to KMOD_LXX (we make no difference)
+	// and ignore modifiers other than SHIFT, ALT, CTRL and META.
+	if (modifier)
 	{
-		if (modifier & KMOD_RSHIFT)
-		{
-			modifier |= KMOD_LSHIFT;
-			modifier &= ~KMOD_RSHIFT;
-		}
-		if (modifier & KMOD_RCTRL)
-		{
-			modifier |= KMOD_LCTRL;
-			modifier &= ~KMOD_RCTRL;
-		}
-		if (modifier & KMOD_RALT)
-		{
-			modifier |= KMOD_LALT;
-			modifier &= ~KMOD_RALT;
-		}
-		if (modifier & KMOD_RMETA)
-		{
-			modifier |= KMOD_LMETA;
-			modifier &= ~KMOD_RMETA;
-		}
+		if (modifier & KMOD_RSHIFT) modifier |= KMOD_LSHIFT;
+		if (modifier & KMOD_RCTRL) modifier |= KMOD_LCTRL;
+		if (modifier & KMOD_RALT) modifier |= KMOD_LALT;
+#if SDL_MAJOR_VERSION < 2
+		if (modifier & KMOD_RMETA) modifier |= KMOD_LMETA;
+
+		modifier &= (KMOD_LSHIFT | KMOD_LCTRL | KMOD_LALT | KMOD_LMETA);
+#else
+		if (modifier & KMOD_RGUI) modifier |= KMOD_LGUI;
+
+		modifier &= (KMOD_LSHIFT | KMOD_LCTRL | KMOD_LALT | KMOD_LGUI);
+#endif
 	}
 
 	// Call the relevant call-back funtion if any registered.
@@ -196,12 +228,20 @@ void GfEventLoop::operator()()
 			{  
 				case SDL_KEYDOWN:
 					injectKeyboardEvent(event.key.keysym.sym, event.key.keysym.mod, 0,
+#if SDL_MAJOR_VERSION < 2
 										event.key.keysym.unicode);
+#else
+										0);
+#endif
 					break;
 				
 				case SDL_KEYUP:
 					injectKeyboardEvent(event.key.keysym.sym, event.key.keysym.mod, 1,
+#if SDL_MAJOR_VERSION < 2
 										event.key.keysym.unicode);
+#else
+										0);
+#endif
 					break;
 
 				case SDL_QUIT:

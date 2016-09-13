@@ -4,7 +4,7 @@ file                 : network.h
 created              : July 2009
 copyright            : (C) 2009 Brian Gavin
 web                  : speed-dreams.sourceforge.net
-version              : $Id: network.h 5746 2013-12-05 07:19:29Z mungewell $
+version              : $Id: network.h 6170 2015-10-16 23:19:40Z torcs-ng $
 
  ***************************************************************************/
 
@@ -40,7 +40,7 @@ version              : $Id: network.h 5746 2013-12-05 07:19:29Z mungewell $
 #include <set>
 #include <map>
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(USE_MACPORTS)
 #include <enet.h>
 #else
 #include <enet/enet.h>
@@ -59,7 +59,7 @@ version              : $Id: network.h 5746 2013-12-05 07:19:29Z mungewell $
 //Network update rates
 #define CAR_CONTROL_UPDATE 0.1
 #define CAR_DATA_UPDATE 5.0
-#define RACESTARTDELEAY 10.0
+#define RACESTARTDELEAY 3.0
 #define FINISHDELAY 10.0
 
 //Packet definitions

@@ -3,7 +3,7 @@
 #   file        : macros.cmake
 #   copyright   : (C) 2008 by Mart Kelder
 #   web         : www.speed-dreams.org 
-#   version     : $Id: macros.cmake 5369 2013-03-28 21:51:57Z torcs-ng $
+#   version     : $Id: macros.cmake 5926 2015-03-24 12:38:37Z torcs-ng $
 #
 ############################################################################
 
@@ -18,7 +18,7 @@
 
 # @file     Main CMake configuration file (to be included in every CMakeLists.txt)
 # @author   Mart Kelder
-# @version  $Id: macros.cmake 5369 2013-03-28 21:51:57Z torcs-ng $
+# @version  $Id: macros.cmake 5926 2015-03-24 12:38:37Z torcs-ng $
 
 #MESSAGE(STATUS "Processing ${CMAKE_CURRENT_SOURCE_DIR} ...")
 
@@ -239,7 +239,11 @@ MACRO(SD_ADD_LIBRARY TARGET_NAME TARGET_TYPE)
     ENDIF()
 
   ELSEIF(${TARGET_TYPE} STREQUAL "MODULE")
-
+    IF(CMAKE_MAJOR_VERSION GREATER 2)
+		cmake_policy(SET CMP0026 OLD)
+		cmake_policy(SET CMP0045 OLD)
+	ENDIF()
+	
     GET_TARGET_PROPERTY(_TGT_LOC ${TARGET_NAME} LOCATION)
     GET_FILENAME_COMPONENT(_TGT_TYPE ${_TGT_LOC} PATH)
     GET_FILENAME_COMPONENT(_TGT_TYPE ${_TGT_TYPE} PATH)

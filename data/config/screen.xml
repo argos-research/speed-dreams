@@ -5,7 +5,7 @@
     created              : Fri Aug 13 22:30:50 CEST 1999
     copyright            : (C) 1999 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: screen.xml 5180 2013-02-23 13:56:49Z torcs-ng $
+    version              : $Id: screen.xml 6286 2015-11-28 23:11:06Z beaglejoe $
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -15,7 +15,7 @@
 
 <!DOCTYPE params SYSTEM "../tgf/params.dtd">
 
-<params name="Screen" version="1.18">
+<params name="Screen" version="1.19">
 
 	<section name="Validated Screen Properties">
 		<attnum name="window width" val="1024"/>

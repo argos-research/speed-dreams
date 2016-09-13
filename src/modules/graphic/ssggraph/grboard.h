@@ -4,7 +4,7 @@
     created              : Thu Aug 17 23:55:47 CEST 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: grboard.h 5320 2013-03-15 00:24:04Z kmetykog $
+    version              : $Id: grboard.h 6071 2015-08-14 16:27:16Z kakukri $
 
  ***************************************************************************/
 
@@ -41,6 +41,7 @@ class cGrBoard
     int leaderNb;
     int counterFlag;
     int GFlag;
+    int dashboardFlag;
     int arcadeFlag;
     int boardWidth;
     int leftAnchor;
@@ -71,6 +72,8 @@ class cGrBoard
     void grDispCounterBoard2();
     void grDispLeaderBoardScroll(const tSituation *s);
     void grDispLeaderBoardScrollLine(const tSituation *s);
+    
+    void grDispDashboard();
 
     void grDispArcade(const tSituation *s);
     std::string grGenerateLeaderBoardEntry(const tCarElt *car, const tSituation *s,

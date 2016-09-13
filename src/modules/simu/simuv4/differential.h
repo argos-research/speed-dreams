@@ -37,6 +37,8 @@ typedef struct
 #define DIFF_FREE		2
 #define DIFF_LIMITED_SLIP	3
 #define DIFF_VISCOUS_COUPLER	4
+#define DIFF_15WAY_LSD  5
+#define DIFF_ELECTRONIC_LSD 6
     tdble	ratio;
     tdble	I;
     tdble	efficiency;
@@ -44,6 +46,7 @@ typedef struct
     tdble	dTqMin;
     tdble	dTqMax;
     tdble	dSlipMax;
+    tdble   dCoastSlipMax;
     tdble	lockInputTq;
     tdble	viscosity;
     tdble	viscomax;

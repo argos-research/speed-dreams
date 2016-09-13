@@ -27,6 +27,9 @@
 const tdble aMax = 1.0f; /*  */
 static const char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 
+// The "Simu" logger instance
+GfLogger* PLogSimu = 0;
+
 void
 SimCarConfig(tCar *car)
 {
@@ -39,6 +42,10 @@ SimCarConfig(tCar *car)
 	int		i;
 	tCarElt	*carElt = car->carElt;
 	const char *enabling;
+	tCarSetupItem *setupGcfr = &(car->carElt->setup.FRWeightRep);
+	tCarSetupItem *setupGcfrl = &(car->carElt->setup.FRLWeightRep);
+	tCarSetupItem *setupGcrrl = &(car->carElt->setup.RRLWeightRep);
+	tCarSetupItem *setupFuel = &(car->carElt->setup.fuel);
 	
 	/* get features first */
 	car->features = 0;
@@ -66,22 +73,60 @@ SimCarConfig(tCar *car)
 	if (strcmp(enabling, VAL_YES) == 0) {
 		car->features = car->features | FEAT_FIXEDWHEELFORCE;
 	}
+	enabling = GfParmGetStr(hdle, SECT_FEATURES, PRM_TCLINSIMU, VAL_NO);
+	if (strcmp(enabling, VAL_YES) == 0) {
+		car->features = car->features | FEAT_TCLINSIMU;
+	}
+	enabling = GfParmGetStr(hdle, SECT_FEATURES, PRM_ABSINSIMU, VAL_NO);
+	if (strcmp(enabling, VAL_YES) == 0) {
+		car->features = car->features | FEAT_ABSINSIMU;
+	}
+	enabling = GfParmGetStr(hdle, SECT_FEATURES, PRM_ESPINSIMU, VAL_NO);
+	if (strcmp(enabling, VAL_YES) == 0) {
+		car->features = car->features | FEAT_ESPINSIMU;
+	}
+	enabling = GfParmGetStr(hdle, SECT_FEATURES, PRM_LIMITEDGROUNDEFFECT, VAL_NO);
+	if (strcmp(enabling, VAL_YES) == 0) {
+		car->features = car->features | FEAT_LIMITEDGROUNDEFFECT;
+	}
+
 	
 	/* continue with car parameters */
+	setupGcfr->desired_value = setupGcfr->min = setupGcfr->max = 0.5;
+	GfParmGetNumWithLimits(hdle, SECT_CAR, PRM_FRWEIGHTREP, (char*)NULL, &(setupGcfr->desired_value), &(setupGcfr->min), &(setupGcfr->max));
+	setupGcfr->changed = TRUE;
+	setupGcfr->stepsize = 0.005f;
+	gcfr = setupGcfr->desired_value;
+	
+	setupGcfrl->desired_value = setupGcfrl->min = setupGcfrl->max = 0.5;
+	GfParmGetNumWithLimits(hdle, SECT_CAR, PRM_FRLWEIGHTREP, (char*)NULL, &(setupGcfrl->desired_value), &(setupGcfrl->min), &(setupGcfrl->max));
+	setupGcfrl->changed = TRUE;
+	setupGcfrl->stepsize = 0.005f;
+	gcfrl = setupGcfrl->desired_value;
+	
+	setupGcrrl->desired_value = setupGcrrl->min = setupGcrrl->max = 0.5;
+	GfParmGetNumWithLimits(hdle, SECT_CAR, PRM_RRLWEIGHTREP, (char*)NULL, &(setupGcrrl->desired_value), &(setupGcrrl->min), &(setupGcrrl->max));
+	setupGcrrl->changed = TRUE;
+	setupGcrrl->stepsize = 0.005f;
+	gcrrl = setupGcrrl->desired_value;
+
+	car->tank        = GfParmGetNum(hdle, SECT_CAR, PRM_TANK, (char*)NULL, 80);
+	
+	setupFuel->desired_value = setupFuel->min = setupFuel->max = 80.0;
+	GfParmGetNumWithLimits(hdle, SECT_CAR, PRM_FUEL, (char*)NULL, &(setupFuel->desired_value), &(setupFuel->min), &(setupFuel->max));
+	setupFuel->min = 0.0;
+	setupFuel->max = car->tank;
+	setupFuel->changed = TRUE;
+	setupFuel->stepsize = 1.0;
+	
 	car->dimension.x = GfParmGetNum(hdle, SECT_CAR, PRM_LEN, (char*)NULL, 4.7f);
 	car->dimension.y = GfParmGetNum(hdle, SECT_CAR, PRM_WIDTH, (char*)NULL, 1.9f);
 	overallwidth     = GfParmGetNum(hdle, SECT_CAR, PRM_OVERALLWIDTH, (char*)NULL, car->dimension.y);
 	car->dimension.z = GfParmGetNum(hdle, SECT_CAR, PRM_HEIGHT, (char*)NULL, 1.2f);
 	car->mass        = GfParmGetNum(hdle, SECT_CAR, PRM_MASS, (char*)NULL, 1500);
 	car->Minv        = (tdble) (1.0 / car->mass);
-	gcfr             = GfParmGetNum(hdle, SECT_CAR, PRM_FRWEIGHTREP, (char*)NULL, .5);
-	gcfrl            = GfParmGetNum(hdle, SECT_CAR, PRM_FRLWEIGHTREP, (char*)NULL, .5);
-	gcrrl            = GfParmGetNum(hdle, SECT_CAR, PRM_RRLWEIGHTREP, (char*)NULL, .5);
 	car->statGC.y    = (tdble) (- (gcfr * gcfrl + (1 - gcfr) * gcrrl) * car->dimension.y + car->dimension.y / 2.0);
 	car->statGC.z    = GfParmGetNum(hdle, SECT_CAR, PRM_GCHEIGHT, (char*)NULL, .5);
-	
-	car->tank        = GfParmGetNum(hdle, SECT_CAR, PRM_TANK, (char*)NULL, 80);
-	car->fuel        = GfParmGetNum(hdle, SECT_CAR, PRM_FUEL, (char*)NULL, 80);
 	k                = GfParmGetNum(hdle, SECT_CAR, PRM_CENTR, (char*)NULL, 1.0);
 	carElt->_drvPos_x = GfParmGetNum(hdle, SECT_DRIVER, PRM_XPOS, (char*)NULL, 0.0);
 	carElt->_drvPos_y = GfParmGetNum(hdle, SECT_DRIVER, PRM_YPOS, (char*)NULL, 0.0);
@@ -90,21 +135,35 @@ SimCarConfig(tCar *car)
 	carElt->_bonnetPos_y = GfParmGetNum(hdle, SECT_BONNET, PRM_YPOS, (char*)NULL, carElt->_drvPos_y);
 	carElt->_bonnetPos_z = GfParmGetNum(hdle, SECT_BONNET, PRM_ZPOS, (char*)NULL, carElt->_drvPos_z);
 	
-	if (car->fuel > car->tank) {
-		car->fuel = car->tank;
-	}
 	k = k * k;
 	car->Iinv.x = (tdble) (12.0 / (car->mass * k * (car->dimension.y * car->dimension.y + car->dimension.z * car->dimension.z)));
 	car->Iinv.y = (tdble) (12.0 / (car->mass * k * (car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z)));
 	car->Iinv.z = (tdble) (12.0 / (car->mass * k * (car->dimension.y * car->dimension.y + car->dimension.x * car->dimension.x)));
 	
 	/* configure components */
+	tCarSetupItem *setupSpring;
 	tdble K[4], Kfheave, Krheave;
 	for (i = 0; i < 4; i++) {
-		K[i] = GfParmGetNum(hdle, SuspSect[i], PRM_SPR, (char*)NULL, 175000.0f);
+		setupSpring = &(car->carElt->setup.suspSpring[i]);
+		setupSpring->desired_value = setupSpring->min = setupSpring-> max = 175000.0f;
+		GfParmGetNumWithLimits(hdle, SuspSect[i], PRM_SPR, (char*)NULL, &(setupSpring->desired_value), &(setupSpring->min), &(setupSpring->max));
+		setupSpring->changed = TRUE;
+		setupSpring->stepsize = 1000;
+		K[i] = setupSpring->desired_value;
 	}
-	Kfheave = GfParmGetNum(hdle, SECT_FRNTHEAVE, PRM_SPR, (char*)NULL, 0.0f);
-	Krheave = GfParmGetNum(hdle, SECT_REARHEAVE, PRM_SPR, (char*)NULL, 0.0f);
+	setupSpring = &(car->carElt->setup.heaveSpring[0]);
+	setupSpring->desired_value = setupSpring->min = setupSpring-> max = 0.0f;
+	GfParmGetNumWithLimits(hdle, SECT_FRNTHEAVE, PRM_SPR, (char*)NULL, &(setupSpring->desired_value), &(setupSpring->min), &(setupSpring->max));
+	setupSpring->changed = TRUE;
+	setupSpring->stepsize = 1000;
+	Kfheave = setupSpring->desired_value;
+	setupSpring = &(car->carElt->setup.heaveSpring[1]);
+	setupSpring->desired_value = setupSpring->min = setupSpring-> max = 0.0f;
+	GfParmGetNumWithLimits(hdle, SECT_REARHEAVE, PRM_SPR, (char*)NULL, &(setupSpring->desired_value), &(setupSpring->min), &(setupSpring->max));
+	setupSpring->changed = TRUE;
+	setupSpring->stepsize = 1000;
+	Krheave = setupSpring->desired_value;
+
 	/* wheel force bugfix is needed for heave springs */
 	if ( (Kfheave > 0.0f) || (Krheave > 0.0f) ) 
 		{car->features = car->features | FEAT_FIXEDWHEELFORCE;}
@@ -114,18 +173,14 @@ SimCarConfig(tCar *car)
 	wf0 = w * gcfr;
 	wr0 = w * (1 - gcfr);
 	
-	car->wheel[FRNT_RGT].weight0 = wf0 * gcfrl * K[FRNT_RGT] / (K[FRNT_RGT] + 0.5*Kfheave);
-	car->wheel[FRNT_LFT].weight0 = wf0 * (1 - gcfrl) * K[FRNT_LFT] / (K[FRNT_LFT] + 0.5*Kfheave);
-	car->wheel[REAR_RGT].weight0 = wr0 * gcrrl * K[REAR_RGT] / (K[REAR_RGT] + 0.5*Krheave);
-	car->wheel[REAR_LFT].weight0 = wr0 * (1 - gcrrl) * K[REAR_LFT] / (K[REAR_LFT] + 0.5*Krheave);
+	car->wheel[FRNT_RGT].weight0 = wf0 * gcfrl * K[FRNT_RGT] / (K[FRNT_RGT] + 0.5f*Kfheave);
+	car->wheel[FRNT_LFT].weight0 = wf0 * (1 - gcfrl) * K[FRNT_LFT] / (K[FRNT_LFT] + 0.5f*Kfheave);
+	car->wheel[REAR_RGT].weight0 = wr0 * gcrrl * K[REAR_RGT] / (K[REAR_RGT] + 0.5f*Krheave);
+	car->wheel[REAR_LFT].weight0 = wr0 * (1 - gcrrl) * K[REAR_LFT] / (K[REAR_LFT] + 0.5f*Krheave);
 	
-	/*for (i = 0; i < 2; i++) {
-		SimAxleConfig(car, i, 0.0);
-	}*/
-	wf0 = (wf0 - car->wheel[FRNT_RGT].weight0 - car->wheel[FRNT_LFT].weight0);
-	wr0 = (wr0 - car->wheel[REAR_RGT].weight0 - car->wheel[REAR_LFT].weight0);
-	SimAxleConfig(car, FRNT, wf0);
-	SimAxleConfig(car, REAR, wr0);
+	for (i = 0; i < 2; i++) {
+		SimAxleConfig(car, i);
+	}
 	
 	for (i = 0; i < 4; i++) {
 		SimWheelConfig(car, i); 
@@ -142,7 +197,10 @@ SimCarConfig(tCar *car)
 	
 	/* Set the origin to GC */
 	car->wheelbase = car->wheeltrack = 0;
-	car->statGC.x = car->wheel[FRNT_RGT].staticPos.x * gcfr + car->wheel[REAR_RGT].staticPos.x * (1 - gcfr);
+	// Old code is misleading, because at this time staticPos.x still is relPos.x 
+	// car->statGC.x = car->wheel[FRNT_RGT].staticPos.x * gcfr + car->wheel[REAR_RGT].staticPos.x * (1 - gcfr);
+	// Use the correct variable name instead
+	car->statGC.x = car->wheel[FRNT_RGT].relPos.x * gcfr + car->wheel[REAR_RGT].relPos.x * (1 - gcfr);
 	
 	carElt->_dimension = car->dimension;
 	carElt->_statGC = car->statGC;
@@ -186,7 +244,251 @@ SimCarConfig(tCar *car)
 		for (i = 0; i < 2; i++) {
 			car->wing[i].staticPos.x -= car->statGC.x;
 			car->wing[i].staticPos.y -= car->statGC.y;
+			car->wing[i].staticPos.z -= car->statGC.z;
 		}
+	}
+	
+	SimCarReConfig(car);
+	
+	/* initialize dashboardInstant */
+	tPrivCar *priv = &(car->carElt->priv);
+	tCarSetup *setup = &(car->carElt->setup);
+	
+	for (i = 0; i < NR_DI_INSTANT; i++) {
+		priv->dashboardInstant[i].type = DI_NONE;
+		priv->dashboardInstant[i].setup = NULL;
+	}
+	i = 0;
+	if (setup->brakeRepartition.min != setup->brakeRepartition.max) {
+		priv->dashboardInstant[i].type = DI_BRAKE_REPARTITION;
+		priv->dashboardInstant[i].setup = &(setup->brakeRepartition);
+		i++;
+	}
+	if (setup->arbSpring[0].min != setup->arbSpring[0].max) {
+		priv->dashboardInstant[i].type = DI_FRONT_ANTIROLLBAR;
+		priv->dashboardInstant[i].setup = &(setup->arbSpring[0]);
+		i++;
+	}
+	if (setup->arbSpring[1].min != setup->arbSpring[1].max) {
+		priv->dashboardInstant[i].type = DI_REAR_ANTIROLLBAR;
+		priv->dashboardInstant[i].setup = &(setup->arbSpring[1]);
+		i++;
+	}
+	if (setup->differentialType[0] == DIFF_ELECTRONIC_LSD) {
+		if (setup->differentialMaxSlipBias[0].min != setup->differentialMaxSlipBias[0].max) {
+			priv->dashboardInstant[i].type = DI_FRONT_DIFF_MAX_SLIP_BIAS;
+			priv->dashboardInstant[i].setup = &(setup->differentialMaxSlipBias[0]);
+			i++;
+		}
+		if (setup->differentialCoastMaxSlipBias[0].min != setup->differentialCoastMaxSlipBias[0].max) {
+			priv->dashboardInstant[i].type = DI_FRONT_DIFF_COAST_MAX_SLIP_BIAS;
+			priv->dashboardInstant[i].setup = &(setup->differentialCoastMaxSlipBias[0]);
+			i++;
+		}
+	}
+	if (setup->differentialType[1] == DIFF_ELECTRONIC_LSD) {
+		if (setup->differentialMaxSlipBias[1].min != setup->differentialMaxSlipBias[1].max) {
+			priv->dashboardInstant[i].type = DI_REAR_DIFF_MAX_SLIP_BIAS;
+			priv->dashboardInstant[i].setup = &(setup->differentialMaxSlipBias[1]);
+			i++;
+		}
+		if (setup->differentialCoastMaxSlipBias[1].min != setup->differentialCoastMaxSlipBias[1].max) {
+			priv->dashboardInstant[i].type = DI_REAR_DIFF_COAST_MAX_SLIP_BIAS;
+			priv->dashboardInstant[i].setup = &(setup->differentialCoastMaxSlipBias[1]);
+			i++;
+		}
+	}
+	if (setup->differentialType[2] == DIFF_ELECTRONIC_LSD) {
+		if (setup->differentialMaxSlipBias[2].min != setup->differentialMaxSlipBias[2].max) {
+			priv->dashboardInstant[i].type = DI_CENTRAL_DIFF_MAX_SLIP_BIAS;
+			priv->dashboardInstant[i].setup = &(setup->differentialMaxSlipBias[2]);
+			i++;
+		}
+		if (setup->differentialCoastMaxSlipBias[2].min != setup->differentialCoastMaxSlipBias[2].max) {
+			priv->dashboardInstant[i].type = DI_CENTRAL_DIFF_COAST_MAX_SLIP_BIAS;
+			priv->dashboardInstant[i].setup = &(setup->differentialCoastMaxSlipBias[2]);
+			i++;
+		}
+	}
+	priv->dashboardInstantNb = i;
+	
+	/* initialize dashboardRequest */
+	setup->reqRepair.min = setup->reqRepair.value = setup->reqRepair.max = 0.0;
+	setup->reqRepair.desired_value = 0.0;
+	setup->reqRepair.stepsize = 500;
+	setup->reqRepair.changed = FALSE;
+	
+	setup->reqTireset.min = 0.0;
+	setup->reqTireset.max = 1.0;
+	setup->reqTireset.value = 1.0;
+	setup->reqTireset.desired_value = 1.0; //1.0 means change tires, 0.0 keep old tires
+	setup->reqTireset.stepsize = 1.0;
+	setup->reqTireset.changed = FALSE;
+	
+	setup->reqPenalty.min = 0.0;
+	setup->reqPenalty.max = 1.0;
+	setup->reqPenalty.value = 0.0;
+	setup->reqPenalty.desired_value = 0.0; //0.0 means refuel/repair next, 1.0 means serve penalty next
+	setup->reqPenalty.stepsize = 1.0;
+	setup->reqPenalty.changed = FALSE;
+	
+	priv->dashboardRequest[0].type = DI_FUEL;
+	priv->dashboardRequest[0].setup = &(setup->fuel);
+	priv->dashboardRequest[1].type = DI_REPAIR;
+	priv->dashboardRequest[1].setup = &(setup->reqRepair);
+	for (i = 2; i < NR_DI_REQUEST; i++) {
+		priv->dashboardRequest[i].type = DI_NONE;
+		priv->dashboardRequest[i].setup = NULL;
+	}
+	i=2;
+	if (car->features & FEAT_TIRETEMPDEG) {
+		priv->dashboardRequest[2].type = DI_TYRE_SET;
+		priv->dashboardRequest[2].setup = &(setup->reqTireset);
+		i = 3;
+	}
+	if ( (car->wing[0].WingType != -1) && (setup->wingAngle[0].min != setup->wingAngle[0].max) ) {
+		priv->dashboardRequest[i].type = DI_FRONT_WING_ANGLE;
+		priv->dashboardRequest[i].setup = &(setup->wingAngle[0]);
+		i++;
+	}
+	if ( (car->wing[1].WingType != -1) && (setup->wingAngle[1].min != setup->wingAngle[1].max) ) {
+		priv->dashboardRequest[i].type = DI_REAR_WING_ANGLE;
+		priv->dashboardRequest[i].setup = &(setup->wingAngle[1]);
+		i++;
+	}
+	priv->dashboardRequest[i].type = DI_PENALTY;
+	priv->dashboardRequest[i].setup = &(setup->reqPenalty);
+	i++;
+	priv->dashboardRequestNb = i;
+	priv->dashboardActiveItem = 0;
+
+/*
+for(i=0;i<4;i++) {
+	printf("Wheel%d: opl=%g toe=%g° cam=%g°\n",i,car->wheel[i].opLoad,RAD2DEG(car->wheel[i].staticPos.az),RAD2DEG(car->wheel[i].staticPos.ax));
+}
+for(i=0;i<4;i++) {
+	printf("WS%d K=%g bc=%g ine=%g\n",i,car->wheel[i].susp.spring.K,car->wheel[i].susp.spring.bellcrank,car->wheel[i].susp.inertance);
+	printf("    c=%g p=%g x0=%g F0=%g\n",car->wheel[i].susp.spring.xMax,car->wheel[i].susp.spring.packers,car->wheel[i].susp.spring.x0,car->wheel[i].susp.spring.F0);
+	printf("    SB=%g SR=%g FB=%g FR=%g BV=%g RV=%g\n",car->wheel[i].susp.damper.bump.C1,car->wheel[i].susp.damper.rebound.C1,car->wheel[i].susp.damper.bump.C2,car->wheel[i].susp.damper.rebound.C2,car->wheel[i].susp.damper.bump.v1,car->wheel[i].susp.damper.rebound.v1);
+}
+for(i=0;i<2;i++) {
+	printf("ARB%d K=%g\n",i,car->axle[i].arbSusp.spring.K);
+}
+for(i=0;i<2;i++) {
+	printf("H%d K=%g bc=%g ine=%g\n",i,car->axle[i].heaveSusp.spring.K,car->axle[i].heaveSusp.spring.bellcrank,car->axle[i].heaveSusp.inertance);
+	printf("    c=%g p=%g x0=%g F0=%g\n",car->axle[i].heaveSusp.spring.xMax,car->axle[i].heaveSusp.spring.packers,car->axle[i].heaveSusp.spring.x0,car->axle[i].heaveSusp.spring.F0);
+	printf("    SB=%g SR=%g FB=%g FR=%g BV=%g RV=%g\n",car->axle[i].heaveSusp.damper.bump.C1,car->axle[i].heaveSusp.damper.rebound.C1,car->axle[i].heaveSusp.damper.bump.C2,car->axle[i].heaveSusp.damper.rebound.C2,car->axle[i].heaveSusp.damper.bump.v1,car->axle[i].heaveSusp.damper.rebound.v1);
+}
+printf("BrakeBal=%g p=%g\n",car->brkSyst.rep,car->brkSyst.coeff);
+printf("FWing=%g° Rwing=%g°\n",RAD2DEG(car->wing[0].angle),RAD2DEG(car->wing[1].angle));
+for(i=0;i<3;i++) {
+	printf("DIFF%d typ=%d r=%g\n",i,car->transmission.differential[i].type,car->transmission.differential[i].ratio);
+	printf("    Tmin=%g Tmax=%g Visc=%g\n",car->transmission.differential[i].dTqMin,car->transmission.differential[i].dTqMax,car->transmission.differential[i].viscosity);
+	printf("    LockT=%g MaxS=%g CMaxS=%g\n",car->transmission.differential[i].lockInputTq,car->transmission.differential[i].dSlipMax,car->transmission.differential[i].dCoastSlipMax);
+}
+printf("STEER lock=%g\n",RAD2DEG(car->steer.steerLock));
+printf("GEARS: ");
+for(i=0; i<MAX_GEARS;i++){printf("%g ",car->transmission.overallRatio[i]);}
+printf("\n");
+printf("Dashboard Instant Nr = %d\n    ",priv->dashboardInstantNb);
+for (i = 0; i < NR_DI_INSTANT; i++) {
+	if (priv->dashboardInstant[i].type!=DI_NONE)
+	printf("    %d  %g\n",priv->dashboardInstant[i].type,priv->dashboardInstant[i].setup->value);
+	else printf("    %d\n",priv->dashboardInstant[i].type);
+}
+printf("Dashboard Request Nr = %d\n    ",priv->dashboardRequestNb);
+for (i = 0; i < NR_DI_REQUEST; i++) {
+	if (priv->dashboardRequest[i].type!=DI_NONE)
+	printf("    %d  %g\n",priv->dashboardRequest[i].type,priv->dashboardRequest[i].setup->value);
+	else printf("    %d\n",priv->dashboardRequest[i].type);
+}
+*/
+}
+
+
+void
+SimCarReConfig(tCar *car)
+{
+	int i;
+	tdble	w;
+	tdble	gcfrl, gcrrl, gcfr;
+	tdble	wf0, wr0;
+	tdble K[4], Kfheave, Krheave;
+	tCarSetupItem *setupSpring;
+	tCarSetupItem *setupGcfr = &(car->carElt->setup.FRWeightRep);
+	tCarSetupItem *setupGcfrl = &(car->carElt->setup.FRLWeightRep);
+	tCarSetupItem *setupGcrrl = &(car->carElt->setup.RRLWeightRep);
+	tCarSetupItem *setupFuel = &(car->carElt->setup.fuel);
+	
+	if (setupFuel->changed) {
+		car->fuel = MIN(setupFuel->max, MAX(setupFuel->min, setupFuel->desired_value));
+		if (car->fuel > car->tank) {car->fuel = car->tank;}
+		setupFuel->value = car->fuel;
+		setupFuel->changed = FALSE;
+	}
+	
+	if (setupGcfr->changed) {
+		gcfr = MIN(setupGcfr->max, MAX(setupGcfr->min, setupGcfr->desired_value));
+		setupGcfr->value = gcfr;
+		setupGcfr->changed = FALSE;
+	} else {
+		gcfr = setupGcfr->value;
+	}
+	
+	if (setupGcfrl->changed) {
+		gcfrl = MIN(setupGcfrl->max, MAX(setupGcfrl->min, setupGcfrl->desired_value));
+		setupGcfrl->value = gcfrl;
+		setupGcfrl->changed = FALSE;
+	} else {
+		gcfrl = setupGcfrl->value;
+	}
+	
+	if (setupGcrrl->changed) {
+		gcrrl = MIN(setupGcrrl->max, MAX(setupGcrrl->min, setupGcrrl->desired_value));
+		setupGcrrl->value = gcrrl;
+		setupGcrrl->changed = FALSE;
+	} else {
+		gcrrl = setupGcrrl->value;
+	}
+	
+	for (i = 0; i < 4; i++) {
+		setupSpring = &(car->carElt->setup.suspSpring[i]);
+		K[i] = MIN(setupSpring->max, MAX(setupSpring->min, setupSpring->desired_value));
+	}
+	setupSpring = &(car->carElt->setup.heaveSpring[0]);
+	Kfheave = MIN(setupSpring->max, MAX(setupSpring->min, setupSpring->desired_value));
+	setupSpring = &(car->carElt->setup.heaveSpring[1]);
+	Krheave = MIN(setupSpring->max, MAX(setupSpring->min, setupSpring->desired_value));
+	
+	/* calculate wheel loads */
+	w = car->mass * G;
+	wf0 = w * gcfr;
+	wr0 = w * (1 - gcfr);
+	
+	car->wheel[FRNT_RGT].weight0 = wf0 * gcfrl * K[FRNT_RGT] / (K[FRNT_RGT] + 0.5f*Kfheave);
+	car->wheel[FRNT_LFT].weight0 = wf0 * (1 - gcfrl) * K[FRNT_LFT] / (K[FRNT_LFT] + 0.5f*Kfheave);
+	car->wheel[REAR_RGT].weight0 = wr0 * gcrrl * K[REAR_RGT] / (K[REAR_RGT] + 0.5f*Krheave);
+	car->wheel[REAR_LFT].weight0 = wr0 * (1 - gcrrl) * K[REAR_LFT] / (K[REAR_LFT] + 0.5f*Krheave);
+	
+	/* reconfigure components */
+	if (Kfheave > 0.0f) {
+		wf0 = (wf0 - car->wheel[FRNT_RGT].weight0 - car->wheel[FRNT_LFT].weight0);
+		SimAxleReConfig(car, FRNT, wf0);
+	} else { SimAxleReConfig(car, FRNT, 0.0f); }
+	if (Krheave > 0.0f) {
+		wr0 = (wr0 - car->wheel[REAR_RGT].weight0 - car->wheel[REAR_LFT].weight0);
+		SimAxleReConfig(car, REAR, wr0);
+	} else { SimAxleReConfig(car, REAR, 0.0f); }
+	
+	for (i = 0; i < 4; i++) {
+		SimWheelReConfig(car, i); 
+	}
+	SimEngineReConfig(car);
+	SimTransmissionReConfig(car);
+	SimSteerReConfig(car);
+	SimBrakeSystemReConfig(car);
+	for (i = 0; i < 2; i++) {
+		SimWingReConfig(car, i);
 	}
 }
 
@@ -239,7 +541,7 @@ SimCarUpdateForces(tCar *car)
 			car->wheel[i].forces.y * car->wheel[i].staticPos.x;
 		F.M.z += car->wheel[i].torques.z;
 	}
-	
+
 	/* Aero Drag */
 	F.F.x += car->aero.drag;
 	
@@ -308,7 +610,7 @@ SimCarUpdateForces(tCar *car)
 			else {F.F.x -= w;}
 		}
 	}
-	
+
 	/* compute accelerations */
 	car->DynGC.acc.x = F.F.x * minv;
 	car->DynGC.acc.y = F.F.y * minv;
@@ -625,6 +927,15 @@ SimCarUpdate(tCar *car, tSituation * /* s */)
 	CHECK(car);
 	SimCarCollideXYScene(car);
 	CHECK(car);
+	
+	/* update car->carElt->setup.reqRepair with damage */
+	tCarSetupItem *repair = &(car->carElt->setup.reqRepair);
+	if ((repair->desired_value > 0.0) && (repair->max == repair->desired_value)) {
+		repair->max = repair->desired_value = (tdble) car->dammage;
+	} else {
+		repair->max = (tdble) car->dammage;
+	}
+		
 }
 
 void

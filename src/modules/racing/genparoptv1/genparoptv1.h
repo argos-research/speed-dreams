@@ -3,7 +3,7 @@
     file        : genparoptv1.h
     copyright   : (C) 2012 by Wolf-Dieter Beelitz
     email       : pouillot@users.sourceforge.net
-    version     : $Id: genparoptv1.h 5189 2013-02-23 18:40:36Z pouillot $
+    version     : $Id: genparoptv1.h 6084 2015-08-21 00:07:15Z beaglejoe $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 /** @file    
   		A race engine module designed for optimising car and AI driver setups
 		(parameters) through a genetic algorithm
-    @version    $Id: genparoptv1.h 5189 2013-02-23 18:40:36Z pouillot $
+    @version    $Id: genparoptv1.h 6084 2015-08-21 00:07:15Z beaglejoe $
 */
 
 #ifndef _GENPAROPTV1_H_
@@ -29,7 +29,9 @@
 #include <iraceengine.h>
 #include <itrackloader.h>
 
+
 #include <tgf.hpp>
+#include <tgfclient.h>
 
 // DLL exported symbols declarator for Windows.
 #ifdef WIN32
@@ -87,6 +89,9 @@ public:
 #ifdef SD_DEBUG
 	virtual void step(double dt);
 #endif
+
+	virtual void stopPreracePause(){};
+	virtual void stopCooldown(){};
 
 	virtual GfRace* race();
 	virtual const GfRace* race() const;
@@ -168,6 +173,5 @@ inline extern ITrackLoader& ReTrackLoader()
 // The "Optim" logger instance.
 extern GfLogger* RePLogOptim;
 #define ReLogOptim (*RePLogOptim)
-
 
 #endif /* _GENPAROPTV1_H_ */ 

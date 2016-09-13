@@ -4,7 +4,7 @@
     created     : Sun Aug 17 22:09:03 CEST 2003
     copyright   : (C) 2003 by Eric Espié                         
     email       : Eric.Espie@torcs.org   
-    version     : $Id: car.xml 5740 2013-11-16 01:14:47Z kakukri $                                  
+    version     : $Id: car.xml 5824 2014-11-08 11:06:36Z wdbee $                                  
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -18,7 +18,7 @@
 
 <!-- Enabling new simuv4 features -->
 	<section name="Features">
-	    	<!-- Correctly shifts wing coordinates to the CoG system inside the game,-->
+	  <!-- Correctly shifts wing coordinates to the CoG system inside the game,-->
 		<!-- setting this feature here can cause a change in the aero balance for certain cars. -->
 		<!-- Cars set up for this feature enable it in their xml files. -->
 		<!--attstr name="shifting aero coordinates" in="yes,no" val="no"/-->
@@ -40,7 +40,20 @@
 		
 		<!-- Experimental code, use only for development or testing -->
 		<attstr name="fixed wheel force" in="yes,no" val="no"/>
-	</section>
+
+    <!-- Experimental code, use only for development or testing -->
+    <!-- Cars set up for this feature enable it in their xml files. -->
+    <!--attstr name="enable tcl" in="yes,no" val="yes"/-->
+
+    <!-- Experimental code, use only for development or testing -->
+    <!-- Cars set up for this feature enable it in their xml files. -->
+    <!--attstr name="enable abs" in="yes,no" val="yes"/-->
+
+    <!-- Experimental code, use only for development or testing -->
+    <!-- Cars set up for this feature enable it in their xml files. -->
+    <!--attstr name="enable esp" in="yes,no" val="yes"/-->
+
+  </section>
 
 </params>
 

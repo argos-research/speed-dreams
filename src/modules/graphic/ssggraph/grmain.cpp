@@ -4,7 +4,7 @@
     created              : Thu Aug 17 23:23:49 CEST 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: grmain.cpp 5295 2013-03-10 16:33:42Z wdbee $
+    version              : $Id: grmain.cpp 6071 2015-08-14 16:27:16Z kakukri $
 
  ***************************************************************************/
 
@@ -542,6 +542,7 @@ initView(int x, int y, int width, int height, int /* flag */, void *screen)
     GfuiAddKey(screen, GFUIK_F10,      "Helicopter Views",  (void*)8, grSelectCamera, NULL);
     GfuiAddKey(screen, GFUIK_F11,      "TV Director View",  (void*)9, grSelectCamera, NULL);
 
+    GfuiAddKey(screen, '6',            "Dashboard",         (void*)6, grSelectBoard, NULL);
     GfuiAddKey(screen, '5',            "Debug Info",        (void*)3, grSelectBoard, NULL);
     GfuiAddKey(screen, '4',            "G/Cmd Graph",       (void*)4, grSelectBoard, NULL);
     GfuiAddKey(screen, '3',            "Leaders Board",     (void*)2, grSelectBoard, NULL);

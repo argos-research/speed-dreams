@@ -4,7 +4,7 @@
     created              : Sun Feb 17 15:11:55 CET 2013
     copyright            : (C) 2013 Jean-Philippe Meuret
     web                  : www.speed-dreams.org
-    version              : $Id: logging.xml 5742 2013-11-20 03:40:56Z mungewell $
+    version              : $Id: logging.xml 5962 2015-04-11 12:08:25Z torcs-ng $
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../src/libs/tgf/params.dtd">
 
-<params name="logging" type="param" mode="mw" version="1.6">
+<params name="logging" type="param" mode="mw" version="1.7">
 	<section name="Loggers">
 		<!-- One section for each logger, name = logger id / name (case sensitive) -->
 		<!-- Each logger can have 3 string attributes (all are insensitive to the case) :
@@ -54,6 +54,12 @@
 			<!-- <attstr name="header columns" val="none"/> -->
 		</section>
 		<section name="USR">
+			<attstr name="output stream" val="stderr"/>
+			<attstr name="level threshold" val="info"/>
+			<attstr name="header columns" val="time:level:logger"/>
+			<!-- <attstr name="header columns" val="none"/> -->
+		</section>
+		<section name="SHADOW">
 			<attstr name="output stream" val="stderr"/>
 			<attstr name="level threshold" val="info"/>
 			<attstr name="header columns" val="time:level:logger"/>

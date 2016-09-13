@@ -4,7 +4,7 @@
     created              : Sun Mar 19 00:07:19 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: transmission.cpp 4985 2012-10-07 16:15:40Z pouillot $
+    version              : $Id: transmission.cpp 6198 2015-11-04 15:18:41Z wdbee $
 
 ***************************************************************************/
 
@@ -40,6 +40,7 @@ SimTransmissionConfig(tCar *car)
     transType		= GfParmGetStr(hdle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
     clutch->releaseTime	= GfParmGetNum(hdle, SECT_GEARBOX, PRM_SHIFTTIME, (char*)NULL, 0.2f);
 
+	gRatio = 0;
     fRatio = 0;
     gEff   = 0;
 

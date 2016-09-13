@@ -4,7 +4,7 @@
     created     : Sat Nov 16 12:14:57 CET 2002
     copyright   : (C) 2002 by Eric Espié                        
     email       : eric.espie@torcs.org   
-    version     : $Id: racemain.h 5154 2013-02-17 10:08:28Z wdbee $                                  
+    version     : $Id: racemain.h 5856 2014-11-25 17:05:47Z wdbee $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file    
     		
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: racemain.h 5154 2013-02-17 10:08:28Z wdbee $
+    @version	$Id: racemain.h 5856 2014-11-25 17:05:47Z wdbee $
 */
 
 #ifndef _RACEMAIN_H_
@@ -44,6 +44,9 @@ extern void ReInitialiseGeneticOptimisation();
 extern void ReImportGeneticParameters();
 extern int  ReEvolution();
 extern bool ReCleanupGeneticOptimisation();
+extern bool ReDisplayResults();
+extern int ReWaitForKeyPress();
+extern bool ReCleanupReInfo();
 
 extern void ReRaceAbandon();
 extern void ReRaceAbort();

@@ -3,7 +3,7 @@
     file        : racesimusimu.cpp
     copyright   : (C) 2007 by Mart Kelder                 
     web         : http://speed-dreams.sourceforge.net   
-    version     : $Id: racesimusimu.cpp 4307 2011-12-27 14:50:37Z pouillot $
+    version     : $Id: racesimusimu.cpp 5803 2014-07-30 03:19:34Z mungewell $
 
  ***************************************************************************/
 
@@ -124,6 +124,7 @@ static void ReSStCarInit( tCarElt *car )
 	car->_curTime = 0.3f * car->_pos;
 	car->_bestLapTime = 0.0f;
 	car->_laps = 0;
+	car->_bestLap = 0;
 }
 
 static tSimuSimuData* ReSSInit()
@@ -196,8 +197,10 @@ static void ReSSStep( SimuSimuData *data )
 
 	//Change structure
 	car->_curTime += laptime;
-	if( car->_bestLapTime > laptime || car->_bestLapTime == 0.0f )
+	if( car->_bestLapTime > laptime || car->_bestLapTime == 0.0f ) {
 		car->_bestLapTime = laptime;
+		car->_bestLap = car->_laps;
+	}
 	++car->_laps;
 }
 

@@ -4,7 +4,7 @@
     created              : Mon Mar 7 19:32:14 CEST 2011
     copyright            : (C) 2011 by Jean-Philippe Meuret                         
     web                  : http://www.speed-dreams.org
-    version              : $Id: iraceengine.h 5158 2013-02-17 17:06:28Z wdbee $
+    version              : $Id: iraceengine.h 6084 2015-08-21 00:07:15Z beaglejoe $
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,7 +18,7 @@
 
 /** @file   
     	Interface for any race engine
-    @version	$Id: iraceengine.h 5158 2013-02-17 17:06:28Z wdbee $
+    @version	$Id: iraceengine.h 6084 2015-08-21 00:07:15Z beaglejoe $
 */
 
 #ifndef __IRACEENGINE__H__
@@ -66,6 +66,9 @@ public:
 #ifdef SD_DEBUG
 	virtual void step(double dt) = 0;
 #endif
+
+	virtual void stopPreracePause() = 0;
+	virtual void stopCooldown() = 0;
 
 	virtual GfRace* race() = 0;
 	virtual const GfRace* race() const = 0;
