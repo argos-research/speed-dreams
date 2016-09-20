@@ -35,9 +35,15 @@
 #include <arpa/inet.h>
 
 #include <humandriver.h>
-#include "json.hpp"
+#include "ssd2.pb.h"
 
-using json = nlohmann::json;
+#include <google/protobuf/message.h>
+#include <google/protobuf/descriptor.h>
+#include <google/protobuf/io/zero_copy_stream_impl.h>
+#include <google/protobuf/io/coded_stream.h>
+#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+
+using namespace google::protobuf::io;
 
 GfLogger* PLogSUMO = 0;
 
@@ -111,7 +117,6 @@ static void newrace(int index, tCarElt* car, tSituation *s) {
   memset(&server_addr, 0, sizeof(struct sockaddr_in));
 
   server_addr.sin_family = AF_INET;
-  //server_addr.sin_addr.s_addr = inet_addr("131.159.208.114");
   server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
   server_addr.sin_port = htons(2000);
 
@@ -121,40 +126,38 @@ static void newrace(int index, tCarElt* car, tSituation *s) {
 }
 
 static void dataexchange(int index, tCarElt* car, tSituation *s) {
-  //memset(&car->ctrl, 0, sizeof(tCarCtrl));
-
-  /* calculate yaw in degrees
+  /* calculate vehicle yaw in degrees
    * http://answers.ros.org/question/141366/convert-the-yaw-euler-angle-into-into-the-range-0-360/
    */
-  double yaw = car->_yaw * 180.0 / M_PI;
+  float yaw = car->_yaw * 180.0 / M_PI;
   if(yaw < 0) yaw += 360.0;
 
-  // json j;
-  // j["veh0"] = {
-  //   {"rpm", car->priv.enginerpm},
-  //   {"speed", car->_speed_x},
-  //   {"gear", car->priv.gear},
-  //   {"pos", car->race.distRaced},
-  //   {"trackLength", curTrack->length},
-  //   {"angle", yaw},
-  // };
+  /* construct message vehicle */
+  vehicle veh;
+  veh.set_name("veh0");
 
-  json j;
-  j["veh0"] = {
-    {"pos", car->race.distRaced},
-    {"x", car->_pos_X},
-    {"y", car->_pos_Y},
-    {"z", car->_pos_Z},
-    {"speed", car->_speed_x},
-    {"gear", car->_gear},
-    {"angle", yaw},
-    {"trackLength", curTrack->length},
-    {"rpm", car->priv.enginerpm},
-    {"fsX", curTrack->seg[0].vertex[2].x},
-    {"fsY", curTrack->seg[0].vertex[2].y}
-  };
+  veh.set_dist(car->race.distRaced);
+  veh.set_angle(yaw);
+  veh.set_length(curTrack->length);
 
-  write(sockfd, j.dump().c_str(), strlen(j.dump().c_str()) + 1);
+  position *pos = veh.mutable_pos();
+  pos->set_x(car->_pos_X);
+  pos->set_y(car->_pos_Y);
+  pos->set_z(car->_pos_Z);
+
+  firstSegment *fs = veh.mutable_fs();
+  fs->set_lx(curTrack->seg[0].vertex[0].x);
+  fs->set_ly(curTrack->seg[0].vertex[0].y);
+  fs->set_rx(curTrack->seg[0].vertex[1].x);
+  fs->set_ry(curTrack->seg[0].vertex[1].y);
+
+  int size = veh.ByteSize();
+  void *data = malloc(size);
+  veh.SerializeToArray(data, size);
+
+  /* send length of packet and packet */
+  send(sockfd, &size, sizeof(int), 0);
+  send(sockfd, data, size, 0);
 }
 
 static void drive_mt(int index, tCarElt* car, tSituation *s) {
