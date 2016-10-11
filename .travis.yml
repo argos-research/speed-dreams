@@ -7,4 +7,5 @@ before_install:
 - sudo apt-get -qq -y install cmake libogg-dev libvorbis-dev libexpat-dev libjpeg-dev libplib-dev libopenal-dev libenet-dev libogg0 libvorbis0a
 script:
 - cmake .
+- cd build
 - make -j
