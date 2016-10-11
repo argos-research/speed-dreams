@@ -4,7 +4,7 @@ os: linux
 dist: trusty
 before_install:
 - sudo apt-get -qq update
-- sudo apt-get -qq -y install cmake libsdl2-dev libogg-dev libvorbis-dev libexpat-dev libjpeg-dev libplib-dev libopenal-dev libenet-dev libogg0 libvorbis0a
+- sudo apt-get -qq -y install cmake libsdl1.2-dev libogg-dev libvorbis-dev libexpat-dev libjpeg-dev libplib-dev libopenal-dev libenet-dev libogg0 libvorbis0a
 script:
 - mkdir build
 - cd build
