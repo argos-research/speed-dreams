@@ -29,6 +29,10 @@
 #define logmsg empty_log
 #endif
 
+#ifndef isnan
+using std::isnan;
+#endif
+
 void empty_log(const char* s, ...)
 {
 }

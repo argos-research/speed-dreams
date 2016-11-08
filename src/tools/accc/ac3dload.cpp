@@ -35,6 +35,10 @@
 #include "portability.h"
 #include "accc.h"
 
+#ifndef isnan
+using std::isnan;
+#endif
+
 #define AC3D     "AC3Db"
 #define MATERIAL "MATERIAL"
 #define OBJECT   "OBJECT"

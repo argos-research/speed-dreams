@@ -45,6 +45,14 @@ static int SimNbCars = 0;
 #define MEANNB 0
 #define MEANW  1
 
+#ifndef isnan
+using std::isnan;
+#endif
+
+#ifndef isinf
+using std::isinf;
+#endif
+
 
 /*
  * Check the input control from robots

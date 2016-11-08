@@ -61,6 +61,10 @@
 
 #include "humandriver.h"
 
+#ifndef isnan
+using std::isnan;
+#endif
+
 typedef enum { eTransAuto, eTransSeq, eTransGrid, eTransHbox } eTransmission;
 
 typedef enum { eRWD, eFWD, e4WD } eDriveTrain;
