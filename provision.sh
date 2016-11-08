@@ -8,3 +8,6 @@
 #
 # Contributor: Bernhard Blieninger
 ######################
+
+sudo apt-get update -q=2
+sudo apt-get install -q=2 make cmake g++ libogg-dev libvorbis-dev libsdl1.2-dev libexpat1-dev libjpeg9-dev libplib-dev libopenal-dev libenet-dev

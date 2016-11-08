@@ -10,4 +10,8 @@
 # Contributor: Bernhard Blieninger
 ##############################
 
-
+rm -rf /vagrant/build
+mkdir -p /vagrant/build
+cd /vagrant/build
+cmake ../
+make -j
