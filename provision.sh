@@ -10,7 +10,7 @@
 ######################
 
 sudo apt-get update -q=2
-sudo apt-get install -q=2 make cmake g++
+sudo apt-get install -q=2 make cmake g++ alsa-base alsa-utils pulseaudio pulseaudio-utils
 # SD2 v2.2
 sudo apt-get install -q=2 libopenscenegraph-dev libsdl2-dev libexpat1-dev libjpeg9-dev libplib-dev libopenal-dev libvorbis-dev libpng12-dev libenet-dev
 # SD2 v2.1
