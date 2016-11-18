@@ -2,7 +2,7 @@ node {
    stage('Preparation') { // for display purposes
       // Get some code from a GitHub repository
       // Could possibly be obsolete, will further investigate when isnan/inf bug is fixed
-      git 'https://github.com/702nADOS/speed-dreams.git'   
+      git branch: 'KIA4SM', url: 'https://github.com/702nADOS/speed-dreams.git'  
       //Preparing build
       sh "mkdir -p build"
       dir('./build') {
