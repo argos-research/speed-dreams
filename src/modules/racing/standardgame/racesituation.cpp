@@ -326,6 +326,8 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 	GfSchedBeginEvent("raceupdate", "robots");
 	if ((s->currentTime - pCurrReInfo->_reLastRobTime) >= RCM_MAX_DT_ROBOTS) {
 		s->deltaTime = s->currentTime - pCurrReInfo->_reLastRobTime;
+		// start memdump of robots
+		// end memdump
 		tRobotItf *robot;
 		for (int i = 0; i < s->_ncars; i++) {
 			if ((s->cars[i]->_state & RM_CAR_STATE_NO_SIMU) == 0) {
