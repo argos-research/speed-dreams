@@ -29,6 +29,7 @@
 
 #include "raceinit.h" // ReInfo.
 
+#include <boost/asio.hpp>
 
 // The race situation class ==========================================================
 class ReSituation
@@ -175,6 +176,9 @@ private:
 	//! Time of the last output when using the "stable but slowed-down frame rate" mode.
 	double _fLastOutputTime;
 
+	// Boost stuff
+	boost::asio::io_service io_service;
+	boost::asio::ip::tcp::socket s;
 };
 
 #endif /* _RACESITUATION_H_ */ 

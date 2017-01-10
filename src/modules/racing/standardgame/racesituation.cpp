@@ -51,6 +51,7 @@
 #include "racemessage.h"
 #include "racenetwork.h"
 
+#include <boost/asio.hpp>
 
 
 // The singleton.
@@ -327,6 +328,13 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 	if ((s->currentTime - pCurrReInfo->_reLastRobTime) >= RCM_MAX_DT_ROBOTS) {
 		s->deltaTime = s->currentTime - pCurrReInfo->_reLastRobTime;
 		// start memdump of robots
+		/* number of cars */
+		GfLogInfo("Number of cars: %d\n", s->_ncars);
+		for (int i = 0; i < s->_ncars; i++) {
+		  boost::asio::write(ReSituationUpdater::s, boost::asio::buffer("*poke*\n", 7));
+		  /* transmit information of vehicle n */
+		}
+		/* end transmission */
 		// end memdump
 		tRobotItf *robot;
 		for (int i = 0; i < s->_ncars; i++) {
@@ -520,7 +528,7 @@ int ReSituationUpdater::threadLoop()
 }
 
 ReSituationUpdater::ReSituationUpdater()
-: _fSimuTick(RCM_MAX_DT_SIMU), _fOutputTick(0), _fLastOutputTime(0)
+: _fSimuTick(RCM_MAX_DT_SIMU), _fOutputTick(0), _fLastOutputTime(0), s(io_service)
 
 {
 	// Save the race engine info (state + situation) pointer for the current step.
@@ -590,6 +598,14 @@ ReSituationUpdater::ReSituationUpdater()
 
 	GfLogInfo("SituationUpdater initialized (%sseparate thread, CPU affinity %s).\n",
 	      (_bThreaded ? "" : "no "), (_bThreadAffinity ? "On" : "Off"));
+
+	// Initialize socket connection
+	boost::asio::ip::tcp::resolver resolver(io_service);
+	boost::asio::ip::tcp::resolver::query query(boost::asio::ip::tcp::v4(), "127.0.0.1", "9000");
+	boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
+
+	boost::asio::connect(s, iterator);
+	boost::asio::write(s, boost::asio::buffer("Hello World!\n", 14));
 }
 
 ReSituationUpdater::~ReSituationUpdater()
