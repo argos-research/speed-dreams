@@ -347,5 +347,14 @@ MACRO(CHECK_LIBRARIES)
 
 	ENDIF(OPTION_3RDPARTY_SQLITE3)
 
+	# Boost
+	Find_Package(Boost REQUIRED system)
+	IF(Boost_FOUND)
+		SET(HAVE_BOOST 1)
+		MESSAGE(STATUS "Looking for library Boost - found")
+	ELSE(Boost_FOUND)
+		MESSAGE(STATUS "Looking for library Boost - NOT found")
+	ENDIF(Boost_FOUND)
+
 ENDMACRO(CHECK_LIBRARIES)
 
