@@ -52,11 +52,14 @@ Vagrant.configure("2") do |config|
     #
     #   # Customize the amount of memory on the VM:
     vb.name = "SpeedDreams2"
-    vb.memory = "2048"
+    vb.memory = "4096"
     vb.customize ["modifyvm", :id,
                   "--vram", "20",
                   "--audio", "pulse",
                   "--audiocontroller", "hda"
+                 ]
+    vb.customize ["guestproperty", "set", :id,
+                  "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10
                  ]
   end
   #
