@@ -356,5 +356,14 @@ MACRO(CHECK_LIBRARIES)
 		MESSAGE(STATUS "Looking for library Boost - NOT found")
 	ENDIF(Boost_FOUND)
 
+	# Protobuf
+	Find_Package(Protobuf REQUIRED)
+	IF(PROTOBUF_FOUND)
+		SET(HAVE_PROTOBUF 1)
+		MESSAGE(STATUS "Looking for library Protobuf - found")
+	ELSE(PROTOBUF_FOUND)
+		MESSAGE(STATUS "Looking for library Protobuf - NOT found")
+	ENDIF(PROTOBUF_FOUND)
+
 ENDMACRO(CHECK_LIBRARIES)
 
