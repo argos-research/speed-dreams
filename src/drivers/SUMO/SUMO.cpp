@@ -35,7 +35,7 @@
 #include <arpa/inet.h>
 
 #include <humandriver.h>
-#include "ssd2.pb.h"
+#include <ssd2.pb.h>
 
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
