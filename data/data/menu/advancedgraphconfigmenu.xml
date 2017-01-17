@@ -62,7 +62,7 @@
 		<attstr name="font" val="medium"/>
 	</section>
 	
-	<section name="forestleftarrow">
+	<section name="shadowleftarrow">
 		<attstr name="type" val="image button"/>
 		<attnum name="width" val="24"/>
 		<attnum name="height" val="24"/>	  	  	  	  
@@ -75,12 +75,12 @@
 		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
 	</section>
 
-	<section name="forestrightarrow">
+	<section name="shadowrightarrow">
 		<attstr name="type" val="image button"/>
 		<attnum name="width" val="24"/>
 		<attnum name="height" val="24"/>	  
 		<attstr name="tip" val=""/>
-		<attnum name="x" val="465"/>
+		<attnum name="x" val="505"/>
 		<attnum name="y" val="316"/>
 		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
 		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
@@ -88,19 +88,19 @@
 		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
 	</section>
 
-	<section name="forestlabel">
+	<section name="shadowlabel">
 		<attstr name="type" val="label"/>
-		<attnum name="max len" val="10"/>
-		<attstr name="tip" val="Activate / desactivate background landscape with sky dome"/>
-  		<attnum name="x" val="295"/>
+		<attnum name="max len" val="24"/>
+		<attstr name="tip" val="Activate / deactivate and shadowmap's type"/>
+  		<attnum name="x" val="325"/>
 		<attnum name="y" val="320"/>
-		<attnum name="width" val="160"/>
+		<attnum name="width" val="140"/>
 		<attstr name="h align" val="center"/>
 		<attstr name="color" val="0xFFFFFF"/>
 		<attstr name="font" val="medium"/>
 	</section>
 	
-	<section name="treeleftarrow">
+	<section name="texsizeleftarrow">
 		<attstr name="type" val="image button"/>
 		<attnum name="width" val="24"/>
 		<attnum name="height" val="24"/>	  	  	  	  
@@ -113,7 +113,7 @@
 		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
 	</section>
 
-	<section name="treerightarrow">
+	<section name="texsizerightarrow">
 		<attstr name="type" val="image button"/>
 		<attnum name="width" val="24"/>
 		<attnum name="height" val="24"/>	  
@@ -126,10 +126,10 @@
 		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
 	</section>
 
-	<section name="treelabel">
+	<section name="texsizelabel">
 		<attstr name="type" val="label"/>
 		<attnum name="max len" val="10"/>
-		<attstr name="tip" val="Activate / desactivate background landscape with sky dome"/>
+		<attstr name="tip" val="texture size for shadowmapping"/>
   		<attnum name="x" val="295"/>
 		<attnum name="y" val="290"/>
 		<attnum name="width" val="160"/>
@@ -138,7 +138,7 @@
 		<attstr name="font" val="medium"/>
 	</section>
 	
-	<section name="parkingleftarrow">
+	<section name="qualityleftarrow">
 		<attstr name="type" val="image button"/>
 		<attnum name="width" val="24"/>
 		<attnum name="height" val="24"/>	  	  	  	  
@@ -151,7 +151,7 @@
 		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
 	</section>
 
-	<section name="parkingrightarrow">
+	<section name="qualityrightarrow">
 		<attstr name="type" val="image button"/>
 		<attnum name="width" val="24"/>
 		<attnum name="height" val="24"/>	  
@@ -164,12 +164,50 @@
 		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
 	</section>
 
-	<section name="parkinglabel">
+	<section name="qualitylabel">
 		<attstr name="type" val="label"/>
 		<attnum name="max len" val="10"/>
-		<attstr name="tip" val="Activate / desactivate background landscape with sky dome"/>
+		<attstr name="tip" val="shadow on litlle/medium/full objects scene"/>
   		<attnum name="x" val="295"/>
 		<attnum name="y" val="260"/>
+		<attnum name="width" val="160"/>
+		<attstr name="h align" val="center"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="font" val="medium"/>
+	</section>
+	
+	<section name="carleftarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  	  	  	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="265"/>
+		<attnum name="y" val="226"/>
+		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-left-top-pushed.png"/>
+	</section>
+
+	<section name="carrightarrow">
+		<attstr name="type" val="image button"/>
+		<attnum name="width" val="24"/>
+		<attnum name="height" val="24"/>	  
+		<attstr name="tip" val=""/>
+		<attnum name="x" val="465"/>
+		<attnum name="y" val="226"/>
+		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
+		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
+		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
+		<attstr name="pushed image" val="data/img/arrow-right-top-pushed.png"/>
+	</section>
+
+	<section name="carlabel">
+		<attstr name="type" val="label"/>
+		<attnum name="max len" val="10"/>
+		<attstr name="tip" val="cars shaders activate/desactivate"/>
+  		<attnum name="x" val="295"/>
+		<attnum name="y" val="230"/>
 		<attnum name="width" val="160"/>
 		<attstr name="h align" val="center"/>
 		<attstr name="color" val="0xFFFFFF"/>
@@ -182,7 +220,7 @@
 		<attnum name="height" val="24"/>	  	  	  	  
 		<attstr name="tip" val=""/>
 		<attnum name="x" val="265"/>
-		<attnum name="y" val="226"/>
+		<attnum name="y" val="196"/>
 		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
 		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
 		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
@@ -195,7 +233,7 @@
 		<attnum name="height" val="24"/>	  
 		<attstr name="tip" val=""/>
 		<attnum name="x" val="465"/>
-		<attnum name="y" val="226"/>
+		<attnum name="y" val="196"/>
 		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
 		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
 		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
@@ -207,7 +245,7 @@
 		<attnum name="max len" val="10"/>
 		<attstr name="tip" val="Span display over split screens (for multi-monitor setups)"/>
   		<attnum name="x" val="295"/>
-		<attnum name="y" val="230"/>
+		<attnum name="y" val="200"/>
 		<attnum name="width" val="160"/>
 		<attstr name="h align" val="center"/>
 		<attstr name="color" val="0xFFFFFF"/>
@@ -219,7 +257,7 @@
 		<attnum name="max len" val="16"/>
 		<attstr name="tip" val="Set relative width of bezel (%)"/>
 		<attnum name="x" val="295"/>
-		<attnum name="y" val="194"/>
+		<attnum name="y" val="164"/>
 		<attnum name="width" val="165"/>
 		<attstr name="h align" val="center"/>
 		<attstr name="font" val="medium"/>
@@ -230,7 +268,7 @@
 		<attnum name="max len" val="16"/>
 		<attstr name="tip" val="Set relative width of bezel (%)"/>
 		<attnum name="x" val="295"/>
-		<attnum name="y" val="164"/>
+		<attnum name="y" val="134"/>
 		<attnum name="width" val="165"/>
 		<attstr name="h align" val="center"/>
 		<attstr name="font" val="medium"/>
@@ -241,7 +279,7 @@
 		<attnum name="max len" val="16"/>
 		<attstr name="tip" val="Set the ratio between driver postion and monitor arc"/>
 		<attnum name="x" val="295"/>
-		<attnum name="y" val="134"/>
+		<attnum name="y" val="104"/>
 		<attnum name="width" val="165"/>
 		<attstr name="h align" val="center"/>
 		<attstr name="font" val="medium"/>
@@ -253,7 +291,7 @@
 		<attnum name="height" val="24"/>	  	  	  	  
 		<attstr name="tip" val=""/>
 		<attnum name="x" val="265"/>
-		<attnum name="y" val="106"/>
+		<attnum name="y" val="76"/>
 		<attstr name="disabled image" val="data/img/arrow-left-top-disabled.png"/>
 		<attstr name="enabled image" val="data/img/arrow-left-top.png"/>
 		<attstr name="focused image" val="data/img/arrow-left-top-focused.png"/>
@@ -266,7 +304,7 @@
 		<attnum name="height" val="24"/>	  
 		<attstr name="tip" val=""/>
 		<attnum name="x" val="465"/>
-		<attnum name="y" val="106"/>
+		<attnum name="y" val="76"/>
 		<attstr name="disabled image" val="data/img/arrow-right-top-disabled.png"/>
 		<attstr name="enabled image" val="data/img/arrow-right-top.png"/>
 		<attstr name="focused image" val="data/img/arrow-right-top-focused.png"/>
@@ -278,7 +316,7 @@
 		<attnum name="max len" val="10"/>
 		<attstr name="tip" val="Activate / desactivate background landscape with sky dome"/>
   		<attnum name="x" val="295"/>
-		<attnum name="y" val="110"/>
+		<attnum name="y" val="80"/>
 		<attnum name="width" val="160"/>
 		<attstr name="h align" val="center"/>
 		<attstr name="color" val="0xFFFFFF"/>
@@ -292,7 +330,7 @@
 		<attstr name="tip" val="Cancel changes"/>
 		<attstr name="h align" val="left"/>
 		<attnum name="x" val="278"/>
-		<attnum name="y" val="82"/>
+		<attnum name="y" val="52"/>
 		<attnum name="width" val="120"/>
 		<attstr name="font" val="medium"/>
 		<attstr name="color" val="0xFFFFFF"/>
@@ -314,7 +352,7 @@
 		<attstr name="tip" val="Accept and save changes"/>
 		<attstr name="h align" val="left"/>
 		<attnum name="x" val="435"/>
-		<attnum name="y" val="82"/>
+		<attnum name="y" val="52"/>
 		<attnum name="width" val="120"/>
 		<attstr name="font" val="medium"/>
 		<attstr name="color" val="0xFFFFFF"/>
@@ -369,8 +407,8 @@
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="20"/>
 		<attnum name="y" val="320"/>
-		<attstr name="text" val="Forest LOD:"/>
-		<attstr name="tip" val="Detailled Forest LOD"/>
+		<attstr name="text" val="Shadow Type:"/>
+		<attstr name="tip" val="Shadow mapping type"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="220"/>
 		<attstr name="font" val="small_t"/>
@@ -380,8 +418,8 @@
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="20"/>
 		<attnum name="y" val="290"/>
-		<attstr name="text" val="Trees LOD:"/>
-		<attstr name="tip" val="Detailled Trees LOD"/>
+		<attstr name="text" val="Texture size:"/>
+		<attstr name="tip" val="shadow's texture size"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="220"/>
 		<attstr name="font" val="small_t"/>
@@ -391,17 +429,28 @@
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="20"/>
 		<attnum name="y" val="260"/>
-		<attstr name="text" val="Parking LOD:"/>
-		<attstr name="tip" val="Detailled Parking LOD"/>
+		<attstr name="text" val="Shadow Quality:"/>
+		<attstr name="tip" val="Detailled shadow quality"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="220"/>
 		<attstr name="font" val="small_t"/>
 	</section>	
-
+	
 	<section name="8">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="20"/>
 		<attnum name="y" val="230"/>
+		<attstr name="text" val="Shaders:"/>
+		<attstr name="tip" val="Shaders activate/desactivate"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="9">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="200"/>
 		<attstr name="text" val="Span Split Screens:"/>
 		<attstr name="tip" val="Spans a single view across multiple splits"/>
 		<attstr name="h align" val="right"/>
@@ -409,23 +458,12 @@
 		<attstr name="font" val="small_t"/>
 	</section>	
 
-	<section name="9">
-		<attstr name="type" val="label"/>
-		<attnum name="x" val="20"/>
-		<attnum name="y" val="200"/>
-		<attstr name="text" val="Bezel Compensation:"/>
-		<attstr name="tip" val="Set amount of bezel compensation (%)"/>
-		<attstr name="h align" val="right"/>
-		<attnum name="width" val="220"/>
-		<attstr name="font" val="small_t"/>
-	</section>
-
 	<section name="10">
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="20"/>
 		<attnum name="y" val="170"/>
-		<attstr name="text" val="Screen Distance:"/>
-		<attstr name="tip" val="Distance between user and primary screen"/>
+		<attstr name="text" val="Bezel Compensation:"/>
+		<attstr name="tip" val="Set amount of bezel compensation (%)"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="220"/>
 		<attstr name="font" val="small_t"/>
@@ -435,8 +473,8 @@
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="20"/>
 		<attnum name="y" val="140"/>
-		<attstr name="text" val="Arc Ratio:"/>
-		<attstr name="tip" val="Set the ratio between driver postion and monitor arc"/>
+		<attstr name="text" val="Screen Distance:"/>
+		<attstr name="tip" val="Distance between user and primary screen"/>
 		<attstr name="h align" val="right"/>
 		<attnum name="width" val="220"/>
 		<attstr name="font" val="small_t"/>
@@ -446,6 +484,17 @@
 		<attstr name="type" val="label"/>
 		<attnum name="x" val="20"/>
 		<attnum name="y" val="110"/>
+		<attstr name="text" val="Arc Ratio:"/>
+		<attstr name="tip" val="Set the ratio between driver postion and monitor arc"/>
+		<attstr name="h align" val="right"/>
+		<attnum name="width" val="220"/>
+		<attstr name="font" val="small_t"/>
+	</section>
+
+	<section name="13">
+		<attstr name="type" val="label"/>
+		<attnum name="x" val="20"/>
+		<attnum name="y" val="80"/>
 		<attstr name="text" val="Monitor Type"/>
 		<attstr name="tip" val="Correct the aspect ratio of the screen"/>
 		<attstr name="h align" val="right"/>

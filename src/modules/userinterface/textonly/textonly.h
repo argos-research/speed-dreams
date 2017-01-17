@@ -76,9 +76,18 @@ public:
 	virtual bool onRaceFinished(bool bEndOfSession);
 	virtual void onRaceEventFinishing();
 	virtual bool onRaceEventFinished(bool bMultiEvent, bool careerNonHumanGroupo);
+	virtual void onOptimizationInitializing();
 	
+	virtual bool onRaceStartingPaused();
+	virtual bool onRaceCooldownStarting();
+
 	// Loading messages management.
 	virtual void addLoadingMessage(const char* pszText);
+
+	// Optimization messages management.
+	virtual void addOptimizationMessage(const char* pszText);
+    virtual void addOptimizationParameterMessage(int n, char** Labels, char** Values, char** Ranges);
+    virtual void addOptimizationStatusMessage(int LoopsDone, int LoopsRemaining, double VariationScale, double InitialLapTime,  double TotalLapTime,  double BestLapTime);
 
 	// Blind-race results table management.
 	virtual void setResultsTableTitles(const char* pszTitle, const char* pszSubTitle);

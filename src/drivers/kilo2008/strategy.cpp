@@ -19,7 +19,7 @@
  *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  *      MA 02110-1301, USA.
  * 
- *      $Id: strategy.cpp 3772 2011-07-31 23:39:41Z kmetykog $
+ *      $Id: strategy.cpp 5880 2014-12-01 16:22:22Z wdbee $
  * 
  */
 
@@ -70,7 +70,7 @@ void KStrategy::SetFuelAtRaceStart(const tTrack * const t,
     GfParmGetNum(*carParmHandle, SECT_ENGINE, PRM_FUELCONS, NULL, 1.0f);
   const double fuel =
     GfParmGetNum(*carParmHandle, KILO_SECT_PRIV, KILO_ATT_FUELPERLAP,
-         NULL, t->length * MAX_FUEL_PER_METER * fuel_cons_factor);
+         NULL, (tdble) (t->length * MAX_FUEL_PER_METER * fuel_cons_factor));
   expected_fuel_per_lap_ = fuel;
   // Pittime is pittime without refuel.
   pittime_ = GfParmGetNum(*carParmHandle, KILO_SECT_PRIV,
@@ -98,15 +98,15 @@ void KStrategy::SetFuelAtRaceStart(const tTrack * const t,
                                             PRM_FUEL, NULL, 0.0);
   if (s->_raceType == RM_TYPE_RACE) {
     if (initial_fuel) {
-      GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, NULL, initial_fuel);
+      GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, NULL, (tdble) initial_fuel);
     } else {
       // Add fuel dependent on index to avoid fuel stop in the same lap.
       GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, NULL,
-                    last_fuel_ + index * expected_fuel_per_lap_);
+                    (tdble) (last_fuel_ + index * expected_fuel_per_lap_));
     }
   } else {
     // Use fuel for whole 'race', ie qualy or practice N laps.
-      GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, NULL, fuelForRace);
+      GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, NULL, (tdble) fuelForRace);
   }
 }   // SetFuelAtRaceStart
 

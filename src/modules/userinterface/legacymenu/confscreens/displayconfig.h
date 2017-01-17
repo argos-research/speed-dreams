@@ -4,7 +4,7 @@
     created              : October 2010
     copyright            : (C) 2010 Jean-Philippe Meuret
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: displayconfig.h 4902 2012-08-27 10:04:20Z kmetykog $
+    version              : $Id: displayconfig.h 5930 2015-03-26 00:38:14Z torcs-ng $
 
  ***************************************************************************/
 
@@ -33,6 +33,8 @@ class DisplayMenu : public GfuiMenuScreen
 public:
 
 	DisplayMenu();
+	~DisplayMenu();
+	
 	bool initialize(void* pPreviousMenu);
 	
 	enum EDisplayMode { eFullScreen = 0, eWindowed = 1, nDisplayModes };
@@ -105,5 +107,6 @@ private:
 };
 
 extern void* DisplayMenuInit(void* pPreviousMenu);
+extern void DisplayMenuRelease(void);
 
 #endif //_DISPLAYCONFIG_H_

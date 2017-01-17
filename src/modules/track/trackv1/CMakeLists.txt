@@ -1,6 +1,6 @@
 INCLUDE(../../../../cmake/macros.cmake)
 
-SET(TRACK_SOURCES track.cpp track3.cpp track4.cpp trackitf.cpp trackutil.cpp)
+SET(TRACK_SOURCES track.cpp track3.cpp track4.cpp track5.cpp trackitf.cpp trackutil.cpp)
 SET(TRACK_HEADERS trackitf.h trackinc.h)
 
 ADD_INTERFACE_INCLUDEDIR()

@@ -4,7 +4,7 @@
     created              : Mod Mar 14 20:32:14 CEST 2011
     copyright            : (C) 2011 by Jean-Philippe Meuret
     web                  : http://www.speed-dreams.org
-    version              : $Id: tgf.hpp 5366 2013-03-26 19:39:49Z pouillot $
+    version              : $Id: tgf.hpp 5839 2014-11-15 15:05:25Z wdbee $
 ***************************************************************************/
 
 /***************************************************************************
@@ -18,7 +18,7 @@
 
 /** @file   
     	The Gaming Framework API, with C++-specific extensions.
-    @version	$Id: tgf.hpp 5366 2013-03-26 19:39:49Z pouillot $
+    @version	$Id: tgf.hpp 5839 2014-11-15 15:05:25Z wdbee $
 */
 
 #ifndef __TGF__HPP__
@@ -237,6 +237,9 @@ class TGF_API GfApplication
 
 	//! Restart the app.
 	virtual void restart();
+
+	// Allow clean restart
+	void (*ReleaseData)();
 
  protected:
 

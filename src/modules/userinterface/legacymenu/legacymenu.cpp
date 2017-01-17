@@ -3,7 +3,7 @@
     file                 : legacymenu.cpp
     copyright            : (C) 2011 by Jean-Philippe Meuret                        
     email                : pouillot@users.sourceforge.net   
-    version              : $Id: legacymenu.cpp 5366 2013-03-26 19:39:49Z pouillot $
+    version              : $Id: legacymenu.cpp 6097 2015-08-30 23:12:09Z beaglejoe $
 
  ***************************************************************************/
 
@@ -38,6 +38,7 @@
 #include "racescreens.h"
 
 #include "legacymenu.h"
+#include "displayconfig.h"
 
 
 // The LegacyMenu singleton.
@@ -60,7 +61,9 @@ int closeGfModule()
 {
     // Unregister it from the GfModule module manager.
     if (LegacyMenu::_pSelf)
-        GfModule::unregister(LegacyMenu::_pSelf);
+        LegacyMenu::unregister(LegacyMenu::_pSelf);
+
+	DisplayMenuRelease();
 
     // Delete the (only) module instance.
     delete LegacyMenu::_pSelf;
@@ -188,7 +191,7 @@ void LegacyMenu::quit()
 
 void LegacyMenu::shutdown()
 {
-    // Shutdown graphics in case relevant and not already done.
+	// Shutdown graphics in case relevant and not already done.
     if (_piRaceEngine->inData()->_displayMode == RM_DISP_MODE_NORMAL)
 	{
         shutdownSound();
@@ -217,7 +220,7 @@ void LegacyMenu::activateLoadingScreen()
 	else
         snprintf(pszTitle, sizeof (pszTitle), "%s", pReInfo->_reName);
 
-    ::RmLoadingScreenStart(pszTitle, "data/img/splash-raceload.jpg");
+	::RmLoadingScreenStart(pszTitle, "data/img/splash-raceload.jpg");
 }
 
 void LegacyMenu::addLoadingMessage(const char* pszText)
@@ -230,8 +233,35 @@ void LegacyMenu::shutdownLoadingScreen()
     ::RmLoadingScreenShutdown();
 }
 
+void LegacyMenu::activateOptimizationScreen()
+{
+	::RmOptimizationScreenStart("Optimization", "data/img/splash-optimization.jpg");
+}
+
+void LegacyMenu::addOptimizationMessage(const char* pszText)
+{
+    ::RmOptimizationScreenSetText(pszText);
+}
+
+void LegacyMenu::addOptimizationParameterMessage(int n, char** Labels, char** Values, char** Ranges)
+{
+    ::RmOptimizationScreenSetParameterText(n,Labels,Values,Ranges);
+}
+
+void LegacyMenu::addOptimizationStatusMessage(
+	int LoopsDone, int LoopsRemaining, double VariationScale, double InitialLapTime, double TotalLapTime, double BestLapTime)
+{
+    ::RmOptimizationScreenSetStatusText(LoopsDone, LoopsRemaining, VariationScale, InitialLapTime, TotalLapTime, BestLapTime);
+}
+
+void LegacyMenu::shutdownOptimizationScreen()
+{
+    ::RmOptimizationScreenShutdown();
+}
+
 void LegacyMenu::onRaceConfiguring()
 {
+    ::RmOptimizationScreenShutdown();
     ::RmRacemanMenu();
 }
 
@@ -283,6 +313,12 @@ void LegacyMenu::onRaceInitializing()
     }
 }
 
+void LegacyMenu::onOptimizationInitializing()
+{
+    // Activate the screen at the start of sessions,
+    activateOptimizationScreen();
+}
+
 bool LegacyMenu::onRaceStarting()
 {
     // Switch to Start Race menu only if required (no loading screen in this case).
@@ -306,10 +342,10 @@ bool LegacyMenu::onRaceStarting()
 
 void LegacyMenu::onRaceLoadingDrivers()
 {
-    // Create the game screen according to the actual display mode.
-    if (_piRaceEngine->inData()->_displayMode == RM_DISP_MODE_NORMAL)
-        _hscrGame = ::RmScreenInit();
-    else
+		// Create the game screen according to the actual display mode.
+		if (_piRaceEngine->inData()->_displayMode == RM_DISP_MODE_NORMAL)
+			_hscrGame = ::RmScreenInit();
+		else
         _hscrGame = ::RmResScreenInit();
 
     // If first driver (of a practice or qualifying) or race session,
@@ -318,7 +354,7 @@ void LegacyMenu::onRaceLoadingDrivers()
             || _piRaceEngine->inData()->s->_raceType == RM_TYPE_PRACTICE)
             || (int) GfParmGetNum(_piRaceEngine->inData()->results, RE_SECT_CURRENT, RE_ATTR_CUR_DRIVER, NULL, 1) == 1)
 	{
-        activateLoadingScreen();
+		activateLoadingScreen();
     }
 }
 
@@ -360,13 +396,34 @@ void LegacyMenu::onRaceSimulationReady()
     }
 }
 
+bool LegacyMenu::onRaceStartingPaused(){
+   GfLogDebug("LegacyMenu::onRaceStartingPaused()\n");
+
+   bool preracePauseEnabled = false;
+   char buf[256];
+   snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), RACE_ENG_CFG);
+
+   void* hparmRaceEng = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+   // does the config allow Prerace pause?
+   const char* preracepause = GfParmGetStr(hparmRaceEng, RM_SECT_RACE_ENGINE, RM_ATTR_STARTPAUSED, RM_VAL_OFF);
+   preracePauseEnabled = strcmp(preracepause,RM_VAL_OFF) ? true : false;
+
+   if (preracePauseEnabled){
+      ::RmAddPreRacePauseItems();
+   }
+   
+   // Tell the race engine if Prerace Pause is enabled
+   return preracePauseEnabled;
+}
+
 void LegacyMenu::onRaceStarted()
 {
-    // Shutdown the loading screen if not already done.
-    shutdownLoadingScreen();
+	// Shutdown the loading screen if not already done.
+	shutdownLoadingScreen();
 
-    // Activate the game screen.
-    GfuiScreenActivate(_hscrGame);
+	// Activate the game screen.
+	GfuiScreenActivate(_hscrGame);
 }
 
 void LegacyMenu::onRaceResuming()
@@ -386,6 +443,26 @@ void LegacyMenu::onLapCompleted(int nLapIndex)
 
 void LegacyMenu::onRaceInterrupted() {
     ::RmStopRaceMenu();
+}
+
+bool LegacyMenu::onRaceCooldownStarting(){
+
+   bool cooldownEnabled = false;
+   char buf[256];
+   snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), RACE_ENG_CFG);
+
+   void* hparmRaceEng = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+   // Does the config allow cooldown driving?
+    const char* cooldown = GfParmGetStr(hparmRaceEng, RM_SECT_RACE_ENGINE, RM_ATTR_COOLDOWN, RM_VAL_OFF);
+    cooldownEnabled = strcmp(cooldown,RM_VAL_OFF) ? true : false;
+
+   if (cooldownEnabled){
+      ::RmAddCooldownItems();
+   }
+   
+   // Tell the race engine if Cooldown is enabled
+   return cooldownEnabled;
 }
 
 void LegacyMenu::onRaceFinishing()

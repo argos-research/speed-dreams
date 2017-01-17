@@ -59,6 +59,7 @@ typedef struct
 #define TRANS_FWD	1
 #define TRANS_4WD	2
     tdble	overallRatio[MAX_GEARS];	/* including final drive ratio */
+    tdble   gearI[MAX_GEARS];       /* raw gear inertia */
     tdble	driveI[MAX_GEARS];		/* Inertia (including engine) */
     tdble	freeI[MAX_GEARS];		/* Inertia when clutch is applied (wheels side) */
     tdble	gearEff[MAX_GEARS];		/* Gear Efficiency */

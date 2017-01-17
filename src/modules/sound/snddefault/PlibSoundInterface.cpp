@@ -4,7 +4,7 @@
     created              : Thu Apr 7 04:21 CEST 2005
     copyright            : (C) 2005 Christos Dimitrakakis
     email                : dimitrak@idiap.ch
-    version              : $Id: PlibSoundInterface.cpp 4965 2012-09-29 14:34:55Z pouillot $
+    version              : $Id: PlibSoundInterface.cpp 6096 2015-08-30 22:55:25Z beaglejoe $
 
 ***************************************************************************/
 
@@ -213,22 +213,6 @@ void PlibSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgVec
 
 	sched->update();
 }
-
-
-
-
-
-int sortSndPriority(const void* a, const void* b) 
-{
-	SoundPri* A = (SoundPri*) a;
-	SoundPri* B = (SoundPri*) b;
-	if (A->a > B->a) {
-		return -1;
-	} else {
-		return 1;
-	}
-}
-
 
 void PlibSoundInterface::setMaxSoundCar(CarSoundData** car_sound_data, QueueSoundMap* smap)
 {

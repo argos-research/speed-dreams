@@ -1,18 +1,17 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitfixcarparam.h
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
-// A robot for Speed Dreams-Version 1.4.0/2.X
+// A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Unchanged parameters of car
 // Unveränderliche Parameter des Fahrzeugs
 //
 // File         : unitfixcarparam.h
 // Created      : 2007.11.25
-// Last changed : 2011.06.04
-// Copyright    : © 2007-2011 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 3.01.001
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // Das Programm wurde unter Windows XP entwickelt und getestet.
 // Fehler sind nicht bekannt, dennoch gilt:
@@ -106,7 +105,8 @@ class TFixCarParam
 	double oBorderScale;                         // Scale var. Buffer to inner
 	double oCa;                                  // Aerodynamic downforce constant
 	double oCaFrontWing;                         // Aerod. d. const. front wing
-	double oCaGroundEffect;                      // Aerod. d. const. ground effect
+	double oCaFrontGroundEffect;                 // Aerod. d. const. ground effect front
+	double oCaRearGroundEffect;                  // Aerod. d. const. ground effect rear
 	double oCaRearWing;                          // Aerod. d. const. rear wing
 	double oCdBody;                              // Aerodynamic drag constant car body
 	double oCdWing;	                             // Aerod. drag const. wings

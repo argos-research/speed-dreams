@@ -4,7 +4,7 @@
     created              : Sun Jan 30 22:59:40 CET 2000, 2002
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: robot.h 5319 2013-03-15 00:22:00Z kmetykog $
+    version              : $Id: robot.h 6143 2015-09-24 16:49:32Z torcs-ng $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: robot.h 5319 2013-03-15 00:22:00Z kmetykog $
+    @version	$Id: robot.h 6143 2015-09-24 16:49:32Z torcs-ng $
     @ingroup	robotmodint
 */
 
@@ -82,37 +82,39 @@ typedef struct RobotItf {
 /*
  * Parameters definitions for driver
  */
-#define ROB_SECT_ROBOTS		"Robots"
+#define ROB_SECT_ROBOTS                 "Robots"
 
-#define ROB_LIST_INDEX		"index"
+#define ROB_LIST_INDEX                  "index"
 
-#define ROB_ATTR_NAME		"name"
-#define ROB_ATTR_SNAME		"short name"
-#define ROB_ATTR_CODE		"code name" //3-letter abbreviated name
-#define ROB_ATTR_TEAM		"team"
-#define ROB_ATTR_DESC		"desc"
-#define ROB_ATTR_AUTHOR		"author"
-#define ROB_ATTR_CAR		"car name"
-#define ROB_ATTR_CATEGORY	"category"
-#define ROB_ATTR_RACENUM	"race number"
-#define ROB_ATTR_RED		"red"
-#define ROB_ATTR_GREEN		"green"
-#define ROB_ATTR_BLUE		"blue"
+#define ROB_ATTR_NAME                   "name"
+#define ROB_ATTR_SNAME                  "short name"
+#define ROB_ATTR_CODE                   "code name" //3-letter abbreviated name
+#define ROB_ATTR_TEAM                   "team"
+#define ROB_ATTR_DESC                   "desc"
+#define ROB_ATTR_AUTHOR                 "author"
+#define ROB_ATTR_CAR                    "car name"
+#define ROB_ATTR_CATEGORY               "category"
+#define ROB_ATTR_RACENUM                "race number"
+#define ROB_ATTR_RED                    "red"
+#define ROB_ATTR_GREEN                  "green"
+#define ROB_ATTR_BLUE                   "blue"
 
-#define ROB_ATTR_TYPE		"type"
+#define ROB_ATTR_TYPE                   "type"
 
-#define ROB_VAL_HUMAN		"human"
-#define ROB_VAL_ROBOT		"robot"
-#define ROB_ATTR_LEVEL		"skill level"
-#define ROB_ATTR_FEATURES	"features"
+#define ROB_VAL_HUMAN                   "human"
+#define ROB_VAL_ROBOT                   "robot"
+#define ROB_ATTR_LEVEL                  "skill level"
+#define ROB_ATTR_FEATURES               "features"
 
-#define ROB_VAL_ROOKIE		"rookie"
-#define ROB_VAL_AMATEUR		"amateur"
-#define ROB_VAL_SEMI_PRO	"semi-pro"
-#define ROB_VAL_PRO		"pro"
-#define ROB_SECT_ARBITRARY	"Robots/arbitrary cars"
+#define ROB_VAL_ARCADE					"arcade"
+#define ROB_VAL_SEMI_ROOKIE				"semi-rookie"
+#define ROB_VAL_ROOKIE                  "rookie"
+#define ROB_VAL_AMATEUR                 "amateur"
+#define ROB_VAL_SEMI_PRO                "semi-pro"
+#define ROB_VAL_PRO                     "pro"
+#define ROB_SECT_ARBITRARY              "Robots/arbitrary cars"
 
-#define ROB_VAL_FEATURE_PENALTIES	"penalties"
+#define ROB_VAL_FEATURE_PENALTIES       "penalties"
 #define ROB_VAL_FEATURE_TIMEDSESSION	"timed session"
 #define ROB_VAL_FEATURE_WETTRACK		"wet track"
 

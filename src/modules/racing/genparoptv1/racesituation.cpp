@@ -3,7 +3,7 @@
     file        : racesituation.cpp
     copyright   : (C) 2010 by Jean-Philippe Meuret
     web         : www.speed-dreams.org 
-    version     : $Id: racesituation.cpp 5140 2013-02-15 14:54:26Z wdbee $
+    version     : $Id: racesituation.cpp 5940 2015-04-01 21:58:51Z beaglejoe $
 
  ***************************************************************************/
 
@@ -19,12 +19,14 @@
 /** @file   
     		The central raceman data structure (situation + other race infos)
     @author	    Jean-Philippe Meuret
-    @version	$Id: racesituation.cpp 5140 2013-02-15 14:54:26Z wdbee $
+    @version	$Id: racesituation.cpp 5940 2015-04-01 21:58:51Z beaglejoe $
 */
 
 #include <cstdlib>
 #include <sstream>
 #include <iomanip>
+
+#include <portability.h>
 
 #include <SDL.h>
 #include <SDL_thread.h>
@@ -238,12 +240,23 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 	}
 
 	// Update times.
-	pCurrReInfo->_reCurTime += deltaTimeIncrement * pCurrReInfo->_reTimeMult; /* "Real" time */
+	pCurrReInfo->_reCurTime += deltaTimeIncrement * fabs(pCurrReInfo->_reTimeMult); /* "Real" time */
+#if 0
 	s->currentTime += deltaTimeIncrement; /* Simulated time */
+#else
+	if (pCurrReInfo->_reTimeMult > 0)
+		s->currentTime += deltaTimeIncrement;
+	else
+		s->currentTime -= deltaTimeIncrement;
+#endif
 
 	if (s->currentTime < 0) {
-		/* no simu yet */
-		pCurrReInfo->s->_raceState = RM_RACE_PRESTART;
+		if (pCurrReInfo->_reTimeMult < 0)
+			/* Revert to forward time x1 */
+			pCurrReInfo->_reTimeMult = 1;
+		else
+			/* no simu yet */
+			pCurrReInfo->s->_raceState = RM_RACE_PRESTART;
 	} else if (pCurrReInfo->s->_raceState == RM_RACE_PRESTART) {
 		pCurrReInfo->s->_raceState = RM_RACE_RUNNING;
 		s->currentTime = 0.0; /* resynchronize */
@@ -305,7 +318,7 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 	GfProfStopProfile("physicsEngine.update*");
 	
 	ReCarsSortCars();
-
+/*
 	// Update results if a best lap changed
 	if (pCurrReInfo->_displayMode == RM_DISP_MODE_NONE && s->_ncars > 1 && bestLapChanged)
 	{
@@ -314,6 +327,7 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 		else if (pCurrReInfo->s->_raceType == RM_TYPE_QUALIF)
 			ReUpdateQualifCurRes(pCurrReInfo->s->cars[0]);
 	}
+*/
 }
 
 int ReSituationUpdater::threadLoop(void* pUpdater)
@@ -449,6 +463,7 @@ ReSituationUpdater::ReSituationUpdater()
 	// Initialize termination flag.
 	_bTerminate = false;
 
+
 	if (_bThreaded)
 	{
 		// Initialize the race engine info (state + situation) pointer for the previous step.
@@ -458,7 +473,11 @@ ReSituationUpdater::ReSituationUpdater()
 		ReSituation::self().setThreadSafe(true);
 		
 		// Create and start the updater thread.
+#if SDL_MAJOR_VERSION >= 2
+		_pUpdateThread = SDL_CreateThread(ReSituationUpdater::threadLoop,"Update_thread",this);
+#else
 		_pUpdateThread = SDL_CreateThread(ReSituationUpdater::threadLoop, this);
+#endif
 	}
 	else
 	{

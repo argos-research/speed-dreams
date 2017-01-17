@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- 
+    file          : migrants.xml 
+    created       : 01 Dec 2007
+    last modified : 23 Dec 2009
+    copyright     : (C) 2007-2009 Wolf-Dieter Beelitz
+
+    SIMPLIX - CAR1-TRB1
+-->
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+<!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd">
+<params name="trb1-cavallo-360rb" type="template" mode="mw">
+	<section name="Brake System">
+		<attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.6"/>
+	</section>
+	<section name="Rear Anti-Roll Bar">
+		<attnum name="spring" unit="lbs/in" min="0" max="5000" val="500"/>
+	</section>
+	<section name="simplix private">
+		<attnum name="scale brake" val="0.78"/>
+		<attnum name="scale bump" val="0.01"/>
+		<attnum name="scale bump outer" val="0.01"/>
+		<attnum name="scale mu" val="1.0"/>
+		<attnum name="side mu" val="0.90"/>
+	</section>
+</params>

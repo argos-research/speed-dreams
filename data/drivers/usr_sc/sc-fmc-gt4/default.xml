@@ -15,6 +15,11 @@
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
 <params name="Viper GTS-R" type="template">
+  <section name="Features">
+    <attstr name="enable abs" in="yes,no" val="no"/>
+    <attstr name="enable tcl" in="yes,no" val="no"/>
+    <attstr name="enable esp" in="yes,no" val="no"/>
+  </section>
 
 	<section name="private">
 		<attnum name="min corner inverse" min="0" max="2" val="0.001"/>

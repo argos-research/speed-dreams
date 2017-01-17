@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:32:14 CEST 1999
     copyright            : (C) 1999 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: tgf.h 5349 2013-03-23 17:59:22Z pouillot $
+    version              : $Id: tgf.h 6270 2015-11-23 19:44:40Z madbad $
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file   
     	The Gaming Framework API.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: tgf.h 5349 2013-03-23 17:59:22Z pouillot $
+    @version	$Id: tgf.h 6270 2015-11-23 19:44:40Z madbad $
 */
 
 #ifndef __TGF__H__
@@ -206,30 +206,114 @@ TGF_API void GfPoolFreePool(tMemoryPool* pool);
 TGF_API void GfPoolMove(tMemoryPool* oldPool, tMemoryPool* newPool);
 
 /*********************************
- * Memory debug tools            *
+ * Old memory debug tools        *
  *********************************/
 
 // <esppat>
 //#define TGF_ALLOC_DEBUG 1
-#if (defined(WIN32) && defined(TGF_ALLOC_DEBUG))
-
-#define malloc _tgf_win_malloc
-#define calloc _tgf_win_calloc
-#define realloc _tgf_win_realloc
-#define free _tgf_win_free
-#ifdef strdup
-#undef strdup
-#endif
-#define strdup _tgf_win_strdup
-#define _strdup _tgf_win_strdup
-TGF_API void * _tgf_win_malloc(size_t size);
-TGF_API void * _tgf_win_calloc(size_t num, size_t size);
-TGF_API void * _tgf_win_realloc(void * memblock, size_t size);
-TGF_API void _tgf_win_free(void * memblock);
-TGF_API char * _tgf_win_strdup(const char * str);
-
-#endif // WIN32
+//#if (defined(WIN32) && defined(TGF_ALLOC_DEBUG))
 // </esppat>
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
+// New Memory Manager ...
+//----------------------------------------------------------------------------*
+
+//============================================================================*
+// Configuration for the new Memory Manager
+//----------------------------------------------------------------------------*
+// To enable the hunting for memory leaks uncomment the following line
+//#define __DEBUG_MEMORYMANAGER__
+#if defined(__DEBUG_MEMORYMANAGER__)
+// Use new Memory Manager ...
+	#if defined(WIN32)
+	// Windows ...
+		#if defined(__MINGW32__)
+		// MinGW ...
+			#define ExternC extern "C"
+		// ... MinGW
+		#else
+		// VC++ ...
+			#define ExternC
+		// ... VC++
+		#endif
+	// ... Windows
+	#else
+	// Linux ...
+
+	// ... Linux
+	#endif
+//============================================================================*
+
+//============================================================================*
+// Definitions of the replacements for the new Memory Manager
+//----------------------------------------------------------------------------*
+#if defined(WIN32)
+// Windows ...
+	#if defined(__MINGW32__)
+	// MinGW ...
+	#define malloc(x) _tgf_win_malloc((x))
+	#define calloc(x,y) _tgf_win_calloc((x),(y))
+	#define realloc(x,y) _tgf_win_realloc((x),(y))
+	#define free(x) _tgf_win_free((x))
+	#define doaccept() GfMemoryManagerDoAccept()
+	#define dofree() GfMemoryManagerDoFree()
+	#ifdef strdup
+	#undef strdup
+	#endif
+	#define strdup(x) _tgf_win_strdup((x))
+	#define _strdup(x) _tgf_win_strdup((x))
+	// ... MinGW
+	#else
+	// VC++ ...
+	#define malloc _tgf_win_malloc
+	#define calloc _tgf_win_calloc
+	#define realloc _tgf_win_realloc
+	#define free _tgf_win_free
+	#define doaccept() GfMemoryManagerDoAccept()
+	#define dofree() GfMemoryManagerDoFree()
+	#ifdef strdup
+	#undef strdup
+	#endif
+	#define strdup _tgf_win_strdup
+	#define _strdup _tgf_win_strdup
+	// ... VC++
+#endif
+// ... Windows
+#else
+// Linux ...
+	#define malloc(x) _tgf_win_malloc((x))
+	#define calloc(x,y) _tgf_win_calloc((x),(y))
+	#define realloc(x,y) _tgf_win_realloc((x),(y))
+	#define free(x) _tgf_win_free((x))
+	#define doaccept() GfMemoryManagerDoAccept()
+	#define dofree() GfMemoryManagerDoFree()
+	#ifdef strdup
+	#undef strdup
+	#endif
+	#define strdup(x) _tgf_win_strdup((x))
+	#define _strdup(x) _tgf_win_strdup((x))
+// ... Linux
+#endif
+//============================================================================*
+
+//============================================================================*
+// Prototypes of the replacement functions for the new Memory Manager
+//----------------------------------------------------------------------------*
+ExternC TGF_API void* _tgf_win_malloc(size_t size);
+ExternC TGF_API void* _tgf_win_calloc(size_t num, size_t size);
+ExternC TGF_API void* _tgf_win_realloc(void * memblock, size_t size);
+ExternC TGF_API void _tgf_win_free(void * memblock);
+ExternC TGF_API char* _tgf_win_strdup(const char * str);
+ExternC TGF_API void GfMemoryManagerDoAccept();
+ExternC TGF_API void GfMemoryManagerDoFree();
+//============================================================================*
+
+// ... Use new Memroy Manager
+#endif // #if defined(__DEBUG_MEMORYMANAGER__))
+//----------------------------------------------------------------------------*
+// ... New Memory Manager
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
+
 
 /*********************************
  * Interface For Dynamic Modules *
@@ -315,12 +399,23 @@ TGF_API char* GfPathMakeOSCompatible(char* path);
 #define GFPARM_RMODE_CREAT	0x04	/**< Create the file if doesn't exist */
 #define GFPARM_RMODE_PRIVATE	0x08
 
-TGF_API void * GfParmReadFileLocal(const char *file, int mode, bool neededFile = true);
-TGF_API void *GfParmReadFile(const char *file, int mode, bool neededFile = true);
+/* parameter file read */
+TGF_API void *GfParmReadFileLocal(const char *file, int mode, bool neededFile = true);
+/* last optional parameter allows usage without logger be available */
+TGF_API void *GfParmReadFile(const char *file, int mode, bool neededFile = true, bool trace = true);
+
+TGF_API void *GfParmReadBuf(char *buffer);
+
 /* parameter file write */
 TGF_API int GfParmWriteFileLocal(const char *file, void* handle, const char *name);
 TGF_API int GfParmWriteFile(const char *file, void* handle, const char *name);
-TGF_API int GfParmWriteFileSDHeader(const char *file, void* handle, const char *name, const char *author);
+/* last optional parameter allows usage without logger be available */
+TGF_API int GfParmWriteFileSDHeader(const char *file, void* handle, const char *name, const char *author, bool trace = true);
+/* write a parameter file to a supplied buffer */
+TGF_API int GfParmWriteBuf(void *handle, char *buf, int size);/* Never used in current codebase: to be removed? */
+#ifdef WEBSERVER
+TGF_API int GfParmWriteString(void *handle, std::string& str);
+#endif //WEBSERVER
 
 TGF_API char *GfParmGetName(void *handle);
 TGF_API char *GfParmGetFileName(void *handle);
@@ -347,6 +442,8 @@ TGF_API tdble GfParmGetNum(void *handle, const char *path, const char *key, cons
 TGF_API tdble GfParmGetNumMin(void *handle, const char *path, const char *key, const char *unit, tdble deflt);
 /* get max of num parameter value */
 TGF_API tdble GfParmGetNumMax(void *handle, const char *path, const char *key, const char *unit, tdble deflt);
+/* get num parameter value with limits */
+TGF_API int GfParmGetNumWithLimits (void *handle, char const *path, const char *key, const char *unit, tdble* value, tdble* min, tdble* max);
 /* get num parameter value */
 TGF_API tdble GfParmGetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt);
 /* get min of num parameter value */

@@ -4,7 +4,7 @@ file                 : network.cpp
 created              : July 2009
 copyright            : (C) 2009 Brian Gavin
 web                  : speed-dreams.sourceforge.net
-version              : $Id: network.cpp 5537 2013-06-24 20:50:53Z torcs-ng $
+version              : $Id: network.cpp 5854 2014-11-23 17:55:52Z wdbee $
 
  ***************************************************************************/
 
@@ -445,7 +445,8 @@ void NetNetwork::SendLapStatusPacket(tCarElt *pCar)
         msg.pack_int(pCar->race.laps);
         msg.pack_int(pCar->info.startRank);
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("SendLapStatusPacket: packed buffer error\n");
     }
@@ -517,7 +518,8 @@ void NetNetwork::SendCarStatusPacket(tSituation *s,bool bForce)
             msg.pack_float(local[i]->priv.fuel);
         }
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("SendCarStatusPacket: packed buffer error\n");
     }
@@ -609,7 +611,8 @@ void NetNetwork::SendCarControlsPacket(tSituation *s)
             msg.pack_float(local[i]->pub.DynGCg.acc.az);
         }
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("SendCarControlsPacket: packed buffer error\n");
     }
@@ -630,6 +633,7 @@ void NetNetwork::ReadLapStatusPacket(ENetPacket *pPacket)
             msg.length());
 
     LapStatus lstatus;
+	lstatus.startRank = 0; // Avoid compiler warnings
 
     try
     {
@@ -639,7 +643,8 @@ void NetNetwork::ReadLapStatusPacket(ENetPacket *pPacket)
         lstatus.laps = msg.unpack_int();
         lstatus.startRank = msg.unpack_int();
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("ReadLapStatusPacket: packed buffer error\n");
     }
@@ -707,7 +712,7 @@ void NetNetwork::ReadCarStatusPacket(ENetPacket *pPacket)
                     {
                         GfLogTrace("Rejected car status from startRank %i\n",status.startRank);
                     }
-                    GfLogTrace("Recieved car status from startRank %i\n",status.startRank);
+                    GfLogTrace("Received car status from startRank %i\n",status.startRank);
                     break;
                 }
             }
@@ -718,7 +723,8 @@ void NetNetwork::ReadCarStatusPacket(ENetPacket *pPacket)
 
         UnlockNetworkData();
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("ReadCarStatusPacket: packed buffer error\n");
     }
@@ -813,7 +819,8 @@ void NetNetwork::ReadCarControlsPacket(ENetPacket *pPacket)
 
         UnlockNetworkData();
     }
-    catch (PackedBufferException &e)
+//    catch (PackedBufferException &e)
+    catch (PackedBufferException)
     {
         GfLogFatal("ReadCarControlsPacket: packed buffer error\n");
     }

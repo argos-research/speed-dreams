@@ -23,7 +23,7 @@ SET(CONFSCREENS_SOURCES ${CS}/playerconfig.cpp ${CS}/controlconfig.cpp
 SET(CONFSCREENS_HEADERS ${CS}/confscreens.h ${CS}/advancedgraphconfig.h
                         ${CS}/playerconfig.h ${CS}/controlconfig.h
                         ${CS}/joystickconfig.h ${CS}/mouseconfig.h
-                        ${CS}/joy2butconfig.h ${CS}/
+                        ${CS}/joy2butconfig.h ${CS}/monitorconfig.h
                         ${CS}/displayconfig.h ${CS}/graphconfig.h ${CS}/openglconfig.h 
                         ${CS}/simuconfig.h ${CS}/soundconfig.h ${CS}/aiconfig.h
                         ${CS}/carsettingsmenu.h ${CS}/hostsettingsmenu.h)
@@ -36,6 +36,7 @@ SET(RACESCREENS_SOURCES ${RS}/raceselectmenu.cpp
                         ${RS}/trackselect.cpp ${RS}/driverselect.cpp ${RS}/garagemenu.cpp
                         ${RS}/raceparamsmenu.cpp
                         ${RS}/raceloadingmenu.cpp ${RS}/racerunningmenus.cpp
+                        ${RS}/raceoptimizationmenu.cpp 
                         ${RS}/racestopmenu.cpp ${RS}/racestartmenu.cpp ${RS}/racepitmenu.cpp 
                         ${RS}/raceresultsmenus.cpp ${RS}/racenexteventmenu.cpp)
 SET(RACESCREENS_HEADERS ${RS}/racescreens.h ${RS}/garagemenu.h) #${RS}/raceweekendscreens.h)
@@ -53,7 +54,13 @@ INCLUDE_DIRECTORIES(. ${MS} ${CS} ${RS})
 ADD_INTERFACE_INCLUDEDIR()
 ADD_SDLIB_INCLUDEDIR(math portability tgf tgfclient tgfdata networking)
 ADD_PLIB_INCLUDEDIR()
-ADD_SDL_INCLUDEDIR()
+
+IF(OPTION_SDL2)
+	ADD_SDL2_INCLUDEDIR()
+ELSE(OPTION_SDL2)
+	ADD_SDL_INCLUDEDIR()
+ENDIF(OPTION_SDL2)
+
 ADD_ENET_INCLUDEDIR()
 
 IF(WIN32)

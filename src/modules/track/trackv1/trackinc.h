@@ -4,7 +4,7 @@
     created              : Sun Jan 30 22:57:40 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: trackinc.h 5349 2013-03-23 17:59:22Z pouillot $
+    version              : $Id: trackinc.h 5860 2014-11-26 07:15:48Z beaglejoe $
 
  ***************************************************************************/
 
@@ -28,6 +28,7 @@ extern void TrackShutdown(void);
 
 extern void ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext);
 extern void ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext);
+extern void ReadTrack5(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext);
 
 extern tRoadCam *TrackGetCamList(void);
 

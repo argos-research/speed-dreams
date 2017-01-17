@@ -4,7 +4,7 @@
     created              : Sun Nov 21 19:00:00 CET 2010
     copyright            : (C) 2010 by Jean-Philippe MEURET
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: drivers.cpp 5284 2013-03-10 10:49:04Z pouillot $
+    version              : $Id: drivers.cpp 6143 2015-09-24 16:49:32Z torcs-ng $
                       
  ***************************************************************************/
 
@@ -132,6 +132,14 @@ void GfDrivers::reload()
 		}
 		if (!hparmRobot)
 		{
+			// Do not waste log with drivers that do not exists or do not have to exist!
+			if (strncmp("dandroid",strModName.c_str(),8) == 0)
+				continue;
+			else if (strncmp("usr",strModName.c_str(),3) == 0)
+				continue;
+			else if (strncmp("replay",strModName.c_str(),6) == 0)
+				continue;
+
 			GfLogError("No usable '%s' driver (%s.xml not found or not readable)\n",
 					   strModName.c_str(), strModName.c_str());
 			continue;
@@ -143,7 +151,7 @@ void GfDrivers::reload()
 			// Ignore undefined drivers or showing an empty name
 			if (!pCurModule->modInfo[nItfInd].name || pCurModule->modInfo[nItfInd].name[0] == '\0')
 			{
-				GfLogWarning("Ignoring '%s' driver #%d (not defined or empty name)\n",
+				GfLogInfo("Ignoring '%s' driver #%d (not defined or empty name)\n",
 							 strModName.c_str(), nItfInd);
 				continue;
 			}
@@ -195,7 +203,7 @@ void GfDrivers::reload()
 							  << pCurModule->modInfo[nItfInd].index;
 				const char* pszCarId =
 					GfParmGetStr(hparmRobot, ossDrvSecPath.str().c_str(), ROB_ATTR_CAR, "");
-				GfLogWarning("Ignoring '%s' driver '%s' (#%d) (not defined or default car '%s' not available)\n",
+				GfLogInfo("Ignoring '%s' driver '%s' (#%d) (not defined or default car '%s' not available)\n",
 							 strModName.c_str(), pCurModule->modInfo[nItfInd].name,
 							 pCurModule->modInfo[nItfInd].index, pszCarId);
 			}
@@ -333,9 +341,9 @@ void GfDriverSkin::setCarPreviewFileName(const std::string& strFileName)
 
 // Skill level related constants.
 static const char *ASkillLevelStrings[] =
-	{ ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
+	{ ROB_VAL_ARCADE, ROB_VAL_SEMI_ROOKIE, ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
 static const int NbSkillLevels = sizeof(ASkillLevelStrings) / sizeof(ASkillLevelStrings[0]);
-static const double ASkillLevelValues[NbSkillLevels] = { 10.0, 7.0, 3.0, 0.0 };
+static const double ASkillLevelValues[NbSkillLevels] = { 30.0, 20.0, 10.0, 7.0, 3.0, 0.0 };
 
 // Robot drivers features related constants.
 struct RobotFeature

@@ -3,7 +3,7 @@
     file                 : glfeatures.h
     created              : Wed Jun 1 14:56:31 CET 2005
     copyright            : (C) 2005 by Bernhard Wymann
-    version              : $Id: glfeatures.h 5180 2013-02-23 13:56:49Z torcs-ng $
+    version              : $Id: glfeatures.h 6285 2015-11-28 18:30:04Z beaglejoe $
 
 ***************************************************************************/
 
@@ -131,6 +131,10 @@ class TGFCLIENT_API GfglFeatures
 	// Update supported OpenGL features according to the given frame buffer specs.
     bool detectBestSupport(int& nWidth, int& nHeight, int& nDepth,
                            bool& bAlpha, bool& bBump, bool& bStereo, bool& bFullScreen, int& nAniFilt);
+#if SDL_MAJOR_VERSION >= 2
+	bool detectBestSupportSDL2(int& nWidth, int& nHeight, int& nDepth,
+                           bool& bAlpha, bool& bBump, bool& bStereo, bool& bFullScreen, int& nAniFilt);
+#endif
 
 	bool loadSupport(int &nWidth, int &nHeight, int &nDepth,
                      bool &bAlpha, bool &bFullScreen, bool &bBump, bool &bStereo, int &nAniFilt, void* hparmConfig = 0);

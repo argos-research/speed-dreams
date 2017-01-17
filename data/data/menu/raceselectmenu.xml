@@ -5,7 +5,7 @@
     created              : 2009
     copyright            : (C) 2009 by Brian Gavin, Eckhard M. Jaeger
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: raceselectmenu.xml 4614 2012-03-25 17:16:33Z pouillot $
+    version              : $Id: raceselectmenu.xml 5854 2014-11-23 17:55:52Z wdbee $
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -56,11 +56,35 @@
 		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
 	</section>
 
+	<!-- second button for STANDARDGAME only -->
 	<section name="QuickButton">
 		<attstr name="type" val="text button"/>
 		<attstr name="show box" val="no"/>	  
 		<attstr name="text" val="Quick Race"/>
 		<attstr name="tip" val="A race on one track, with no qualifying session"/>		
+		<attstr name="h align" val="left"/>
+		<attnum name="x" val="260"/>
+		<attnum name="y" val="290"/>
+		<attnum name="width" val="320"/>
+		<attstr name="font" val="big"/>
+		<attstr name="color" val="0xFFFFFF"/>
+		<attstr name="focused color" val="0xFFFFFF"/>
+		<attstr name="pushed color" val="0xFFFFFF"/>
+		<attnum name="image x" val="-48"/>
+		<attnum name="image y" val="0"/>
+		<attnum name="image width" val="320"/>
+		<attnum name="image height" val="31"/>
+		<attstr name="focused image" val="data/img/bg-button-big-focused.png"/>
+		<attstr name="enabled image" val="data/img/bg-button-big.png"/>
+		<attstr name="pushed image" val="data/img/bg-button-big-pushed.png"/>
+	</section>
+
+	<!-- second button for GENPAROPTV1 only -->
+	<section name="OptimizationMTButton">
+		<attstr name="type" val="text button"/>
+		<attstr name="show box" val="no"/>	  
+		<attstr name="text" val="Multi Track Optimization"/>
+		<attstr name="tip" val="For getting default setups"/>		
 		<attstr name="h align" val="left"/>
 		<attnum name="x" val="260"/>
 		<attnum name="y" val="290"/>
@@ -225,7 +249,6 @@
 		<attstr name="focused image" val="data/img/bg-button-big-focused-last.png"/>
 		<attstr name="pushed image" val="data/img/bg-button-big-pushed-last.png"/>
 	</section>
-
 
   </section>
 

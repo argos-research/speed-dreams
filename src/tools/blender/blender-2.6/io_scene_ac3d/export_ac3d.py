@@ -85,7 +85,7 @@ class ExportAC3D:
 			global_coords=False,
 			mircol_as_emis=True,
 			mircol_as_amb=False,
-			crease_angle=radians(179.0),
+			crease_angle=radians(35.0),
 			):
 
 			self.export_conf = ExportConf(
@@ -117,8 +117,9 @@ class ExportAC3D:
 			# dump the contents of the lists to file
 			ac_file = open(filepath, 'w')
 			ac_file.write('AC3Db\n')
-			for ac_mat in self.ac_mats:
-				ac_mat.write(ac_file)
+			ac_file.write('MATERIAL "trackMat" rgb 0.60 0.60 0.60 amb 0.80 0.80 0.80 emis 0.30 0.30 0.30 spec 0.05 0.05 0.05 shi 50 trans 0\n')
+			ac_file.write('MATERIAL "glassMat" rgb 0.60 0.60 0.60 amb 0.80 0.80 0.80 emis 0.30 0.30 0.30 spec 0.5 0.5 0.5 shi 128 trans 0.1\n')
+			ac_file.write('MATERIAL "waterMat" rgb 0.60 0.60 0.60 amb 0.80 0.80 0.80 emis 0.30 0.30 0.30 spec 0.5 0.5 0.5 shi 128 trans 0.2\n')
 
 			#self.ac_world.write_ac_output(ac_file)
 			self.world.write(ac_file)
@@ -165,8 +166,8 @@ class ExportAC3D:
 								if len(c.children):
 									self.parseLevel(p, c.children, ignore_select, local_transform)
 					continue
-#				elif ob.type == 'EMPTY':
-#					ac_ob = AC3D.Group(ob.name, ob, self.export_conf, local_transform)
+				elif ob.type == 'EMPTY':
+					ac_ob = AC3D.Group(ob.name, ob, self.export_conf, local_transform)
 				else:
 					TRACE('Skipping object {0} (type={1})'.format(ob.name, ob.type))
 

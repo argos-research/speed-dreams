@@ -4,7 +4,7 @@
     created              : Sun Mar 19 00:05:43 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: car.cpp 4985 2012-10-07 16:15:40Z pouillot $
+    version              : $Id: car.cpp 6389 2016-03-21 19:18:31Z wdbee $
 
  ***************************************************************************/
 
@@ -137,6 +137,44 @@ SimCarConfig(tCar *car)
 	car->corner[REAR_LFT].pos.x = (tdble) (- car->dimension.x * .5 - car->statGC.x);
 	car->corner[REAR_LFT].pos.y = (tdble) (overallwidth * .5 - car->statGC.y);
 	car->corner[REAR_LFT].pos.z = 0;
+	
+	/* minimal dashboard initialization */
+    tPrivCar *priv = &(car->carElt->priv);
+	tCarSetup *setup = &(car->carElt->setup);
+    
+    priv->dashboardInstantNb = 0;
+    
+    setup->fuel.min = 0.0;
+    setup->fuel.max = car->tank;
+    setup->fuel.value = car->fuel;
+    setup->fuel.desired_value = car->fuel;
+    setup->fuel.stepsize = 1.0;
+    setup->fuel.changed = FALSE;
+    
+    setup->reqRepair.min = setup->reqRepair.value = setup->reqRepair.max = 0.0;
+	setup->reqRepair.desired_value = 0.0;
+	setup->reqRepair.stepsize = 500;
+	setup->reqRepair.changed = FALSE;
+    
+    setup->reqPenalty.min = 0.0;
+	setup->reqPenalty.max = 1.0;
+	setup->reqPenalty.value = 0.0;
+	setup->reqPenalty.desired_value = 0.0; //0.0 means refuel/repair next, 1.0 means serve penalty next
+	setup->reqPenalty.stepsize = 1.0;
+	setup->reqPenalty.changed = FALSE;
+    
+    priv->dashboardRequest[0].type = DI_FUEL;
+	priv->dashboardRequest[0].setup = &(setup->fuel);
+	priv->dashboardRequest[1].type = DI_REPAIR;
+	priv->dashboardRequest[1].setup = &(setup->reqRepair);    
+    priv->dashboardRequest[2].type = DI_PENALTY;
+	priv->dashboardRequest[2].setup = &(setup->reqPenalty);
+	priv->dashboardRequestNb = 3;
+	priv->dashboardActiveItem = 0;
+	for (i = 3; i < NR_DI_REQUEST; i++) {
+		priv->dashboardRequest[i].type = DI_NONE;
+		priv->dashboardRequest[i].setup = NULL;
+	}
 }
 
 
@@ -434,6 +472,14 @@ SimCarUpdate(tCar *car, tSituation * /* s */)
 	CHECK(car);
 	SimCarCollideXYScene(car);
 	CHECK(car);
+	
+	/* update car->carElt->setup.reqRepair with damage */
+	tCarSetupItem *repair = &(car->carElt->setup.reqRepair);
+	if ((repair->desired_value > 0.0) && (repair->max == repair->desired_value)) {
+		repair->max = repair->desired_value = (tdble) car->dammage;
+	} else {
+		repair->max = (tdble) car->dammage;
+	}
 }
 
 void

@@ -4,7 +4,7 @@
     created              : Mon Mar 7 19:32:14 CEST 2011
     copyright            : (C) 2011 by Jean-Philippe Meuret                         
     web                  : http://www.speed-dreams.org
-    version              : $Id: iuserinterface.h 4381 2012-01-08 18:34:10Z martkelder $
+    version              : $Id: iuserinterface.h 6084 2015-08-21 00:07:15Z beaglejoe $
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,7 +18,7 @@
 
 /** @file   
     	Interface for any user interface module
-    @version	$Id: iuserinterface.h 4381 2012-01-08 18:34:10Z martkelder $
+    @version	$Id: iuserinterface.h 6084 2015-08-21 00:07:15Z beaglejoe $
 */
 
 #ifndef __IUSERINTERFACE__H__
@@ -59,9 +59,18 @@ public:
 	virtual bool onRaceFinished(bool bEndOfSession) = 0;
 	virtual void onRaceEventFinishing() = 0;
 	virtual bool onRaceEventFinished(bool bMultiEvent, bool careerNonHuman) = 0;
+	virtual void onOptimizationInitializing() = 0;
+
+	virtual bool onRaceStartingPaused() = 0;
+	virtual bool onRaceCooldownStarting() = 0;
 
 	// Loading messages management.
 	virtual void addLoadingMessage(const char* pszText) = 0;
+	
+	// Optimiaztion messages management.
+	virtual void addOptimizationMessage(const char* pszText) = 0;
+    virtual void addOptimizationParameterMessage(int n, char** Labels, char** Values, char** Ranges) = 0;
+    virtual void addOptimizationStatusMessage(int LoopsDone, int LoopsRemaining, double VariationScale, double InitialLapTime,  double TotalLapTime,  double BestLapTime) = 0;
 
 	// Blind-race results table management.
 	virtual void setResultsTableTitles(const char* pszTitle, const char* pszSubTitle) = 0;

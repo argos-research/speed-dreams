@@ -62,7 +62,7 @@ int closeGfModule()
 {
 	// Unregister it from the GfModule module manager.
 	if (TextOnlyUI::_pSelf)
-		GfModule::unregister(TextOnlyUI::_pSelf);
+		TextOnlyUI::unregister(TextOnlyUI::_pSelf);
 
 	// Delete the (only) module instance.
 	delete TextOnlyUI::_pSelf;
@@ -158,6 +158,12 @@ void TextOnlyUI::onRaceInitializing()
 	GfLogDebug("TextOnlyUI::onRaceInitializing()\n");
 }
 
+void TextOnlyUI::onOptimizationInitializing()
+{
+	// Actually nothing to do.
+	GfLogDebug("TextOnlyUI::onOptimizationInitializing()\n");
+}
+
 bool TextOnlyUI::onRaceStarting()
 {
 	GfLogDebug("TextOnlyUI::onRaceStarting()\n");
@@ -187,6 +193,14 @@ void TextOnlyUI::onRaceSimulationReady()
 void TextOnlyUI::updateRaceEngine()
 {
     ToRaceEngine().updateState();
+}
+
+bool TextOnlyUI::onRaceStartingPaused()
+{
+	GfLogDebug("TextOnlyUI::onRaceStartingPaused()\n");
+
+	// Tell the race engine that Pre-race Pause is not supported
+	return false;
 }
 
 void TextOnlyUI::onRaceStarted()
@@ -231,6 +245,14 @@ void TextOnlyUI::onRaceFinishing()
 	GfApp().eventLoop().setRecomputeCB(0);
 }
 
+bool TextOnlyUI::onRaceCooldownStarting()
+{
+	GfLogDebug("TextOnlyUI::onRaceCooldownStarting()\n");
+
+	// Tell the race engine that Cooldown not supported
+	return false;
+}
+
 bool TextOnlyUI::onRaceFinished(bool bEndOfSession)
 {
 	GfLogDebug("TextOnlyUI::onRaceFinished(%send of session)\n", bEndOfSession ? "" : "not ");
@@ -266,6 +288,19 @@ bool TextOnlyUI::onRaceEventFinished(bool bMultiEvent, bool careerNonHumanGroup)
 void TextOnlyUI::addLoadingMessage(const char* pszText)
 {
     GfLogTrace("%s\n", pszText);
+}
+
+void TextOnlyUI::addOptimizationMessage(const char* pszText)
+{
+    GfLogTrace("%s\n", pszText);
+}
+
+void TextOnlyUI::addOptimizationParameterMessage(int /* n */, char** /* Labels */, char** /* Values */, char** /* Ranges */)
+{
+}
+
+void TextOnlyUI::addOptimizationStatusMessage(int /* LoopsDone */, int /* LoopsRemaining */, double /* VariationScale */, double /* InitialLapTime */,  double /* TotalLapTime */,  double /* BestLapTime */)
+{
 }
 
 void TextOnlyUI::setResultsTableTitles(const char* pszTitle, const char* pszSubTitle)

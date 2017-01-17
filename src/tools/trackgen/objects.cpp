@@ -4,7 +4,7 @@
     created              : Fri May 24 20:09:20 CEST 2002
     copyright            : (C) 2001 by Eric Espie
     email                : eric.espie@torcs.org
-    version              : $Id: objects.cpp 4207 2011-11-25 18:03:35Z pouillot $
+    version              : $Id: objects.cpp 6393 2016-03-27 16:23:23Z beaglejoe $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: objects.cpp 4207 2011-11-25 18:03:35Z pouillot $
+    @version	$Id: objects.cpp 6393 2016-03-27 16:23:23Z beaglejoe $
 */
 
 
@@ -461,7 +461,7 @@ GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd
 	sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, map);
 
 	printf("Processing object map %s\n", buf);
-	MapImage = GfTexReadImageFromPNG(buf, 2.2, &width, &height, 0, 0);
+	MapImage = GfTexReadImageFromPNG(buf, 2.2, &width, &height, 0, 0, false);
 	if (!MapImage) {
 	    return;
 	}

@@ -4,7 +4,7 @@
     created              : Fri Apr 14 22:36:36 CEST 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: raceresultsmenus.cpp 5313 2013-03-12 23:17:09Z kmetykog $
+    version              : $Id: raceresultsmenus.cpp 5803 2014-07-30 03:19:34Z mungewell $
 
  ***************************************************************************/
 
@@ -21,7 +21,7 @@
     		This is a set of tools useful for race managers to display results.
     @ingroup	racemantools
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: raceresultsmenus.cpp 5313 2013-03-12 23:17:09Z kmetykog $
+    @version	$Id: raceresultsmenus.cpp 5803 2014-07-30 03:19:34Z mungewell $
 */
 
 #include <portability.h>
@@ -37,11 +37,18 @@
 
 
 static int	rmSaveButtonId;
+static int	rmReplayButtonId;
 static void	*rmScrHdle = NULL;
 
 static void rmPracticeResults(void *prevHdle, tRmInfo *info, int start);
 static void rmRaceResults(void *prevHdle, tRmInfo *info, int start);
 static void rmQualifResults(void *prevHdle, tRmInfo *info, const char*pszTitle, int start);
+
+static const int DefaultSimuVersion = 1;
+static const char *SimuVersionList[] =
+	{RM_VAL_MOD_SIMU_V2, RM_VAL_MOD_SIMU_V2_1, RM_VAL_MOD_SIMU_V3, RM_VAL_MOD_SIMU_V4, RM_VAL_MOD_SIMU_REPLAY};
+static const int NbSimuVersions = sizeof(SimuVersionList) / sizeof(SimuVersionList[0]);
+static int CurSimuVersion = DefaultSimuVersion;
 
 typedef struct
 {
@@ -54,6 +61,37 @@ typedef struct
 tRaceCall	RmNextRace;
 tRaceCall	RmPrevRace;
 
+
+static void 
+rmReplayRace(void * /* dummy */) 
+{ 
+    const char *simuVersionName;
+    int i;
+    char buf[1024];
+    snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), RACE_ENG_CFG);
+
+    void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+
+    // Temporarily overwrite Simulation Type
+    CurSimuVersion = DefaultSimuVersion;
+    simuVersionName = GfParmGetStr(paramHandle, RM_SECT_MODULES, RM_ATTR_MOD_SIMU, SimuVersionList[DefaultSimuVersion]);
+    for (i = 0; i < NbSimuVersions; i++) {
+        if (strcmp(simuVersionName, SimuVersionList[i]) == 0) {
+            CurSimuVersion = i;
+            break;
+        }
+    }
+
+    GfParmSetStr(paramHandle, RM_SECT_MODULES, RM_ATTR_MOD_SIMU, SimuVersionList[4]);
+    GfParmWriteFile(NULL, paramHandle, "raceengine");
+
+    LmRaceEngine().startNewRace(); 
+
+    // Restore original Simulation type
+    GfParmSetStr(paramHandle, RM_SECT_MODULES, RM_ATTR_MOD_SIMU, SimuVersionList[CurSimuVersion]);
+    GfParmWriteFile(NULL, paramHandle, "raceengine");
+    GfParmReleaseHandle(paramHandle);
+} 
 
 static void
 rmSaveRes(void *vInfo)
@@ -89,6 +127,8 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
     static char		path[1024];
     char		*str;
     int 		damages; 
+    void		*paramHandle;
+    const char		*replayRateSchemeName;
 
     // Create screen, load menu XML descriptor and create static controls.
     rmScrHdle = GfuiScreenCreate();
@@ -182,6 +222,16 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
     // Add "Continue" button
     GfuiMenuCreateButtonControl(rmScrHdle, hmenu, "ContinueButton", prevHdle, GfuiScreenReplace);
     
+    // Add "Replay" button (if available)
+    snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), RACE_ENG_CFG);
+    paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+    replayRateSchemeName = GfParmGetStr(paramHandle, RM_SECT_RACE_ENGINE, RM_ATTR_REPLAY_RATE, RM_VAL_REPLAY_OFF);
+
+    rmReplayButtonId = GfuiMenuCreateButtonControl(rmScrHdle, hmenu, "ReplayButton", prevHdle, rmReplayRace);
+    if (strcmp(replayRateSchemeName, RM_VAL_REPLAY_OFF) == 0)
+        GfuiEnable(rmScrHdle, rmReplayButtonId, GFUI_DISABLE);
+    GfParmReleaseHandle(paramHandle);
+
     //Create 'save' button in the bottom right
     //rmSaveButtonId = GfuiMenuCreateButtonControl(rmScrHdle, hmenu, "SaveButton", info, rmSaveRes);
     
@@ -221,6 +271,8 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
     static char		buf[256];
     static char		path[512];
     char		*str;
+    void		*paramHandle;
+    const char		*replayRateSchemeName;
     
 	GfLogTrace("Entering Race Results menu\n");
 
@@ -337,7 +389,17 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 
     // Add "Continue" button
     GfuiMenuCreateButtonControl(rmScrHdle, hmenu, "ContinueButton", prevHdle, GfuiScreenReplace);
-    
+
+    // Add "Replay" button (if available)
+    snprintf(buf, sizeof(buf), "%s%s", GfLocalDir(), RACE_ENG_CFG);
+    paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+    replayRateSchemeName = GfParmGetStr(paramHandle, RM_SECT_RACE_ENGINE, RM_ATTR_REPLAY_RATE, RM_VAL_REPLAY_OFF);
+
+    rmReplayButtonId = GfuiMenuCreateButtonControl(rmScrHdle, hmenu, "ReplayButton", prevHdle, rmReplayRace);
+    if (strcmp(replayRateSchemeName, RM_VAL_REPLAY_OFF) == 0)
+        GfuiEnable(rmScrHdle, rmReplayButtonId, GFUI_DISABLE);
+    GfParmReleaseHandle(paramHandle);
+
     //Create 'save' button in the bottom right
     //rmSaveButtonId = GfuiMenuCreateButtonControl(rmScrHdle, hmenu, "SaveButton", info, rmSaveRes);
 

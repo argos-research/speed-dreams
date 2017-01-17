@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    file                 : optimizationscreen.xml
+    created              : 2014
+    copyright            : (C) 2014 by Wolf-Dieter Beelitz
+    web                  : speed-dreams.sourceforge.net
+    version              : $Id: optimizationscreen.xml 4166 2011-11-20 20:14:00Z area42 $
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!-- 
+
+	Display status of optimization
+	
+-->
+
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
+
+<params name="optimizationscreen">	
+
+	<section name="properties">
+		<!-- Number of lines -->
+		<attnum name="nLines" val="38"/>
+
+		<!-- Y coordinate of the top line, and number of pixels separating the lines-->
+		<attnum name="yTopLine" val="454"/>
+		<attnum name="yLineShift" val="12"/>
+
+	    <!-- for each line i, from 0 (top) to nLines-1 (bottom),
+         	alpha color field = alpha0 + alphaSlope * i -->
+		<attnum name="alpha0" val="0.1"/>
+		<attnum name="alphaSlope" val="0.1"/>
+	</section>
+
+	<section name="template controls">
+		<!-- Each line -->
+		<section name="line">
+			<attstr name="type" val="label"/>
+			<attnum name="max len" val="100"/>
+			<attnum name="x" val="390"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="small_t"/>
+		</section>
+
+		<section name="parameter">
+			<attstr name="type" val="label"/>
+			<attnum name="max len" val="100"/>
+			<attnum name="x" val="10"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="small_c"/>
+		</section>
+
+		<section name="value">
+			<attstr name="type" val="label"/>
+			<attnum name="max len" val="100"/>
+			<attnum name="x" val="100"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="small_t"/>
+		</section>
+
+	</section>
+
+	<section name="dynamic controls">
+
+		<section name="titlelabel">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="60"/>
+			<attnum name="x" val="220"/>
+			<attnum name="y" val="415"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="large"/>
+		</section>
+
+		<section name="StatusLabel">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="10"/>
+			<attnum name="y" val="337"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="medium_c"/>
+		</section>
+
+		<section name="InitialLapTimeLabel">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="200"/>
+			<attnum name="x" val="10"/>
+			<attnum name="y" val="320"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="small_c"/>
+		</section>
+
+		<section name="InitialLapTimeValue">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="200"/>
+			<attnum name="x" val="148"/>
+			<attnum name="y" val="320"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="right"/>
+			<attstr name="font" val="small_t"/>
+		</section>
+
+		<section name="TotalLapTimeLabel">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="10"/>
+			<attnum name="y" val="304"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="small_c"/>
+		</section>
+	
+		<section name="TotalLapTimeValue">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="148"/>
+			<attnum name="y" val="304"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="right"/>
+			<attstr name="font" val="small_t"/>
+		</section>
+
+		<section name="BestLapTimeLabel">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="10"/>
+			<attnum name="y" val="288"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="small_c"/>
+		</section>
+
+		<section name="BestLapTimeValue">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="148"/>
+			<attnum name="y" val="288"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="right"/>
+			<attstr name="font" val="small_t"/>
+		</section>
+
+		<section name="LoopsDoneLabel">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="10"/>
+			<attnum name="y" val="272"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="small_c"/>
+		</section>
+
+		<section name="LoopsDoneValue">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="148"/>
+			<attnum name="y" val="272"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="right"/>
+			<attstr name="font" val="small_t"/>
+		</section>
+
+		<section name="LoopsRemainingLabel">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="10"/>
+			<attnum name="y" val="256"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="small_c"/>
+		</section>
+
+		<section name="LoopsRemainingValue">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="148"/>
+			<attnum name="y" val="256"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="right"/>
+			<attstr name="font" val="small_t"/>
+		</section>
+
+		<section name="VariationScaleLabel">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="10"/>
+			<attnum name="y" val="240"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="small_c"/>
+		</section>
+
+		<section name="VariationScaleValue">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="20"/>
+			<attnum name="x" val="148"/>
+			<attnum name="y" val="240"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="right"/>
+			<attstr name="font" val="small_t"/>
+		</section>
+
+		<section name="ParametersVariedLabel">
+			<attstr name="type" val="label"/>	  	  	  	  	  
+			<attnum name="max len" val="40"/>
+			<attnum name="x" val="10"/>
+			<attnum name="y" val="205"/>
+			<attstr name="color" val="0xFFFFFF"/>
+			<attstr name="h align" val="left"/>
+			<attstr name="font" val="medium_c"/>
+		</section>
+
+	</section>
+
+	<section name="static controls">
+		<section name="1">
+			<attstr name="type" val="static image"/>
+			<attnum name="x" val="-10"/>
+			<attnum name="y" val="335"/>
+			<attnum name="width" val="200"/>
+			<attnum name="height" val="120"/>
+			<attstr name="image" val="data/img/sd-logo.png"/>
+		</section>
+	</section>
+
+</params>

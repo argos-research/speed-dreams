@@ -4,7 +4,7 @@
     created              : Sun Mar 19 00:08:04 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: simuv21.cpp 3568 2011-05-15 15:55:24Z pouillot $
+    version              : $Id: simuv21.cpp 6097 2015-08-30 23:12:09Z beaglejoe $
 
  ***************************************************************************/
 
@@ -42,7 +42,7 @@ int closeGfModule()
 {
 	// Unregister it from the GfModule module manager.
 	if (Simuv21::_pSelf)
-		GfModule::unregister(Simuv21::_pSelf);
+		Simuv21::unregister(Simuv21::_pSelf);
 	
 	// Delete the (only) module instance.
 	delete Simuv21::_pSelf;

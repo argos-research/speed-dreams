@@ -2,8 +2,8 @@
 <!-- 
     file          : alpine-1.xml 
     created       : 28 Mar 2008 
-    last modified : 07 Mar 2010
-    copyright     : (C) 2008-2010 Wolf-Dieter Beelitz
+    last modified : 18 Mar 2014
+    copyright     : (C) 2008-2014 Wolf-Dieter Beelitz
 -->
 <!--    This program is free software; you can redistribute it and/or modify  -->
 <!--    it under the terms of the GNU General Public License as published by  -->
@@ -29,6 +29,6 @@
 		<attnum name="scale_mu" val="1.10"/>
 		<attnum name="scale bump" min="0" max="1" val="0.01"/>
 		<attnum name="scale bump outer" min="0" max="2" val="0.01"/>
-		<attnum name="lookaheadfactor" min="0.0" max="0.5" val="0.15"/>
+		<attnum name="lookaheadfactor" min="0.0" max="0.075" val="0.075"/>
 	</section>
 </params>

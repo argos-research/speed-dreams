@@ -3,7 +3,7 @@
     file                 : MPA1.xml
     created              : Sat JUL 13 15:30:00 CET 2013
     copyright            : (C) 2013 Wolf-Dieter Beelitz
-    version              : $Id: MPA1.xml 5666 2013-08-09 11:52:23Z kakukri $                                  
+    version              : $Id: MPA1.xml 6146 2015-09-24 23:45:36Z torcs-ng $                                  
 -->
 <!--    This program is free software; you can redistribute it and/or modify  -->
 <!--    it under the terms of the GNU General Public License as published by  -->
@@ -46,16 +46,40 @@
 		<attnum name="rear Clift" min="0.4" max="0.6" val="0.559"/>
 	</section>
 	<section name="Front Wing">
-		<attnum name="area" unit="m2" min="0.23" max="0.7" val="0.70"/>
-		<attnum name="angle" unit="deg" min="3" max="20" val="14"/>
-		<attnum name="xpos" unit="m" min="2.17" max="2.41" val="2.41"/>
+		<attstr name="wing type" in="FLAT,PROFILE,THIN" val="THIN"/>
+		<attnum name="area" unit="m2" min="0.237" max="0.70" val="0.237"/>
+		<attnum name="angle" unit="deg" min="1" max="30" val="4"/>
+		<attnum name="xpos" unit="m" min="2.17" max="2.41" val="2.17"/>
 		<attnum name="zpos" unit="m" min="0.1" max="0.16" val="0.1"/>
+		<attnum name="aoa at max" unit="deg" min="0.0" max="30.0" val="17.3"/>
+		<attnum name="aoa at zero" unit="deg" min="-30.0" max="0.0" val="-5.0"/>
+		<attnum name="aoa offset" unit="deg" min="0.0" max="15.0" val="15.0"/>
+		<attnum name="clift max" min="0.0" max="4.0" val="1.723"/>
+		<attnum name="clift at zero" min="0.0" max="1.0" val="0.55"/>
+		<attnum name="clift asymptotic" min="0.0" max="4.0" val="1.35"/>
+		<attnum name="clift delay" min="1.0" max="100.0" val="17"/>
+		<attnum name="clift curve" min="1.0" max="10.0" val="1.9"/>
+		<attnum name="angle of stall" unit="deg" min="1.0" max="45.0" val="22"/>
+		<attnum name="stall width" unit="deg" min="1.0" max="45.0" val="2"/>
+		<attnum name="aspect ratio" min="2.8" max="7.0" val="7.0"/>
 	</section>
 	<section name="Rear Wing">
-		<attnum name="area" unit="m2" min="0.27" max="0.5" val="0.45"/>
-		<attnum name="angle" unit="deg" min="3" max="20" val="18"/>
-		<attnum name="xpos" unit="m" min="-2.22" max="-2.11" val="-2.11"/>
+		<attstr name="wing type" in="FLAT,PROFILE" val="THIN"/>
+		<attnum name="area" unit="m2" min="0.271" max="0.49" val="0.271"/>
+		<attnum name="angle" unit="deg" min="1" max="30" val="4"/>
+		<attnum name="xpos" unit="m" min="-2.22" max="-2.11" val="-2.22"/>
 		<attnum name="zpos" unit="m" min="0.66" max="0.686" val="0.686"/>
+		<attnum name="aoa at max" unit="deg" min="0.0" max="30.0" val="17.3"/>
+		<attnum name="aoa at zero" unit="deg" min="-30.0" max="0.0" val="-5.0"/>
+		<attnum name="aoa offset" unit="deg" min="0.0" max="15.0" val="15.0"/>
+		<attnum name="clift max" min="0.0" max="4.0" val="1.723"/>
+		<attnum name="clift at zero" min="0.0" max="1.0" val="0.55"/>
+		<attnum name="clift asymptotic" min="0.0" max="4.0" val="1.35"/>
+		<attnum name="clift delay" min="1.0" max="100.0" val="17"/>
+		<attnum name="clift curve" min="1.0" max="10.0" val="1.9"/>
+		<attnum name="angle of stall" unit="deg" min="1.0" max="45.0" val="22"/>
+		<attnum name="stall width" unit="deg" min="1.0" max="45.0" val="2"/>
+		<attnum name="aspect ratio" min="2.33" max="8.4" val="4.5"/>
 	</section>
 	<section name="Engine">
 		<attnum name="inertia" unit="kg.m2" min="0.04" max="0.5" val="0.1"/>
@@ -235,7 +259,7 @@
 	</section>
 	<section name="Rear Differential">
 		<!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
-		<attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="LIMITED SLIP"/>
+		<attstr name="type" in="SPOOL,FREE,LIMITED SLIP,1.5 WAY LSD,ELECTRONIC LSD" val="LIMITED SLIP"/>
 		<attnum name="inertia" unit="kg.m2" min="0.001" max="0.1" val="0.0488"/>
 		<attnum name="ratio" min="0" max="10" val="5.595"/>
 		<attnum name="efficiency" min="0.5" max="1.0" val="0.934"/>
@@ -254,7 +278,7 @@
 		<!-- Adherence -->
 		<attnum name="stiffness" val="21.5"/>
 		<attnum name="pressure" unit="PSI" min="21" max="48" val="23.5"/>
-		<attnum name="operating load" unit="kg" min="3000" max="3350" val="3265"/>
+		<attnum name="operating load" unit="N" min="3000" max="3350" val="3265"/>
 		<attnum name="dynamic friction" unit="%" val="35"/>
 		<attnum name="elasticity factor" val="0.895"/>
 		<attnum name="rolling resistance" val="0.015"/>
@@ -276,7 +300,7 @@
 		<!-- Adherence -->
 		<attnum name="stiffness" val="21.5"/>
 		<attnum name="pressure" unit="PSI" min="21" max="36" val="23.5"/>
-		<attnum name="operating load" unit="kg" min="3000" max="3350" val="3265"/>
+		<attnum name="operating load" unit="N" min="3000" max="3350" val="3265"/>
 		<attnum name="dynamic friction" unit="%" val="35"/>
 		<attnum name="elasticity factor" val="0.895"/>
 		<attnum name="rolling resistance" val="0.015"/>
@@ -298,7 +322,7 @@
 		<!-- Adherence -->
 		<attnum name="stiffness" val="21.5"/>
 		<attnum name="pressure" unit="PSI" min="19" max="46" val="21.5"/>
-		<attnum name="operating load" unit="kg" min="4500" max="4750" val="4735"/>
+		<attnum name="operating load" unit="N" min="4500" max="4750" val="4735"/>
 		<attnum name="dynamic friction" unit="%" val="35"/>
 		<attnum name="elasticity factor" val="0.895"/>
 		<attnum name="rolling resistance" val="0.015"/>
@@ -320,7 +344,7 @@
 		<!-- Adherence -->
 		<attnum name="stiffness" val="21.5"/>
 		<attnum name="pressure" unit="PSI" min="19" max="36" val="21.5"/>
-		<attnum name="operating load" unit="kg" min="4500" max="4750" val="4735"/>
+		<attnum name="operating load" unit="N" min="4500" max="4750" val="4735"/>
 		<attnum name="dynamic friction" unit="%" val="35"/>
 		<attnum name="elasticity factor" val="0.895"/>
 		<attnum name="rolling resistance" val="0.015"/>

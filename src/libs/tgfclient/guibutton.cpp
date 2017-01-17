@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:18:21 CEST 1999
     copyright            : (C) 1999 by Eric Espie                         
     email                : torcs@free.fr   
-    version              : $Id: guibutton.cpp 4615 2012-03-25 18:39:34Z pouillot $                                  
+    version              : $Id: guibutton.cpp 5839 2014-11-15 15:05:25Z wdbee $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -20,7 +20,7 @@
 /** @file   
     		GUI Buttons Management.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: guibutton.cpp 4615 2012-03-25 18:39:34Z pouillot $
+    @version	$Id: guibutton.cpp 5839 2014-11-15 15:05:25Z wdbee $
     @ingroup	gui
 */
 
@@ -775,5 +775,6 @@ gfuiReleaseGrButton(tGfuiObject *obj)
 	GfTexFreeTexture(button->focused);
 	GfTexFreeTexture(button->pushed);
 
+	freez(button->userDataOnFocus);
 	free(obj);
 }//gfuiReleaseGrButton

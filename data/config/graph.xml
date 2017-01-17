@@ -4,7 +4,7 @@
     created              : Sun Dec  2 11:58:59 CET 2001
     copyright            : (C) 2001 by Eric Espi�                         
     email                : Eric.Espie@torcs.org   
-    version              : $Id: graph.xml 5775 2014-06-18 01:57:03Z mungewell $                                  
+    version              : $Id: graph.xml 5938 2015-04-01 21:25:15Z torcs-ng $                                  
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -14,39 +14,39 @@
 
 <!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
 
-<params name="graph" type="param" mode="mw" version="1.14">
-  <section name="Graphic">
-    <attnum name="smoke value" val="300"/>
-    <attnum name="smoke interval" val="0.01"/>
-    <attnum name="smoke duration" val="2.0"/>
+<params name="graph" type="param" mode="mw" version="1.17">
+	<section name="Graphic">
+    	<attnum name="smoke value" val="300"/>
+    	<attnum name="smoke interval" val="0.01"/>
+    	<attnum name="smoke duration" val="2.0"/>
 
-    <attnum name="skid value" val="20"/>
-    <attnum name="skid length" val="300"/>
-    <attnum name="skid interval" val="0.05"/>
+    	<attnum name="skid value" val="20"/>
+    	<attnum name="skid length" val="300"/>
+    	<attnum name="skid interval" val="0.05"/>
 
-    <attnum name="fov factor" unit="%" val="100"/>
-    <attnum name="LOD Factor" val="1"/>
-    <attnum name="sky dome distance" val="80000"/>
-    <attstr name="dynamic sky dome" val="enabled"/>
-    <attnum name="precipitation density" unit="%" val="100"/>
-    <attnum name="cloudlayer" val="1"/>
-    <attstr name="background skydome" val="enabled"/>
-	<attstr name="background type" val="background"/>
-	<attnum name="visibility" val="12000"/>
-	<attstr name="spectator LOD" val="none"/>
-	<attstr name="forest LOD" val="none"/>
-	<attstr name="tree LOD" val="none"/>
-	<attstr name="parking LOD" val="none"/>
-    <attstr name="span splits" val="no"/>
-    <attnum name="bezel compensation" unit="%" val="110"/>
-    <attnum name="screen distance" val="1.0"/>
-    <attnum name="arc ratio" val="1.0"/>
-    <attstr name="monitor type" val="none"/>
-	<attstr name="shadow type" val="none"/>
-	<attnum name="texture shadow size" val="4096"/>		
-	<attstr name="texture environment" val="full"/>		
-	<attnum name="environment size" val="256"/>
-  </section>
+    	<attnum name="fov factor" unit="%" val="100"/>
+    	<attnum name="LOD Factor" val="1"/>
+    	<attnum name="sky dome distance" val="20000"/>
+    	<attstr name="dynamic sky dome" val="enabled"/>
+    	<attnum name="precipitation density" unit="%" val="100"/>
+    	<attnum name="cloudlayer" val="1"/>
+    	<attstr name="background skydome" val="enabled"/>
+		<attstr name="background type" val="background"/>
+		<attnum name="visibility" val="10000"/>
+		<attstr name="scene lod" val="full"/>
+		<attstr name="cockpit 3d" val="no"/>
+    	<attstr name="span splits" val="no"/>
+    	<attnum name="bezel compensation" unit="%" val="110"/>
+    	<attnum name="screen distance" val="1.0"/>
+    	<attnum name="arc ratio" val="1.0"/>
+    	<attstr name="monitor type" val="none"/>
+		<attstr name="shadow type" val="light shadowmap"/>
+		<attnum name="texture shadow size" val="1024"/>
+		<attstr name="shadow quality" val="little"/>
+		<attstr name="shaders" val="none"/>
+		<attstr name="texture environment" val="full"/>		
+		<attnum name="environment size" val="256"/>
+  	</section>
 
   <section name="Playable Cameras Distance of Views">
     <attnum name="Front Level Group Global" val="600"/>

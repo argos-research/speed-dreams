@@ -4,7 +4,7 @@
     created              : Mon Aug 21 18:24:02 CEST 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: grcar.cpp 5674 2013-08-10 21:42:15Z torcs-ng $
+    version              : $Id: grcar.cpp 5943 2015-04-02 20:30:41Z torcs-ng $
 
 ***************************************************************************/
 
@@ -310,7 +310,8 @@ initWheel(tCarElt *car, int wheel_index, const char *wheel_mod_name)
 		whl_branch->addKid(whl);
 
 		/* Rim */
-		switch(wheel_index) {
+        switch(wheel_index)
+        {
 		    case FRNT_RGT:
 		    case REAR_RGT:
 			b_offset = -0.05;
@@ -325,7 +326,8 @@ initWheel(tCarElt *car, int wheel_index, const char *wheel_mod_name)
 		float colorfactor[2];
 		float norm_orig = nrm[1];
 
-		if (nrm[1] > 0.0f) {
+        if (nrm[1] > 0.0f)
+        {
 		    colorfactor[0] = 0.3f;
 		    colorfactor[1] = 1.0f;
 		    nrm[1] *= -1.0f;
@@ -818,8 +820,14 @@ grInitCar(tCarElt *car)
 	{
 		if (grSpeedway)
 		{
-			param = GfParmGetStr(handle, path, PRM_WING_2, NULL);
+            if (grSpeedwayshort)
+                param = GfParmGetStr(handle, path, PRM_WING_1, NULL);
+
+            else
+                param = GfParmGetStr(handle, path, PRM_WING_2, NULL);
 		}
+        else
+            param = GfParmGetStr(handle, path, PRM_WING_3, NULL);
 
 		ssgEntity *wingEntity = grssgCarLoadAC3D(param, NULL, index);
 		carBody->addKid(wingEntity);

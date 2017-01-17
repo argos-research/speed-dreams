@@ -4,7 +4,7 @@
     created              : Wed May 14 19:53:00 CET 2003
     copyright            : (C) 2003-2004 by Bernhard Wymann
     email                : berniw@bluewin.ch
-    version              : $Id: mod.h 3483 2011-04-09 14:43:21Z pouillot $
+    version              : $Id: mod.h 5950 2015-04-05 19:34:04Z torcs-ng $
 
  ***************************************************************************/
 
@@ -22,16 +22,17 @@
 
 #define LMOD_DATA 200
 
-typedef struct {
-  double dval;
-  int ival;
-  int divstart;
-  int divend;
+typedef struct
+{
+    double dval;
+    int ival;
+    int divstart;
+    int divend;
 } LRLModData;
 
 typedef struct {
-  LRLModData data[LMOD_DATA];
-  int used;
+    LRLModData data[LMOD_DATA];
+    int used;
 } LRLMod;
 
 extern void AddMod( LRLMod *mod, int divstart, int divend, double dval, int ival );

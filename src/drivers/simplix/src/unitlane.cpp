@@ -1,20 +1,17 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*
 // unitlane.cpp
 //--------------------------------------------------------------------------*
-// TORCS: "The Open Racing Car Simulator"
-// A robot for Speed Dreams-Version 1.4.0/2.X
+// A robot for Speed Dreams-Version 2.X simuV4
 //--------------------------------------------------------------------------*
 // Lane
 // Fahrspur
 //
 // File         : unitlane.cpp
 // Created      : 2007.11.25
-// Last changed : 2013.03.02
-// Copyright    : © 2007-2013 Wolf-Dieter Beelitz
-// eMail        : wdb@wdbee.de
-// Version      : 4.00.000
-//--------------------------------------------------------------------------*
-// Ein erweiterter TORCS-Roboters
+// Last changed : 2014.11.29
+// Copyright    : © 2007-2014 Wolf-Dieter Beelitz
+// eMail        : wdbee@users.sourceforge.net
+// Version      : 4.05.000
 //--------------------------------------------------------------------------*
 // Teile diese Unit basieren auf diversen Header-Dateien von TORCS
 //
@@ -29,12 +26,12 @@
 // dem Roboter delphin
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // dem Roboter wdbee_2007
 //
 //    Copyright: (C) 2006-2007 Wolf-Dieter Beelitz
-//    eMail    : wdb@wdbee.de
+//    eMail    : wdbee@users.sourceforge.net
 //
 // und dem Roboter mouse_2006
 //
@@ -433,17 +430,11 @@ void TLane::CalcMaxSpeeds
   {
 	int P = (Start + I) % N;
 	int Q = (P + 1) % N;
-	int O1 = (P + N - 12) % N;
-	int O2 = (P + 12) % N;
-    double CrvZ1 = MIN(0.0,oPathPoints[O1].CrvZ) * 1000;
-    double CrvZ2 = MIN(0.0,oPathPoints[O2].CrvZ) * 1000;
     TVec3d Delta = oPathPoints[P].CalcPt() - oPathPoints[Q].CalcPt();
     double Dist = TUtils::VecLenXY(Delta);
     double TrackRollAngle = atan2(oPathPoints[P].Norm().z, 1);
     double TrackTiltAngle = 1.1 * atan2(Delta.z, Dist);
-
-	double CrvZ = ((CrvZ1+CrvZ2) * fabs(CrvZ1+CrvZ2)) / 10000;
-    CrvZ = oPathPoints[Q].CrvZ;
+    double CrvZ = oPathPoints[Q].CrvZ;
 		 
 	double Speed = oFixCarParam.CalcMaxSpeed(
       oCarParam,

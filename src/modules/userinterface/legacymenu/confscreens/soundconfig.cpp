@@ -4,7 +4,7 @@
     created     : Thu Dec 12 15:12:07 CET 2004
     copyright   : (C) 2004 Eric Espi�, Bernhard Wymann, baseed on simuconfig.cpp
     email       : berniw@bluewin.ch
-    version     : $Id: soundconfig.cpp 5485 2013-05-28 15:50:38Z beaglejoe $
+    version     : $Id: soundconfig.cpp 6201 2015-11-07 14:21:47Z beaglejoe $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 
 /** @file   
     		
-    @version	$Id: soundconfig.cpp 5485 2013-05-28 15:50:38Z beaglejoe $
+    @version	$Id: soundconfig.cpp 6201 2015-11-07 14:21:47Z beaglejoe $
 */
 
 #include <cstdio>
@@ -228,14 +228,6 @@ void* SoundMenuInit(void *prevMenu)
 	GfuiMenuCreateButtonControl(scrHandle,param,"CancelButton",prevMenu,GfuiScreenActivate);
 
 	VolumeValueId = GfuiMenuCreateEditControl(scrHandle,param,"volumeedit",NULL,NULL,changeVolume);
-
-
-	//// TODO remove this and uncomment the static controls in 'soundconfigmenu.xml'
-	//// if/when Music is officially included
-	//// HACK to allow CMake option 'OPTION_MENU_MUSIC' to show/hide these menu music labels
-	//GfuiMenuCreateLabelControl(scrHandle,param,"musicstaticlabel");
-	//GfuiMenuCreateLabelControl(scrHandle,param,"musicstaticvolume");
-	//// end of code to remove
 
 	GfuiMenuCreateButtonControl(scrHandle,param,"musicleftarrow",(void*)-1,changeMusicState);
 	GfuiMenuCreateButtonControl(scrHandle,param,"musicrightarrow",(void*)1,changeMusicState);

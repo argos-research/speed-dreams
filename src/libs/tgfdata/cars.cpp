@@ -4,7 +4,7 @@
     created              : July 2009
     copyright            : (C) 2009 Brian Gavin, 2010 Jean-Philippe Meuret
     web                  : speed-dreams.sourceforge.net
-    version              : $Id: cars.cpp 5284 2013-03-10 10:49:04Z pouillot $
+    version              : $Id: cars.cpp 5899 2014-12-17 21:00:23Z wdbee $
 
  ***************************************************************************/
 
@@ -104,7 +104,7 @@ GfCars::GfCars()
 		void* hparmCar = GfParmReadFile(ossCarFileName.str().c_str(), GFPARM_RMODE_STD);
 		if (!hparmCar)
 		{
-			GfLogWarning("Ignoring car %s (file %s not %s)\n",
+			GfLogInfo("Ignoring car %s (file %s not %s)\n",
 						 pszCarId, ossCarFileName.str().c_str(),
 						 GfFileExists(ossCarFileName.str().c_str()) ? "readable" : "found");
 			continue;
@@ -120,7 +120,7 @@ GfCars::GfCars()
 			void* hparmCat = GfParmReadFile(ossCatFileName.str().c_str(), GFPARM_RMODE_STD);
 			if (!hparmCat)
 			{
-				GfLogWarning("Ignoring car %s (category file %s not %s)\n",
+				GfLogInfo("Ignoring car %s (category file %s not %s)\n",
 							 pszCarId, ossCatFileName.str().c_str(),
 							 GfFileExists(ossCatFileName.str().c_str()) ? "readable" : "found");
 				GfParmReleaseHandle(hparmCar);

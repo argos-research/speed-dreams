@@ -4,7 +4,7 @@
     created              : Sun Feb 25 00:34:46 2001
     copyright            : (C) 2000 by Eric Espie
     email                : eric.espie@torcs.org
-    version              : $Id: raceloadingmenu.cpp 4361 2012-01-07 14:05:16Z pouillot $
+    version              : $Id: raceloadingmenu.cpp 6270 2015-11-23 19:44:40Z madbad $
 
  ***************************************************************************/
 
@@ -21,7 +21,7 @@
     		The menu for when the race is running
     @ingroup	racemantools		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: raceloadingmenu.cpp 4361 2012-01-07 14:05:16Z pouillot $
+    @version	$Id: raceloadingmenu.cpp 6270 2015-11-23 19:44:40Z madbad $
 */
 
 #include <cstring>
@@ -115,6 +115,12 @@ RmLoadingScreenStart(const char *title, const char *bgimg)
     // Display screen.
     GfuiScreenActivate(HScreen);
     GfuiDisplay();
+
+	#ifdef WEBSERVER
+    //force one redisplay
+    GfuiApp().eventLoop().forceRedisplay(); 
+	#endif //WEBSERVER
+
 }
 
 void
@@ -174,5 +180,9 @@ RmLoadingScreenSetText(const char *text)
 	while (i != CurTextLineIdx);
 	
 	GfuiDisplay();
+	#ifdef WEBSERVER
+    //force one redisplay
+    GfuiApp().eventLoop().forceRedisplay(); 
+	#endif //WEBSERVER
 }
  

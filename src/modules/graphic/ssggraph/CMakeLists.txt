@@ -38,7 +38,12 @@ ADD_INTERFACE_INCLUDEDIR()
 ADD_SDLIB_INCLUDEDIR(portability math tgf tgfclient robottools)
 
 ADD_PLIB_INCLUDEDIR()
-ADD_SDL_INCLUDEDIR()
+
+IF(OPTION_SDL2)
+	ADD_SDL2_INCLUDEDIR()
+ELSE(OPTION_SDL2)
+	ADD_SDL_INCLUDEDIR()
+ENDIF(OPTION_SDL2)
 
 IF(COMMAND CMAKE_POLICY)
     CMAKE_POLICY(SET CMP0003 NEW)
@@ -50,9 +55,13 @@ IF(WIN32)
 ENDIF(WIN32)
 
 IF(MSVC)
-   # Ignore some run-time libs to avoid link time warnings and sometimes even crashes.
-    SET(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:msvcrt.lib")
+    # Ignore some run-time libs to avoid link time warnings and sometimes even crashes.
+    SET(CMAKE_MODULE_LINKER_FLAGS_DEBUG 
+        "${CMAKE_MODULE_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:msvcrt.lib /NODEFAULTLIB:libcmtd.lib")
+    SET(CMAKE_MODULE_LINKER_FLAGS_RELEASE 
+        "${CMAKE_MODULE_LINKER_FLAGS_RELEASE} /NODEFAULTLIB:libcmt.lib")
 ENDIF(MSVC)
+
 
 # Note: Other sources and headers needed for having them available in IDEs.
 SD_ADD_LIBRARY(ssggraph MODULE ${SSGGRAPH_SOURCES} ${SSGGRAPH_HEADERS} ${SSGGRAPH_OTHER_SOURCES})
@@ -60,8 +69,18 @@ SD_ADD_LIBRARY(ssggraph MODULE ${SSGGRAPH_SOURCES} ${SSGGRAPH_HEADERS} ${SSGGRAP
 # Might not work with GCC 4.5 or + (non-robot modules crash at 1st reload = after 1 dlclose) 
 #SET_TARGET_PROPERTIES(ssggraph PROPERTIES VERSION ${VERSION} SOVERSION 0.0.0)
 
-ADD_PLIB_LIBRARY(ssggraph ul sg sl ssg ssgaux)
-ADD_SDL_LIBRARY(ssggraph)
+IF(OPTION_USE_MACPORTS)
+   ADD_PLIB_LIBRARY(ssggraph ul sg ssg ssgaux)
+ELSE(OPTION_USE_MACPORTS)
+   ADD_PLIB_LIBRARY(ssggraph ul sg sl ssg ssgaux)
+ENDIF(OPTION_USE_MACPORTS)
+
+IF(OPTION_SDL2)
+	ADD_SDL2_LIBRARY(ssggraph)
+ELSE(OPTION_SDL2)
+	ADD_SDL_LIBRARY(ssggraph)
+ENDIF(OPTION_SDL2)
+
 ADD_OPENGL_LIBRARY(ssggraph)
 
 ADD_SDLIB_LIBRARY(ssggraph portability tgf tgfclient robottools)

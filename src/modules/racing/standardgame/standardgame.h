@@ -3,7 +3,7 @@
     file        : standardgame.h
     copyright   : (C) 2010 by Jean-Philippe Meuret                        
     email       : pouillot@users.sourceforge.net   
-    version     : $Id: standardgame.h 5158 2013-02-17 17:06:28Z wdbee $                                  
+    version     : $Id: standardgame.h 6084 2015-08-21 00:07:15Z beaglejoe $                                  
 
  ***************************************************************************/
 
@@ -18,7 +18,7 @@
  
 /** @file    
     		The standard game race engine module
-    @version    $Id: standardgame.h 5158 2013-02-17 17:06:28Z wdbee $
+    @version    $Id: standardgame.h 6084 2015-08-21 00:07:15Z beaglejoe $
 */
 
 #ifndef _STANDARDGAME_H_
@@ -86,6 +86,9 @@ public:
 #ifdef SD_DEBUG
 	virtual void step(double dt);
 #endif
+
+	virtual void stopPreracePause();
+	virtual void stopCooldown();
 
 	virtual GfRace* race();
 	virtual const GfRace* race() const;

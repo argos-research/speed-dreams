@@ -3,7 +3,7 @@
     file        : genetic.cpp
     created     : Sun Nov 06 09:15:00 CET 2011
     copyright   : (C) 2011-2013 by Wolf-Dieter Beelitz
-    email       : wdb@wdbee.de
+    email       : wdbee@users.sourceforge.net
     version     : $Id: genetic.cpp 3657 2011-11-06 09:15:00Z wdbee $
  ***************************************************************************/
 
@@ -18,7 +18,7 @@
 
 /** @file   
     		Helper for parameter handling while optimizations
-    @author	<a href=mailto:wdb@wdbee.de>WDBee</a>
+    @author	<a href=mailto:wdbee@users.sourceforge.net>WDBee</a>
     @version	$Id: genetic.cpp 3657 2011-11-06 09:15:00Z wdbee $
 */
 
@@ -52,6 +52,7 @@ TGeneticParameter::TGeneticParameter():
 	Changed(0),
 	Selected(false),
 	LeftRight(false),
+	SameSign(true),
 	Label(NULL),
 	Section(NULL),
 	Parameter(NULL),
@@ -74,7 +75,7 @@ TGeneticParameter::TGeneticParameter
 	float ParamWeight,
 	float ParamScale,
 	float ParamRound,
-	bool TwoSided
+	int TwoSided
 )
 {
 	Handle = MetaDataFile;
@@ -123,7 +124,19 @@ TGeneticParameter::TGeneticParameter
 		Range = Max - Min;
 	}
 
-	LeftRight = TwoSided;
+	if (TwoSided != 0)
+	{
+		LeftRight = true;
+		if (TwoSided > 0)
+			SameSign = true;
+		else
+			SameSign = false;
+	}
+	else
+	{
+		SameSign = true;
+		LeftRight = false;
+	}
 
 };
 
@@ -149,7 +162,10 @@ void TGeneticParameter::DisplayParameter()
 // Display parameter statistics at console
 void TGeneticParameter::DisplayStatistik()
 {
+	char buf[80];
 	ReLogOptim.info("%s: N=%d M=%d (%g %%)\n",Label,Tries,Changed,(100.0 * Changed)/Tries);
+	snprintf(buf,sizeof(buf),"%s: N=%d M=%d (%.1f %%)",Label,Tries,Changed,(100.0 * Changed)/Tries);;
+	ReUI().addOptimizationMessage(buf); 
 };
 
 // Write parameter meta data to xml file
@@ -162,7 +178,16 @@ int TGeneticParameter::Set(const char* Part, int Index)
 	  sprintf(ParamSection,"%s/%d",Part,Index);
 
 	GfParmSetNum(Handle, ParamSection, PRM_ACTIVE, 0, (float) Active);
-	GfParmSetNum(Handle, ParamSection, PRM_TWOSIDE, 0, (float) LeftRight);
+
+	if (LeftRight)
+	{
+		if (SameSign)
+			GfParmSetNum(Handle, ParamSection, PRM_TWOSIDE, 0, 1);
+		else
+			GfParmSetNum(Handle, ParamSection, PRM_TWOSIDE, 0, -1);
+	}
+	else
+		GfParmSetNum(Handle, ParamSection, PRM_TWOSIDE, 0, 0);
 
 	GfParmSetStr(Handle, ParamSection, PRM_LABEL, Label);
 	GfParmSetStr(Handle, ParamSection, PRM_SECT, Section);
@@ -195,7 +220,21 @@ int TGeneticParameter::Get(bool First, const char* Part)
 		GfParmListSeekNext(Handle, ParamSection);
 
 	Active = 0 < GfParmGetCurNum(Handle, ParamSection, PRM_ACTIVE, 0, 1);
-	LeftRight = 0 < GfParmGetCurNum(Handle, ParamSection, PRM_TWOSIDE, 0, 0);
+	int Flags = GfParmGetCurNum(Handle, ParamSection, PRM_TWOSIDE, 0, 0);
+	if (Flags != 0)
+	{
+		LeftRight = true;
+		if (Flags > 0)
+			SameSign = true;
+		else
+			SameSign = false;
+	}
+	else
+	{
+		SameSign = true;
+		LeftRight = false;
+	}
+
 
 	char* Value = (char *) GfParmGetCurStr(Handle, ParamSection, PRM_LABEL, Label);
 	if (Label)
@@ -265,7 +304,11 @@ int TGeneticParameter::GetVal(void* SetupHandle, bool First, bool Local)
 			Val = GfParmGetCurNum(SetupHandle, SideParam, Parameter, Unit, Val);
 
 			sprintf(SideParam,ParamSection,SECT_PH_RGHT);
-			Val = (Val + GfParmGetCurNum(SetupHandle, SideParam, Parameter, Unit, Val)) / 2;
+
+			if (SameSign)
+				Val = (Val + GfParmGetCurNum(SetupHandle, SideParam, Parameter, Unit, Val)) / 2;
+			else
+				Val = (Val - GfParmGetCurNum(SetupHandle, SideParam, Parameter, Unit, Val)) / 2;
 
 		}
 		else
@@ -281,7 +324,11 @@ int TGeneticParameter::GetVal(void* SetupHandle, bool First, bool Local)
 			Val = GfParmGetNum(SetupHandle, SideParam, Parameter, Unit, Val);
 
 			sprintf(SideParam,ParamSection,SECT_PH_RGHT);
-			Val = (Val + GfParmGetNum(SetupHandle, SideParam, Parameter, Unit, Val)) / 2;
+
+			if (SameSign)
+				Val = (Val + GfParmGetNum(SetupHandle, SideParam, Parameter, Unit, Val)) / 2;
+			else
+				Val = (Val - GfParmGetNum(SetupHandle, SideParam, Parameter, Unit, Val)) / 2;
 
 		}
 		else
@@ -310,7 +357,11 @@ int TGeneticParameter::SetVal(void* SetupHandle, int Index)
 		GfParmSetNum(SetupHandle, SideParam, Parameter, Unit, Val, Min, Max);
 
 		sprintf(SideParam,ParamSection,SECT_PH_RGHT);
-		return GfParmSetNum(SetupHandle, SideParam, Parameter, Unit, Val, Min, Max);
+
+		if(SameSign)
+			return GfParmSetNum(SetupHandle, SideParam, Parameter, Unit, Val, Min, Max);
+		else
+			return GfParmSetNum(SetupHandle, SideParam, Parameter, Unit, -Val, Min, Max);
 	}
 	else
 		return GfParmSetNum(SetupHandle, ParamSection, Parameter, Unit, Val, Min, Max);

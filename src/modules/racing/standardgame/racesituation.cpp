@@ -3,7 +3,7 @@
     file        : racesituation.cpp
     copyright   : (C) 2010 by Jean-Philippe Meuret
     web         : www.speed-dreams.org 
-    version     : $Id: racesituation.cpp 5226 2013-02-28 05:50:12Z mungewell $
+    version     : $Id: racesituation.cpp 6294 2015-11-30 00:20:46Z kakukri $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 /** @file   
     		The central raceman data structure (situation + other race infos)
     @author	    Jean-Philippe Meuret
-    @version	$Id: racesituation.cpp 5226 2013-02-28 05:50:12Z mungewell $
+    @version	$Id: racesituation.cpp 6294 2015-11-30 00:20:46Z kakukri $
 */
 
 #include <cstdlib>
@@ -29,10 +29,18 @@
 #include <SDL.h>
 #include <SDL_thread.h>
 
+#ifdef THIRD_PARTY_SQLITE3
+#include <sqlite3.h>
+#endif
+
 #include <portability.h>
 #include <network.h>
 #include <robot.h>
 #include <raceman.h>
+#include <replay.h>
+#ifdef WEBSERVER
+#include <webserver.h>
+#endif //WEBSERVER
 
 #include "standardgame.h"
 
@@ -42,6 +50,7 @@
 #include "raceresults.h"
 #include "racemessage.h"
 #include "racenetwork.h"
+
 
 
 // The singleton.
@@ -157,10 +166,26 @@ void ReSituation::accelerateTime(double fMultFactor)
 {
 	lock("accelerateTime");
 
-	_pReInfo->_reTimeMult *= fMultFactor;
+	if (_pReInfo->_reTimeMult > 0.0)
+	    _pReInfo->_reTimeMult *= fMultFactor;
+	else
+	    _pReInfo->_reTimeMult /= fMultFactor;
+
 	if (fMultFactor == 0.0)
 	    _pReInfo->_reTimeMult = 1.0;
-	else if (_pReInfo->_reTimeMult > 64.0)
+	else if (replayReplay) {
+            // allow for the reversal of time on replays (note this is divider not multipler)
+            if (_pReInfo->_reTimeMult > 4.0) {
+                GfLogInfo("Reversing Time %f\n", _pReInfo->_reCurTime);
+                _pReInfo->_reTimeMult = -4.0;
+            } else if (_pReInfo->_reTimeMult < -4.0) {
+                GfLogInfo("Correcting Time at %f\n", _pReInfo->_reCurTime);
+                _pReInfo->_reTimeMult = 4.0;
+            } else if (_pReInfo->_reTimeMult > -0.0625 && _pReInfo->_reTimeMult < 0.0)
+                _pReInfo->_reTimeMult = -0.0625;
+            else if (_pReInfo->_reTimeMult < 0.0625 && _pReInfo->_reTimeMult > 0.0)
+                _pReInfo->_reTimeMult = 0.0625;
+	} else if (_pReInfo->_reTimeMult > 64.0)
 	    _pReInfo->_reTimeMult = 64.0;
 	else if (_pReInfo->_reTimeMult < 0.0625)
 	    _pReInfo->_reTimeMult = 0.0625;
@@ -234,13 +259,13 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 		{
 			s->currentTime = GfTimeClock() - NetGetNetwork()->GetRaceStartTime();
 		}
+	}
 
-		if (s->currentTime < -2.0)
-		{
-			std::ostringstream ossMsg;
-			ossMsg << "Race will start in " << -(int)s->currentTime << " seconds";
-			ReRaceMsgSetBig(pCurrReInfo, ossMsg.str().c_str());
-		}
+	if (s->currentTime < -2.0)
+	{
+		std::ostringstream ossMsg;
+		ossMsg << "Race will start in " << -(int)s->currentTime << " seconds";
+		ReRaceMsgSetBig(pCurrReInfo, ossMsg.str().c_str());
 	}
 
 	//GfLogDebug("ReSituationUpdater::runOneStep: currTime=%.3f\n", s->currentTime);
@@ -256,12 +281,20 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 	}
 
 	// Update times.
-	pCurrReInfo->_reCurTime += deltaTimeIncrement * pCurrReInfo->_reTimeMult; /* "Real" time */
-	s->currentTime += deltaTimeIncrement; /* Simulated time */
+	pCurrReInfo->_reCurTime += deltaTimeIncrement * fabs(pCurrReInfo->_reTimeMult); /* "Real" time */
+
+	if (pCurrReInfo->_reTimeMult > 0)
+		s->currentTime += deltaTimeIncrement;
+	else
+		s->currentTime -= deltaTimeIncrement;
 
 	if (s->currentTime < 0) {
-		/* no simu yet */
-		pCurrReInfo->s->_raceState = RM_RACE_PRESTART;
+		if (pCurrReInfo->_reTimeMult < 0)
+			/* Revert to forward time x1 */
+			pCurrReInfo->_reTimeMult = 1;
+		else
+			/* no simu yet */
+			pCurrReInfo->s->_raceState = RM_RACE_PRESTART;
 	} else if (pCurrReInfo->s->_raceState == RM_RACE_PRESTART) {
 		pCurrReInfo->s->_raceState = RM_RACE_RUNNING;
 		s->currentTime = 0.0; /* resynchronize */
@@ -297,7 +330,8 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 		for (int i = 0; i < s->_ncars; i++) {
 			if ((s->cars[i]->_state & RM_CAR_STATE_NO_SIMU) == 0) {
 				robot = s->cars[i]->robot;
-				robot->rbDrive(robot->index, s->cars[i], s);
+				if (replayReplay == 0)
+					robot->rbDrive(robot->index, s->cars[i], s);
 			}
 			else if (! (s->cars[i]->_state & RM_CAR_STATE_ENDRACE_CALLED ) && ( s->cars[i]->_state & RM_CAR_STATE_OUT ) == RM_CAR_STATE_OUT )
 			{ // No simu, look if it is out
@@ -336,6 +370,62 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 		else if (pCurrReInfo->s->_raceType == RM_TYPE_QUALIF)
 			ReUpdateQualifCurRes(pCurrReInfo->s->cars[0]);
 	}
+
+	if (replayRecord && pCurrReInfo->s->currentTime >= replayTimestamp) {
+		replaySituation(pCurrReInfo);
+	}
+
+	#ifdef WEBSERVER
+	// webServer lap logger.
+	extern TGFCLIENT_API WebServer webServer;
+	//Find human cars
+	for (int i = 0; i < pCurrReInfo->s->_ncars; i++) {
+		if(pCurrReInfo->s->cars[i]->_driverType == RM_DRV_HUMAN){
+			//if: 
+			//- at least a lap has been done 
+			//- a lap is passed 
+			//- we have not done the final lap
+			// then log it to the webServer
+			if(pCurrReInfo->s->cars[i]->_laps > 1 && pCurrReInfo->s->cars[i]->_laps > webServer.previousLaps && webServer.raceEndSent==false){
+				
+				//remember the current number of laps for next cicle
+				webServer.previousLaps = pCurrReInfo->s->cars[i]->_laps;
+
+				//GfLogInfo("############rain: %i, ",trackLocal->rain); //0=no 1=little 2=medium 3=heawy
+				//GfLogInfo("############WATER: %i, ",trackLocal->water); //0=no 1=little  2=medium  3=heawy
+
+
+				//send the lap info to the server
+				webServer.sendLap(
+					webServer.raceId,						//race_id
+					pCurrReInfo->s->cars[i]->_lastLapTime,	//laptime
+					pCurrReInfo->s->cars[i]->_fuel,			//car remaining fuel at the end of the lap
+					pCurrReInfo->s->cars[i]->_pos,			//car position
+					trackLocal->water						//level of water on track
+					//VERSION_LONG, 						//speed dreams version
+					//pCurrReInfo->s->cars[i]->_name, 		//player name
+					//pCurrReInfo->s->cars[i]->_skillLevel,	//player skill level: 0 rokie/ 1 amateour/ 2 semi-pro/ 3 pro
+					//pCurrReInfo->track->name,				//track name
+					//strName,								//os info
+					//pCurrReInfo->s->_raceType,			//type of race: 0 practice/ 1 qualify/ 2 race
+					//pCurrReInfo->s->cars[i]->_carName,	//car name
+					//pCurrReInfo->s->cars[i]->_category,	//car category
+				);
+			}
+			
+			//if we have already done the last lap but we have not yet sent the raceEnd comunication to the webserver: do it!
+			if(pCurrReInfo->s->cars[i]->_remainingLaps < 0 && webServer.raceEndSent == false){
+				//send race data
+				webServer.sendRaceEnd (
+					webServer.raceId,
+					ReInfo->s->cars[i]->_pos				//car end position,
+				);
+			}
+		}
+	}
+	webServer.updateAsyncStatus();
+	#endif //WEBSERVER	
+
 }
 
 int ReSituationUpdater::threadLoop(void* pUpdater)
@@ -474,6 +564,7 @@ ReSituationUpdater::ReSituationUpdater()
 	// Initialize termination flag.
 	_bTerminate = false;
 
+
 	if (_bThreaded)
 	{
 		// Initialize the race engine info (state + situation) pointer for the previous step.
@@ -483,7 +574,11 @@ ReSituationUpdater::ReSituationUpdater()
 		ReSituation::self().setThreadSafe(true);
 		
 		// Create and start the updater thread.
+#if SDL_MAJOR_VERSION >= 2
+		_pUpdateThread = SDL_CreateThread(ReSituationUpdater::threadLoop,"Update_thread",this);
+#else
 		_pUpdateThread = SDL_CreateThread(ReSituationUpdater::threadLoop, this);
+#endif
 	}
 	else
 	{
@@ -560,11 +655,18 @@ int ReSituationUpdater::terminate()
 	
 	GfLogInfo("Terminating situation updater.\n");
 
+	/* need to ensure the last record gets writeen */
+	tRmInfo* pCurrReInfo = ReSituation::self().data();
+	if (replayRecord) {
+		replaySituation(pCurrReInfo);
+		GfLogInfo("Last replay entry done.\n");
+	}
+
 	// Lock the race engine data.
 	ReSituation::self().lock("ReSituationUpdater::terminate");
 
 	// Set the death flag.
-    _bTerminate = true;
+	_bTerminate = true;
 	
 	// Unlock the race engine data.
 	ReSituation::self().unlock("ReSituationUpdater::terminate");
@@ -661,6 +763,7 @@ tRmInfo* ReSituationUpdater::copySituation(tRmInfo*& pTarget, const tRmInfo* pSo
 		pTgtCar->_curTime = pSrcCar->_curTime;
 		pTgtCar->_topSpeed = pSrcCar->_topSpeed;
 		pTgtCar->_laps = pSrcCar->_laps;
+		pTgtCar->_bestLap = pSrcCar->_bestLap;
 		pTgtCar->_nbPitStops = pSrcCar->_nbPitStops;
 		pTgtCar->_remainingLaps = pSrcCar->_remainingLaps;
 		pTgtCar->_pos = pSrcCar->_pos;
@@ -693,9 +796,9 @@ tRmInfo* ReSituationUpdater::copySituation(tRmInfo*& pTarget, const tRmInfo* pSo
 		//{
 		//	tCarPenalty *newPenalty = (tCarPenalty*)malloc(sizeof(tCarPenalty));
 		//	newPenalty->penalty = penalty->penalty;
-		//	newPenalty->lapToClear = penalty->lapToClear;
-		//	GfLogDebug("ReSituationCopy(car #%d) : Copying penalty %p to %p\n",
-		//			   pSrcCar->index, penalty, newPenalty);
+		//      newPenalty->lapToClear = penalty->lapToClear;
+		//      GfLogDebug("ReSituationCopy(car #%d) : Copying penalty %p to %p\n",
+		//                         pSrcCar->index, penalty, newPenalty);
 		//	GF_TAILQ_INSERT_TAIL(&(pTgtCar->_penaltyList), newPenalty, link);
 		//	penalty = GF_TAILQ_NEXT(penalty, link);
 		//}
@@ -718,6 +821,13 @@ tRmInfo* ReSituationUpdater::copySituation(tRmInfo*& pTarget, const tRmInfo* pSo
 		//pTgtCar->_debug = pSrcCar->_debug; // Ever used anywhere ?
 		pTgtCar->priv.collision_state = pSrcCar->priv.collision_state;
 		//pTgtCar->_memoryPool ...; // ???? Memory pool copy ??????
+		pTgtCar->_dashboardActiveItem = pSrcCar->_dashboardActiveItem;
+		/* NOTE: dashboardInstant, dashboardInstantNb, dashboardRequest, dashboardRequestNb
+		 * are not copied, because they are initialized once and never changed again.
+		 * An dashboardInstant and dashboardRequest's tCarSetupItem pointers
+		 * are not updated, so they always point to the targets setup field.
+		 * This is safe until the graphics engine does not start to change car setups.
+		 */ 
 
 		// 5) ctrl (raw mem copy)
 		memcpy(&pTgtCar->ctrl, &pSrcCar->ctrl, sizeof(tCarCtrl));
@@ -785,6 +895,152 @@ tRmInfo* ReSituationUpdater::copySituation(tRmInfo*& pTarget, const tRmInfo* pSo
 		pTarget->_rePitRequester = 0;
 
 	return pTarget;
+}
+
+void ReSituationUpdater::replaySituation(tRmInfo*& pSource)
+{
+#ifdef THIRD_PARTY_SQLITE3
+	char command[200];
+	int result;
+
+	tReplayElt dummyTarget;
+	tReplayElt* pTgtCar;
+	tCarElt* pSrcCar;
+
+	if (!replayDB) return;
+	
+	// Do everything in 1 transaction for speed
+	sqlite3_exec(replayDB, "BEGIN TRANSACTION", NULL, NULL, NULL);
+
+	for (int nCarInd = 0; nCarInd < _nInitDrivers; nCarInd++)
+	{
+		pTgtCar = &dummyTarget;
+		pSrcCar = &pSource->carList[nCarInd];
+
+		// Assemble the data we record
+		pTgtCar->currentTime = pSource->s->currentTime;
+
+		memcpy(&pTgtCar->info, &pSrcCar->info, sizeof(tInitCar));
+		memcpy(&pTgtCar->pub, &pSrcCar->pub, sizeof(tPublicCar));
+		memcpy(&pTgtCar->race, &pSrcCar->race, sizeof(tCarRaceInfo));
+		memcpy(&pTgtCar->priv, &pSrcCar->priv, sizeof(tPrivCar));
+		memcpy(&pTgtCar->ctrl, &pSrcCar->ctrl, sizeof(tCarCtrl));
+		memcpy(&pTgtCar->pitcmd, &pSrcCar->pitcmd, sizeof(tCarPitCmd));
+
+		// and write to database
+		sprintf(command, "INSERT INTO car%d (timestamp, lap, datablob) VALUES (%f, %d, ?)", nCarInd, 
+			pSource->s->currentTime, pSrcCar->_laps);
+
+ 		result = sqlite3_prepare_v2(replayDB, command, -1, &replayBlobs[nCarInd], 0);
+		if (result) {
+			GfLogInfo("Replay: Unable to instert into table car%d: %s\n", nCarInd, sqlite3_errmsg(replayDB));
+		} else {
+			/* push binary blob into database */
+			result = sqlite3_bind_blob(replayBlobs[nCarInd], 1, (void *) &dummyTarget, sizeof(dummyTarget), SQLITE_STATIC);
+			result = sqlite3_step(replayBlobs[nCarInd]);
+		}
+		//GfLogInfo("Replay wrote car%d = time %f, lap %d\n", nCarInd, pSource->s->currentTime, pSrcCar->_laps);
+	}
+
+	sqlite3_exec(replayDB, "END TRANSACTION", NULL, NULL, NULL);
+	replayTimestamp = pSource->s->currentTime + (1/(float)replayRecord);
+#endif
+}
+
+void ReSituationUpdater::ghostcarSituation(tRmInfo*& pTarget)
+{
+#ifdef THIRD_PARTY_SQLITE3
+	tCarElt *pTgtCar;
+	tReplayElt *pSrcCar, *pSrc2Car;
+	int result;
+
+	if (!replayDB) return;
+
+	if (ghostcarActive) {
+		if (pTarget->s->currentTime - ghostcarTimeOffset >= nextGhostcarData.currentTime) {
+			result = sqlite3_step(ghostcarBlob);
+			if (result == SQLITE_ROW) {
+				curGhostcarData = nextGhostcarData;
+				memcpy(&nextGhostcarData, sqlite3_column_blob(ghostcarBlob, 0), sizeof(tReplayElt));
+			} else {
+				// don't do anything untill next lap is started
+				// GfLogInfo("Ghostcar completed lap\n");
+				ghostcarActive = 0;
+				return;
+			}
+
+			// Ghostcar uses the last carElt
+			pTgtCar = &pTarget->carList[_nInitDrivers];
+			pSrcCar = &curGhostcarData;
+
+			// GfLogInfo("Read ghostcar data: time %f %f, lap %d\n", pTarget->s->currentTime, pSrcCar->currentTime, pSrcCar->_laps);
+
+			// Really this should only be read once at start of race
+			memcpy(&pTgtCar->race, &pSrcCar->race, sizeof(tCarRaceInfo));
+			pTgtCar->race.pit = NULL;
+
+			// hack to fix trkpos
+			pSrcCar->pub.trkPos = pTgtCar->pub.trkPos;
+
+			memcpy(&pTgtCar->pub, &pSrcCar->pub, sizeof(tPublicCar));
+			memcpy(&pTgtCar->info, &pSrcCar->info, sizeof(tInitCar));
+
+			for(int i=0; i < 4; i++) {
+				pTgtCar->priv.wheel[i] = pSrcCar->priv.wheel[i];
+				pTgtCar->priv.wheel[i].seg = NULL;
+			}
+			pTgtCar->priv.gear = pSrcCar->priv.gear;
+			pTgtCar->priv.fuel = pSrcCar->priv.fuel;
+			pTgtCar->priv.enginerpm = pSrcCar->priv.enginerpm;
+			pTgtCar->priv.dammage = pSrcCar->priv.dammage;
+		}
+
+		if (pTarget->s->currentTime - ghostcarTimeOffset < nextGhostcarData.currentTime) {
+			// Interpolate position in between records
+			double timeFrac;
+			double yaw, roll, pitch;
+
+			pTgtCar = &pTarget->carList[_nInitDrivers];
+			pSrcCar = &curGhostcarData;
+			pSrc2Car = &nextGhostcarData;
+
+			timeFrac = (pTarget->s->currentTime - ghostcarTimeOffset - curGhostcarData.currentTime) /
+					(nextGhostcarData.currentTime - curGhostcarData.currentTime);
+
+			pTgtCar->_pos_X = pSrcCar->_pos_X + (pSrc2Car->_pos_X - pSrcCar->_pos_X) * timeFrac;
+			pTgtCar->_pos_Y = pSrcCar->_pos_Y + (pSrc2Car->_pos_Y - pSrcCar->_pos_Y) * timeFrac;
+			pTgtCar->_pos_Z = pSrcCar->_pos_Z + (pSrc2Car->_pos_Z - pSrcCar->_pos_Z) * timeFrac - pTgtCar->_statGC_z;
+
+			yaw = pSrc2Car->_yaw;
+			roll = pSrc2Car->_roll;
+			pitch = pSrc2Car->_pitch;
+
+			// assumes that these can't change at high rate
+			if (yaw < pSrcCar->_yaw - PI)
+				yaw += 2 * PI;
+			else if (yaw > pSrcCar->_yaw + PI)
+				yaw -= 2 * PI;
+
+			if (roll < pSrcCar->_roll - PI)
+				roll += 2 * PI;
+			else if (roll > pSrcCar->_roll + PI)
+				roll -= 2 * PI;
+
+			if (pitch < pSrcCar->_pitch - PI)
+				pitch += 2 * PI;
+			else if (pitch > pSrcCar->_pitch + PI)
+				pitch -= 2 * PI;
+
+			pTgtCar->_yaw = pSrcCar->_yaw + (yaw - pSrcCar->_yaw) * timeFrac;
+			pTgtCar->_roll = pSrcCar->_roll + (roll - pSrcCar->_roll) * timeFrac;
+			pTgtCar->_pitch = pSrcCar->_pitch + (pitch - pSrcCar->_pitch) * timeFrac;
+
+			sgMakeCoordMat4(pTgtCar->pub.posMat, pTgtCar->_pos_X, pTgtCar->_pos_Y, pTgtCar->_pos_Z,
+					(tdble) RAD2DEG(pTgtCar->_yaw), (tdble) RAD2DEG(pTgtCar->_roll),
+					(tdble) RAD2DEG(pTgtCar->_pitch));
+		}
+	}
+#endif
 }
 
 void ReSituationUpdater::freezSituation(tRmInfo*& pSituation)
@@ -890,6 +1146,13 @@ tRmInfo* ReSituationUpdater::getPreviousStep()
 		if (!ReSituation::self().unlock("ReSituationUpdater::getPreviousStep"))
 			return 0;
 	}
+
+	if (replayRecord && _pPrevReInfo->s->currentTime >= replayTimestamp) {
+		replaySituation(_pPrevReInfo);
+	}
+
+	if (replayRecord)
+		ghostcarSituation(_pPrevReInfo);
 
 	return _pPrevReInfo;
 }

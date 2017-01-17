@@ -3,7 +3,7 @@
     created              : Tue Jul 18 19:57:35 CEST 2011
     copyright            : (C) 2005 Christos Dimitrakakis, Bernhard Wymann
     email                : dimitrak@idiap.ch
-    version              : $Id: OpenalSoundInterface.h 5485 2013-05-28 15:50:38Z beaglejoe $
+    version              : $Id: OpenalSoundInterface.h 6098 2015-08-30 23:30:51Z beaglejoe $
 
 ***************************************************************************/
 
@@ -19,7 +19,7 @@
 #ifndef OPENAL_SOUND_INTERFACE_H
 #define OPENAL_SOUND_INTERFACE_H
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(USE_MACPORTS)
 #include"al.h"
 #include"alc.h"
 #else

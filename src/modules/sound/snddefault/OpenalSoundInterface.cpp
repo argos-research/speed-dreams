@@ -4,7 +4,7 @@
     created              : Thu Apr 7 04:21 CEST 2005
     copyright            : (C) 2005 Christos Dimitrakakis, Bernhard Wymann
     email                : dimitrak@idiap.ch
-    version              : $Id: OpenalSoundInterface.cpp 5485 2013-05-28 15:50:38Z beaglejoe $
+    version              : $Id: OpenalSoundInterface.cpp 6096 2015-08-30 22:55:25Z beaglejoe $
 
 ***************************************************************************/
 
@@ -28,7 +28,16 @@
 
 const int OpenalSoundInterface::OSI_MIN_DYNAMIC_SOURCES = 4;
 
-
+int sortSndPriority(const void* a, const void* b) 
+{
+	SoundPri* A = (SoundPri*) a;
+	SoundPri* B = (SoundPri*) b;
+	if (A->a > B->a) {
+		return -1;
+	} else {
+		return 1;
+	}
+}
 
 OpenalSoundInterface::OpenalSoundInterface(float sampling_rate, int n_channels)
 : SoundInterface(sampling_rate, n_channels)

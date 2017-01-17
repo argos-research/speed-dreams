@@ -4,7 +4,7 @@
     created     : Sat Nov 23 09:05:23 CET 2002
     copyright   : (C) 2002 by Eric Espie 
     email       : eric.espie@torcs.org 
-    version     : $Id: racecars.cpp 5140 2013-02-15 14:54:26Z wdbee $
+    version     : $Id: racecars.cpp 5854 2014-11-23 17:55:52Z wdbee $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racecars.cpp 5140 2013-02-15 14:54:26Z wdbee $
+    @version	$Id: racecars.cpp 5854 2014-11-23 17:55:52Z wdbee $
 */
 
 #include <cstdlib>
@@ -597,10 +597,11 @@ ReCarsManageCar(tCarElt *car, bool& bestLapChanged)
 						}
 						
 						info->sTime = (tdble)s->currentTime;
-
+/*
 						if (ReInfo->s->_raceType == RM_TYPE_PRACTICE && 
 								(car->_laps > 1 || s->_totLaps == 0))
 							ReSavePracticeLap(car);
+*/
 					}
 
 					if (ReInfo->_displayMode == RM_DISP_MODE_NONE)
@@ -608,13 +609,13 @@ ReCarsManageCar(tCarElt *car, bool& bestLapChanged)
 						switch(s->_raceType)
 						{
 							case RM_TYPE_PRACTICE:
-								ReUpdatePracticeCurRes(car);
+								//ReUpdatePracticeCurRes(car);
 								break;
 							case RM_TYPE_QUALIF:
-								ReUpdateQualifCurRes(car);
+								//ReUpdateQualifCurRes(car);
 								break;
 							case RM_TYPE_RACE:
-								ReUpdateRaceCurRes();
+								//ReUpdateRaceCurRes();
 								break;
 							default:
 								break;
@@ -630,7 +631,7 @@ ReCarsManageCar(tCarElt *car, bool& bestLapChanged)
 							if (car->_pos == 1) {
 								snprintf(msg, sizeof(msg), "Winner %s", car->_name);
 								msg[sizeof(msg)-1] = 0; // Some snprintf implementations fail to do so.
-								ReSituation::self().setRaceMessage(msg, 10, /*big=*/true);
+								//ReSituation::self().setRaceMessage(msg, 10, /*big=*/true);
 							} else {
 								const char *numSuffix = "th";
 								if (abs(12 - car->_pos) > 1) { /* leave suffix as 'th' for 11 to 13 */

@@ -19,6 +19,13 @@
 	<section name="private">
 		<attnum name="pit offset" val="0.00"/>
 		<attnum name="pit shift" val="1.00"/>
+		
+		<attnum name="steer gain" val="0.5"/>
+		<attnum name="int margin" val="4.5"/>
+
+		<attnum name="0 bgn" val="575"/>
+		<attnum name="0 end" val="625"/>
+		<attnum name="0 base speed" val="1.00"/>
 	</section>
 
 </params>

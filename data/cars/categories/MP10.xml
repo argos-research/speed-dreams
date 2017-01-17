@@ -20,14 +20,14 @@
   <section name="Car">
     <!-- APR Kart 125 -->
     <attstr name="category" val="MP10"/>
-    <attnum name="body length" unit="m" min="1.0" max="5.0" val="4.683"/>
+    <attnum name="body length" unit="m" min="1.0" max="5.0" val="2.683"/>
     <attnum name="body width" unit="m" min="0.8" max="2.2" val="1.4"/>
     <attnum name="body height" unit="m" min="0.0" max="2.0" val="1.173"/>
 
     <!-- collision bounding box -->
     <attnum name="overall length" unit="m" min="1.0" max="5.0" val="4.7"/>
     <attnum name="overall width" unit="m" min="1.2" max="2.2" val="1.7"/>
-    <attnum name="mass" unit="kg" min="100.0" max="1500" val="1150.0"/>
+    <attnum name="mass" unit="kg" min="100.0" max="1500" val="500.0"/>
     <attnum name="GC height" unit="m" min="0.0" max="1.0" val="0.30"/>
 
     <!-- weight bias -->
@@ -78,7 +78,7 @@
     <attnum name="torque min" unit="N.m" val="0.0"/>
     <attnum name="torque max" unit="N.m" val="2000.0"/>
     <attnum name="revs maxi min" unit="rpm" val="1000"/>
-    <attnum name="revs maxi max" unit="rpm" val="20000"/>
+    <attnum name="revs maxi max" unit="rpm" val="14000"/>
     <attnum name="power max" unit="ch" val="1500.0"/>
 
     <!--torque definition-->
@@ -253,7 +253,7 @@
   </section>
 
   <section name="Steer">
-    <attnum name="steer lock" unit="deg" min="1" max="45" val="45"/>
+    <attnum name="steer lock" unit="deg" min="1" max="60" val="60"/>
     <attnum name="max steer speed" unit="deg/s" min="1" max="540" val="540"/>
   </section>
 

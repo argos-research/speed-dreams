@@ -2,16 +2,19 @@ INCLUDE(../../../cmake/macros.cmake)
 
 #PROJECT(tgf)
 
-ADD_SDL_INCLUDEDIR()
-
+IF(OPTION_SDL2)
+	ADD_SDL2_INCLUDEDIR()
+ELSE(OPTION_SDL2)
+	ADD_SDL_INCLUDEDIR()
+ENDIF(OPTION_SDL2)
 ADD_EXPAT_INCLUDEDIR()
 
 ADD_SDLIB_INCLUDEDIR(txml portability)
 
-SET(TGF_HEADERS os.h tgf.h tgf.hpp modinfo.h osspec.h)
+SET(TGF_HEADERS os.h tgf.h tgf.hpp modinfo.h osspec.h memmanager.h)
 SET(TGF_SOURCES application.cpp eventloop.cpp directory.cpp file.cpp filesetup.cpp 
                 formula.cpp hash.cpp module.cpp legacymodule.cpp modinfo.cpp os.cpp
-                params.cpp profiler.cpp schedulespy.cpp tgf.cpp trace.cpp)
+                params.cpp profiler.cpp schedulespy.cpp tgf.cpp trace.cpp memmanager.cpp)
 SET(TGF_OTHER_SOURCES params.dtd)
 
 IF(WIN32)
@@ -45,7 +48,11 @@ ENDIF(CMAKE_SKIP_RPATH OR CMAKE_SKIP_BUILD_RPATH)
 ADD_SDLIB_LIBRARY(tgf portability txml) # txml ignored if OPTION_3RDPARTY_EXPAT
 
 ADD_DL_LIBRARY(tgf)
-ADD_SDL_LIBRARY(tgf)
+IF(OPTION_SDL2)
+	ADD_SDL2_LIBRARY(tgf)
+ELSE(OPTION_SDL2)
+	ADD_SDL_LIBRARY(tgf)
+ENDIF(OPTION_SDL2)
 ADD_EXPAT_LIBRARY(tgf) # Ignored if not OPTION_3RDPARTY_EXPAT
 
 IF(WIN32)

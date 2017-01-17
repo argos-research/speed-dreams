@@ -4,7 +4,7 @@
     created     : Sat Nov 16 12:00:42 CET 2002
     copyright   : (C) 2002 by Eric Espie
     email       : eric.espie@torcs.org   
-    version     : $Id: racestate.cpp 5143 2013-02-16 10:40:14Z wdbee $
+    version     : $Id: racestate.cpp 5856 2014-11-25 17:05:47Z wdbee $
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file   
     		The Race Engine State Automaton
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racestate.cpp 5143 2013-02-16 10:40:14Z wdbee $
+    @version	$Id: racestate.cpp 5856 2014-11-25 17:05:47Z wdbee $
 */
 
 #include <raceman.h>
@@ -34,6 +34,12 @@
 #include "portability.h"
 
 #include "racestate.h"
+
+// Use new Memory Manager ...
+#ifdef __DEBUG_MEMORYMANAGER__
+#include "memmanager.h"
+#endif
+// ... Use new Memory Manager
 
 // State Automaton Init
 void
@@ -61,6 +67,15 @@ ReStateManage(void)
 
 			case RE_STATE_EVENT_INIT:
 				GfLogInfo("%s now in EVENT_INIT state\n", ReInfo->_reName);
+				// Use new Memory Manager ...
+				#ifdef __DEBUG_MEMORYMANAGER__
+				//fprintf(stderr,"Initialise memory manager tracking ...\n");
+				GfMemoryManagerSetGroup(1);
+				#endif
+				// ... Use new Memory Manager
+
+			case RE_STATE_EVENT_LOOP:
+				GfLogInfo("%s now in EVENT_INIT_LOOP state\n", ReInfo->_reName);
 				// Load the event description (track and drivers list)
 				mode = ReRaceEventInit();
 				if (mode & RM_NEXT_STEP) {
@@ -135,9 +150,16 @@ ReStateManage(void)
 				// Setup short cut
 				if (mode & RM_NEXT_STEP) {
 				  /* Back to optimization */
-				  ReInfo->_reState = RE_STATE_EVENT_INIT;
+				  ReInfo->_reState = RE_STATE_EVENT_LOOP;
 				} else {
 				  /* Next step */
+				  // Use new Memory Manager ...
+				  #ifdef __DEBUG_MEMORYMANAGER__
+				  fprintf(stderr,"... Reset memory manager tracking\n");
+				  GfMemoryManagerSetGroup(0);
+				  #endif
+				  // ... Use new Memory Manager
+
 				  ReInfo->_reState = RE_STATE_SHUTDOWN;
 				}
 				break;
@@ -155,8 +177,33 @@ ReStateManage(void)
 			case RE_STATE_SHUTDOWN:
 				GfLogInfo("%s now in SHUTDOWN state\n", ReInfo->_reName);
 				ReCleanupGeneticOptimisation();
+				ReInfo->_reState = RE_STATE_RESULTS;
+				mode = RM_SYNC;
+				break;
+
+			case RE_STATE_RESULTS:
+				GfLogInfo("%s now in RESULTS state\n", ReInfo->_reName);
+				ReDisplayResults();
+				ReInfo->_reState = RE_STATE_CLEANUP;
+				mode = RM_SYNC;
+				break;
+
+			case RE_STATE_CLEANUP:
+				GfLogInfo("%s now in CLEANUP state\n", ReInfo->_reName);
+				ReCleanupReInfo();
 				// Back to the race manager menu
-				ReInfo->_reState = RE_STATE_CONFIG;
+				ReInfo->_reState = RE_STATE_WAITFORKEYPRESS;
+				mode = RM_SYNC;
+				break;
+
+			case RE_STATE_WAITFORKEYPRESS:
+				GfLogInfo("%s now in WAITFORKEYPRESS state\n", ReInfo->_reName);
+				mode = ReWaitForKeyPress();
+				if (mode & RM_NEXT_STEP){
+					ReInfo->_reState = RE_STATE_CONFIG;
+				} else {
+					ReInfo->_reState = RE_STATE_WAITFORKEYPRESS;
+				}
 				mode = RM_SYNC;
 				break;
 

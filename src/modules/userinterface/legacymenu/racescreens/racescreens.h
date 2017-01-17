@@ -4,7 +4,7 @@
     created              : Sat Mar 18 23:33:01 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: racescreens.h 4590 2012-03-18 11:23:59Z pouillot $
+    version              : $Id: racescreens.h 6084 2015-08-21 00:07:15Z beaglejoe $
 
  ***************************************************************************/
 
@@ -81,6 +81,12 @@ extern void RmLoadingScreenStart(const char * /* text */, const char * /* bgimg 
 extern void RmLoadingScreenSetText(const char * /* text */);
 extern void RmLoadingScreenShutdown();
 
+extern void RmOptimizationScreenStart(const char * /* text */, const char * /* bgimg */);
+extern void RmOptimizationScreenSetText(const char * /* text */);
+extern void RmOptimizationScreenSetParameterText(int /* n */, char** /* label */, char** /* value */, char** /* range */);
+extern void RmOptimizationScreenSetStatusText(int, int, double, double, double, double);
+extern void RmOptimizationScreenShutdown();
+
 extern void RmGameScreen();
 
 extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */);
@@ -128,6 +134,9 @@ extern void RmResScreenRemoveText(int nRowIndex);
 //extern void RmResShowCont(); // Never used : remove ?
 extern int  RmResGetRows();
 extern void RmResEraseScreen();
+
+extern void RmAddPreRacePauseItems();
+extern void RmAddCooldownItems();
 
 // From networkingmenu.
 extern void RmNetworkClientMenu(void* pVoid);

@@ -4,7 +4,7 @@
     created     : Sat Nov 16 12:00:42 CET 2002
     copyright   : (C) 2002 by Eric Espie
     email       : eric.espie@torcs.org   
-    version     : $Id: racestate.cpp 5081 2012-12-30 18:24:16Z pouillot $
+    version     : $Id: racestate.cpp 6153 2015-09-28 03:11:19Z beaglejoe $
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file   
     		The Race Engine State Automaton
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racestate.cpp 5081 2012-12-30 18:24:16Z pouillot $
+    @version	$Id: racestate.cpp 6153 2015-09-28 03:11:19Z beaglejoe $
 */
 
 #include <raceman.h>
@@ -94,7 +94,17 @@ ReStateManage(void)
 				mode = ReNetworkWaitReady();
 				if (mode & RM_NEXT_STEP) {
 					// Not an online race, or else all online players ready
+					ReInfo->_reState = RE_STATE_PRE_RACE_PAUSE;
+					GfLogInfo("%s now in PRE RACE PAUSE state\n", ReInfo->_reName);
+				}
+				break;
+
+			case RE_STATE_PRE_RACE_PAUSE:
+				mode = RePreRacePause();
+				if (mode & RM_NEXT_STEP) {
+					// player is ready
 					ReInfo->_reState = RE_STATE_RACE;
+					ReInfo->s->currentTime = -2.0;
 					GfLogInfo("%s now in RACE state\n", ReInfo->_reName);
 				}
 				break;
@@ -103,10 +113,26 @@ ReStateManage(void)
 				mode = ReUpdate();
 				if (ReInfo->s->_raceState == RM_RACE_ENDED) {
 					// Race is finished
-					ReInfo->_reState = RE_STATE_RACE_END;
+					mode = ReRaceCooldown();
+					if (mode & RM_NEXT_STEP) {
+						ReInfo->_reState = RE_STATE_RACE_END;
+					}
+					else {
+						ReInfo->_reState = RE_STATE_RACE_COOLDOWN;
+						GfLogInfo("%s now in COOLDOWN state\n", ReInfo->_reName);
+					}
 				} else if (mode & RM_END_RACE) {
 					// Race was interrupted (paused) by the player
 					ReInfo->_reState = RE_STATE_RACE_STOP;
+				}
+				break;
+
+			case RE_STATE_RACE_COOLDOWN:
+				{
+					// Player is on victory lap or joy riding
+					// TODO rethink this transition
+					// this state will transition to RE_STATE_RACE_END when ReStopCooldown() is called by UI
+					mode = ReUpdate();
 				}
 				break;
 

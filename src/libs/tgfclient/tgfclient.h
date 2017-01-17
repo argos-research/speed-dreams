@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:32:14 CEST 1999
     copyright            : (C) 1999 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: tgfclient.h 5163 2013-02-19 18:28:35Z pouillot $
+    version              : $Id: tgfclient.h 6393 2016-03-27 16:23:23Z beaglejoe $
 ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file   
         The Gaming Framework API (client part).
     @author     <a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version    $Id: tgfclient.h 5163 2013-02-19 18:28:35Z pouillot $
+    @version    $Id: tgfclient.h 6393 2016-03-27 16:23:23Z beaglejoe $
 */
 
 #ifndef __TGFCLIENT__H__
@@ -37,7 +37,7 @@
 #  pragma warning (disable:4251) // class XXX needs a DLL interface ...
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(USE_MACPORTS)
 #  include <js.h>
 #else
 #  include <plib/js.h>
@@ -55,6 +55,10 @@
 #include <tgf.hpp>
 
 #include "guiscreen.h"
+
+#if SDL_MAJOR_VERSION >= 2
+extern SDL_Window* 	GfuiWindow;
+#endif
 
 
 // DLL exported symbols declarator for Windows.
@@ -87,6 +91,9 @@ typedef struct ScreenSize
     int height; // Height in pixels.
 } tScreenSize;
 
+#if SDL_MAJOR_VERSION >= 2
+TGFCLIENT_API SDL_Window* GfScrGetMainWindow();//{return GfuiWindow;};
+#endif
 TGFCLIENT_API bool GfScrInit(int nWinWidth = -1, int nWinHeight = -1, int nFullScreen = -1);
 TGFCLIENT_API void GfScrShutdown(void);
 TGFCLIENT_API void GfScrGetSize(int *scrW, int *scrH, int *viewW, int *viewH);
@@ -181,7 +188,11 @@ TGFCLIENT_API tScreenSize* GfScrGetDefaultSizes(int* pnSizes);
 #define GFUIM_CTRL       KMOD_LCTRL
 #define GFUIM_SHIFT      KMOD_LSHIFT
 #define GFUIM_ALT        KMOD_LALT
+#if SDL_MAJOR_VERSION >= 2
+#define GFUIM_META       KMOD_LGUI
+#else
 #define GFUIM_META       KMOD_LMETA
+#endif
 
 // Some keyboard key / special key codes, to avoid SDLK constants everywhere.
 #define GFUIK_BACKSPACE	SDLK_BACKSPACE
@@ -259,7 +270,7 @@ typedef void (*tfuiComboboxCallback)(tComboBoxInfo *);
 typedef void (*tfuiCheckboxCallback)(tCheckBoxInfo *);
 
 
-/* Event loop callback functions (should be called explicitely if the corresponding
+/* Event loop callback functions (should be called explicitly if the corresponding
    event loop callback is overriden after a call to GfuiActivateScreen */
 TGFCLIENT_API void GfuiDisplay(void);
 TGFCLIENT_API void GfuiDisplayNothing(void);
@@ -278,6 +289,7 @@ TGFCLIENT_API void* GfuiScreenCreate(float *bgColor = 0,
 TGFCLIENT_API void GfuiScreenRelease(void *screen);
 TGFCLIENT_API void GfuiScreenActivate(void *screen);
 TGFCLIENT_API int  GfuiScreenIsActive(void *screen);
+TGFCLIENT_API void* GfuiGetScreen(void);
 TGFCLIENT_API void GfuiScreenReplace(void *screen);
 TGFCLIENT_API void GfuiScreenDeactivate(void);
 TGFCLIENT_API void* GfuiHookCreate(void *userDataOnActivate, tfuiCallback onActivate);
@@ -297,6 +309,9 @@ TGFCLIENT_API void GfuiScreenAddMusic(void *scr, const char *filename);
 TGFCLIENT_API void GfuiKeyEventRegister(void *scr, tfuiKeyCallback onKeyAction);
 TGFCLIENT_API void GfuiKeyEventRegisterCurrent(tfuiKeyCallback onKeyAction);
 TGFCLIENT_API void GfuiInitWindowPositionAndSize(int x, int y, int w, int h);
+
+TGFCLIENT_API bool GfuiRemoveKey(void *scr, int key, const char *descr);
+TGFCLIENT_API bool GfuiRemoveKey(void *scr, int key, int modifier, const char *descr);
 
 TGFCLIENT_API void GfuiRedraw(void);
 TGFCLIENT_API void GfuiSwapBuffers(void);
@@ -620,7 +635,7 @@ TGFCLIENT_API const char* GfuiMenuGetStrProperty(void* hparm, const char* pszNam
  *****************************/
 
 TGFCLIENT_API unsigned char* GfTexReadImageFromFile(const char* filename, float screen_gamma, int* pWidth, int* pHeight, int* pPow2Width = 0, int* pPow2Height = 0);
-TGFCLIENT_API unsigned char* GfTexReadImageFromPNG(const char* filename, float screen_gamma, int* pWidth, int* pHeight, int* pPow2Width = 0, int* pPow2Height = 0);
+TGFCLIENT_API unsigned char* GfTexReadImageFromPNG(const char* filename, float screen_gamma, int* pWidth, int* pHeight, int* pPow2Width = 0, int* pPow2Height = 0, bool useGammaCorrection = true);
 TGFCLIENT_API unsigned char* GfTexReadImageFromJPEG(const char* filename, float screen_gamma, int* pWidth, int* pHeight, int* pPow2Width = 0, int* pPow2Height = 0);
 
 TGFCLIENT_API int GfTexWriteImageToPNG(unsigned char* img, const char* filename, int width, int height);
@@ -654,12 +669,20 @@ typedef struct
 
 #define GFCTRL_JOY_NUMBER       8 /* Max number of managed joysticks */
 #define GFCTRL_JOY_MAX_BUTTONS  32       /* Size of integer so don't change please */
-#define GFCTRL_JOY_MAX_AXES     _JS_MAX_AXES
+#if SDL_JOYSTICK
+#define GFCTRL_JOY_MAX_AXES     12
+#else
+#define GFCTRL_JOY_MAX_AXES      _JS_MAX_AXES
+#endif
 
 /** Joystick Information Structure */
 typedef struct
 {
+#if SDL_JOYSTICK
+    int         oldb[GFCTRL_JOY_MAX_BUTTONS * GFCTRL_JOY_NUMBER];
+#else
     int         oldb[GFCTRL_JOY_NUMBER];
+#endif
     float       ax[GFCTRL_JOY_MAX_AXES * GFCTRL_JOY_NUMBER];         /**< Axis values */
     int         edgeup[GFCTRL_JOY_MAX_BUTTONS * GFCTRL_JOY_NUMBER];  /**< Button transition from down (pressed) to up */
     int         edgedn[GFCTRL_JOY_MAX_BUTTONS * GFCTRL_JOY_NUMBER];  /**< Button transition from up to down */
@@ -670,6 +693,12 @@ TGFCLIENT_API int GfctrlJoyIsAnyPresent(void);
 TGFCLIENT_API tCtrlJoyInfo* GfctrlJoyCreate(void);
 TGFCLIENT_API void GfctrlJoyRelease(tCtrlJoyInfo* joyInfo);
 TGFCLIENT_API int GfctrlJoyGetCurrentStates(tCtrlJoyInfo* joyInfo);
+ #if SDL_JOYSTICK
+TGFCLIENT_API void gfctrlJoyConstantForce(int index, unsigned int level, int dir);
+TGFCLIENT_API void gfctrlJoyRumble(int index, float level);
+TGFCLIENT_API void GfctrlJoySetAxis(int joy, int axis, float value);
+TGFCLIENT_API void GfctrlJoySetButton(int joy, int button, int value);
+#endif
 
 
 /** Mouse information structure */
@@ -715,6 +744,14 @@ class TGFCLIENT_API GfuiEventLoop : public GfEventLoop
 	//! Set the "mouse motion without button pressed" callback function.
 	void setMousePassiveMotionCB(void (*func)(int x, int y));
 
+#if SDL_JOYSTICK
+	//! Set the "joystick axis moved" callback function.
+	void setJoystickAxisCB(void (*func)(int joy, int axis, float value));
+
+	//! Set the "joystick button pressed" callback function.
+	void setJoystickButtonCB(void (*func)(int joy, int button, int value));
+#endif
+
 	//! Set the "redisplay/refresh" callback function. 
 	void setRedisplayCB(void (*func)(void));
 
@@ -738,6 +775,14 @@ class TGFCLIENT_API GfuiEventLoop : public GfEventLoop
 	
 	//! Process a mouse button event.
 	void injectMouseButtonEvent(int button, int state, int x, int y);
+
+#if SDL_JOYSTICK
+	//! Process a joystick axis event.
+	void injectJoystickAxisEvent(int joy, int axis, float value);
+
+	//! Process a joystick button event.
+	void injectJoystickButtonEvent(int joy, int button, int value);
+#endif
 
 	//! Process a redisplay event.
 	void redisplay();
@@ -789,6 +834,14 @@ inline GfuiApplication& GfuiApp()
 {
 	return dynamic_cast<GfuiApplication&>(GfApplication::self());
 }
+
+// TODO: Use dynamic array for OwnerOfScreens
+#define MAXSCREENS 100
+void RegisterScreens(void* screen);
+void FreeScreens();
+void FreeScreen(void* screen);
+void ScreenRelease(void* screen);
+void UnregisterScreens(void* screen);
 
 #endif /* __TGFCLIENT__H__ */
 
