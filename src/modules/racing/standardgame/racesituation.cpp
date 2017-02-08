@@ -53,6 +53,8 @@
 
 #include <boost/asio.hpp>
 
+#include <situation.pb.h>
+#include <track.pb.h>
 
 // The singleton.
 ReSituation* ReSituation::_pSelf = 0;
@@ -249,6 +251,7 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 {
 	tRmInfo* pCurrReInfo = ReSituation::self().data();
 	tSituation *s = pCurrReInfo->s;
+	tTrack *t = pCurrReInfo->track;
 
 	// Race messages life cycle management.
 	ReRaceMsgManage(pCurrReInfo);
@@ -327,15 +330,44 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 	GfSchedBeginEvent("raceupdate", "robots");
 	if ((s->currentTime - pCurrReInfo->_reLastRobTime) >= RCM_MAX_DT_ROBOTS) {
 		s->deltaTime = s->currentTime - pCurrReInfo->_reLastRobTime;
+
 		// start memdump of robots
 		/* number of cars */
 		GfLogInfo("Number of cars: %d\n", s->_ncars);
+		protobuf::Situation situation;
 		for (int i = 0; i < s->_ncars; i++) {
-		  boost::asio::write(ReSituationUpdater::s, boost::asio::buffer("*poke*\n", 7));
+		  GfLogInfo("Dumping info of car: %d with name %s\n", i, s->cars[i]->_name);
+		  protobuf::Vehicle *veh = situation.add_vehicles();
+		  veh->set_name(s->cars[i]->_name);
+		  protobuf::Position *pos = veh->mutable_position();
+		  pos->set_x(s->cars[i]->_pos_X);
+		  pos->set_y(s->cars[i]->_pos_Y);
+		  pos->set_z(s->cars[i]->_pos_Z);
+		  veh->set_yaw(s->cars[i]->_yaw);
 		  /* transmit information of vehicle n */
 		}
+		std::string output;
+		situation.SerializeToString(&output);
+		uint32_t length = output.size();
+		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(&length, 4));
+		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(output, output.length()));
+
+		protobuf::Track track;
+		protobuf::Segment *seg = track.add_segments();
+		for(int i=0; i<4; i++) {
+		  protobuf::Position *pos = seg->add_vertex();
+		  pos->set_x(t->seg[0].vertex[i].x);
+		  pos->set_y(t->seg[0].vertex[i].y);
+		  pos->set_z(t->seg[0].vertex[i].z);
+		}
+		output.clear();
+		track.SerializeToString(&output);
+		length = output.size();
+		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(&length, 4));
+		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(output, output.length()));
 		/* end transmission */
 		// end memdump
+
 		tRobotItf *robot;
 		for (int i = 0; i < s->_ncars; i++) {
 			if ((s->cars[i]->_state & RM_CAR_STATE_NO_SIMU) == 0) {
@@ -605,7 +637,6 @@ ReSituationUpdater::ReSituationUpdater()
 	boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
 
 	boost::asio::connect(s, iterator);
-	boost::asio::write(s, boost::asio::buffer("Hello World!\n", 14));
 }
 
 ReSituationUpdater::~ReSituationUpdater()
