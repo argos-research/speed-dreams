@@ -2,19 +2,23 @@ INCLUDE(../../../../cmake/macros.cmake)
 
 #PROJECT(standardgame)
 
+PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS situation.proto vehicle.proto position.proto track.proto)
+
 SET(_SOURCES standardgame.cpp
              racecareer.cpp raceupdate.cpp racenetwork.cpp racecars.cpp
              raceinit.cpp racemain.cpp
              racetrack.cpp raceresults.cpp racesimusimu.cpp 
              racestate.cpp racesituation.cpp racemessage.cpp
-             raceutil.cpp)
+             raceutil.cpp ${PROTO_SRCS})
 SET(_HEADERS standardgame.h 
              racecareer.h raceupdate.h racenetwork.h racecars.h
              raceinit.h racemain.h
              racetrack.h raceresults.h racesimusimu.h 
              racestate.h racesituation.h racemessage.h
-             raceutil.h)
+             raceutil.h ${PROTO_HDRS})
 SET(_OTHER_SOURCES )
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}) # path where protobuf generated files
 
 ADD_INTERFACE_INCLUDEDIR()
 
@@ -68,5 +72,8 @@ ENDIF(OPTION_3RDPARTY_SQLITE3)
 
 ADD_BOOST_INCLUDEDIR()
 ADD_BOOST_LIBRARY(standardgame)
+
+ADD_PROTOBUF_INCLUDEDIR()
+ADD_PROTOBUF_LIBRARY(standardgame)
 
 SD_INSTALL_FILES(LIB modules/racing TARGETS standardgame)
