@@ -2,7 +2,7 @@
 #
 #   file        : options.cmake
 #   copyright   : (C) 2008 by Mart Kelder, 2010 by J.-P. Meuret
-#   web         : www.speed-dreams.org 
+#   web         : www.speed-dreams.org
 #   version     : $Id$
 #
 ############################################################################
@@ -69,9 +69,9 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     SET(OPTION_TRACE_LEVEL "5" CACHE STRING "Trace level integer threshold, only if OPTION_TRACE (traces with higher level are not logged ; 0=Fatal, 1=Error, 2=Warning, 3=Info, 4=Trace, 5=Debug, ...)")
 
     SET(OPTION_PROFILER false CACHE BOOL "Enable profiler")
-  
+
     SET(OPTION_SCHEDULE_SPY false CACHE BOOL "Enable fine grained scheduling spy")
-  
+
     SET(OPTION_3RDPARTY_EXPAT true CACHE BOOL "Use 3rd party Expat library rather than bundled TXML")
 
     SET(OPTION_3RDPARTY_SQLITE3 false CACHE BOOL "Use SQLite3 as database for record/replay")
@@ -82,6 +82,8 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     SET(OPTION_SDL_JOYSTICK true CACHE BOOL "Use SDL for Joystick instead of PLIB")
 
     SET(OPTION_WEBSERVER false CACHE BOOL "Build with WebServer functionality")
+
+    SET(OPTION_SIMCOUPLER false CACHE BOOL "Build for usage with SimCoupler")
 
     IF(APPLE)
       # Automatically set OPTION_USE_MACPORTS (at least until someone fixes the regular APPLE build)
@@ -99,12 +101,12 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     SET(OPTION_3RDPARTY_SOLID ${_OPTION_3RDPARTY_SOLID} CACHE BOOL "Use 3rd party SOLID library rather than simu-bundled one")
 
     IF(UNIX)
-      SET(OPTION_XRANDR true CACHE BOOL "XrandR")  
+      SET(OPTION_XRANDR true CACHE BOOL "XrandR")
       SET(OPTION_GLEXTPROTOTYPES true CACHE BOOL "Enable prototypes in glext.h")
-      SET(OPTION_UNLOAD_SSGGRAPH true CACHE BOOL "If false, never unload ssggraph module (useful on some Linuxes to avoid XOrg crashes)")  
+      SET(OPTION_UNLOAD_SSGGRAPH true CACHE BOOL "If false, never unload ssggraph module (useful on some Linuxes to avoid XOrg crashes)")
     ENDIF(UNIX)
 
-    
+
     IF(OPTION_USE_MACPORTS)
        SET(CMAKE_MACOSX_RPATH TRUE)
        #SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
@@ -114,9 +116,9 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
        MESSAGE(STATUS "Remove the line below to true when OSG works on MacPorts")
        SET(OPTION_OSGGRAPH false CACHE BOOL "Build OpenScenGraph-based WIP osggraph graphics module")
     ENDIF(OPTION_USE_MACPORTS)
-	
+
     SET(OPTION_AUTOVERSION true CACHE BOOL "Enable automatic computation of the version from SVN source tree")
-    
+
     # Custom 3rdParty location for some Windows builds (standard CMake Find<package> macros
     # can't find it, so we needed another solution : see FindCustom3rdParty.cmake).
     IF(MSVC)
@@ -139,11 +141,11 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     ADD_DEFINITIONS(-D_DEFAULT_SOURCE -DSHM)
 
     IF(MSVC)
-	
+
       # Inhibit definition of Macros min(a,b) and max(a,b) for Windows MSVC builds,
       # as the names conflict with the template functions from standard template library
       ADD_DEFINITIONS(-DNOMINMAX)
-	  
+
     ENDIF(MSVC)
 
     IF(OPTION_FORCE_DEBUG)
@@ -169,7 +171,7 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     IF(OPTION_SCHEDULE_SPY)
       ADD_DEFINITIONS(-DSCHEDULE_SPY)
     ENDIF(OPTION_SCHEDULE_SPY)
-  
+
     IF(OPTION_3RDPARTY_EXPAT)
       ADD_DEFINITIONS(-DTHIRD_PARTY_EXPAT)
     ENDIF(OPTION_3RDPARTY_EXPAT)
@@ -181,7 +183,7 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
     IF(OPTION_3RDPARTY_SOLID)
       ADD_DEFINITIONS(-DTHIRD_PARTY_SOLID)
     ENDIF(OPTION_3RDPARTY_SOLID)
-  
+
     IF(OPTION_GLEXTPROTOTYPES)
       ADD_DEFINITIONS(-DGL_GLEXT_PROTOTYPES)
     ENDIF(OPTION_GLEXTPROTOTYPES)
@@ -198,13 +200,17 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
           ADD_DEFINITIONS(-DWEBSERVER)
     ENDIF(OPTION_WEBSERVER)
 
+    IF(OPTION_SIMCOUPLER)
+          ADD_DEFINITIONS(-DSIMCOUPLER)
+    ENDIF(OPTION_SIMCOUPLER)
+
     IF(OPTION_USE_MACPORTS)
           ADD_DEFINITIONS(-DUSE_MACPORTS)
     ENDIF(OPTION_USE_MACPORTS)
 
     # Define for code that needs Torcs backward compatibility
     ADD_DEFINITIONS(-DSPEED_DREAMS)
-  
+
   ENDIF(NOT _ALREADY_DONE)
 
   # Compile options
@@ -237,9 +243,9 @@ MACRO(ADD_SD_COMPILE_OPTIONS)
       SET(_SD_WOPTS "${_SD_WOPTS} /wd4706") # assignment within conditional expression
 
       # Other useless warnings.
-      ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE 
+      ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE
                       -D_CRT_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
-	  
+
       # That's all.
       SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${_SD_WOPTS}")
       SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${_SD_WOPTS}")

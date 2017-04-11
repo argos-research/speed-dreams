@@ -238,7 +238,7 @@ MACRO(CHECK_LIBRARIES)
 	ENDIF(JPEG_FOUND)
 
 
-	
+
 	# SDL2
 	IF(OPTION_SDL2)
 		IF(NOT SDL2_FOUND)
@@ -276,10 +276,10 @@ MACRO(CHECK_LIBRARIES)
 		ENDIF(CURL_FOUND)
 	ENDIF(OPTION_WEBSERVER)
 
-	
+
 	# OSG
 	IF(OPTION_OSGGRAPH)
-	
+
 		IF(NOT OPENSCENEGRAPH_FOUND)
 			Find_Package(OpenSceneGraph REQUIRED osgDB osgViewer osgGA osgUtil osgFX osgParticle osgShadow)
 		ENDIF()
@@ -290,12 +290,12 @@ MACRO(CHECK_LIBRARIES)
 		ELSE(OPENSCENEGRAPH_FOUND)
 			MESSAGE(STATUS "Looking for library OpenScenGraph - NOT found")
 		ENDIF(OPENSCENEGRAPH_FOUND)
-		
+
 	ENDIF(OPTION_OSGGRAPH)
 
 	# Expat
 	IF(OPTION_3RDPARTY_EXPAT)
-	
+
 		Find_Package(EXPAT)
 
 		IF(EXPAT_FOUND)
@@ -304,12 +304,12 @@ MACRO(CHECK_LIBRARIES)
 		ELSE(EXPAT_FOUND)
 			MESSAGE(STATUS "Looking for library Expat - NOT found")
 		ENDIF(EXPAT_FOUND)
-		
+
 	ENDIF(OPTION_3RDPARTY_EXPAT)
 
 	# SOLID
 	IF(OPTION_3RDPARTY_SOLID)
-	
+
 		Find_Package(SOLID)
 
 		IF(SOLID_FOUND)
@@ -318,12 +318,12 @@ MACRO(CHECK_LIBRARIES)
 		ELSE(SOLID_FOUND)
 			MESSAGE(STATUS "Looking for library Solid - NOT found")
 		ENDIF(SOLID_FOUND)
-		
+
 	ENDIF(OPTION_3RDPARTY_SOLID)
 
 	# SQLITE3
 	IF(OPTION_3RDPARTY_SQLITE3)
-	
+
 		Find_Package(SQLITE3)
 		IF(SQLITE3_FOUND)
 			SET(HAVE_LIBSQLITE3 1)
@@ -336,7 +336,7 @@ MACRO(CHECK_LIBRARIES)
 
 	# SQLITE3
 	IF(OPTION_3RDPARTY_SQLITE3)
-	
+
 		Find_Package(SQLITE3)
 		IF(SQLITE3_FOUND)
 			SET(HAVE_LIBSQLITE3 1)
@@ -347,23 +347,24 @@ MACRO(CHECK_LIBRARIES)
 
 	ENDIF(OPTION_3RDPARTY_SQLITE3)
 
-	# Boost
-	Find_Package(Boost REQUIRED system)
-	IF(Boost_FOUND)
-		SET(HAVE_BOOST 1)
-		MESSAGE(STATUS "Looking for library Boost - found")
-	ELSE(Boost_FOUND)
-		MESSAGE(STATUS "Looking for library Boost - NOT found")
-	ENDIF(Boost_FOUND)
+	IF(OPTION_SIMCOUPLER)
+		# Boost
+		Find_Package(Boost REQUIRED system)
+		IF(Boost_FOUND)
+			SET(HAVE_BOOST 1)
+			MESSAGE(STATUS "Looking for library Boost - found")
+		ELSE(Boost_FOUND)
+			MESSAGE(STATUS "Looking for library Boost - NOT found")
+		ENDIF(Boost_FOUND)
 
-	# Protobuf
-	Find_Package(Protobuf REQUIRED)
-	IF(PROTOBUF_FOUND)
-		SET(HAVE_PROTOBUF 1)
-		MESSAGE(STATUS "Looking for library Protobuf - found")
-	ELSE(PROTOBUF_FOUND)
-		MESSAGE(STATUS "Looking for library Protobuf - NOT found")
-	ENDIF(PROTOBUF_FOUND)
+		# Protobuf
+		Find_Package(Protobuf REQUIRED)
+		IF(PROTOBUF_FOUND)
+			SET(HAVE_PROTOBUF 1)
+			MESSAGE(STATUS "Looking for library Protobuf - found")
+		ELSE(PROTOBUF_FOUND)
+			MESSAGE(STATUS "Looking for library Protobuf - NOT found")
+		ENDIF(PROTOBUF_FOUND)
+	ENDIF(OPTION_SIMCOUPLER)
 
 ENDMACRO(CHECK_LIBRARIES)
-

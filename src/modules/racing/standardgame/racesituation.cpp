@@ -51,10 +51,12 @@
 #include "racemessage.h"
 #include "racenetwork.h"
 
+#ifdef SIMCOUPLER
 #include <boost/asio.hpp>
 
 #include <situation.pb.h>
 #include <track.pb.h>
+#endif
 
 // The singleton.
 ReSituation* ReSituation::_pSelf = 0;
@@ -251,7 +253,6 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 {
 	tRmInfo* pCurrReInfo = ReSituation::self().data();
 	tSituation *s = pCurrReInfo->s;
-	tTrack *t = pCurrReInfo->track;
 
 	// Race messages life cycle management.
 	ReRaceMsgManage(pCurrReInfo);
@@ -331,12 +332,11 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 	if ((s->currentTime - pCurrReInfo->_reLastRobTime) >= RCM_MAX_DT_ROBOTS) {
 		s->deltaTime = s->currentTime - pCurrReInfo->_reLastRobTime;
 
+		#ifdef SIMCOUPLER
 		// start memdump of robots
-		/* number of cars */
-		GfLogInfo("Number of cars: %d\n", s->_ncars);
 		protobuf::Situation situation;
+		/* gather information of vehicle n */
 		for (int i = 0; i < s->_ncars; i++) {
-		  GfLogInfo("Dumping info of car: %d with name %s\n", i, s->cars[i]->_name);
 		  protobuf::Vehicle *veh = situation.add_vehicles();
 		  veh->set_name(s->cars[i]->_name);
 		  protobuf::Position *pos = veh->mutable_position();
@@ -344,29 +344,15 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 		  pos->set_y(s->cars[i]->_pos_Y);
 		  pos->set_z(s->cars[i]->_pos_Z);
 		  veh->set_yaw(s->cars[i]->_yaw);
-		  /* transmit information of vehicle n */
 		}
+		situation.set_time(s->currentTime);
 		std::string output;
 		situation.SerializeToString(&output);
-		uint32_t length = output.size();
+		uint32_t length = htonl(output.size());
 		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(&length, 4));
 		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(output, output.length()));
-
-		protobuf::Track track;
-		protobuf::Segment *seg = track.add_segments();
-		for(int i=0; i<4; i++) {
-		  protobuf::Position *pos = seg->add_vertex();
-		  pos->set_x(t->seg[0].vertex[i].x);
-		  pos->set_y(t->seg[0].vertex[i].y);
-		  pos->set_z(t->seg[0].vertex[i].z);
-		}
-		output.clear();
-		track.SerializeToString(&output);
-		length = output.size();
-		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(&length, 4));
-		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(output, output.length()));
-		/* end transmission */
 		// end memdump
+		#endif
 
 		tRobotItf *robot;
 		for (int i = 0; i < s->_ncars; i++) {
@@ -560,7 +546,10 @@ int ReSituationUpdater::threadLoop()
 }
 
 ReSituationUpdater::ReSituationUpdater()
-: _fSimuTick(RCM_MAX_DT_SIMU), _fOutputTick(0), _fLastOutputTime(0), s(io_service)
+: _fSimuTick(RCM_MAX_DT_SIMU), _fOutputTick(0), _fLastOutputTime(0)
+#ifdef SIMCOUPLER
+,s(io_service)
+#endif
 
 {
 	// Save the race engine info (state + situation) pointer for the current step.
@@ -631,6 +620,7 @@ ReSituationUpdater::ReSituationUpdater()
 	GfLogInfo("SituationUpdater initialized (%sseparate thread, CPU affinity %s).\n",
 	      (_bThreaded ? "" : "no "), (_bThreadAffinity ? "On" : "Off"));
 
+	#ifdef SIMCOUPLER
 	// Initialize socket connection
 	boost::asio::ip::tcp::resolver resolver(io_service);
 	boost::asio::ip::tcp::resolver::query query(boost::asio::ip::tcp::v4(), "127.0.0.1", "9000");
@@ -643,6 +633,23 @@ ReSituationUpdater::ReSituationUpdater()
 		SDL_Delay(1000);
 		boost::asio::connect(s, iterator, ec);
 	}
+
+	// Send track - currently only the first segment for position alignment
+	tTrack* t = pCurrReInfo->track;
+	protobuf::Track track;
+	protobuf::Segment *seg = track.add_segments();
+	for(int i=0; i<4; i++) {
+		protobuf::Position *pos = seg->add_vertex();
+		pos->set_x(t->seg[0].vertex[i].x);
+		pos->set_y(t->seg[0].vertex[i].y);
+		pos->set_z(t->seg[0].vertex[i].z);
+	}
+	std::string output;
+	track.SerializeToString(&output);
+	uint32_t length = htonl(output.size());
+	boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(&length, 4));
+	boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(output, output.length()));
+	#endif
 }
 
 ReSituationUpdater::~ReSituationUpdater()

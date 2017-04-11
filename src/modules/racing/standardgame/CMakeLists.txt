@@ -2,23 +2,28 @@ INCLUDE(../../../../cmake/macros.cmake)
 
 #PROJECT(standardgame)
 
-PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS situation.proto vehicle.proto position.proto track.proto)
+IF(OPTION_SIMCOUPLER)
+    ADD_DEFINITIONS(-DSIMCOUPLER)
+    PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS situation.proto vehicle.proto position.proto track.proto)
+ENDIF(OPTION_SIMCOUPLER)
 
 SET(_SOURCES standardgame.cpp
              racecareer.cpp raceupdate.cpp racenetwork.cpp racecars.cpp
              raceinit.cpp racemain.cpp
-             racetrack.cpp raceresults.cpp racesimusimu.cpp 
+             racetrack.cpp raceresults.cpp racesimusimu.cpp
              racestate.cpp racesituation.cpp racemessage.cpp
              raceutil.cpp ${PROTO_SRCS})
-SET(_HEADERS standardgame.h 
+SET(_HEADERS standardgame.h
              racecareer.h raceupdate.h racenetwork.h racecars.h
              raceinit.h racemain.h
-             racetrack.h raceresults.h racesimusimu.h 
+             racetrack.h raceresults.h racesimusimu.h
              racestate.h racesituation.h racemessage.h
              raceutil.h ${PROTO_HDRS})
 SET(_OTHER_SOURCES )
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}) # path where protobuf generated files
+IF(OPTION_SIMCOUPLER)
+    INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}) # path where protobuf generated files
+ENDIF(OPTION_SIMCOUPLER)
 
 ADD_INTERFACE_INCLUDEDIR()
 
@@ -49,7 +54,7 @@ IF(WIN32)
     # DLL export stuff under Windows (to avoid .def file)
     ADD_DEFINITIONS(-DSTANDARDGAME_DLL)
 ENDIF(WIN32)
-    
+
 IF(MSVC)
     # Ignore some run-time libs to avoid link time warnings and sometimes even crashes.
     SET(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:msvcrt.lib")
@@ -58,7 +63,7 @@ ENDIF(MSVC)
 # Note: Other source files  and headers needed for having them available in IDEs.
 SD_ADD_LIBRARY(standardgame MODULE ${_SOURCES} ${_HEADERS} ${_OTHER_SOURCES})
 
-# Might not work with GCC 4.5 or + (non-robot modules crash at 1st reload = after 1 dlclose) 
+# Might not work with GCC 4.5 or + (non-robot modules crash at 1st reload = after 1 dlclose)
 #SET_TARGET_PROPERTIES(standardgame PROPERTIES VERSION ${VERSION} SOVERSION 0.0.0)
 IF(OPTION_WEBSERVER)
 	ADD_SDLIB_LIBRARY(standardgame portability tgf tgfdata robottools networking tgfclient)
@@ -70,10 +75,12 @@ IF(OPTION_3RDPARTY_SQLITE3)
     ADD_SQLITE3_LIBRARY(standardgame)
 ENDIF(OPTION_3RDPARTY_SQLITE3)
 
-ADD_BOOST_INCLUDEDIR()
-ADD_BOOST_LIBRARY(standardgame)
+IF(OPTION_SIMCOUPLER)
+    ADD_BOOST_INCLUDEDIR()
+    ADD_BOOST_LIBRARY(standardgame)
 
-ADD_PROTOBUF_INCLUDEDIR()
-ADD_PROTOBUF_LIBRARY(standardgame)
+    ADD_PROTOBUF_INCLUDEDIR()
+    ADD_PROTOBUF_LIBRARY(standardgame)
+ENDIF(OPTION_SIMCOUPLER)
 
 SD_INSTALL_FILES(LIB modules/racing TARGETS standardgame)
