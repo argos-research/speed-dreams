@@ -2,7 +2,7 @@
 
     file        : racesituation.cpp
     copyright   : (C) 2010 by Jean-Philippe Meuret
-    web         : www.speed-dreams.org 
+    web         : www.speed-dreams.org
     version     : $Id: racesituation.cpp 6294 2015-11-30 00:20:46Z kakukri $
 
  ***************************************************************************/
@@ -16,7 +16,7 @@
  *                                                                         *
  ***************************************************************************/
 
-/** @file   
+/** @file
     		The central raceman data structure (situation + other race infos)
     @author	    Jean-Philippe Meuret
     @version	$Id: racesituation.cpp 6294 2015-11-30 00:20:46Z kakukri $
@@ -51,7 +51,12 @@
 #include "racemessage.h"
 #include "racenetwork.h"
 
+#ifdef SIMCOUPLER
+#include <boost/asio.hpp>
 
+#include <situation.pb.h>
+#include <track.pb.h>
+#endif
 
 // The singleton.
 ReSituation* ReSituation::_pSelf = 0;
@@ -60,7 +65,7 @@ ReSituation& ReSituation::self()
 {
 	if (!_pSelf)
 		_pSelf = new ReSituation;
-	
+
 	return *_pSelf;
 }
 
@@ -78,7 +83,7 @@ ReSituation::ReSituation()
 ReSituation::~ReSituation()
 {
 	// Free ReInfo memory.
-	if (_pReInfo->results) 
+	if (_pReInfo->results)
     {
 		if (_pReInfo->mainResults != _pReInfo->results)
 			GfParmReleaseHandle(_pReInfo->mainResults);
@@ -86,7 +91,7 @@ ReSituation::~ReSituation()
     }
     if (_pReInfo->_reParam)
 		GfParmReleaseHandle(_pReInfo->_reParam);
-    if (_pReInfo->params != _pReInfo->mainParams) 
+    if (_pReInfo->params != _pReInfo->mainParams)
     {
 		GfParmReleaseHandle(_pReInfo->params);
 		_pReInfo->params = _pReInfo->mainParams;
@@ -96,7 +101,7 @@ ReSituation::~ReSituation()
     free(_pReInfo->s);
     free(_pReInfo->carList);
     free(_pReInfo->rules);
-    
+
     FREEZ(_pReInfo);
 
 	// Prepare the singleton for next use.
@@ -126,19 +131,19 @@ bool ReSituation::lock(const char* pszCallerName)
 {
 	if (!_pMutex)
 		return true;
-	
+
 	const bool bStatus = (SDL_mutexP(_pMutex) == 0);
 	if (!bStatus)
 		GfLogWarning("%s : Failed to lock situation mutex\n", pszCallerName);
 
 	return bStatus;
 }
-	
+
 bool ReSituation::unlock(const char* pszCallerName)
 {
 	if (!_pMutex)
 		return true;
-	
+
 	const bool bStatus = SDL_mutexV(_pMutex) == 0;
 	if (!bStatus)
 		GfLogWarning("%s : Failed to unlock situation mutex\n", pszCallerName);
@@ -158,7 +163,7 @@ void ReSituation::setDisplayMode(unsigned bfDispMode)
 	lock("setDisplayMode");
 
 	_pReInfo->_displayMode = bfDispMode;
-	
+
 	unlock("setDisplayMode");
 }
 
@@ -205,7 +210,7 @@ void ReSituation::setRaceMessage(const std::string& strMsg, double fLifeTime, bo
 		ReRaceMsgSetBig(_pReInfo, strMsg.c_str(), fLifeTime);
 	else
 		ReRaceMsgSet(_pReInfo, strMsg.c_str(), fLifeTime);
-	
+
 	unlock("setRaceMessage");
 }
 
@@ -228,13 +233,13 @@ void ReSituation::setPitCommand(int nCarIndex, const tCarPitCmd *pPitCmd)
 			break;
 		}
 	}
-	
+
 	// Compute and set pit time.
 	if (pCurrCar)
 		ReCarsUpdateCarPitTime(pCurrCar);
 	else
 		GfLogError("Failed to retrieve car with index %d when computing pit time\n", nCarIndex);
-	
+
 	unlock("setRaceMessage");
 }
 
@@ -251,7 +256,7 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 
 	// Race messages life cycle management.
 	ReRaceMsgManage(pCurrReInfo);
-	
+
 	if (NetGetNetwork())
 	{
 		// Resync clock in case computer falls behind
@@ -326,6 +331,29 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 	GfSchedBeginEvent("raceupdate", "robots");
 	if ((s->currentTime - pCurrReInfo->_reLastRobTime) >= RCM_MAX_DT_ROBOTS) {
 		s->deltaTime = s->currentTime - pCurrReInfo->_reLastRobTime;
+
+		#ifdef SIMCOUPLER
+		// start memdump of robots
+		protobuf::Situation situation;
+		/* gather information of vehicle n */
+		for (int i = 0; i < s->_ncars; i++) {
+		  protobuf::Vehicle *veh = situation.add_vehicles();
+		  veh->set_name(s->cars[i]->_name);
+		  protobuf::Position *pos = veh->mutable_position();
+		  pos->set_x(s->cars[i]->_pos_X);
+		  pos->set_y(s->cars[i]->_pos_Y);
+		  pos->set_z(s->cars[i]->_pos_Z);
+		  veh->set_yaw(s->cars[i]->_yaw);
+		}
+		situation.set_time(s->currentTime);
+		std::string output;
+		situation.SerializeToString(&output);
+		uint32_t length = htonl(output.size());
+		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(&length, 4));
+		boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(output, output.length()));
+		// end memdump
+		#endif
+
 		tRobotItf *robot;
 		for (int i = 0; i < s->_ncars; i++) {
 			if ((s->cars[i]->_state & RM_CAR_STATE_NO_SIMU) == 0) {
@@ -359,7 +387,7 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 
 	GfSchedEndEvent("raceupdate", "physics");
 	GfProfStopProfile("physicsEngine.update*");
-	
+
 	ReCarsSortCars();
 
 	// Update results if a best lap changed
@@ -381,13 +409,13 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 	//Find human cars
 	for (int i = 0; i < pCurrReInfo->s->_ncars; i++) {
 		if(pCurrReInfo->s->cars[i]->_driverType == RM_DRV_HUMAN){
-			//if: 
-			//- at least a lap has been done 
-			//- a lap is passed 
+			//if:
+			//- at least a lap has been done
+			//- a lap is passed
 			//- we have not done the final lap
 			// then log it to the webServer
 			if(pCurrReInfo->s->cars[i]->_laps > 1 && pCurrReInfo->s->cars[i]->_laps > webServer.previousLaps && webServer.raceEndSent==false){
-				
+
 				//remember the current number of laps for next cicle
 				webServer.previousLaps = pCurrReInfo->s->cars[i]->_laps;
 
@@ -412,7 +440,7 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 					//pCurrReInfo->s->cars[i]->_category,	//car category
 				);
 			}
-			
+
 			//if we have already done the last lap but we have not yet sent the raceEnd comunication to the webserver: do it!
 			if(pCurrReInfo->s->cars[i]->_remainingLaps < 0 && webServer.raceEndSent == false){
 				//send race data
@@ -424,7 +452,7 @@ void ReSituationUpdater::runOneStep(double deltaTimeIncrement)
 		}
 	}
 	webServer.updateAsyncStatus();
-	#endif //WEBSERVER	
+	#endif //WEBSERVER
 
 }
 
@@ -446,7 +474,7 @@ int ReSituationUpdater::threadLoop()
 
 	// Current real time.
 	double realTime;
-	
+
 	// Apply thread affinity to the current = situation updater thread if specified.
 	// Note: No need to reset the affinity, as the thread is just born.
 	if (_bThreadAffinity)
@@ -455,7 +483,7 @@ int ReSituationUpdater::threadLoop()
 	tRmInfo* pCurrReInfo = ReSituation::self().data();
 
 	GfLogInfo("SituationUpdater thread is started.\n");
-	
+
 	do
 	{
 		// Let's make current step the next one (update).
@@ -464,9 +492,9 @@ int ReSituationUpdater::threadLoop()
 
 		// 2) Check if time to terminate has come.
 		if (_bTerminate)
-			
+
 			bEnd = true;
-		
+
 		// 3) If not time to terminate, and running, do the update job.
 		else if (pCurrReInfo->_reRunning)
 		{
@@ -475,25 +503,25 @@ int ReSituationUpdater::threadLoop()
 				bRunning = true;
 				GfLogInfo("SituationUpdater thread is running.\n");
 			}
-			
+
 			realTime = GfTimeClock();
-		
+
 			GfProfStartProfile("reOneStep*");
-		
+
 			while (pCurrReInfo->_reRunning
 				   && ((realTime - pCurrReInfo->_reCurTime) > RCM_MAX_DT_SIMU))
 			{
 				// One simu + robots (if any) step
 				runOneStep(RCM_MAX_DT_SIMU);
 			}
-		
+
 			GfProfStopProfile("reOneStep*");
-		
+
 			// Send car physics to network if needed
 			if (NetGetNetwork())
 				NetGetNetwork()->SendCarControlsPacket(pCurrReInfo->s);
 		}
-		
+
 		// 3) If not time to terminate, and not running, do nothing.
 		else
 		{
@@ -503,22 +531,25 @@ int ReSituationUpdater::threadLoop()
 				GfLogInfo("SituationUpdater thread is paused.\n");
 			}
 		}
-			
+
 		// 4) Unlock the race engine data.
 		ReSituation::self().unlock("ReSituationUpdater::threadLoop");
-		
+
 		// 5) Let the CPU take breath if possible (but after unlocking data !).
 		SDL_Delay(KWaitDelayMS[(int)bRunning]);
 	}
 	while (!bEnd);
 
 	GfLogInfo("SituationUpdater thread has been terminated.\n");
-	
+
 	return 0;
 }
 
 ReSituationUpdater::ReSituationUpdater()
 : _fSimuTick(RCM_MAX_DT_SIMU), _fOutputTick(0), _fLastOutputTime(0)
+#ifdef SIMCOUPLER
+,s(io_service)
+#endif
 
 {
 	// Save the race engine info (state + situation) pointer for the current step.
@@ -560,7 +591,7 @@ ReSituationUpdater::ReSituationUpdater()
 	// 	pCurrReInfo->movieCapture.enabled = 0;
 	// 	GfLogInfo("Movie capture disabled (not implemented in multi-threaded mode)\n");
 	// }
-	
+
 	// Initialize termination flag.
 	_bTerminate = false;
 
@@ -572,7 +603,7 @@ ReSituationUpdater::ReSituationUpdater()
 
 		// Activate the thread-safe mode for the the race engine info.
 		ReSituation::self().setThreadSafe(true);
-		
+
 		// Create and start the updater thread.
 #if SDL_MAJOR_VERSION >= 2
 		_pUpdateThread = SDL_CreateThread(ReSituationUpdater::threadLoop,"Update_thread",this);
@@ -588,6 +619,37 @@ ReSituationUpdater::ReSituationUpdater()
 
 	GfLogInfo("SituationUpdater initialized (%sseparate thread, CPU affinity %s).\n",
 	      (_bThreaded ? "" : "no "), (_bThreadAffinity ? "On" : "Off"));
+
+	#ifdef SIMCOUPLER
+	// Initialize socket connection
+	boost::asio::ip::tcp::resolver resolver(io_service);
+	boost::asio::ip::tcp::resolver::query query(boost::asio::ip::tcp::v4(), "127.0.0.1", "9000");
+	boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
+	boost::system::error_code ec;
+
+	boost::asio::connect(s, iterator, ec);
+	while(ec) {
+		GfLogWarning("Connection to SimCoupler failed...\n");
+		SDL_Delay(1000);
+		boost::asio::connect(s, iterator, ec);
+	}
+
+	// Send track - currently only the first segment for position alignment
+	tTrack* t = pCurrReInfo->track;
+	protobuf::Track track;
+	protobuf::Segment *seg = track.add_segments();
+	for(int i=0; i<4; i++) {
+		protobuf::Position *pos = seg->add_vertex();
+		pos->set_x(t->seg[0].vertex[i].x);
+		pos->set_y(t->seg[0].vertex[i].y);
+		pos->set_z(t->seg[0].vertex[i].z);
+	}
+	std::string output;
+	track.SerializeToString(&output);
+	uint32_t length = htonl(output.size());
+	boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(&length, 4));
+	boost::asio::write(ReSituationUpdater::s, boost::asio::buffer(output, output.length()));
+	#endif
 }
 
 ReSituationUpdater::~ReSituationUpdater()
@@ -598,7 +660,7 @@ ReSituationUpdater::~ReSituationUpdater()
 	{
 		// Deactivate the thread-safe mode for the the race engine info.
 		ReSituation::self().setThreadSafe(false);
-		
+
 		if (_pPrevReInfo)
 			freezSituation(_pPrevReInfo);
 	}
@@ -629,7 +691,7 @@ void ReSituationUpdater::start()
 
 	// Resynchronize simulation time.
     ReSituation::self().data()->_reCurTime = GfTimeClock() - RCM_MAX_DT_SIMU;
-	
+
 	// Unlock the race engine data.
 	ReSituation::self().unlock("ReSituationUpdater::start");
 }
@@ -644,7 +706,7 @@ void ReSituationUpdater::stop()
 	// Reset the running flags.
 	ReSituation::self().data()->_reRunning = 0;
 	ReSituation::self().data()->s->_raceState |= RM_RACE_PAUSED;
-		
+
 	// Unlock the race engine data.
 	ReSituation::self().unlock("ReSituationUpdater::stop");
 }
@@ -652,7 +714,7 @@ void ReSituationUpdater::stop()
 int ReSituationUpdater::terminate()
 {
 	int status = 0;
-	
+
 	GfLogInfo("Terminating situation updater.\n");
 
 	/* need to ensure the last record gets writeen */
@@ -667,10 +729,10 @@ int ReSituationUpdater::terminate()
 
 	// Set the death flag.
 	_bTerminate = true;
-	
+
 	// Unlock the race engine data.
 	ReSituation::self().unlock("ReSituationUpdater::terminate");
-	
+
 	// Wait for the thread to gracefully terminate if any.
 	if (_bThreaded)
 	{
@@ -722,7 +784,7 @@ tRmInfo* ReSituationUpdater::initSituation(const tRmInfo* pSource)
 
 	// Allocate level 2 structures in raceEngineInfo field.
 	pTarget->_reCarInfo = (tReCarInfo*)calloc(_nInitDrivers, sizeof(tReCarInfo));
-		
+
 	// Assign level 2 constants in raceEngineInfo field.
 	pTarget->_reParam = pSource->_reParam; // Not used / written by updater.
 	pTarget->_reFilename = pSource->_reFilename; // Not used during race.
@@ -827,7 +889,7 @@ tRmInfo* ReSituationUpdater::copySituation(tRmInfo*& pTarget, const tRmInfo* pSo
 		 * An dashboardInstant and dashboardRequest's tCarSetupItem pointers
 		 * are not updated, so they always point to the targets setup field.
 		 * This is safe until the graphics engine does not start to change car setups.
-		 */ 
+		 */
 
 		// 5) ctrl (raw mem copy)
 		memcpy(&pTgtCar->ctrl, &pSrcCar->ctrl, sizeof(tCarCtrl));
@@ -838,7 +900,7 @@ tRmInfo* ReSituationUpdater::copySituation(tRmInfo*& pTarget, const tRmInfo* pSo
 		// 7) next : ever used anywhere ? Seems not.
 		//struct CarElt	*next;
 	}
-	
+
 	// II) pSource->s
 	pTarget->s->raceInfo = pSource->s->raceInfo;
 	pTarget->s->deltaTime = pSource->s->deltaTime;
@@ -848,10 +910,10 @@ tRmInfo* ReSituationUpdater::copySituation(tRmInfo*& pTarget, const tRmInfo* pSo
 	for (int nCarInd = 0; nCarInd < _nInitDrivers; nCarInd++)
 		pTarget->s->cars[nCarInd] =
 			pTarget->carList + (pSource->s->cars[nCarInd] - pSource->carList);
-	
+
 	// III) pSource->rules (1 int per driver) // Not used by the graphics engine (situ. updater only).
 	//memcpy(pTarget->rules, pSource->rules, _nInitDrivers*sizeof(tRmCarRules));
-	
+
 	// IV) pSource->raceEngineInfo
 	//     TODO: Make _reMessage and _reBigMessage inline arrays inside raceEngineInfo
 	//           to avoid strdups (optimization) ?
@@ -908,7 +970,7 @@ void ReSituationUpdater::replaySituation(tRmInfo*& pSource)
 	tCarElt* pSrcCar;
 
 	if (!replayDB) return;
-	
+
 	// Do everything in 1 transaction for speed
 	sqlite3_exec(replayDB, "BEGIN TRANSACTION", NULL, NULL, NULL);
 
@@ -928,7 +990,7 @@ void ReSituationUpdater::replaySituation(tRmInfo*& pSource)
 		memcpy(&pTgtCar->pitcmd, &pSrcCar->pitcmd, sizeof(tCarPitCmd));
 
 		// and write to database
-		sprintf(command, "INSERT INTO car%d (timestamp, lap, datablob) VALUES (%f, %d, ?)", nCarInd, 
+		sprintf(command, "INSERT INTO car%d (timestamp, lap, datablob) VALUES (%f, %d, ?)", nCarInd,
 			pSource->s->currentTime, pSrcCar->_laps);
 
  		result = sqlite3_prepare_v2(replayDB, command, -1, &replayBlobs[nCarInd], 0);
@@ -1053,7 +1115,7 @@ void ReSituationUpdater::freezSituation(tRmInfo*& pSituation)
 			for (int nCarInd = 0; nCarInd < _nInitDrivers; nCarInd++)
 			{
 				tCarElt* pTgtCar = &pSituation->carList[nCarInd];
-		
+
 				tCarPenalty *penalty;
 				while ((penalty = GF_TAILQ_FIRST(&(pTgtCar->_penaltyList)))
 					   != GF_TAILQ_END(&(pTgtCar->_penaltyList)))
@@ -1064,10 +1126,10 @@ void ReSituationUpdater::freezSituation(tRmInfo*& pSituation)
 				free(pTgtCar->_curSplitTime);
 				free(pTgtCar->_bestSplitTime);
 			}
-		
+
 			free(pSituation->carList);
 		}
-		
+
 		// s
 		if (pSituation->s)
 			free(pSituation->s);
@@ -1083,7 +1145,7 @@ void ReSituationUpdater::freezSituation(tRmInfo*& pSituation)
 			free(pSituation->_reBigMessage);
 		if (pSituation->_reCarInfo)
 			free(pSituation->_reCarInfo);
-		
+
 		free(pSituation);
 		pSituation = 0;
 	}
@@ -1097,12 +1159,12 @@ void ReSituationUpdater::acknowledgeEvents()
 	for (int nCarInd = 0; nCarInd < pCurrReInfo->s->_ncars; nCarInd++)
 	{
 		tCarElt* pCar = pCurrReInfo->s->cars[nCarInd];
-		
+
 		//if (pCar->priv.collision)
 		//	GfLogDebug("Reset collision state of car #%d (was 0x%X)\n",
 		//			   nCarInd, pCar->priv.collision);
 		pCar->priv.collision = 0;
-		
+
 		// Note: This one is only for SimuV3, and not yet used actually
 		// (WIP on collision code issues ; see simuv3/collide.cpp).
 		pCar->priv.collision_state.collision_count = 0;
@@ -1158,7 +1220,7 @@ tRmInfo* ReSituationUpdater::getPreviousStep()
 }
 
 // This member function decorates the situation updater as a normal function,
-// thus hiding the possible separate thread behind to the main updater. 
+// thus hiding the possible separate thread behind to the main updater.
 void ReSituationUpdater::computeCurrentStep()
 {
 	// Nothing to do if actually threaded :
@@ -1168,7 +1230,7 @@ void ReSituationUpdater::computeCurrentStep()
 
 	// Non-threaded mode.
 	GfProfStartProfile("reOneStep*");
-			
+
 	tRmInfo* pCurrReInfo = ReSituation::self().data();
 
 	// Stable but slowed-down frame rate mode.
@@ -1185,14 +1247,14 @@ void ReSituationUpdater::computeCurrentStep()
 	else
 	{
 		const double t = GfTimeClock();
-		
+
 		while (pCurrReInfo->_reRunning && ((t - pCurrReInfo->_reCurTime) > RCM_MAX_DT_SIMU))
-				
+
 			runOneStep(_fSimuTick);
 	}
 
 	GfProfStopProfile("reOneStep*");
-		
+
 	// Send car physics to network if needed
 	if (NetGetNetwork())
 		NetGetNetwork()->SendCarControlsPacket(pCurrReInfo->s);

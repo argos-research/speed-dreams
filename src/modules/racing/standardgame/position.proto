@@ -1,0 +1,8 @@
+syntax = "proto2";
+package protobuf;
+
+message Position {
+  required float x = 1;
+  required float y = 2;
+  optional float z = 3;
+}

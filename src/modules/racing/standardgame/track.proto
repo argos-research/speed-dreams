@@ -1,0 +1,14 @@
+syntax = "proto2";
+package protobuf;
+
+import "position.proto";
+
+message Track {
+  repeated Segment segments = 1;
+}
+
+message Segment {
+  repeated Position vertex = 1;
+  optional float width = 2;
+  optional float length = 3;
+}

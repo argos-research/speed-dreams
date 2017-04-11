@@ -2,7 +2,7 @@
 
     file        : racesituation.h
     copyright   : (C) 2010 by Jean-Philippe Meuret
-    web         : www.speed-dreams.org 
+    web         : www.speed-dreams.org
     version     : $Id: racesituation.h 5803 2014-07-30 03:19:34Z mungewell $
 
  ***************************************************************************/
@@ -15,9 +15,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- 
-/** @file    
-    		
+
+/** @file
+
     @author	    Jean-Philippe Meuret
     @version	$Id: racesituation.h 5803 2014-07-30 03:19:34Z mungewell $
 */
@@ -29,18 +29,21 @@
 
 #include "raceinit.h" // ReInfo.
 
+#ifdef SIMCOUPLER
+#include <boost/asio.hpp>
+#endif
 
 // The race situation class ==========================================================
 class ReSituation
 {
 public:
-	
+
 	//! Accessor to the singleton (not thread-safe at instanciation time).
 	static ReSituation& self();
 
 	//! Delete the singleton.
 	static void terminate();
-	
+
 	//! Destructor.
 	~ReSituation();
 
@@ -54,7 +57,7 @@ public:
 	void setDisplayMode(unsigned bfDispMode);
 	void accelerateTime(double fMultFactor);
 	void setRaceMessage(const std::string& strMsg, double fLifeTime = -1, bool bBig = false);
-	
+
 	//! Set pit command for the given car (back from a pit menu or so).
 	void setPitCommand(int nCarIndex, const tCarPitCmd *pPitCmd);
 
@@ -65,7 +68,7 @@ private:
 
 	//! Lock the data when thread-safe mode activated (otherwise do nothing).
 	bool lock(const char* pszCallerName = 0);
-	
+
 	//! Unlock the data when thread-safe mode activated (otherwise do nothing).
 	bool unlock(const char* pszCallerName = 0);
 
@@ -76,7 +79,7 @@ private:
 
 	//! The real data behind.
 	struct RmInfo *_pReInfo;
-	
+
 	//! The mutex for thread-safe access.
 	struct SDL_mutex* _pMutex;
 
@@ -88,7 +91,7 @@ private:
 class ReSituationUpdater
 {
 public:
-	
+
 	//! Constructor.
 	ReSituationUpdater();
 
@@ -100,16 +103,16 @@ public:
 
 	//! (Re)start (after a stop) the updater if it is not running.
 	void start();
-	
+
 	//! Stop (pause) the updater if it is running (return its exit status).
 	void stop();
-	
+
 	//! Terminate the updater (return its exit status ; wait for the thread to return).
 	int terminate();
-	
+
 	//! Get the situation for the previous step
 	struct RmInfo* getPreviousStep();
-	
+
 	//! Compute 1 situation update step.
 	void runOneStep(double deltaTimeIncrement);
 
@@ -120,16 +123,16 @@ private:
 
 	//! The thread function.
 	int threadLoop();
-	
+
 	//! The C wrapper on the thread function.
 	static int threadLoop(void*);
-	
+
 	//! Acknowledge the situation events (simu / graphics synchronization).
 	void acknowledgeEvents();
 
 	//! Allocate and initialize a situation (set constants from source).
 	struct RmInfo* initSituation(const struct RmInfo* pSource);
-	
+
 	//! (Deep) Copy the given situation.
 	struct RmInfo* copySituation(struct RmInfo*& pTarget, const struct RmInfo* pSource);
 
@@ -141,7 +144,7 @@ private:
 
 	//! Free the given situation
 	void freezSituation(struct RmInfo*& pSituation);
-	
+
 private:
 
 	//! Initial number of drivers racing
@@ -175,9 +178,11 @@ private:
 	//! Time of the last output when using the "stable but slowed-down frame rate" mode.
 	double _fLastOutputTime;
 
+  #ifdef SIMCOUPLER
+	// Boost stuff
+	boost::asio::io_service io_service;
+	boost::asio::ip::tcp::socket s;
+  #endif
 };
 
-#endif /* _RACESITUATION_H_ */ 
-
-
-
+#endif /* _RACESITUATION_H_ */

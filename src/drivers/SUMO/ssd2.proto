@@ -1,0 +1,21 @@
+message vehicle {
+	required string name = 1;
+	required position pos = 2;
+	required float dist = 3;
+	required float angle = 4;
+	required float length = 5;
+	required firstSegment fs = 6;
+}
+
+message position {
+	required float x = 1;
+	required float y = 2;
+	required float z = 3;
+}
+
+message firstSegment {
+	required float lx = 1;
+	required float ly = 2;
+	required float rx = 3;
+	required float ry = 4;
+}

@@ -1,0 +1,10 @@
+syntax = "proto2";
+package protobuf;
+
+import "position.proto";
+
+message Vehicle {
+  required string name = 1;
+  required Position position = 2;
+  required float yaw = 3;
+}

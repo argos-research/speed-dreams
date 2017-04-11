@@ -1,0 +1,9 @@
+syntax = "proto2";
+package protobuf;
+
+import "vehicle.proto";
+
+message Situation {
+  repeated Vehicle vehicles = 1;
+  required float time = 2;
+}
