@@ -13,5 +13,9 @@
 rm -rf /vagrant/build
 mkdir -p /vagrant/build
 cd /vagrant/build
-cmake ../
+
+# disable simcoupler if needed
+cmake -DOPTION_SIMCOUPLER=true ../
+#cmake ../
+
 make -j4
