@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
+ <object class="utils.Properties"> 
+  <void property="author"> 
+   <string>kilo</string> 
+  </void> 
+  <void property="category"> 
+   <string>track</string> 
+  </void> 
+  <void property="currentA"> 
+   <double>-6.283185307179584</double> 
+  </void> 
+  <void property="currentX"> 
+   <double>0.07551457606101053</double> 
+  </void> 
+  <void property="currentY"> 
+   <double>0.16903235049709067</double> 
+  </void> 
+  <void property="curveNameCount"> 
+   <int>43</int> 
+  </void> 
+  <void property="description"> 
+   <string>A Salty Spoon from Austria</string> 
+  </void> 
+  <void property="image"> 
+   <string>/home/torcs/Proj/torcs/track/Salty/doc/Salty.jpg</string> 
+  </void> 
+  <void property="imageScale"> 
+   <double>0.4</double> 
+  </void> 
+  <void property="path"> 
+   <string>/home/torcs/Proj/torcs/track/Salty</string> 
+  </void> 
+  <void property="pitEnd"> 
+   <string></string> 
+  </void> 
+  <void property="pitEntry"> 
+   <string></string> 
+  </void> 
+  <void property="pitExit"> 
+   <string></string> 
+  </void> 
+  <void property="pitStart"> 
+   <string></string> 
+  </void> 
+  <void property="straightNameCount"> 
+   <int>27</int> 
+  </void> 
+  <void property="trackName"> 
+   <string>Salty</string> 
+  </void> 
+ </object> 
+</java> 

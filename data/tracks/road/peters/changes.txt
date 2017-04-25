@@ -1,0 +1,31 @@
+v0.5
+  - moved turnmarks close to fence in the airport area
+
+v0.4
+	- add tirewall textures
+	- add pit textures
+	- add start/finish line
+	- add pit walls
+	- add cameras
+	- add turnmarks
+	- add race-selection picture
+
+v0.3
+	- custom curbs
+	- textures on sides
+	- asphalt texture
+	- different friction at different track segments
+
+v0.2
+	- check curb heights
+	- add bankings
+	- add pits
+
+v0.1
+  - initial release
+	- correct height
+	- correct barrier placement
+	- correct side widths
+	- correct curb placement
+	- correct length
+
