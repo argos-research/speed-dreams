@@ -74,7 +74,9 @@ public:
           std::string("\"name\":\"") + std::string(mycar->_name) + std::string("\",") +
           std::string("\"rpm\":\"") + std::to_string(mycar->_enginerpm) + std::string("\",") +
           std::string("\"gear\":\"") + std::to_string(mycar->_gear) + std::string("\",") +
-          std::string("\"gearNb\":\"") + std::to_string(mycar->_gearNb) + std::string("\"") +
+          std::string("\"gearNb\":\"") + std::to_string(mycar->_gearNb) + std::string("\",") +
+          std::string("\"pos\":\"") + std::to_string(mycar->_pos) + std::string("\",") +
+          std::string("\"ncars\":\"") + std::to_string(mysituation->_ncars) + std::string("\"") +
         std::string("}"));
     }
 };
