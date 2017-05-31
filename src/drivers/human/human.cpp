@@ -40,6 +40,12 @@
 
 #include <humandriver.h>
 
+#include <iostream>
+#include <thread>
+#include <pistache/endpoint.h>
+
+using namespace Net;
+
 #include <gpsSensor.h>
 
 static HumanDriver robot("human");
@@ -52,6 +58,24 @@ static void resumerace(int index, tCarElt* car, tSituation *s);
 static int  pitcmd(int index, tCarElt* car, tSituation *s);
 
 static GPSSensor gps = GPSSensor();
+
+static std::thread test;
+static tCarElt* mycar;
+
+class HelloHandler : public Http::Handler {
+public:
+
+    HTTP_PROTOTYPE(HelloHandler)
+
+    void onRequest(const Http::Request& request, Http::ResponseWriter response) {
+        response.send(Http::Code::Ok, std::string("{") +
+          std::string("\"speed\":\"") + std::to_string(mycar->_speed_x) + std::string("\",") +
+          std::string("\"name\":\"") + std::string(mycar->_name) + std::string("\",") +
+          std::string("\"rpm\":\"") + std::to_string(mycar->_enginerpm) + std::string("\",") +
+          std::string("\"gear\":\"") + std::to_string(mycar->_gear) + std::string("\"") +
+        std::string("}"));
+    }
+};
 
 #ifdef _WIN32
 /* Must be present under MS Windows */
@@ -67,6 +91,21 @@ shutdown(const int index)
 {
     robot.shutdown(index);
 }//shutdown
+
+static void
+api()
+{
+  Net::Address addr(Net::Ipv4::any(), Net::Port(9080));
+  auto opts = Net::Http::Endpoint::options()
+  .threads(1);
+
+  Http::Endpoint server(addr);
+  server.init(opts);
+  server.setHandler(Http::make_handler<HelloHandler>());
+  server.serve();
+
+  server.shutdown();
+}
 
 
 /**
@@ -95,6 +134,8 @@ InitFuncPt(int index, void *pt)
 	itf->rbShutdown = shutdown;
 	itf->rbPitCmd   = pitcmd;
 	itf->index      = index;
+
+  test = std::thread(api);
 
 	return 0;
 }//InitFuncPt
@@ -214,6 +255,7 @@ resumerace(int index, tCarElt* car, tSituation *s)
 static void
 drive_mt(int index, tCarElt* car, tSituation *s)
 {
+    mycar = car;
     robot.drive_mt(index, car, s);
 }//drive_mt
 
@@ -237,9 +279,10 @@ drive_mt(int index, tCarElt* car, tSituation *s)
 static void
 drive_at(int index, tCarElt* car, tSituation *s)
 {
-    gps.update(car);
+    /*gps.update(car);
     vec2 myPos = gps.getPosition();
-    printf("Players's position according to GPS is (%f, %f)\n", myPos.x, myPos.y);
+    printf("Players's position according to GPS is (%f, %f)\n", myPos.x, myPos.y);*/
+    mycar = car;
 
     robot.drive_at(index, car, s);
 }//drive_at
