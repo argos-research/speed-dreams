@@ -61,6 +61,7 @@ static GPSSensor gps = GPSSensor();
 
 static std::thread test;
 static tCarElt* mycar;
+static tSituation* mysituation;
 
 class HelloHandler : public Http::Handler {
 public:
@@ -72,7 +73,8 @@ public:
           std::string("\"speed\":\"") + std::to_string(mycar->_speed_x) + std::string("\",") +
           std::string("\"name\":\"") + std::string(mycar->_name) + std::string("\",") +
           std::string("\"rpm\":\"") + std::to_string(mycar->_enginerpm) + std::string("\",") +
-          std::string("\"gear\":\"") + std::to_string(mycar->_gear) + std::string("\"") +
+          std::string("\"gear\":\"") + std::to_string(mycar->_gear) + std::string("\",") +
+          std::string("\"gearNb\":\"") + std::to_string(mycar->_gearNb) + std::string("\"") +
         std::string("}"));
     }
 };
@@ -256,6 +258,7 @@ static void
 drive_mt(int index, tCarElt* car, tSituation *s)
 {
     mycar = car;
+    mysituation = s;
     robot.drive_mt(index, car, s);
 }//drive_mt
 
@@ -283,6 +286,7 @@ drive_at(int index, tCarElt* car, tSituation *s)
     vec2 myPos = gps.getPosition();
     printf("Players's position according to GPS is (%f, %f)\n", myPos.x, myPos.y);*/
     mycar = car;
+    mysituation = s;
 
     robot.drive_at(index, car, s);
 }//drive_at
