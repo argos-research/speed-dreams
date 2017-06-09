@@ -59,9 +59,9 @@ static int  pitcmd(int index, tCarElt* car, tSituation *s);
 
 static GPSSensor gps = GPSSensor();
 
-static std::thread test;
 static tCarElt* mycar;
 static tSituation* mysituation;
+Http::Endpoint* server;
 
 class HelloHandler : public Http::Handler {
 public:
@@ -69,6 +69,10 @@ public:
     HTTP_PROTOTYPE(HelloHandler)
 
     void onRequest(const Http::Request& request, Http::ResponseWriter response) {
+      if (mycar == NULL || mysituation == NULL) {
+        response.send(Http::Code::Ok, "{}");
+        return;
+      }
         response.send(Http::Code::Ok, std::string("{") +
           std::string("\"speed\":\"") + std::to_string(mycar->_speed_x) + std::string("\",") +
           std::string("\"name\":\"") + std::string(mycar->_name) + std::string("\",") +
@@ -93,23 +97,11 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 static void
 shutdown(const int index)
 {
+    server->shutdown();
+    delete server;
+    server = NULL;
     robot.shutdown(index);
 }//shutdown
-
-static void
-api()
-{
-  Net::Address addr(Net::Ipv4::any(), Net::Port(9080));
-  auto opts = Net::Http::Endpoint::options()
-  .threads(1);
-
-  Http::Endpoint server(addr);
-  server.init(opts);
-  server.setHandler(Http::make_handler<HelloHandler>());
-  server.serve();
-
-  server.shutdown();
-}
 
 
 /**
@@ -139,8 +131,13 @@ InitFuncPt(int index, void *pt)
 	itf->rbPitCmd   = pitcmd;
 	itf->index      = index;
 
-  test = std::thread(api);
+  Net::Address addr(Net::Ipv4::any(), Net::Port(9080));
+  auto opts = Net::Http::Endpoint::options().threads(1);
 
+  server = new Http::Endpoint(addr);
+  server->init(opts);
+  server->setHandler(Http::make_handler<HelloHandler>());
+  server->serveThreaded();
 	return 0;
 }//InitFuncPt
 
