@@ -10,7 +10,6 @@ pipeline {
         sh "cd ./build"
         sh "cmake .. >> log/prepare.log.txt 2>&1"
          }
-      }
     }
     stage('Build') {
       steps {
