@@ -18,6 +18,7 @@ pipeline {
     }
     stage('Notifications') {
       steps {
+       sh "echo notifications stage"
       }
     }
   } // stages ends here
