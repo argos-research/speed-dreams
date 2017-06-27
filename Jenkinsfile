@@ -14,7 +14,9 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh "make -j >> log/prepare.log.txt 2>&1"
+         dir('./build') {
+        sh "make -j >> ../log/prepare.log.txt 2>&1"
+         }
       }
     }
     stage('Notifications') {
