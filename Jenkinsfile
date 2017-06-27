@@ -17,9 +17,12 @@ pipeline {
     }
     stage('Build') {
       steps {
+        // prepare log
+        sh "mkdir -p log"
+        sh "touch log/build.log.txt"
         // start build process
         dir('./build') {
-          sh "make -j >> ../log/prepare.log.txt 2>&1"
+          sh "make -j >> ../log/build.log.txt 2>&1"
         }
       }
     }
