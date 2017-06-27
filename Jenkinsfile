@@ -8,7 +8,7 @@ pipeline {
         sh "touch log/prepare.log.txt"
         sh "mkdir -p build >> log/prepare.log.txt 2>&1"
         dir('./build') {
-          sh "cmake .. >> log/prepare.log.txt 2>&1"
+          sh "cmake .. >> ../log/prepare.log.txt 2>&1"
         }
          }
     }
