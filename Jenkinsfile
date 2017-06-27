@@ -4,17 +4,17 @@ pipeline {
   stages {
     stage('Prepare') {
       steps {
-        sh 'mkdir -p log'
-        sh 'touch log/prepare.log.txt'
-        sh 'mkdir -p build>> log/prepare.log.txt 2>&1'
-        sh 'cd ./build'
-        sh 'cmake .. >> log/prepare.log.txt 2>&1'
+        sh "mkdir -p log"
+        sh "touch log/prepare.log.txt"
+        sh "mkdir -p build >> log/prepare.log.txt 2>&1"
+        sh "cd ./build"
+        sh "cmake .. >> log/prepare.log.txt 2>&1"
          }
       }
     }
     stage('Build') {
       steps {
-        sh 'make -j >> log/prepare.log.txt 2>&1'
+        sh "make -j >> log/prepare.log.txt 2>&1"
       }
     }
     stage('Notifications') {
