@@ -37,6 +37,37 @@
 #include "globaldefs.h"
 #include "driver.h"
 
+#include "json.hpp"
+using json = nlohmann::json;
+
+static int maxSpeed = 0;
+
+#include <pistache/endpoint.h>
+
+using namespace Pistache;
+
+Http::Endpoint* server;
+
+class HelloHandler : public Http::Handler {
+public:
+
+    HTTP_PROTOTYPE(HelloHandler)
+
+    void onRequest(const Http::Request& request, Http::ResponseWriter response) {
+      if (request.resource() == "/maxSpeed") {
+        if (request.method() == Http::Method::Post) {
+          auto jo = json::parse(request.body().c_str());
+          std::string speed = jo["maxSpeed"].get<std::string>();
+          int value = std::stoi(speed, NULL);
+          printf("Setting maxSpeed to %d\n", value);
+          maxSpeed = value;
+          response.send(Http::Code::Ok);
+          return;
+        }
+      }
+    }
+};
+
 // Traditional TORCS Interface
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
 static void newRace(int index, tCarElt* car, tSituation *s);
@@ -587,6 +618,14 @@ static int initFuncPt(int Index, void *Pt)
     Itf->rbShutdown = shutdown;
     Itf->index      = Index;                       // Store index
 
+    Address addr(Ipv4::any(), Port(9080));
+    auto opts = Http::Endpoint::options().threads(1);
+
+    server = new Http::Endpoint(addr);
+    server->init(opts);
+    server->setHandler(Http::make_handler<HelloHandler>());
+    server->serveThreaded();
+
 #ifdef ROB_SECT_ARBITRARY
     int xx;
     tInstanceInfo *copy;
@@ -748,6 +787,14 @@ static void drive(int Index, tCarElt* Car, tSituation *S)
         //m_Instances[Index-IndexOffset].m_Robot->DriveLast();      // Use last drive commands
     }
     //LogUSR.debug("#<<< TDriver::Drive\n");
+    // REST //
+    if (Car->_speed_x * 3.6 > maxSpeed) { // car too fast
+      Car->_brakeCmd = 1.0;
+      Car->_accelCmd = 0.0;
+    } else {
+      Car->_accelCmd = 1.0;
+      Car->_brakeCmd = 0.0;
+    }
 }
 
 ////////////////////////////////////////////////////////////
