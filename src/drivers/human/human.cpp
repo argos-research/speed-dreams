@@ -44,7 +44,7 @@
 #include <thread>
 #include <pistache/endpoint.h>
 
-using namespace Net;
+using namespace Pistache;
 
 #include <gpsSensor.h>
 
@@ -131,8 +131,8 @@ InitFuncPt(int index, void *pt)
 	itf->rbPitCmd   = pitcmd;
 	itf->index      = index;
 
-  Net::Address addr(Net::Ipv4::any(), Net::Port(9080));
-  auto opts = Net::Http::Endpoint::options().threads(1);
+  Address addr(Ipv4::any(), Port(9080));
+  auto opts = Http::Endpoint::options().threads(1);
 
   server = new Http::Endpoint(addr);
   server->init(opts);
