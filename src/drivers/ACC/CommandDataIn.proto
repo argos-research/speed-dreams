@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package protobuf;
+message CommandDataIn {
+	float steer = 1;
+	float accel = 2;
+	float brakeFL = 3;
+	float brakeFR = 4;
+	float brakeRL = 5;
+	float brakeRR = 6;
+	int32 gear = 7;
+}
