@@ -36,6 +36,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 
 #include <positionTracker.h>
 
@@ -90,7 +91,7 @@ static int InitFuncPt(int index, void *pt) {
     tRobotItf *itf  = (tRobotItf *)pt;
 
     itf->rbNewTrack = initTrack; /* Give the robot the track view called */ 
-				 /* for every track change or new race */ 
+                                /* for every track change or new race */
     itf->rbNewRace  = newrace; 	 /* Start a new race */
     itf->rbDrive    = drive;	 /* Drive during race */
     itf->rbPitCmd   = NULL;
@@ -131,6 +132,13 @@ static void newrace(int index, tCarElt* car, tSituation *s) {
 	socklen_t cli_len = sizeof(cli_addr);
 	if ((clientSock = accept(serverSock, (struct sockaddr *)&cli_addr, &cli_len)) == -1) {
 		PLogACC->error("accept failed! %s\n", strerror(errno));
+	}
+
+	/* Disable Nagle's algorithm */
+	int flag = 1;
+   	int result = setsockopt(clientSock, IPPROTO_TCP, TCP_NODELAY, (char *)&flag, sizeof(int));
+	if (result == -1) {
+		PLogACC->error("setsockopt failed! %s\n", strerror(errno));
 	}
 }
 
@@ -205,7 +213,7 @@ static void drive(int index, tCarElt* car, tSituation *s) {
 	}
 
 	/* reset ctrl commands */
-    memset((void *)&car->ctrl, 0, sizeof(tCarCtrl));
+	memset((void *)&car->ctrl, 0, sizeof(tCarCtrl));
 
 	/* SensorDataIn */
 	protobuf::CommandDataIn cdi;
@@ -213,15 +221,11 @@ static void drive(int index, tCarElt* car, tSituation *s) {
 	readAllBytes(&msg_len, clientSock, sizeof(msg_len));
 	msg_len = ntohl(msg_len);
 
-	PLogACC->info("sweet\n");
-
 	char buffer[msg_len] = { '\0' };
 	readAllBytes(buffer, clientSock, msg_len);
 
-	PLogACC->info("jesus\n");
-
 	cdi.ParseFromArray(buffer, msg_len);
-	
+
 	car->_steerCmd = cdi.steer();
 	car->_accelCmd = cdi.accel();
 	car->_singleWheelBrakeMode = 1;
