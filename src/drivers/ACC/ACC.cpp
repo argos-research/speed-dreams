@@ -190,6 +190,10 @@ static void drive(int index, tCarElt* car, tSituation *s) {
 	sdo.set_enginerpm(car->_enginerpm);
 	sdo.set_enginerpmmax(car->_enginerpmMax);
 	sdo.set_steer(car->_steerCmd);
+	sdo.set_brakefl(car->_brakeFLCmd);
+	sdo.set_brakefr(car->_brakeFRCmd);
+	sdo.set_brakerl(car->_brakeRLCmd);
+	sdo.set_brakerr(car->_brakeRRCmd);
 
 	/* send SensorDataOut */
 	uint32_t msg_len = 0;

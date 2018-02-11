@@ -3,24 +3,28 @@ syntax = "proto3";
 package protobuf;
 message SensorDataOut {
 	bool isPositionTracked = 1;
-    bool isSpeedTracked = 2;
+	bool isSpeedTracked = 2;
 
 	message vec2 {
 		float x = 1;
 		float y = 2;
 	}
-	
-    vec2 leadPos = 3;
-    vec2 ownPos = 4;
-    vec2 cornerFrontRight = 5;
-    vec2 cornerFrontLeft = 6;
-    vec2 cornerRearRight = 7;
-    vec2 cornerRearLeft = 8;
-    float leadSpeed = 9;
-    float ownSpeed = 10;
-    int32 curGear = 11;
+
+	vec2 leadPos = 3;
+	vec2 ownPos = 4;
+	vec2 cornerFrontRight = 5;
+	vec2 cornerFrontLeft = 6;
+	vec2 cornerRearRight = 7;
+	vec2 cornerRearLeft = 8;
+	float leadSpeed = 9;
+	float ownSpeed = 10;
+	int32 curGear = 11;
 	float steerLock = 12;
 	float enginerpm = 13;
 	float enginerpmMax = 14;
 	float steer = 15;
+	float brakeFL = 16;
+	float brakeFR = 17;
+	float brakeRL = 18;
+	float brakeRR = 19;
 }
