@@ -61,6 +61,9 @@ static int serverSock = -1, clientSock = -1;
 
 static PositionTracker g_tracker(60.0);
 
+uint32_t msg_len;
+std::string sdo_str;
+
 /* standard SD interface */
 extern "C" int moduleWelcome(const tModWelcomeIn* welcomeIn, tModWelcomeOut* welcomeOut) {
 	welcomeOut->maxNbItf = 1;
@@ -196,24 +199,21 @@ static void drive(int index, tCarElt* car, tSituation *s) {
 	sdo.set_brakerr(car->_brakeRRCmd);
 
 	/* send SensorDataOut */
-	uint32_t msg_len = 0;
-	std::string sdo_str;
-	sdo.SerializeToString(&sdo_str);
-	msg_len = htonl(sdo_str.size());
 
-	int ret = write(clientSock, &msg_len, sizeof(msg_len));
-	msg_len = ntohl(msg_len);
-	if (ret == -1) {
-		PLogACC->error("write length failed! %s\n", strerror(errno));
-	} else if (ret != 4) {
-		PLogACC->error("write length failed to send complete message! %d vs. 4\n", ret);
-	}
+	sdo_str.clear();                       // clear sdo_str
+	msg_len = htonl(sdo.ByteSizeLong());   // get sdo length in bytes (network byte order)
+	sdo_str.append((const char*)&msg_len,
+				   sizeof(msg_len));       // append message length
+	sdo.AppendToString(&sdo_str);          // append sdo
+	msg_len = sdo_str.size();              // get #bytes to transmit
 
-	ret = write(clientSock, sdo_str.c_str(), msg_len);
+	int ret = write(clientSock, sdo_str.c_str(), msg_len);
 	if (ret == -1) {
 		PLogACC->error("write sdo failed! %s\n", strerror(errno));
 	} else if (ret != msg_len) {
-		PLogACC->error("write sdo failed to send complete message! %d vs. %d\n", ret, msg_len);
+		PLogACC->error("write sdo failed to send complete message! %d vs. %d\n",
+					   ret,
+					   msg_len);
 	}
 
 	/* reset ctrl commands */
