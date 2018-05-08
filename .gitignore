@@ -3,3 +3,6 @@ build/*
 # Vagrant
 .vagrant
 *-console.log
+
+# SD2 tracks
+data/tracks/
