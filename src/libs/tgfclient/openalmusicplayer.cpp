@@ -171,7 +171,7 @@ bool OpenALMusicPlayer::streamBuffer(ALuint buffer)
 {
 	char pcm[BUFFERSIZE];
 	int size = 0;
-	const char* error = '\0';
+	const char* error = NULL;
 	
 	if (!_stream->read(pcm, BUFFERSIZE, &size, error)) {
 		GfLogError("OpenALMusicPlayer: Stream read error: %s\n", error);
