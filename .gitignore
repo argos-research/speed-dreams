@@ -2,4 +2,4 @@ build/*
 
 # Vagrant
 .vagrant
-*.log
+*-console.log
