@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "ubuntu/xenial64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -53,11 +53,6 @@ Vagrant.configure("2") do |config|
     #   # Customize the amount of memory on the VM:
     vb.name = "SpeedDreams2"
     vb.memory = "4096"
-    vb.customize ["modifyvm", :id,
-                  "--vram", "20",
-                  "--audio", "pulse",
-                  "--audiocontroller", "hda"
-                 ]
     vb.customize ["guestproperty", "set", :id,
                   "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10
                  ]
@@ -77,6 +72,6 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", path:"provision.sh";
-  config.vm.provision "shell",  path:"bootstrap.sh" , run:"always";
+  config.vm.provision "shell", path:"bootstrap.sh", run:"always";
 
 end
