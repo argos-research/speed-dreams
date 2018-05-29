@@ -2,6 +2,8 @@ INCLUDE(../../../cmake/macros.cmake)
 
 #PROJECT(robottools)
 
+SET(CMAKE_CXX_STANDARD 11)
+
 ADD_INTERFACE_INCLUDEDIR()
 ADD_SDLIB_INCLUDEDIR(portability tgf math tgfclient sensors)
 

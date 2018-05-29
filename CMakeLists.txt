@@ -3,6 +3,11 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0 FATAL_ERROR)
 # Speed Dreams project
 PROJECT(speed-dreams-2)
 
+# seems to fix some include problems with ports from macports
+IF(APPLE)
+	include_directories("/opt/local/include")
+ENDIF()
+
 INCLUDE(cmake/macros.cmake)
 INCLUDE(cmake/checks.cmake)
 
