@@ -8,6 +8,8 @@ SET(SENSORS_HEADERS positionTracker.h randomUtil.h gpsSensor.h obstacleSensors.h
 
 SET(SENSORS_SOURCES positionTracker.cpp randomUtil.cpp gpsSensor.cpp obstacleSensors.cpp)
 
+SET(CMAKE_CXX_STANDARD 11)
+
 SD_ADD_LIBRARY(sensors SHARED ${SENSORS_SOURCES} ${SENSORS_HEADERS})
 
 ADD_SDLIB_LIBRARY(sensors tgf)
