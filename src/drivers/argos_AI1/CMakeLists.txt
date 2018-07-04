@@ -16,6 +16,6 @@ ROBOT_MODULE(NAME ${ROBOT_NAME} VERSION 1.0.0 SOVERSION 1.0.0
 
 ADD_SDLIB_LIBRARY(${ROBOT_NAME} robottools tgf sensors)
 
-TARGET_LINK_LIBRARIES(${ROBOT_NAME} libpistache.a)
+TARGET_LINK_LIBRARIES(${ROBOT_NAME} libserved.so)
 
 # For data associated to the robot module, see data/drivers/autonet/CMakeLists.txt
