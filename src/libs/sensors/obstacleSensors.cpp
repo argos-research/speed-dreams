@@ -102,7 +102,7 @@ void ObstacleSensors::sensors_update(tSituation *situation)
 		#endif
 
 		/* calculate slope of sensor */
-		m = tan(myc->_yaw + (*it).getAngle() * PI / 180); // add custom angle of sensor (in degree for convenience)
+		m = tan(myc->_yaw - (*it).getAngle() * PI / 180); // add custom angle of sensor (in degree for convenience)
 		/* straight line for the sensor
 		* y = m * x + t
 		* => t = y - m * x
