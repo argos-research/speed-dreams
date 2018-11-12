@@ -130,7 +130,7 @@ newrace(int index, tCarElt* car, tSituation *s)
 	});
 
 
-	server = new served::net::server("127.0.0.1", "9080", mux);
+	server = new served::net::server("0.0.0.0", "9080", mux);
 	thr = new std::thread(&served::net::server::run, server, 10);
 
 	obstSens = new ObstacleSensors(NULL, car);
