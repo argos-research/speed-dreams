@@ -24,7 +24,7 @@
 
 #include "grtexture.h"
 
-#if 1
+#if 0
 #define TRACE_GL(msg) { GLenum rc; if ((rc = glGetError()) != GL_NO_ERROR) GfLogWarning("%s %s\n", msg, gluErrorString(rc)); }
 #else
 #define TRACE_GL(msg)
