@@ -31,53 +31,21 @@
 #include <robottools.h>
 #include <robot.h>
 
+#include <thread>
+#include <served/served.hpp>
+
 #include <obstacleSensors.h>
 
-#include <pistache/endpoint.h>
-
-using namespace Pistache;
+static served::net::server *server;
+static std::thread *thr;
+static served::multiplexer mux;
 
 static ObstacleSensors *obstSens;
 
 static float keepLR = 4.0;
 static double desired_speed = 44 / 3.6;
 
-struct RESTHandler : public Http::Handler {
-	HTTP_PROTOTYPE(RESTHandler)
-
-	void onRequest(const Http::Request& req, Http::ResponseWriter resp) {
-		if (req.resource() == "/moveLeft") {
-			if (keepLR == -4.0) {
-				resp.send(Http::Code::Forbidden);
-			} else {
-				keepLR -= 4.0;
-				resp.send(Http::Code::Ok);
-			}
-		} else if (req.resource() == "/moveRight") {
-			if (keepLR == 4.0) {
-				resp.send(Http::Code::Forbidden);
-			} else {
-				keepLR += 4.0;
-				resp.send(Http::Code::Ok);
-			}
-		} else if (req.resource() == "/setSpeed") {
-			desired_speed = std::stoi(req.body()) / 3.6;
-			resp.send(Http::Code::Ok);
-		} else if (req.resource() == "/getSensor/0") {
-			resp.send(Http::Code::Ok, std::to_string(std::next(obstSens->getSensorsList().begin(), 0)->getDistance()));
-		} else if (req.resource() == "/getSensor/1") {
-			resp.send(Http::Code::Ok, std::to_string(std::next(obstSens->getSensorsList().begin(), 1)->getDistance()));
-		} else if (req.resource() == "/getSensor/2") {
-			resp.send(Http::Code::Ok, std::to_string(std::next(obstSens->getSensorsList().begin(), 2)->getDistance()));
-		} else if (req.resource() == "/getLane") {
-			resp.send(Http::Code::Ok, std::to_string(int(keepLR - 4.0) / -4));
-		} else if (req.resource() == "/getNumLanes") {
-			resp.send(Http::Code::Ok, std::to_string(3));
-		}
-	};
-};
-
-static tTrack	*curTrack;
+static tTrack *curTrack;
 
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s); 
 static void newrace(int index, tCarElt* car, tSituation *s); 
@@ -85,9 +53,6 @@ static void drive(int index, tCarElt* car, tSituation *s);
 static void endrace(int index, tCarElt *car, tSituation *s);
 static void shutdown(int index);
 static int  InitFuncPt(int index, void *pt); 
-
-
-Http::Endpoint* server;
 
 /* 
  * Module entry point  
@@ -135,13 +100,34 @@ initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSitu
 static void  
 newrace(int index, tCarElt* car, tSituation *s) 
 {
-	Address addr(Ipv4::any(), Port(9080));
-	auto opts = Http::Endpoint::options().threads(1);
+	mux.handle("/getSensor/0").get([](served::response &res, const served::request &req) {
+		res << std::to_string(std::next(obstSens->getSensorsList().begin(), 0)->getDistance());
+	});
+	mux.handle("/getSensor/1").get([](served::response &res, const served::request &req) {
+		res << std::to_string(std::next(obstSens->getSensorsList().begin(), 1)->getDistance());
+	});
+	mux.handle("/getSensor/2").get([](served::response &res, const served::request &req) {
+		res << std::to_string(std::next(obstSens->getSensorsList().begin(), 2)->getDistance());
+	});
+	mux.handle("/moveLeft").get([](served::response &res, const served::request &req) {
+		keepLR != -4.0 ? keepLR -= 4.0 : NULL;
+	});
+	mux.handle("/moveRight").get([](served::response &res, const served::request &req) {
+		keepLR != 4.0 ? keepLR += 4.0 : NULL;
+	});
+	mux.handle("/setSpeed").post([](served::response &res, const served::request &req) {
+		desired_speed = std::stoi(req.body()) / 3.6;
+	});
+	mux.handle("/getLane").get([](served::response &res, const served::request &req) {
+		res << std::to_string(int(keepLR - 4.0) / -4);
+	});
+	mux.handle("/getNumLanes").get([](served::response &res, const served::request &req) {
+		res << std::to_string(3);
+	});
 
-	server = new Http::Endpoint(addr);
-	server->init(opts);
-	server->setHandler(Http::make_handler<RESTHandler>());
-	server->serveThreaded();
+
+	server = new served::net::server("127.0.0.1", "9080", mux);
+	thr = new std::thread(&served::net::server::run, server, 10);
 
 	obstSens = new ObstacleSensors(NULL, car);
 	// front
