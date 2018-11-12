@@ -36,6 +36,9 @@
 
 #include <obstacleSensors.h>
 
+#include "json.hpp"
+using json = nlohmann::json;
+
 static served::net::server *server;
 static std::thread *thr;
 static served::multiplexer mux;
@@ -101,13 +104,13 @@ static void
 newrace(int index, tCarElt* car, tSituation *s) 
 {
 	mux.handle("/getSensor/0").get([](served::response &res, const served::request &req) {
-		res << std::to_string(std::next(obstSens->getSensorsList().begin(), 0)->getDistance());
+		res << "{\"distance\":" << std::to_string(std::next(obstSens->getSensorsList().begin(), 0)->getDistance()) << "}";
 	});
 	mux.handle("/getSensor/1").get([](served::response &res, const served::request &req) {
-		res << std::to_string(std::next(obstSens->getSensorsList().begin(), 1)->getDistance());
+		res << "{\"distance\":" << std::to_string(std::next(obstSens->getSensorsList().begin(), 1)->getDistance()) << "}";
 	});
 	mux.handle("/getSensor/2").get([](served::response &res, const served::request &req) {
-		res << std::to_string(std::next(obstSens->getSensorsList().begin(), 2)->getDistance());
+		res << "{\"distance\":" << std::to_string(std::next(obstSens->getSensorsList().begin(), 2)->getDistance()) << "}";
 	});
 	mux.handle("/moveLeft").get([](served::response &res, const served::request &req) {
 		keepLR != -4.0 ? keepLR -= 4.0 : NULL;
@@ -116,13 +119,14 @@ newrace(int index, tCarElt* car, tSituation *s)
 		keepLR != 4.0 ? keepLR += 4.0 : NULL;
 	});
 	mux.handle("/setSpeed").post([](served::response &res, const served::request &req) {
-		desired_speed = std::stoi(req.body()) / 3.6;
+		auto desVal = json::parse(req.body());
+		desired_speed = desVal["speed"].get<double>() / 3.6;
 	});
 	mux.handle("/getLane").get([](served::response &res, const served::request &req) {
-		res << std::to_string(int(keepLR - 4.0) / -4);
+		res << "{\"lane\":" << std::to_string(int(keepLR - 4.0) / -4) << "}";
 	});
 	mux.handle("/getNumLanes").get([](served::response &res, const served::request &req) {
-		res << std::to_string(3);
+		res << "{\"numLanes\":" << std::to_string(3) << "}";
 	});
 
 
