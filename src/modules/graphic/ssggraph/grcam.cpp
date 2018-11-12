@@ -1948,7 +1948,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams,
     /* cam F2 = inside, from the board (bonnet view), fixed to the car */
     cam = new cGrCarCamInsideFixedCar(myscreen,
 				      id,
-				      1,	/* drawCurr */
+				      0,	/* drawCurr */
 				      1,	/* drawBG  */
 				      67.5,	/* fovy */
 				      10.0,	/* fovymin */
