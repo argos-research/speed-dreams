@@ -1,7 +1,10 @@
 INCLUDE(../../cmake/macros.cmake)
 
 # Official robots.
-SD_ADD_SUBDIRECTORY(autonet)
+# autonet currently doesn't compile under MacOS
+IF(!APPLE)
+	SD_ADD_SUBDIRECTORY(autonet)
+ENDIF()
 SD_ADD_SUBDIRECTORY(safety_car)
 SD_ADD_SUBDIRECTORY(human)
 SD_ADD_SUBDIRECTORY(dandroid)

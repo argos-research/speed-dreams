@@ -394,10 +394,10 @@ GfTexReadImageFromJPEG(const char *filename, float screen_gamma, int *pWidth, in
 	// Initialize the JPEG image decompressor for 24 bit RGB output.
 	jpeg_create_decompress(&cinfo);
 	jpeg_stdio_src(&cinfo, infile);
-	(void)jpeg_read_header(&cinfo, TRUE);
+	(void)jpeg_read_header(&cinfo, (boolean)TRUE);
 
 	cinfo.out_color_space = JCS_RGB;
-	cinfo.quantize_colors = FALSE;
+	cinfo.quantize_colors = (boolean)FALSE;
 	jpeg_calc_output_dimensions(&cinfo);
 	
 	// Load and check image dimensions.

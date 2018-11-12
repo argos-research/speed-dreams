@@ -41,6 +41,7 @@
 #include <humandriver.h>
 
 #include <gpsSensor.h>
+#include <obstacleSensors.h>
 
 static HumanDriver robot("human");
 
@@ -52,6 +53,7 @@ static void resumerace(int index, tCarElt* car, tSituation *s);
 static int  pitcmd(int index, tCarElt* car, tSituation *s);
 
 static GPSSensor gps = GPSSensor();
+static ObstacleSensors *osens;
 
 #ifdef _WIN32
 /* Must be present under MS Windows */
@@ -186,6 +188,8 @@ void
 newrace(int index, tCarElt* car, tSituation *s)
 {
     robot.new_race(index, car, s);
+    osens = new ObstacleSensors(NULL, car);
+    osens->addSensor(car, 0, car->_dimension_x/2, 0, 20);
 }//newrace
 
 
@@ -237,9 +241,12 @@ drive_mt(int index, tCarElt* car, tSituation *s)
 static void
 drive_at(int index, tCarElt* car, tSituation *s)
 {
-    gps.update(car);
+    /*gps.update(car);
     vec2 myPos = gps.getPosition();
-    printf("Players's position according to GPS is (%f, %f)\n", myPos.x, myPos.y);
+    printf("Players's position according to GPS is (%f, %f)\n", myPos.x, myPos.y);*/
+
+    osens->sensors_update(s);
+    printf("Distance: %f\n", osens->getSensorsList().front().getDistance());
 
     robot.drive_at(index, car, s);
 }//drive_at
