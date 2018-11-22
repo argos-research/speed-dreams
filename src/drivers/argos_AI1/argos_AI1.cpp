@@ -48,6 +48,12 @@ static ObstacleSensors *obstSens;
 static float keepLR = 4.0;
 static double desired_speed = 44 / 3.6;
 
+static bool _autonomous = true;
+static float _accel = 0.0;
+static float _brake = 0.0;
+static float _steer = 0.0;
+static int gearCmd = 1;
+
 static tTrack *curTrack;
 
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s); 
@@ -55,7 +61,7 @@ static void newrace(int index, tCarElt* car, tSituation *s);
 static void drive(int index, tCarElt* car, tSituation *s); 
 static void endrace(int index, tCarElt *car, tSituation *s);
 static void shutdown(int index);
-static int  InitFuncPt(int index, void *pt); 
+static int  InitFuncPt(int index, void *pt);
 
 /* 
  * Module entry point  
@@ -128,7 +134,25 @@ newrace(int index, tCarElt* car, tSituation *s)
 	mux.handle("/getNumLanes").get([](served::response &res, const served::request &req) {
 		res << "{\"numLanes\":" << std::to_string(3) << "}";
 	});
-
+	mux.handle("/setGear").post([](served::response &res, const served::request &req) {
+		auto desVal = json::parse(req.body());
+		gearCmd = desVal["gear"].get<int>();
+	});
+	mux.handle("/setAccel").post([](served::response &res, const served::request &req) {
+		auto desVal = json::parse(req.body());
+		_accel = desVal["accel"].get<float>();
+	});
+	mux.handle("/setBrake").post([](served::response &res, const served::request &req) {
+		auto desVal = json::parse(req.body());
+		_brake = desVal["brake"].get<float>();
+	});
+	mux.handle("/setSteer").post([](served::response &res, const served::request &req) {
+		auto desVal = json::parse(req.body());
+		_steer = desVal["steer"].get<float>();
+	});
+	mux.handle("/toggleAutonomous").post([](served::response &res, const served::request &req) {
+		_autonomous = !_autonomous;
+	});
 
 	server = new served::net::server("0.0.0.0", "9080", mux);
 	thr = new std::thread(&served::net::server::run, server, 10);
@@ -163,25 +187,32 @@ drive(int index, tCarElt* car, tSituation *s)
 		printf("Sensors #%d: %f\n", std::distance(sensors_list.begin(), it), (*it).getDistance());
 	}
 
-	float angle;
-	const float SC = 1.0;
+	if (_autonomous) {
+	  float angle;
+	  const float SC = 1.0;
 
-	angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
-	NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
-	angle -= SC*(car->_trkPos.toMiddle+keepLR)/car->_trkPos.seg->width;
+	  angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
+	  NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
+	  angle -= SC*(car->_trkPos.toMiddle+keepLR)/car->_trkPos.seg->width;
 
-	// set up the values to return
-	car->ctrl.steer = angle / car->_steerLock;
-	car->ctrl.gear = 1;
+	  // set up the values to return
+	  car->ctrl.steer = angle / car->_steerLock;
+	  car->ctrl.gear = 1;
 
-        if (car->_speed_x>desired_speed) {
-           car->ctrl.brakeCmd=0.5;
-           car->ctrl.accelCmd=0.0;
-        }
-        else if  (car->_speed_x<desired_speed) {
-           car->ctrl.accelCmd=0.5;
-           car->ctrl.brakeCmd=0.0;
-        }
+	  if (car->_speed_x>desired_speed) {
+	    car->ctrl.brakeCmd=0.5;
+	    car->ctrl.accelCmd=0.0;
+	  }
+	  else if  (car->_speed_x<desired_speed) {
+	    car->ctrl.accelCmd=0.5;
+	    car->ctrl.brakeCmd=0.0;
+	  }
+	} else {
+	  car->ctrl.gear = gearCmd;
+	  car->ctrl.accelCmd = _accel;
+	  car->ctrl.brakeCmd = _brake;
+	  car->ctrl.steer = _steer;
+	}
 }
 
 /* End of the current race */
