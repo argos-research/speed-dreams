@@ -21,7 +21,7 @@
 	<attstr name="author" val="Chenyi Chen"></attstr>
 	<!--<attstr name="car name" val="kc-2000gt"></attstr>-->
         <!--<attstr name="car name" val="kc-5300gt"></attstr>-->
-<attstr name="car name" val="sc-lynx-220"></attstr>
+	<attstr name="car name" val="sc-boxer-96"></attstr>
 	<attstr name="category" val="Offroad-4WD-GrA"></attstr>
 	<attnum name="race number" val="0"></attnum>
 	<attnum name="red" val="1.0"></attnum>
