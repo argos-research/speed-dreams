@@ -119,17 +119,17 @@ newrace(int index, tCarElt* car, tSituation *s)
 									   res << "{\"distance\":" << std::to_string(std::next(obstSens->getSensorsList().begin(), 2)->getDistance()) << "}";
 								   });
 	mux.handle("/moveLeft").post([](served::response &res, const served::request &req) {
-									 keepLR != -4.5 ? keepLR -= 4.5 : NULL;
+									 keepLR != -4.5f ? keepLR -= 4.5f : NULL;
 								 });
 	mux.handle("/moveRight").post([](served::response &res, const served::request &req) {
-									  keepLR != 4.5 ? keepLR += 4.5 : NULL;
+									  keepLR != 4.5f ? keepLR += 4.5f : NULL;
 								  });
 	mux.handle("/setSpeed").post([](served::response &res, const served::request &req) {
 									 auto desVal = json::parse(req.body());
 									 desired_speed = desVal["speed"].get<double>() / 3.6;
 								 });
 	mux.handle("/getLane").get([](served::response &res, const served::request &req) {
-								   res << "{\"lane\":" << std::to_string(int(keepLR - 4.0) / -4) << "}";
+								   res << "{\"lane\":" << std::to_string(int((keepLR - 4.5f) / -4.5f)) << "}";
 							   });
 	mux.handle("/getNumLanes").get([](served::response &res, const served::request &req) {
 									   res << "{\"numLanes\":" << std::to_string(3) << "}";
