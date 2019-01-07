@@ -118,6 +118,12 @@ newrace(int index, tCarElt* car, tSituation *s)
 	mux.handle("/getSensor/2").get([](served::response &res, const served::request &req) {
 									   res << "{\"distance\":" << std::to_string(std::next(obstSens->getSensorsList().begin(), 2)->getDistance()) << "}";
 								   });
+	mux.handle("/getSensor/3").get([](served::response &res, const served::request &req) {
+									   res << "{\"distance\":" << std::to_string(std::next(obstSens->getSensorsList().begin(), 3)->getDistance()) << "}";
+								   });
+	mux.handle("/getSensor/4").get([](served::response &res, const served::request &req) {
+									   res << "{\"distance\":" << std::to_string(std::next(obstSens->getSensorsList().begin(), 4)->getDistance()) << "}";
+								   });
 	mux.handle("/moveLeft").post([](served::response &res, const served::request &req) {
 									 keepLR != -4.5f ? keepLR -= 4.5f : NULL;
 								 });
@@ -164,6 +170,10 @@ newrace(int index, tCarElt* car, tSituation *s)
 	obstSens->addSensor(car, 135, -car->_dimension_x/2, -car->_dimension_y/2, 20);
 	// rear left
 	obstSens->addSensor(car, -135, -car->_dimension_x/2, car->_dimension_y/2, 20);
+	// left
+	obstSens->addSensor(car, -90, 0, car->_dimension_y/2, 20);
+	// front left
+	obstSens->addSensor(car, -45, car->_dimension_x/2, car->_dimension_y/2, 20);
 }
 
 /* Drive during race. */
