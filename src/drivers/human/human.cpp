@@ -39,61 +39,23 @@
  */
 
 #include <humandriver.h>
-#include <standardgame.h>
-
+#include <robot.h>
 
 #include "legacymenu.h"
-#include "racescreens/racescreens.h"
+
+#include "./RobotGamePause.h"
+#include <algorithm> 
+#include <chrono>
+typedef std::chrono::high_resolution_clock Clock;
+int stopcounter;
+auto totalduration = 0;
+auto duration = 0;
+auto mincounter = 0;
+auto avgcounter = 0;
+auto maxcounter = 0;
+
 
 #include <gpsSensor.h>
-
-
-bool rmPreRacePause = false;
-static bool rmRacePaused = false;
-
-static void
-rmRaceStart()
-{
-   // Pause is disabled during Pre Race Pause
-   // as the simulation is already Paused
-        if (LegacyMenu::self().soundEngine())
-            LegacyMenu::self().soundEngine()->mute(false);
-
-		LmRaceEngine().start();
-
-		// Hide the "Pause" label.
-		//GfuiVisibilitySet(rmScreenHandle, rmPauseId, GFUI_INVISIBLE);
-		
-		// Show again the hidden message label.
-		//GfuiVisibilitySet(rmScreenHandle, rmMsgId, GFUI_VISIBLE);
-
-		// Launch the "slow resume race" manager if non-blind mode.
-		//if (LmRaceEngine().outData()->_displayMode == RM_DISP_MODE_NORMAL)
-		//	rmProgressiveTimeModifier.start();
-
-}
-static void
-rmRacePause()
-{
-
-		if (LegacyMenu::self().soundEngine())
-			LegacyMenu::self().soundEngine()->mute(true);
-
-		LmRaceEngine().stop();
-
-		// Show the "Pause" label.
-		//GfuiVisibilitySet(rmScreenHandle, rmPauseId, GFUI_VISIBLE);
-
-		// Hide the message label (no need to bother the user with the time mult. factor
-		// when it is changing, whihc occurs when the user hits P when a slow start
-		// is in-process).
-		//GfuiVisibilitySet(rmScreenHandle, rmMsgId, GFUI_INVISIBLE);
-	
-	// Toggle the race-paused flag.
-	//rmRacePaused = !rmRacePaused;
-}
-
-
 
 static HumanDriver robot("human");
 int counter = 0;
@@ -114,6 +76,28 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
     return TRUE;
 }
 #endif
+
+
+
+void
+RaceResume()
+{
+        if (LegacyMenu::self().soundEngine())
+            LegacyMenu::self().soundEngine()->mute(false);
+
+		LmRaceEngine().start();
+}
+
+void
+RacePause()
+{
+
+		if (LegacyMenu::self().soundEngine())
+			LegacyMenu::self().soundEngine()->mute(true);
+
+		LmRaceEngine().stop();
+}
+
 
 
 static void
@@ -293,10 +277,27 @@ drive_at(int index, tCarElt* car, tSituation *s)
 {
 
     counter++;
-    if (counter % 10 == 0){
-        rmRacePause();
-        sleep(5);
-        rmRaceStart();    
+    if (counter % 500 == 0){
+        duration = 0;
+        auto t1 = Clock::now();
+        RacePause();
+        
+        sleep(rand()/ 1000000000);
+        
+        RaceResume();    
+        auto t2 = Clock::now();
+        duration =  std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+        totalduration += duration;
+        stopcounter ++;
+        avgcounter = totalduration / stopcounter;
+        if (stopcounter == 1) mincounter = duration;
+        mincounter = std::min(mincounter,duration);
+        maxcounter = std::max(maxcounter,duration);
+        GfLogInfo("Elapsed time during stop of the Game Engine (last step): %d milliseconds\n",duration);
+        GfLogInfo("Elapsed time during stop of the Game Engine (%d steps): %d milliseconds\n",stopcounter,totalduration);
+        GfLogInfo("Minimum time per stop: %d milliseconds\n",mincounter);
+        GfLogInfo("Average time per stop: %d milliseconds\n",avgcounter);
+        GfLogInfo("Maximum time per stop: %d milliseconds\n",maxcounter);
     } 
 
 
