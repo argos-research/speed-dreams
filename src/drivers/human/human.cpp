@@ -40,10 +40,6 @@
 
 #include <humandriver.h>
 #include <robot.h>
-
-#include "legacymenu.h"
-
-#include "./RobotGamePause.h"
 #include <algorithm> 
 #include <chrono>
 typedef std::chrono::high_resolution_clock Clock;
@@ -56,6 +52,7 @@ auto maxcounter = 0;
 
 
 #include <gpsSensor.h>
+#include <gamepause.h>
 
 static HumanDriver robot("human");
 int counter = 0;
@@ -76,28 +73,6 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
     return TRUE;
 }
 #endif
-
-
-
-void
-RaceResume()
-{
-        if (LegacyMenu::self().soundEngine())
-            LegacyMenu::self().soundEngine()->mute(false);
-
-		LmRaceEngine().start();
-}
-
-void
-RacePause()
-{
-
-		if (LegacyMenu::self().soundEngine())
-			LegacyMenu::self().soundEngine()->mute(true);
-
-		LmRaceEngine().stop();
-}
-
 
 
 static void
