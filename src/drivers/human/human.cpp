@@ -255,18 +255,16 @@ drive_at(int index, tCarElt* car, tSituation *s)
     if (counter % 500 == 0){
         duration = 0;
         
-        auto start = RacePause();
+        RacePause();
         
         sleep(rand()/ 1000000000);
         
-        duration = RaceResume(start);
+        RaceResume(start);
         
-        totalduration += duration;
-        avgcounter = totalduration / stopcounter;
-        if (stopcounter == 1) mincounter = duration;
-        mincounter = std::min(mincounter,duration);
-        maxcounter = std::max(maxcounter,duration);
-        
+        avgcalc(totalduration,stopcounter);
+        mincalc(mincounter,duration);
+        maxcalc(maxcounter,duration);
+
         GfLogInfo("Elapsed time during stop of the Game Engine (last step): %d milliseconds\n",duration);
         GfLogInfo("Elapsed time during stop of the Game Engine (%d steps): %d milliseconds\n",stopcounter,totalduration);
         GfLogInfo("Minimum time per stop: %d milliseconds\n",mincounter);

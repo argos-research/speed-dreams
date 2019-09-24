@@ -22,30 +22,48 @@
 
 
 uint64_t
-RaceResume(std::chrono::system_clock::time_point start)
+RaceResume(std::chrono::time_point<std::chrono::system_clock> start)
 {
 
-       
+        duration = 0;
         if (LegacyMenu::self().soundEngine())
             LegacyMenu::self().soundEngine()->mute(false);
 
 		LmRaceEngine().start();
          //Taking the time
-        std::chrono::system_clock::time_point stop = Clock::now();
+        stop = std::chrono::system_clock::now();
         duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
+        totalduration += duration;
         stopcounter++;
         return duration;
 }
 
-std::chrono::system_clock::time_point
+std::chrono::time_point<std::chrono::system_clock>
 RacePause()
 {
         
-        std::chrono::system_clock::time_point start = Clock::now();
+        start = std::chrono::system_clock::now();
 		if (LegacyMenu::self().soundEngine())
 			LegacyMenu::self().soundEngine()->mute(true);
 
 		LmRaceEngine().stop();
         return start;
 
+}
+
+
+uint64_t maxcalc(uint64_t maxval, uint64_t totest)
+{
+    return maxcounter = std::max(maxval,totest);
+}
+
+uint64_t mincalc(uint64_t minval, uint64_t totest)
+{
+    if (stopcounter == 1) minval = totest;
+    return mincounter = std::min(minval,totest);
+}
+
+uint64_t avgcalc(uint64_t totduration, uint64_t counter)
+{
+    return avgcounter = totduration / counter;
 }
