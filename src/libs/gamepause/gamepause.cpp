@@ -21,21 +21,31 @@
 
 
 
-void
-RaceResume()
+uint64_t
+RaceResume(std::chrono::system_clock::time_point start)
 {
+
+       
         if (LegacyMenu::self().soundEngine())
             LegacyMenu::self().soundEngine()->mute(false);
 
 		LmRaceEngine().start();
+         //Taking the time
+        std::chrono::system_clock::time_point stop = Clock::now();
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
+        stopcounter++;
+        return duration;
 }
 
-void
+std::chrono::system_clock::time_point
 RacePause()
 {
-
+        
+        std::chrono::system_clock::time_point start = Clock::now();
 		if (LegacyMenu::self().soundEngine())
 			LegacyMenu::self().soundEngine()->mute(true);
 
 		LmRaceEngine().stop();
+        return start;
+
 }

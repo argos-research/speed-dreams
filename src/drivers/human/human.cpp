@@ -41,15 +41,15 @@
 #include <humandriver.h>
 #include <robot.h>
 #include <algorithm> 
+/*
 #include <chrono>
-typedef std::chrono::high_resolution_clock Clock;
 int stopcounter;
 auto totalduration = 0;
 auto duration = 0;
 auto mincounter = 0;
 auto avgcounter = 0;
 auto maxcounter = 0;
-
+*/
 
 #include <gpsSensor.h>
 #include <gamepause.h>
@@ -254,20 +254,19 @@ drive_at(int index, tCarElt* car, tSituation *s)
     counter++;
     if (counter % 500 == 0){
         duration = 0;
-        auto t1 = Clock::now();
-        RacePause();
+        
+        auto start = RacePause();
         
         sleep(rand()/ 1000000000);
         
-        RaceResume();    
-        auto t2 = Clock::now();
-        duration =  std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+        duration = RaceResume(start);
+        
         totalduration += duration;
-        stopcounter ++;
         avgcounter = totalduration / stopcounter;
         if (stopcounter == 1) mincounter = duration;
         mincounter = std::min(mincounter,duration);
         maxcounter = std::max(maxcounter,duration);
+        
         GfLogInfo("Elapsed time during stop of the Game Engine (last step): %d milliseconds\n",duration);
         GfLogInfo("Elapsed time during stop of the Game Engine (%d steps): %d milliseconds\n",stopcounter,totalduration);
         GfLogInfo("Minimum time per stop: %d milliseconds\n",mincounter);
