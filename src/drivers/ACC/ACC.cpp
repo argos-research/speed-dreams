@@ -39,6 +39,7 @@
 #include <netinet/tcp.h>
 //including the needed gamepause library functionality
 #include <gamepause.h>
+gamepause::TimeMeasurement timebox;
 
 #include <positionTracker.h>
 
@@ -170,7 +171,7 @@ static void readAllBytes(void *buf, int socket, unsigned int size) {
 static void drive(int index, tCarElt* car, tSituation *s) {
 
  	//pauses the RaceEngine
-	gamepause::RacePause();
+	timebox.TimedRacePause();
 
 	/* ACC */
 	g_tracker.updatePosition(car, s, curTrack);
@@ -252,19 +253,19 @@ static void drive(int index, tCarElt* car, tSituation *s) {
 	car->_gearCmd = cdi.gear();
 
 	//resume the RaceEngine
-    gamepause::RaceResume(gamepause::startvalue);
+    timebox.TimedRaceResume();
     
     //triggering the calculations which are written to the global values
-    gamepause::avgcalc(gamepause::totalduration,gamepause::stopcounter);
-    gamepause::mincalc(gamepause::mincounter,gamepause::duration);
-    gamepause::maxcalc(gamepause::maxcounter,gamepause::duration);
+    timebox.avgcalc();
+    timebox.mincalc();
+    timebox.maxcalc();
 
     //printing the values to the Speed Dreams console as info
-    GfLogInfo("Elapsed time during stop of the Game Engine (last step): %d milliseconds\n",gamepause::duration);
-    GfLogInfo("Elapsed time during stop of the Game Engine (%d steps): %d milliseconds\n",gamepause::stopcounter,gamepause::totalduration);
-    GfLogInfo("Minimum time per stop: %d milliseconds\n",gamepause::mincounter);
-    GfLogInfo("Average time per stop: %d milliseconds\n",gamepause::avgcounter);
-    GfLogInfo("Maximum time per stop: %d milliseconds\n",gamepause::maxcounter);   
+    GfLogInfo("Elapsed time during stop of the Game Engine (last step): %d milliseconds\n",timebox.getDuration());
+    GfLogInfo("Elapsed time during stop of the Game Engine (%d steps): %d milliseconds\n",timebox.getStopcounter(),timebox.getTotalduration());
+    GfLogInfo("Minimum time per stop: %d milliseconds\n",timebox.getMincounter());
+    GfLogInfo("Average time per stop: %d milliseconds\n",timebox.getAvgcounter());
+    GfLogInfo("Maximum time per stop: %d milliseconds\n",timebox.getMaxcounter());   
 
 
 }

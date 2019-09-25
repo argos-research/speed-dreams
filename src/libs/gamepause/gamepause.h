@@ -6,31 +6,73 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- 
+
 /**
     @defgroup	GamePause.
     Pausing the game engine within a robot.
 */
 #include <chrono>
 
-namespace gamepause{
-    
-typedef std::chrono::high_resolution_clock Clock;
-uint64_t stopcounter = 0;
-uint64_t totalduration = 0;
-uint64_t duration = 0;
-std::chrono::time_point<std::chrono::system_clock> startvalue, stopvalue;
-uint64_t mincounter = 0;
-uint64_t avgcounter = 0;
-uint64_t maxcounter = 0;
+namespace gamepause
+{
 
+class TimeMeasurement
+{
 
-extern uint64_t RaceResume(std::chrono::time_point<std::chrono::system_clock> start);
-extern std::chrono::time_point<std::chrono::system_clock> RacePause();
-extern uint64_t maxcalc(uint64_t maxcounter, uint64_t duration);
-extern uint64_t mincalc(uint64_t mincounter, uint64_t duration);
-extern uint64_t avgcalc(uint64_t totalduration, uint64_t stopcounter);
-extern uint64_t durationtotal(uint64_t duration);
+    typedef std::chrono::high_resolution_clock Clock;
 
+public:
+    TimeMeasurement();
+    ~TimeMeasurement();
+    void TimedRacePause();
+    void TimedRaceResume();
+    void maxcalc();
+    void mincalc();
+    void avgcalc();
+    void durationtotal();
 
-}
+    uint64_t getStopcounter()
+    {
+        return stopcounter;
+    }
+
+    uint64_t getTotalduration()
+    {
+        return totalduration;
+    }
+
+    uint64_t getDuration()
+    {
+        return duration;
+    }
+
+    uint64_t getMincounter()
+    {
+        return mincounter;
+    }
+
+    uint64_t getAvgcounter()
+    {
+        return avgcounter;
+    }
+
+    uint64_t getMaxcounter()
+    {
+        return maxcounter;
+    }
+
+private:
+    uint64_t stopcounter;
+    uint64_t totalduration;
+    uint64_t duration;
+    uint64_t mincounter;
+    uint64_t avgcounter;
+    uint64_t maxcounter;
+    std::chrono::time_point<std::chrono::system_clock> startvalue, stopvalue;
+
+} timebox;
+
+void RaceResume();
+void RacePause();
+
+} // namespace gamepause

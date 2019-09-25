@@ -23,21 +23,30 @@
 
 namespace gamepause{
 
-uint64_t
-RaceResume(std::chrono::time_point<std::chrono::system_clock> startvalue)
+
+TimeMeasurement::TimeMeasurement()
+{
+    stopcounter,avgcounter,mincounter,maxcounter,duration,totalduration = 0;
+    
+}
+
+TimeMeasurement::~TimeMeasurement()
+{
+
+}
+
+
+
+
+
+void
+TimeMeasurement::TimedRaceResume()
 {
 
         //resetting the duration
         duration = 0;
 
-
-        //see whether the game is started with a gui and sound and resume the sound
-        if (LegacyMenu::self().soundEngine())
-            LegacyMenu::self().soundEngine()->mute(false);
-
-
-        //Resuming the RaceEngine
-		LmRaceEngine().start();
+        RaceResume();
 
          //Taking the stopvalue time
         stopvalue = std::chrono::system_clock::now();
@@ -55,65 +64,75 @@ RaceResume(std::chrono::time_point<std::chrono::system_clock> startvalue)
         stopcounter++;
 
 
-        //return value of duration, as this is also globally available it does not have to be caught
-        return duration;
-
-
 }//Resuming the race for the robots
 
-std::chrono::time_point<std::chrono::system_clock>
-RacePause()
+void
+TimeMeasurement::TimedRacePause()
 {
         //Taking the startvalue time
         startvalue = std::chrono::system_clock::now();
 
+        RacePause();
 
+}//Pausing the race for the robots
+
+void
+TimeMeasurement::maxcalc()
+{
+
+    //calculating, returning and writing the maximum value to the globally available variable
+    maxcounter = std::max(maxcounter,duration);
+
+
+}//calculating maximum duration time taken for one step
+
+
+void
+TimeMeasurement::mincalc()
+{
+
+    //if it is the first simulation step set minval as totest
+    //otherwise minval will always be zero
+    if (stopcounter == 1) mincounter = duration;
+
+    //calculating and writing the minimum value to the globally available variable
+    mincounter = std::min(mincounter,duration);
+
+
+}//calculating minimum duration time taken for one step
+
+void
+TimeMeasurement::avgcalc()
+{
+    //calculating, returning and writing the average value to the globally available variable
+    avgcounter = totalduration / stopcounter;
+
+}//calculating average duration time taken all previous steps and durations
+
+
+
+void
+RaceResume()
+{
+
+        //see whether the game is started with a gui and sound and resume the sound
+        if (LegacyMenu::self().soundEngine())
+            LegacyMenu::self().soundEngine()->mute(false);
+
+
+        //Resuming the RaceEngine
+		LmRaceEngine().start();
+}
+
+void
+RacePause()
+{ 
         //see whether the game is started with a gui and sound and resume the sound
 		if (LegacyMenu::self().soundEngine())
 			LegacyMenu::self().soundEngine()->mute(true);
 
         //stopvalueping the RaceEngine
 		LmRaceEngine().stop();
-
-
-        //return value of startvalue, as this is also globally available it does not have to be caught
-        return startvalue;
-
-}//Pausing the race for the robots
-
-
-uint64_t maxcalc(uint64_t maxval, uint64_t totest)
-{
-
-    //calculating, returning and writing the maximum value to the globally available variable
-    return maxcounter = std::max(maxval,totest);
-
-
-}//calculating maximum duration time taken for one step
-
-
-
-uint64_t mincalc(uint64_t minval, uint64_t totest)
-{
-
-    //if it is the first simulation step set minval as totest
-    //otherwise minval will always be zero
-    if (stopcounter == 1) minval = totest;
-
-    //calculating, returning and writing the minimum value to the globally available variable
-    return mincounter = std::min(minval,totest);
-
-
-}//calculating minimum duration time taken for one step
-
-uint64_t avgcalc(uint64_t totduration, uint64_t counter)
-{
-
-    //calculating, returning and writing the average value to the globally available variable
-    return avgcounter = totduration / counter;
-
-
-}//calculating average duration time taken all previous steps and durations
-
+}
 
 }
