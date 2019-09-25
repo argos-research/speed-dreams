@@ -11,13 +11,15 @@
     @defgroup	GamePause.
     Pausing the game engine within a robot.
 */
-#include <algorithm> 
 #include <chrono>
+
+namespace gamepause{
+    
 typedef std::chrono::high_resolution_clock Clock;
 uint64_t stopcounter = 0;
 uint64_t totalduration = 0;
 uint64_t duration = 0;
-std::chrono::time_point<std::chrono::system_clock> start, stop;
+std::chrono::time_point<std::chrono::system_clock> startvalue, stopvalue;
 uint64_t mincounter = 0;
 uint64_t avgcounter = 0;
 uint64_t maxcounter = 0;
@@ -29,3 +31,6 @@ extern uint64_t maxcalc(uint64_t maxcounter, uint64_t duration);
 extern uint64_t mincalc(uint64_t mincounter, uint64_t duration);
 extern uint64_t avgcalc(uint64_t totalduration, uint64_t stopcounter);
 extern uint64_t durationtotal(uint64_t duration);
+
+
+}

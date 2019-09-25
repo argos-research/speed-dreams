@@ -18,52 +18,102 @@
 
 #include "legacymenu.h"
 #include "gamepause.h"
+#include <algorithm>
+#include <chrono>
 
-
+namespace gamepause{
 
 uint64_t
-RaceResume(std::chrono::time_point<std::chrono::system_clock> start)
+RaceResume(std::chrono::time_point<std::chrono::system_clock> startvalue)
 {
 
+        //resetting the duration
         duration = 0;
+
+
+        //see whether the game is started with a gui and sound and resume the sound
         if (LegacyMenu::self().soundEngine())
             LegacyMenu::self().soundEngine()->mute(false);
 
+
+        //Resuming the RaceEngine
 		LmRaceEngine().start();
-         //Taking the time
-        stop = std::chrono::system_clock::now();
-        duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
+
+         //Taking the stopvalue time
+        stopvalue = std::chrono::system_clock::now();
+
+
+        //calculating duration between the given startvalue and the taken stopvalue time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(stopvalue - startvalue).count();
+        
+
+        //adding of the actual calculated duration to the total amount of the game being paused
         totalduration += duration;
+
+
+        //updating the stopcounter, which indicates how often the game was stopvalueped.
         stopcounter++;
+
+
+        //return value of duration, as this is also globally available it does not have to be caught
         return duration;
-}
+
+
+}//Resuming the race for the robots
 
 std::chrono::time_point<std::chrono::system_clock>
 RacePause()
 {
-        
-        start = std::chrono::system_clock::now();
+        //Taking the startvalue time
+        startvalue = std::chrono::system_clock::now();
+
+
+        //see whether the game is started with a gui and sound and resume the sound
 		if (LegacyMenu::self().soundEngine())
 			LegacyMenu::self().soundEngine()->mute(true);
 
+        //stopvalueping the RaceEngine
 		LmRaceEngine().stop();
-        return start;
 
-}
+
+        //return value of startvalue, as this is also globally available it does not have to be caught
+        return startvalue;
+
+}//Pausing the race for the robots
 
 
 uint64_t maxcalc(uint64_t maxval, uint64_t totest)
 {
+
+    //calculating, returning and writing the maximum value to the globally available variable
     return maxcounter = std::max(maxval,totest);
-}
+
+
+}//calculating maximum duration time taken for one step
+
+
 
 uint64_t mincalc(uint64_t minval, uint64_t totest)
 {
+
+    //if it is the first simulation step set minval as totest
+    //otherwise minval will always be zero
     if (stopcounter == 1) minval = totest;
+
+    //calculating, returning and writing the minimum value to the globally available variable
     return mincounter = std::min(minval,totest);
-}
+
+
+}//calculating minimum duration time taken for one step
 
 uint64_t avgcalc(uint64_t totduration, uint64_t counter)
 {
+
+    //calculating, returning and writing the average value to the globally available variable
     return avgcounter = totduration / counter;
+
+
+}//calculating average duration time taken all previous steps and durations
+
+
 }

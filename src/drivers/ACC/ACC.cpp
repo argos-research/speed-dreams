@@ -37,6 +37,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netinet/tcp.h>
+//including the needed gamepause library functionality
+#include <gamepause.h>
 
 #include <positionTracker.h>
 
@@ -117,6 +119,11 @@ static void newrace(int index, tCarElt* car, tSituation *s) {
 		PLogACC->error("socket failed! %s\n", strerror(errno));
 	}
 
+	int optval = 1;
+    setsockopt(serverSock, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval));
+
+
+
 	struct sockaddr_in srv_addr, cli_addr;
 	bzero(&srv_addr, sizeof(srv_addr));
 	srv_addr.sin_family = AF_INET;
@@ -161,6 +168,10 @@ static void readAllBytes(void *buf, int socket, unsigned int size) {
 
 /* Drive during race. */
 static void drive(int index, tCarElt* car, tSituation *s) {
+
+ 	//pauses the RaceEngine
+	gamepause::RacePause();
+
 	/* ACC */
 	g_tracker.updatePosition(car, s, curTrack);
 
@@ -239,6 +250,23 @@ static void drive(int index, tCarElt* car, tSituation *s) {
 	car->_brakeRRCmd = cdi.brakerr();
 	car->_brakeCmd = cdi.brakefl() + cdi.brakefr() + cdi.brakerl() + cdi.brakerr() / 4.0;
 	car->_gearCmd = cdi.gear();
+
+	//resume the RaceEngine
+    gamepause::RaceResume(gamepause::startvalue);
+    
+    //triggering the calculations which are written to the global values
+    gamepause::avgcalc(gamepause::totalduration,gamepause::stopcounter);
+    gamepause::mincalc(gamepause::mincounter,gamepause::duration);
+    gamepause::maxcalc(gamepause::maxcounter,gamepause::duration);
+
+    //printing the values to the Speed Dreams console as info
+    GfLogInfo("Elapsed time during stop of the Game Engine (last step): %d milliseconds\n",gamepause::duration);
+    GfLogInfo("Elapsed time during stop of the Game Engine (%d steps): %d milliseconds\n",gamepause::stopcounter,gamepause::totalduration);
+    GfLogInfo("Minimum time per stop: %d milliseconds\n",gamepause::mincounter);
+    GfLogInfo("Average time per stop: %d milliseconds\n",gamepause::avgcounter);
+    GfLogInfo("Maximum time per stop: %d milliseconds\n",gamepause::maxcounter);   
+
+
 }
 
 /* End of the current race */

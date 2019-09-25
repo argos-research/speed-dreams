@@ -41,18 +41,12 @@
 #include <humandriver.h>
 #include <robot.h>
 #include <algorithm> 
-/*
-#include <chrono>
-int stopcounter;
-auto totalduration = 0;
-auto duration = 0;
-auto mincounter = 0;
-auto avgcounter = 0;
-auto maxcounter = 0;
-*/
+
 
 #include <gpsSensor.h>
+//including the needed gamepause library functionality
 #include <gamepause.h>
+
 
 static HumanDriver robot("human");
 int counter = 0;
@@ -250,27 +244,33 @@ drive_mt(int index, tCarElt* car, tSituation *s)
 static void
 drive_at(int index, tCarElt* car, tSituation *s)
 {
-
+    //counter of simulation steps
     counter++;
-    if (counter % 500 == 0){
-        duration = 0;
+    //every 500 simulation steps do a RacePause to show functionality
+    if (counter % 250 == 0){
         
-        RacePause();
+        //pauses the RaceEngine
+        gamepause::RacePause();
         
-        sleep(rand()/ 1000000000);
+        //randomly sleep to test calculations afterwards
+        sleep(3);
+        //sleep(rand()/ 1000000000);
         
-        RaceResume(start);
+        //resume the RaceEngine
+        gamepause::RaceResume(gamepause::startvalue);
         
-        avgcalc(totalduration,stopcounter);
-        mincalc(mincounter,duration);
-        maxcalc(maxcounter,duration);
+        //triggering the calculations which are written to the global values
+        //gamepause::avgcalc(gamepause::totalduration,gamepause::stopcounter);
+        gamepause::mincalc(gamepause::mincounter,gamepause::duration);
+        gamepause::maxcalc(gamepause::maxcounter,gamepause::duration);
 
-        GfLogInfo("Elapsed time during stop of the Game Engine (last step): %d milliseconds\n",duration);
-        GfLogInfo("Elapsed time during stop of the Game Engine (%d steps): %d milliseconds\n",stopcounter,totalduration);
-        GfLogInfo("Minimum time per stop: %d milliseconds\n",mincounter);
-        GfLogInfo("Average time per stop: %d milliseconds\n",avgcounter);
-        GfLogInfo("Maximum time per stop: %d milliseconds\n",maxcounter);
-    } 
+        //printing the values to the Speed Dreams console as info
+        GfLogInfo("Elapsed time during stop of the Game Engine (last step): %d milliseconds\n",gamepause::duration);
+        GfLogInfo("Elapsed time during stop of the Game Engine (%d steps): %d milliseconds\n",gamepause::stopcounter,gamepause::totalduration);
+        GfLogInfo("Minimum time per stop: %d milliseconds\n",gamepause::mincounter);
+        GfLogInfo("Average time per stop: %d milliseconds\n",gamepause::avgcounter);
+        GfLogInfo("Maximum time per stop: %d milliseconds\n",gamepause::maxcounter);
+    }//sample implementation of the pause function for robots
 
 
     gps.update(car);
